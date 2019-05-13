@@ -5,6 +5,8 @@
   "author": "Sosuke Suzuki <aosukeke@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "nuxt build",
+    "start": "nuxt build && nuxt start",
     "dev": "nuxt",
     "format": "prettier --write \"{,!(node_modules|dist|build|coverage|.nuxt|.serverless)/**/}*.{ts,json,vue,md}\"",
     "lint": "eslint ./ --ext .ts --ext .vue --ignore-path .gitignore",
