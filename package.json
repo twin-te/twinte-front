@@ -1,0 +1,19 @@
+{
+  "name": "twinte-front",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/sosukesuzuki/twinte-front.git",
+  "author": "Sosuke Suzuki <aosukeke@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "devDependencies": {
+    "@nuxt/typescript": "^2.6.3",
+    "vue": "^2.6.10"
+  },
+  "dependencies": {
+    "nuxt": "^2.6.3",
+    "ts-node": "^8.1.0"
+  }
+}
