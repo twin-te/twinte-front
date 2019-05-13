@@ -1,6 +1,6 @@
 # twinte-front
 
-twinteのフロントエンドです。
+twinteのフロントエンドです。WIP。
 
 ## Development
 
