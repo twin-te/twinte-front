@@ -6,11 +6,18 @@
   "author": "Sosuke Suzuki <aosukeke@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nuxt"
+    "dev": "nuxt",
+    "format": "prettier --write \"{,!(node_modules|dist|build|coverage|.nuxt|.serverless)/**/}*.{ts,json,vue,md}\"",
+    "lint": "eslint ./ --ext .ts --ext .vue --ignore-path .gitignore",
+    "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
     "@nuxt/typescript": "^2.6.3",
-    "vue": "^2.6.10"
+    "@typescript-eslint/parser": "^1.9.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.17.0",
+    "vue-eslint-parser": "^6.0.4"
   },
   "dependencies": {
     "nuxt": "^2.6.3",
