@@ -1,5 +1,6 @@
 <template>
-  <h1>Twin:te</h1>
+  <!-- nav内で利用するリスト一つ一つ -->
+  <div></div>
 </template>
 
 <script lang="ts">
@@ -10,6 +11,4 @@ export default class Index extends Vue {}
 </script>
 
 <style lang="sass" scoped>
-h1
-  color: red
 </style>
