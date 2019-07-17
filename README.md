@@ -2,6 +2,8 @@
 
 twinteのフロントエンドです。WIP。
 
+![shintyoku](img/shintyoku.png)
+
 ## Development
 
 リポジトリをクローンして依存ライブラリをインストールします。
