@@ -1,7 +1,13 @@
 <template>
   <section>
     <div id="sem"><span id="notation">秋A</span></div>
-    <time-table id="table" semester></time-table>
+    <table id="week">
+    <tr>
+      <td id="day">今日</td>
+      <td v-for="n in 6" :key="n">{{ week[n - 1] }}</td>
+    </tr>
+  </table>
+    <time-table id="table" semester=0></time-table>
   </section>
 </template>
 
@@ -15,6 +21,7 @@ import { Component, Vue } from "nuxt-property-decorator";
 })
 export default class Index extends Vue {
   public semester: number = 0;
+  public week: string[] = ["月", "火", "水", "木", "金"];
 }
 </script>
 
@@ -32,4 +39,16 @@ export default class Index extends Vue {
   line-height: 23px
   text-align: center
   color: #9A9A9A
+#week
+  position: absolute
+  width: 243px
+  height: 27px
+  left: 87px
+  top: 86px
+#day
+  position: fixed
+  width: 49px
+  height: 48px
+  left: 14px
+  top: 62px
 </style>

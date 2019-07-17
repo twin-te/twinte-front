@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="top">
-      Twin:te
+      <icon>Twin:te</icon>
     </nav>
     <nav class="sub"></nav>
     <nuxt></nuxt>
@@ -21,6 +21,12 @@ export default class Index extends Vue {}
   height: 56px
   background-color: #00C0C0
   font-size: 2em
+icon
+  position: absolute;
+  width: 117px;
+  height: 33px;
+  left: 129px;
+  top: 11px;
 .sub
   background: #C7C7C7
   height: 2px
