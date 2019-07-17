@@ -45,6 +45,7 @@ export default class Index extends Vue {
   height: 27px
   left: 87px
   top: 86px
+  color: #9A9A9A
 #day
   position: fixed
   width: 49px

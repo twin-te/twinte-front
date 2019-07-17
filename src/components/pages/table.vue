@@ -4,8 +4,8 @@
     <tbody>
       <tr v-for="m in 6" :key="m">
         <td v-for="n in 6" :key="n">
-          <div v-if="n == 1">{{ m }}限</div>
-          <div :style="{ background: getColor }" v-else>
+          <div v-if="n == 1" :style="{background: m%2===0?'#F3F3F3':'#F8F8F8'}">{{ m }}限</div>
+          <div :style="{ background: getColor(data[semester][n - 2][m - 1].number) }" v-else>
             {{ data[semester][n - 2][m - 1].name }}
           </div>
         </td>
@@ -64,8 +64,7 @@ export default class Index extends Vue {
    * @description その授業として適切な色を返す
    * @todo 引数を渡せるようにしないといけない
    */
-  public get getColor(): string {
-    const number: string = "1";
+  public getColor(number: string): string { 
     const char: string = number.split("")[0];
     switch (char) {
       case "A": return "#DEFFF9";
