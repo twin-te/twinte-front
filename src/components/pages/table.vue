@@ -1,30 +1,36 @@
 <template>
   <!-- tableタグ内で利用 時間割データの一部を受け取る -->
-  <table>
-    <tbody>
-      <tr v-for="m in 6" :key="m">
-        <td v-for="n in 6" :key="n">
-          <div v-if="n == 1" :style="{background: m%2===0?'#F3F3F3':'#F8F8F8'}">{{ m }}限</div>
-          <div :style="{ background: getColor(data[semester][n - 2][m - 1].number) }" v-else>
-            {{ data[semester][n - 2][m - 1].name }}
+  <section class="row">
+
+    <!-- 時限 -->
+    <flex class="column">
+      <div class="time" v-for="i in 6" :key="i" :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }">
+        {{ i }}
+      </div>
+    </flex>
+
+    <!-- 授業 -->
+    <flex class="column">
+      <div v-for="m in 6" :key="m">
+
+        <flex class="row">
+          <div v-for="n in 5" :key="n">
+            <div class="subject" :style="{ background: getColor(data[semester][n - 1][m - 1].number) }">
+              {{ data[semester][n - 1][m - 1].name }}
+            </div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </flex>
+
+      </div>
+    </flex>
+
+  </section>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "nuxt-property-decorator";
 
 @Component
-// ({
-//   async asyncData() {
-//     return {
-//       data: process.env.data
-//     }
-//   }
-// })
 export default class Index extends Vue {
   @Prop({ type: Object, required: true })
   semester!: number;
@@ -48,23 +54,12 @@ export default class Index extends Vue {
     ]
   ];
 
-  /** computed() */
-  /**
-   * today
-   */
-  public get today(): object {
-    const date = new Date();
-    console.dir(date);
-    const today = {};
-    return today;
-  }
-
   /**
    * getColor
    * @description その授業として適切な色を返す
    * @todo 引数を渡せるようにしないといけない
    */
-  public getColor(number: string): string { 
+  public getColor(number: string): string {
     const char: string = number.split("")[0];
     switch (char) {
       case "A": return "#DEFFF9";
@@ -79,36 +74,47 @@ export default class Index extends Vue {
       case "1": return "#FFEEF7";
       case "2": return "#F0EBFF";
       case "3": return "#FFFCEB";
-      default : return "";
+      default : return ""       ;
     }
   }
 }
 </script>
 
 <style lang="sass" scoped>
+section
+  position: absolute
+  width: 327px
+  height: 516px
+  left: 14px
+  top: 116px
+  padding: 10px
+  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
+  border-radius: 10px
+.row
+  display: flex
+  flex-direction: row
+.column
+  display: flex
+  flex-direction: column
 div
-  width: 48.25px
-  height: 75.68px
+  color: #555555
+.time
+  width: 42px
+  height: 73px
+  font-style: normal
+  font-weight: 600
+  font-size: 11px
+  line-height: 15px
+  text-align: center
+  color: #9A9A9A
+  padding-top: 13px
+.subject
+  width: 47px
+  height: 76px
   word-break: break-all
   font-style: normal
   font-weight: 600
   font-size: 9px
   line-height: 12px
-  color: #555555
   padding: 5px
-td
-  padding: 0
-table
-  position: absolute
-  width: 347px
-  height: 536px
-  left: 14px
-  top: 116px
-  border-spacing: 0
-  border-collapse: separate
-  webkit-border-horizontal-spacing: 0
-  webkit-border-vertical-spacing: 0
-tbody
-  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
-  border-radius: 10px
 </style>
