@@ -3,26 +3,30 @@
   <section class="row">
 
     <!-- 時限 -->
-    <flex class="column">
+    <div class="column">
       <div class="time" v-for="i in 6" :key="i" :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }">
         {{ i }}
       </div>
-    </flex>
+    </div>
 
     <!-- 授業 -->
-    <flex class="column">
+    <div class="column">
       <div v-for="m in 6" :key="m">
 
-        <flex class="row">
+        <div class="row">
           <div v-for="n in 5" :key="n">
-            <div class="subject" :style="{ background: getColor(data[semester][n - 1][m - 1].number) }">
-              {{ data[semester][n - 1][m - 1].name }}
-            </div>
+            <ripple>
+              <div class="subject" :style="{ background: getColor(data[semester][n - 1][m - 1].number) }">
+                <div style="font-size: 9">{{ data[semester][n - 1][m - 1].number }}</div>
+                <div style="font-size: 9">{{ data[semester][n - 1][m - 1].name }}</div>
+                <div style="font-size: 9">{{ data[semester][n - 1][m - 1].classroom }}</div>
+              </div>
+            </ripple>
           </div>
-        </flex>
+        </div>
 
       </div>
-    </flex>
+    </div>
 
   </section>
 </template>
@@ -30,9 +34,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "nuxt-property-decorator";
 
-@Component
+@Component({
+  components: {
+    ripple: () => import("~/components/ui/ripple.vue")
+  }
+})
 export default class Index extends Vue {
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Number, required: true })
   semester!: number;
 
   /** data() */
@@ -57,7 +65,7 @@ export default class Index extends Vue {
   /**
    * getColor
    * @description その授業として適切な色を返す
-   * @todo 引数を渡せるようにしないといけない
+   * @param 授業番号
    */
   public getColor(number: string): string {
     const char: string = number.split("")[0];

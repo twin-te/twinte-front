@@ -6,8 +6,7 @@
       <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
     </div>
 
-    <time-table id="table" semester='0' />
-    <navigation drawer='false' />
+    <time-table id="table" :semester=semester />
   </section>
 </template>
 
@@ -17,14 +16,12 @@ import { Component, Vue } from "nuxt-property-decorator";
 @Component({
   components: {
     timeTable: () => import("~/components/pages/table.vue"),
-    day: () => import("~/components/pages/day.vue"),
-    navigation: () => import("~/components/layouts/nav.vue")
+    day: () => import("~/components/pages/day.vue")
   }
 })
 export default class Index extends Vue {
-  public semester: number = 0;
+  public semester: Number = 0;
   public week: String[] = ["月", "火", "水", "木", "金"];
-  public drawer: Boolean = false;
 }
 </script>
 
