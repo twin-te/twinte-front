@@ -80,3 +80,15 @@ ripple: タップしたときのエフェクト
 [components/ui/nav-list.vue](src/components/ui/nav-list.vue) : リスト型の表示をnav.vueで用いる
 
 [components/ui/ripple.vue](src/components/ui/ripple.vue)   : これで囲うとrippleになる
+
+## 次やること
+
+- ★drawer, popup, addをvuexで行う←help
+- add: 授業追加画面
+- add: navigation
+- drawer, popup, addの出現時のアニメーション
+- レスポンシブ対応
+- svgの細かな修正
+- termの切り替えボタン
+- バックエンドとのやりとり
+- ログイン機能実装
