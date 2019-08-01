@@ -44,7 +44,7 @@ export default class Index extends Vue {
   semester!: number;
 
   /** data() */
-  /** jsonの読み込みがミスするので臨時 */
+  /** jsonの読み込みがミスするので臨時, 多分tsconfigとかそこら辺の設定 */
   public data: any = [
     [
       [{ number: "1A18011", name: "ネットワーク社会を支える情報技術入門I", season: "春AB", time: "月1", classroom: "3A306", teacher: "朴 泰祐"},{ number: "1B17031", name: "経営の科学I", season: "春AB", time: "月2", classroom: "3A204", teacher: "生稲 史彦,高野 祐一"},{ number: "", name: "", season: "", time: "", classroom: "", teacher: ""},{ number: "31CH052", name: "English Integrated Skills I", season: "春AB", time: "月4", classroom: "CA509", teacher: "スタウト マイケル デンリー フランシス"},{ number: "", name: "", season: "", time: "", classroom: "", teacher: ""},{ number: "", name: "", season: "", time: "", classroom: "", teacher: "" } ],
