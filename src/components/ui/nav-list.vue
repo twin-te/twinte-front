@@ -1,6 +1,8 @@
 <template>
   <!-- nav内で利用するリスト一つ一つ -->
-  <div></div>
+  <div>
+    <slot></slot>
+  </div>
 </template>
 
 <script lang="ts">

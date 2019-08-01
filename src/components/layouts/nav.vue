@@ -1,11 +1,14 @@
 <template>
   <!-- 歯車を押すと左から出現する -->
-  <div class="contents" :style="{ display: drawer ? 'flex' : 'none' }">
+  <div class="contents" :style="{ display: drawer ? '' : 'none' }">
     <nav class="main">
-
+      設定
+      <section v-for="l in list" :key="l.id">
+        <navlist>{{ l.name }}</navlist>
+      </section>
     </nav>
     <!-- 全体を暗くする -->
-    <nav class="back"></nav>
+    <nav class="back" @click="drawer=!drawer"></nav>
   </div>
 </template>
 
@@ -18,25 +21,36 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
   }
 })
 export default class Index extends Vue {
-    @Prop({ type: Boolean, required: true })
-    drawer!: Boolean;
+  //TODO drawerはvuex側で扱うべき
+  @Prop({ type: Boolean, required: true })
+  drawer!: Boolean;
+
+  public list: any = [
+    {name: "ホームへ戻る"},
+    {name: "使い方"},
+    {name: "About"},
+    {name: "表示設定"},
+    {name: "時間割の共有"},
+    {name: "時間割データの消去"}
+  ]
   }
 </script>
 
 <style lang="sass" scoped>
 .main
   position: absolute
-  width: 289px
-  height: 667px
+  width: 80%
+  max-width: 300px
+  height: 100vh
   left: 0px
   top: 0px
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
   background: #fff
   z-index: 6
 .back
   position: absolute
-  width: 375px
-  height: 667px
+  width: 100vw
+  height: 100vh
   left: 0px
   top: 0px
   background: rgba(100, 100, 100, 0.5)
