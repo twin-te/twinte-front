@@ -1,6 +1,6 @@
 <template>
   <div>
-    <toolbar />
+    <toolbar @chDrawer="chDrawer" />
     <t-navigation :drawer="drawer" />
     <t-dialog :popup="popup" :looking="looking"> </t-dialog>
     <nuxt />
@@ -29,7 +29,15 @@ export default class Index extends Vue {
   public drawer: Boolean = false;
   public popup: Boolean = false;
   //TODO ボタン押したときに$emitでいい感じに同期
-  public looking: Table = { number: "1A18011", name: "ネットワーク社会を支える情報技術入門I", season: "春AB", time: "月1", classroom: "3A306", teacher: "朴 泰祐" };
+  public looking: Table = { number: "1A18011", name: "ネットワーク社会を支える情報技術入門I", season: "春AB", time: "月1", classroom: "3A306", teacher: "朴 泰祐, 西沢　奏" };
+
+  /**
+   * chDrawer
+   * @description drawerの切り替えを行う
+   */
+  public chDrawer() {
+    this.drawer = !this.drawer;
+  }
 }
 </script>
 
