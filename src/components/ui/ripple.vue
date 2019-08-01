@@ -69,6 +69,7 @@ $main-color: white
   transform: translateY(0)
   transition: transform 0.2s
 .ripple
+  z-index: 9999
   display: block
   width: 20px
   height: 20px
@@ -77,7 +78,7 @@ $main-color: white
   top: 0
   left: 0
   pointer-events: none
-  background-color: rgba(darken($main-color, 20%), 0.8)
+  background-color: rgba(darken($main-color, 10%), 1)
   opacity: 0
   transform: translate(-50%, -50%) scale(10)
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out
