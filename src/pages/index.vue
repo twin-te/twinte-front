@@ -6,7 +6,7 @@
       <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
     </div>
 
-    <time-table id="table" :semester=semester />
+    <time-table id="table" :semester="semester" />
   </section>
 </template>
 

@@ -8,12 +8,13 @@
       </section>
     </nav>
     <!-- 全体を暗くする -->
-    <nav class="back" @click="drawer=!drawer"></nav>
+    <nav class="back" @click="chDrawer()"></nav>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "nuxt-property-decorator";
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component({
   components: {
@@ -21,19 +22,25 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
   }
 })
 export default class Index extends Vue {
-  //TODO drawerはvuex側で扱うべき
-  @Prop({ type: Boolean, required: true })
-  drawer!: Boolean;
+  $store!: Vuex.ExStore;
 
-  public list: any = [
-    {name: "ホームへ戻る"},
-    {name: "使い方"},
-    {name: "About"},
-    {name: "表示設定"},
-    {name: "時間割の共有"},
-    {name: "時間割データの消去"}
-  ]
+  get drawer(): boolean {
+    return this.$store.getters["visible/drawer"];
   }
+
+  chDrawer(): void {
+    this.$store.commit("visible/chDrawer", { bool: false });
+  }
+
+  list: any = [
+    { name: "ホームへ戻る" },
+    { name: "使い方" },
+    { name: "About" },
+    { name: "表示設定" },
+    { name: "時間割の共有" },
+    { name: "時間割データの消去" }
+  ];
+}
 </script>
 
 <style lang="sass" scoped>
