@@ -1,16 +1,15 @@
 <template>
-  <!-- 科目詳細画面 -->
-  <div :style="{ display: popup ? '' : 'none' }">
+  <!-- 時間割の追加 -->
+  <div :style="{ display: add ? '' : 'none' }">
     <nav class="main">
       <article     style="padding: 25px">
         <!-- 教科名 -->
         <!-- <x> -->
-        <div class="svg-button" @click="popup=false">
+        <div class="svg-button" @click="add=false">
           <svg id="close" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z" fill="#9A9A9A"/></svg>
         </div>
         <section   style="padding-left: 9px; margin-top: 14px; border-left: 5px solid #00C0C0; text-overflow: ellipsis;overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
-          <section style="color: #555555;font-size: 21px;">{{ looking.name }}</section>
-          <section style="color: #C4C4C4;font-size: 12px;">科目番号 {{ looking.number }}</section>
+          <section style="color: #555555;font-size: 21px;">時間割の追加</section>
         </section>
         <!-- 科目詳細 -->
         <section>
@@ -39,16 +38,6 @@
           <div     style="margin-bottom: 8px; margin-left: 10px; margin-right: 10px">
             <input type="text" style="width: 100%; height: 85px; border: 1px solid #DDDDDD; box-sizing: border-box; border-radius: 8px;">
           </div>
-          <div     style="display: flex; justify-content: space-between; margin-bottom: 12px; margin-left: 10px; margin-right: 10px">
-            <div v-for="n in 3" :key="n" :class="{ one: n===1, two: n===2, three: n===3}" style="width: 30%">
-              <span style="font-family: Noto Sans JP; font-style: normal; font-weight: 500; font-size: 13px; line-height: 19px; text-align: center; color: #555555">{{ atmnb[n - 1] }}　{{ count[n-1] }}回</span>
-              <!-- <+|-> -->
-              <div    style="display: flex; margin-bottom: 15px">
-                <span @click="" style="width: 50%; border: 1px solid #00C0C0; border-radius: 20px 0 0 20px; height: 30px">+</span>
-                <span @click="" style="width: 50%; border: 1px solid #00C0C0; border-radius: 0 20px 20px 0; height: 30px;position: relative; left: -1px">-</span>
-              </div>
-            </div>
-          </div>
         </section>
 
         <section style="width: 100%; height: 40px; background: #00C0C0; border-radius: 7px; margin-bottom: 15px; position: relative">
@@ -62,7 +51,7 @@
       </article>
     </nav>
     <!-- 全体を暗くする -->
-    <nav class="back" @click="popup=!popup"></nav>
+    <nav class="back" @click="add=!add"></nav>
   </div>
 </template>
 
@@ -71,68 +60,10 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class Index extends Vue {
-  //TODO vuexで扱うべき
   @Prop({ type: Boolean, default: false, required: true })
-  popup!: Boolean;
-  @Prop({ type: Object, default: { "number": "", "name": "", "season": "", "time": "", "classroom": "", "teacher": "" }, required: true })
-  looking!: any;
-
-  public atmnb: string[] = ["出席", "欠席", "遅刻"];
-  public count: number[] = [2, 2, 2];
+  add!: Boolean;
 }
 </script>
 
 <style lang="sass" scoped>
-.same-v
-  display: inline-block
-  vertical-align: middle
-/** 中央寄せ */
-.center
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translateY(-50%) translateX(-50%)
-.main
-  position: absolute
-  top: 73px
-  left: 13px
-  width: calc(100vw - 26px)
-  height: calc(100vh - 128px)
-  background: #FFFFFF
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2)
-  border-radius: 10px
-  z-index: 6
-.back
-  position: absolute
-  width: 100vw
-  height: 100vh
-  left: 0px
-  top: 0px
-  background: rgba(100, 100, 100, 0.5)
-  z-index: 5
-#close
-  float: right
-
-.svg-button
-  border: none
-  background: none
-  cursor: pointer
-  &:focus
-    outline: 2px dashed #17171D
-  &:hover
-    svg
-      transform: scale(1.1)
-  svg
-    outline: none
-    transition: transform 0.3s liner
-
-.wrapper
-  display: grid
-  grid-template-columns: repeat(3, 1fr)
-.one
-  grid-column: 1
-.two
-  grid-column: 2
-.three
-  grid-column: 3
 </style>

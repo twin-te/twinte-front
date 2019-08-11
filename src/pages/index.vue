@@ -1,13 +1,12 @@
 <template>
   <section>
-    <div id="sem"><span id="notation">秋A</span></div>
-    <table id="week">
-    <tr>
-      <td id="day">今日</td>
-      <td v-for="n in 6" :key="n">{{ week[n - 1] }}</td>
-    </tr>
-  </table>
-    <time-table id="table" semester=0></time-table>
+    <div id="notation">秋A</div>
+    <div id="week">
+      <div id="day"><day /></div>
+      <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
+    </div>
+
+    <time-table id="table" :semester=semester />
   </section>
 </template>
 
@@ -16,12 +15,13 @@ import { Component, Vue } from "nuxt-property-decorator";
 
 @Component({
   components: {
-    timeTable: () => import("~/components/pages/table.vue")
+    timeTable: () => import("~/components/pages/table.vue"),
+    day: () => import("~/components/pages/day.vue")
   }
 })
 export default class Index extends Vue {
-  public semester: number = 0;
-  public week: string[] = ["月", "火", "水", "木", "金"];
+  public semester: Number = 0;
+  public week: String[] = ["月", "火", "水", "木", "金"];
 }
 </script>
 
@@ -37,14 +37,19 @@ export default class Index extends Vue {
   font-weight: 500
   font-size: 16px
   line-height: 23px
-  text-align: center
   color: #9A9A9A
 #week
+  display: flex
+  justify-content: space-between
   position: absolute
   width: 243px
   height: 27px
   left: 87px
-  top: 86px
+  top: 87px
+  font-family: Noto Sans JP
+  font-style: normal
+  font-weight: 500
+  font-size: 15px
   color: #9A9A9A
 #day
   position: fixed

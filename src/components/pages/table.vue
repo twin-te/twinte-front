@@ -1,36 +1,50 @@
 <template>
   <!-- tableタグ内で利用 時間割データの一部を受け取る -->
-  <table>
-    <tbody>
-      <tr v-for="m in 6" :key="m">
-        <td v-for="n in 6" :key="n">
-          <div v-if="n == 1" :style="{background: m%2===0?'#F3F3F3':'#F8F8F8'}">{{ m }}限</div>
-          <div :style="{ background: getColor(data[semester][n - 2][m - 1].number) }" v-else>
-            {{ data[semester][n - 2][m - 1].name }}
+  <section class="row">
+
+    <!-- 時限 -->
+    <div class="column">
+      <div class="time" v-for="i in 6" :key="i" :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }">
+        {{ i }}
+      </div>
+    </div>
+
+    <!-- 授業 -->
+    <div class="column">
+      <div v-for="m in 6" :key="m">
+
+        <div class="row">
+          <div v-for="n in 5" :key="n">
+            <ripple>
+              <div class="subject" :style="{ background: getColor(data[semester][n - 1][m - 1].number) }">
+                <div style="font-size: 9">{{ data[semester][n - 1][m - 1].number }}</div>
+                <div style="font-size: 9">{{ data[semester][n - 1][m - 1].name }}</div>
+                <div style="font-size: 9">{{ data[semester][n - 1][m - 1].classroom }}</div>
+              </div>
+            </ripple>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "nuxt-property-decorator";
 
-@Component
-// ({
-//   async asyncData() {
-//     return {
-//       data: process.env.data
-//     }
-//   }
-// })
+@Component({
+  components: {
+    ripple: () => import("~/components/ui/ripple.vue")
+  }
+})
 export default class Index extends Vue {
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Number, required: true })
   semester!: number;
 
   /** data() */
-  /** jsonの読み込みがミスするので臨時 */
+  /** jsonの読み込みがミスするので臨時, 多分tsconfigとかそこら辺の設定 */
   public data: any = [
     [
       [{ number: "1A18011", name: "ネットワーク社会を支える情報技術入門I", season: "春AB", time: "月1", classroom: "3A306", teacher: "朴 泰祐"},{ number: "1B17031", name: "経営の科学I", season: "春AB", time: "月2", classroom: "3A204", teacher: "生稲 史彦,高野 祐一"},{ number: "", name: "", season: "", time: "", classroom: "", teacher: ""},{ number: "31CH052", name: "English Integrated Skills I", season: "春AB", time: "月4", classroom: "CA509", teacher: "スタウト マイケル デンリー フランシス"},{ number: "", name: "", season: "", time: "", classroom: "", teacher: ""},{ number: "", name: "", season: "", time: "", classroom: "", teacher: "" } ],
@@ -48,23 +62,12 @@ export default class Index extends Vue {
     ]
   ];
 
-  /** computed() */
-  /**
-   * today
-   */
-  public get today(): object {
-    const date = new Date();
-    console.dir(date);
-    const today = {};
-    return today;
-  }
-
   /**
    * getColor
    * @description その授業として適切な色を返す
-   * @todo 引数を渡せるようにしないといけない
+   * @param 授業番号
    */
-  public getColor(number: string): string { 
+  public getColor(number: string): string {
     const char: string = number.split("")[0];
     switch (char) {
       case "A": return "#DEFFF9";
@@ -79,36 +82,47 @@ export default class Index extends Vue {
       case "1": return "#FFEEF7";
       case "2": return "#F0EBFF";
       case "3": return "#FFFCEB";
-      default : return "";
+      default : return ""       ;
     }
   }
 }
 </script>
 
 <style lang="sass" scoped>
+section
+  position: absolute
+  width: 327px
+  height: 516px
+  left: 14px
+  top: 116px
+  padding: 10px
+  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
+  border-radius: 10px
+.row
+  display: flex
+  flex-direction: row
+.column
+  display: flex
+  flex-direction: column
 div
-  width: 48.25px
-  height: 75.68px
+  color: #555555
+.time
+  width: 42px
+  height: 73px
+  font-style: normal
+  font-weight: 600
+  font-size: 11px
+  line-height: 15px
+  text-align: center
+  color: #9A9A9A
+  padding-top: 13px
+.subject
+  width: 47px
+  height: 76px
   word-break: break-all
   font-style: normal
   font-weight: 600
   font-size: 9px
   line-height: 12px
-  color: #555555
   padding: 5px
-td
-  padding: 0
-table
-  position: absolute
-  width: 347px
-  height: 536px
-  left: 14px
-  top: 116px
-  border-spacing: 0
-  border-collapse: separate
-  webkit-border-horizontal-spacing: 0
-  webkit-border-vertical-spacing: 0
-tbody
-  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
-  border-radius: 10px
 </style>
