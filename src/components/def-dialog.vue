@@ -1,11 +1,11 @@
 <template>
   <!-- 科目詳細画面 -->
-  <div :style="{ display: popup ? '' : 'none' }">
+  <div :style="{ display: dialog ? '' : 'none' }">
     <nav class="main">
       <article style="padding: 25px">
         <!-- 教科名 -->
         <!-- <x> -->
-        <div class="svg-button" @click="popup = false">
+        <div class="svg-button" @click="chDialog">
           <svg
             id="close"
             width="16"
@@ -168,7 +168,7 @@
       </article>
     </nav>
     <!-- 全体を暗くする -->
-    <nav class="back" @click="popup = !popup"></nav>
+    <nav class="back" @click="chDialog"></nav>
   </div>
 </template>
 
@@ -177,14 +177,19 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class Index extends Vue {
-  //TODO vuexで扱うべき
-  @Prop({ default: false, required: true })
-  popup!: boolean;
   @Prop({ default: false, required: true })
   looking!: any;
 
-  public atmnb: string[] = ["出席", "欠席", "遅刻"];
-  public count: number[] = [2, 2, 2];
+  atmnb: string[] = ["出席", "欠席", "遅刻"];
+  count: number[] = [2, 2, 2];
+
+  get dialog(): boolean {
+    return this.$store.getters["visible/dialog"];
+  }
+
+  chDialog(): void {
+    this.$store.commit("visible/chDialog", { bool: false });
+  }
 }
 </script>
 

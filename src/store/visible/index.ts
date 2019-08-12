@@ -3,7 +3,8 @@ import { S, G, M, A } from "./type";
 // ______________________________________________________
 //
 export const state = (): S => ({
-  drawer: false
+  drawer: false,
+  dialog: false
 });
 // ______________________________________________________
 //
@@ -13,6 +14,9 @@ export const state = (): S => ({
 export const getters: Getters<S, G> = {
   drawer(state) {
     return state.drawer;
+  },
+  dialog(state) {
+    return state.dialog;
   }
 };
 // ______________________________________________________
@@ -26,11 +30,10 @@ export const mutations: Mutations<S, M> = {
    * @param payload 任意 つけなかったら切り替え
    */
   chDrawer(state, payload) {
-    if (payload.bool === null) {
-      state.drawer = !state.drawer;
-    } else {
-      state.drawer = payload.bool;
-    }
+    state.drawer = payload.bool;
+  },
+  chDialog(state, payload) {
+    state.dialog = payload.bool;
   }
 };
 // ______________________________________________________
