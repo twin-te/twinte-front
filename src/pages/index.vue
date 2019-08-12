@@ -1,7 +1,7 @@
 <template>
   <section>
     <app-header-table />
-    <app-time-table id="table" :semester="semester" />
+    <app-time-table :semester="semester" />
   </section>
 </template>
 
