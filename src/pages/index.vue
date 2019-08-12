@@ -6,18 +6,17 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Vue } from "nuxt-property-decorator";
 
-  @Component({
-    components: {
-      AppHeaderTable: () => import("~/components/app-table-header.vue"),
-      AppTimeTable: () => import("~/components/app-table-contents.vue")
-    }
-  })
-  export default class Index extends Vue {
-    semester: number = 0;
+@Component({
+  components: {
+    AppHeaderTable: () => import("~/components/app-table-header.vue"),
+    AppTimeTable: () => import("~/components/app-table-contents.vue")
   }
+})
+export default class Index extends Vue {
+  semester: number = 0;
+}
 </script>
 
-<style lang="sass" scoped>
-</style>
+<style lang="sass" scoped></style>

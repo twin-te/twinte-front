@@ -74,11 +74,13 @@ import { Component, Vue } from "nuxt-property-decorator";
   }
 })
 export default class Index extends Vue {
-  public today: {
+
+  today: {
     month: number;
     day: number;
     week: string;
   } = { month: 10, day: 1, week: "火" };
+
 }
 </script>
 

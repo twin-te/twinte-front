@@ -1,6 +1,7 @@
 import NuxtConfiguration from "@nuxt/config";
 
 const config: NuxtConfiguration = {
+  mode: "universal",
   srcDir: "src/",
   head: {
     titleTemplate: "Twinte",

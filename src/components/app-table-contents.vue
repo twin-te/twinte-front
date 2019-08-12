@@ -52,12 +52,13 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
   }
 })
 export default class Index extends Vue {
-  @Prop({ type: Number, required: true })
+  @Prop({ required: true })
   semester!: number;
 
   /** data() */
   /** jsonの読み込みがミスするので臨時, 多分tsconfigとかそこら辺の設定 */
-  public data: any = [
+  /* eslint-disable */
+  data: any = [
     [
       [
         { number: "1A18011", name: "ネットワーク社会を支える情報技術入門I", season: "春AB", time: "月1", classroom: "3A306", teacher: "朴 泰祐" },
@@ -152,32 +153,19 @@ export default class Index extends Vue {
   public getColor(number: string): string {
     const char: string = number.split("")[0];
     switch (char) {
-      case "A":
-        return "#DEFFF9";
-      case "B":
-        return "#DEFFF9";
-      case "C":
-        return "#DEFFF9";
-      case "E":
-        return "#DEFFF9";
-      case "F":
-        return "#DEFFF9";
-      case "G":
-        return "#DEFFF9";
-      case "H":
-        return "#DEFFF9";
-      case "W":
-        return "#DEFFF9";
-      case "Y":
-        return "#DEFFF9";
-      case "1":
-        return "#FFEEF7";
-      case "2":
-        return "#F0EBFF";
-      case "3":
-        return "#FFFCEB";
-      default:
-        return "";
+      case "A": return "#DEFFF9";
+      case "B": return "#DEFFF9";
+      case "C": return "#DEFFF9";
+      case "E": return "#DEFFF9";
+      case "F": return "#DEFFF9";
+      case "G": return "#DEFFF9";
+      case "H": return "#DEFFF9";
+      case "W": return "#DEFFF9";
+      case "Y": return "#DEFFF9";
+      case "1": return "#FFEEF7";
+      case "2": return "#F0EBFF";
+      case "3": return "#FFFCEB";
+      default:  return "";
     }
   }
 }

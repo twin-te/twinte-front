@@ -9,20 +9,19 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from "nuxt-property-decorator";
-  import * as Vuex from "vuex";
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
-  @Component({
-    components: {
-      AppDay: () => import("~/components/app-day.vue")
-    }
-  })
-  export default class Index extends Vue {
-    $store!: Vuex.ExStore;
-
-    week: string[] = ["月", "火", "水", "木", "金"];
-
+@Component({
+  components: {
+    AppDay: () => import("~/components/app-day.vue")
   }
+})
+export default class Index extends Vue {
+  $store!: Vuex.ExStore;
+
+  week: string[] = ["月", "火", "水", "木", "金"];
+}
 </script>
 
 <style lang="sass" scoped>
