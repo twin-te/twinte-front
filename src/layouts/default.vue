@@ -1,15 +1,14 @@
 <template>
   <div>
     <def-toolbar />
-    <def-navigation :drawer="drawer" />
-    <def-dialog :popup="popup" :looking="looking" />
+    <def-navigation />
+    <def-dialog :looking="looking" />
     <nuxt />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
 
 interface Table {
   number: string;
@@ -27,9 +26,6 @@ interface Table {
   }
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
-
-  popup: boolean = false;
   //TODO ボタン押したときに$emitでいい感じに同期
   looking: Table = {
     number: "1A18011",
@@ -37,13 +33,8 @@ export default class Index extends Vue {
     season: "春AB",
     time: "月1",
     classroom: "3A306",
-    teacher: "朴 泰祐, 西沢　奏"
+    teacher: "朴 泰祐"
   };
-
-  /** サイドバーの状態をcommitで取得 */
-  get drawer() {
-    return this.$store.getters["visible/drawer"];
-  }
 }
 </script>
 

@@ -18,7 +18,6 @@ import { Component, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class Index extends Vue {
-
   /** data() */
   ripple: boolean = false;
   x: number = 0;
@@ -42,7 +41,6 @@ export default class Index extends Vue {
     this.ripple = false;
   }
 }
-
 </script>
 
 <style lang="sass" scoped>
