@@ -4,7 +4,7 @@
     <nav class="main">
       設定
       <section v-for="l in list" :key="l.id">
-        <navlist>{{ l.name }}</navlist>
+        <ui-navlist>{{ l.name }}</ui-navlist>
       </section>
     </nav>
     <!-- 全体を暗くする -->
@@ -18,7 +18,7 @@ import * as Vuex from "vuex";
 
 @Component({
   components: {
-    navlist: () => import("~/components/ui/nav-list.vue")
+    "ui-navlist": () => import("~/components/ui-nav-list.vue")
   }
 })
 export default class Index extends Vue {

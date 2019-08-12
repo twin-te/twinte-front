@@ -19,25 +19,28 @@ import { Component, Vue } from "nuxt-property-decorator";
 @Component
 export default class Index extends Vue {
   /** data() */
-  public ripple: Boolean = false;
-  public x: number = 0;
-  public y: number = 0;
+  ripple: boolean = false;
+  x: number = 0;
+  y: number = 0;
 
   /** methods() */
-  public onClick(e: any): void {
+  onClick(e: any): void {
     this.x = e.layerX;
     this.y = e.layerY;
     this.ripple = !this.ripple;
     this.$emit("click");
   }
-  public rippleEnter(): void {
+
+  rippleEnter(): void {
     const rip: any = this.$refs.ripple;
     rip.style.top = `${this.y}px`;
     rip.style.left = `${this.x}px`;
   }
-  public afterRippleEnter(): void {
+
+  afterRippleEnter(): void {
     this.ripple = false;
   }
+
 }
 </script>
 

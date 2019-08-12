@@ -18,7 +18,7 @@
           />
         </svg>
       </div>
-      <icon>Twin:te</icon>
+      <div id="title">Twin:te</div>
       <button class="svg-button" @click="this.$emit('chAdder')">
         <svg
           id="i_add"
@@ -63,7 +63,7 @@ export default class Index extends Vue {
   height: 56px
   background-color: #00C0C0
   font-size: 2em
-icon
+#title
   position: absolute
   width: 117px
   height: 33px

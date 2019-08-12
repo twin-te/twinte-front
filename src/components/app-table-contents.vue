@@ -48,7 +48,7 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
 
 @Component({
   components: {
-    ripple: () => import("~/components/ui/ripple.vue")
+    ripple: () => import("~/components/ui-ripple.vue")
   }
 })
 export default class Index extends Vue {

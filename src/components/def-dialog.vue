@@ -72,14 +72,15 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
 @Component
 export default class Index extends Vue {
   //TODO vuexで扱うべき
-  @Prop({ type: Boolean, default: false, required: true })
-  popup!: Boolean;
-  @Prop({ type: Object, default: { "number": "", "name": "", "season": "", "time": "", "classroom": "", "teacher": "" }, required: true })
+  @Prop({ default: false, required: true })
+  popup!: boolean;
+  @Prop({ default: false, required: true })
   looking!: any;
 
   public atmnb: string[] = ["出席", "欠席", "遅刻"];
   public count: number[] = [2, 2, 2];
 }
+
 </script>
 
 <style lang="sass" scoped>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <toolbar />
-    <t-navigation :drawer="drawer" />
-    <t-dialog :popup="popup" :looking="looking"> </t-dialog>
+    <def-toolbar />
+    <def-navigation :drawer="drawer" />
+    <def-dialog :popup="popup" :looking="looking" />
     <nuxt />
   </div>
 </template>
@@ -12,24 +12,24 @@ import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
 interface Table {
-  number: String;
-  name: String;
-  season: String;
-  time: String;
-  classroom: String;
-  teacher: String;
+  number: string;
+  name: string;
+  season: string;
+  time: string;
+  classroom: string;
+  teacher: string;
 }
 @Component({
   components: {
-    toolbar: () => import("~/components/layouts/toolbar.vue"),
-    "t-navigation": () => import("~/components/layouts/nav.vue"),
-    "t-dialog": () => import("~/components/layouts/dialog.vue")
+    "def-toolbar": () => import("~/components/def-toolbar.vue"),
+    "def-navigation": () => import("~/components/def-nav.vue"),
+    "def-dialog": () => import("~/components/def-dialog.vue")
   }
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  popup: Boolean = false;
+  popup: boolean = false;
   //TODO ボタン押したときに$emitでいい感じに同期
   looking: Table = {
     number: "1A18011",
