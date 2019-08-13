@@ -1,6 +1,7 @@
+/** -> "../pages/index.vue" */
 <template>
   <section>
-    <div id="notation">秋A</div>
+    <div id="notation"><span @click="prevModule">く</span>{{ module }}<span @click="nextModule">く</span></div>
     <div id="week">
       <div id="day"><app-day /></div>
       <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
@@ -19,6 +20,20 @@ import * as Vuex from "vuex";
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
+
+  prevModule() {
+    this.$store.commit("table/prevModule");
+  }
+
+  nextModule() {
+    this.$store.commit("table/nextModule");
+  }
+
+  get module() : string {
+    const num: number = this.$store.getters["table/moduleNum"];
+    const moduleListJp: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
+    return moduleListJp[num];
+  }
 
   week: string[] = ["月", "火", "水", "木", "金"];
 }

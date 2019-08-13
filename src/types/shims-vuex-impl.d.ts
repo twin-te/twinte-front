@@ -16,12 +16,14 @@ declare module 'vuex' {
 
 import "vuex";
 import * as Visible from "../store/visible/type";
+import * as Table from "../store/table/type";
 
 declare module "vuex" {
   type RootState = {
-    VIsible: Visible.S;
+    Visible: Visible.S;
+    Table: Table.S;
   };
-  type RootGetters = Visible.RG;
-  type RootMutations = Visible.RM;
-  type RootActions = Visible.RA;
+  type RootGetters = Visible.RG & Table.RG;
+  type RootMutations = Visible.RM & Table.RM;
+  type RootActions = Visible.RA & Table.RA;
 }
