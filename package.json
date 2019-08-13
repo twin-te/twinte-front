@@ -10,7 +10,8 @@
     "dev": "nuxt",
     "format": "prettier --write \"{,!(node_modules|dist|build|coverage|.nuxt|.serverless)/**/}*.{ts,json,vue,md}\"",
     "lint": "eslint ./ --ext .ts --ext .vue --ignore-path .gitignore",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "generate": "nuxt generate"
   },
   "devDependencies": {
     "@nuxt/typescript": "^2.6.3",
