@@ -1,3 +1,5 @@
+/** -> "../pages/index.vue" */
+/** -> "..//.vue" */
 <template>
   <div class="main" @click="onClick" :disabled="ripple">
     <transition

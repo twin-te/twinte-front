@@ -1,3 +1,4 @@
+/** -> "app-table-header.vue" */
 <template>
   <!-- 時間割の日時 -->
   <div>

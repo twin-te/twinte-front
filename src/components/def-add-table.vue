@@ -1,3 +1,4 @@
+/** -> "../layouts/default.vue" */
 <template>
   <!-- 時間割の追加 -->
   <div :style="{ display: add ? '' : 'none' }">

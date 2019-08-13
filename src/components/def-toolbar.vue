@@ -1,3 +1,4 @@
+/** -> "../layouts/default.vue" */
 <template>
   <!-- 上につける緑のバー -->
   <div>
