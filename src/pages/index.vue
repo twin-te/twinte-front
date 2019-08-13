@@ -1,7 +1,8 @@
 <template>
   <section>
-    <app-header-table />
-    <app-time-table :semester="semester" />
+    <app-time-table-header />
+    <app-time-table />
+    <app-dialog />
   </section>
 </template>
 
@@ -10,12 +11,12 @@ import { Component, Vue } from "nuxt-property-decorator";
 
 @Component({
   components: {
-    AppHeaderTable: () => import("~/components/app-table-header.vue"),
-    AppTimeTable: () => import("~/components/app-table-contents.vue")
+    AppTimeTableHeader: () => import("~/components/app-table-header.vue"),
+    AppTimeTable: () => import("~/components/app-table-contents.vue"),
+    AppDialog: () => import("~/components/app-dialog.vue")
   }
 })
 export default class Index extends Vue {
-  semester: number = 0;
 }
 </script>
 
