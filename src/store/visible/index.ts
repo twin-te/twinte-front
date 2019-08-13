@@ -44,6 +44,6 @@ export const mutations: Mutations<S, M> = {
  * asyncSetCount(ctx, payload) {
  *   ctx.commit('setCount', { amount: payload.amount })
  * }
- * @literal => `async${Verb}`
+ * @literal `async${Verb}`
  */
 export const actions: Actions<S, A, G, M> = {};
