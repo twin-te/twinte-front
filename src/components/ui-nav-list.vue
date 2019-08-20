@@ -1,4 +1,4 @@
-/** -> "../components/def-nav.vue" */
+/** -> "./def-nav.vue" */
 <template>
   <!-- nav内で利用するリスト一つ一つ -->
   <div>

@@ -1,5 +1,6 @@
 /** -> "../pages/index.vue" */
 /** -> "..//.vue" */
+/**TODO directiveで実装したい */
 <template>
   <div class="main" @click="onClick" :disabled="ripple">
     <transition
