@@ -5,7 +5,7 @@
     <!-- 時限 -->
     <div class="column">
       <div
-        class="time"
+        id="time"
         v-for="i in 6"
         :key="i"
         :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
@@ -20,19 +20,14 @@
         <div class="row">
           <div v-for="n in 5" :key="n">
             <ripple @click="chDialog">
-              <div
-                class="subject"
-                :style="{
-                  background: getColor(data[module][n - 1][m - 1].number)
-                }"
-              >
-                <div style="font-size: 9">
+              <div id="subject" :style="{background: getColor(data[module][n - 1][m - 1].number)}" >
+                <div style="font-size: 9px">
                   {{ data[module][n - 1][m - 1].number }}
                 </div>
-                <div style="font-size: 9">
+                <div style="font-size: 8px">
                   {{ data[module][n - 1][m - 1].name }}
                 </div>
-                <div style="font-size: 9">
+                <div style="font-size: 9px">
                   {{ data[module][n - 1][m - 1].classroom }}
                 </div>
               </div>
@@ -144,11 +139,8 @@ export default class Index extends Vue {
 
 <style lang="sass" scoped>
 section
-  position: absolute
-  width: 327px
-  height: 516px
-  left: 14px
-  top: 116px
+  margin-left: 10px
+  margin-right: 10px
   padding: 10px
   box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
   border-radius: 10px
@@ -160,7 +152,7 @@ section
   flex-direction: column
 div
   color: #555555
-.time
+#time
   width: 42px
   height: 73px
   font-style: normal
@@ -170,7 +162,7 @@ div
   text-align: center
   color: #9A9A9A
   padding-top: 13px
-.subject
+#subject
   width: 47px
   height: 76px
   word-break: break-all
