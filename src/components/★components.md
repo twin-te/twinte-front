@@ -1,6 +1,6 @@
 # components
 
-## 命名
+## 命名規則
 
 - app-{}: 一度のみ利用
 - def-{}: default.vueで利用
