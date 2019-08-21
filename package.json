@@ -24,6 +24,9 @@
     "vue-eslint-parser": "^6.0.4"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.137",
+    "axios": "^0.19.0",
+    "lodash": "^4.17.15",
     "nuxt": "^2.8.1",
     "nuxt-property-decorator": "^2.3.0",
     "ts-node": "^8.3.0"
