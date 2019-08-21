@@ -18,34 +18,34 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from "nuxt-property-decorator";
-  import * as Vuex from "vuex";
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
-  @Component({
-    components: {
-      "ui-navlist": () => import("~/components/ui-nav-list.vue")
-    }
-  })
-  export default class Index extends Vue {
-    $store!: Vuex.ExStore;
-
-    get drawer(): boolean {
-      return this.$store.getters["visible/drawer"];
-    }
-
-    chDrawer(): void {
-      this.$store.commit("visible/chDrawer", { bool: false });
-    }
-
-    list: any = [
-      { name: "ホームへ戻る" },
-      { name: "使い方" },
-      { name: "About" },
-      { name: "表示設定" },
-      { name: "時間割の共有" },
-      { name: "時間割データの消去" }
-    ];
+@Component({
+  components: {
+    "ui-navlist": () => import("~/components/ui-nav-list.vue")
   }
+})
+export default class Index extends Vue {
+  $store!: Vuex.ExStore;
+
+  get drawer(): boolean {
+    return this.$store.getters["visible/drawer"];
+  }
+
+  chDrawer(): void {
+    this.$store.commit("visible/chDrawer", { bool: false });
+  }
+
+  list: any = [
+    { name: "ホームへ戻る" },
+    { name: "使い方" },
+    { name: "About" },
+    { name: "表示設定" },
+    { name: "時間割の共有" },
+    { name: "時間割データの消去" }
+  ];
+}
 </script>
 
 <style lang="sass" scoped>

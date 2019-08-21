@@ -15,31 +15,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component({
   components: {
-    AppDay: () => import('~/components/app-day.vue'),
-  },
+    AppDay: () => import("~/components/app-day.vue")
+  }
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
-  week: string[] = ['月', '火', '水', '木', '金']
+  week: string[] = ["月", "火", "水", "木", "金"];
 
   prevModule() {
-    this.$store.commit('table/prevModule')
+    this.$store.commit("table/prevModule");
   }
 
   nextModule() {
-    this.$store.commit('table/nextModule')
+    this.$store.commit("table/nextModule");
   }
 
   get module(): string {
-    const num: number = this.$store.getters['table/moduleNum']
-    const moduleListJp: string[] = ['春A', '春B', '春C', '秋A', '秋B', '秋C']
-    return moduleListJp[num]
+    const num: number = this.$store.getters["table/moduleNum"];
+    const moduleListJp: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
+    return moduleListJp[num];
   }
 }
 </script>
@@ -51,17 +51,19 @@ export default class Index extends Vue {
   font-style: normal
   font-weight: 500
   font-size: 16px
-  line-height: 16px
+  line-height: 24px
+  height: 24px
   color: #9A9A9A
   justify-content: space-evenly
+  margin-top: 8px
 #week
   display: flex
   justify-content: space-between
   width: calc(100vw - 20px)
   height: 27px
-  margin-left: 10px
-  margin-right: 10px
   line-height: 27px
+  margin-left: 14px
+  margin-right: 14px
   font-family: Noto Sans JP
   font-style: normal
   font-weight: 500
@@ -69,5 +71,5 @@ export default class Index extends Vue {
   color: #9A9A9A
 #day
   position: relative
-  top: -16px
+  top: -28px
 </style>

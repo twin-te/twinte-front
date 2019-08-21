@@ -20,8 +20,8 @@
         </svg>
       </div>
       <div id="title" class="my-2">Twin:te</div>
-      <div id="add" class="my-2 svg-button" @click="chAdder()">
-      <!-- + -->
+      <div id="add" class="my-2 svg-button" @click="chAdd()">
+        <!-- + -->
         <svg
           id="i_add"
           width="24"
@@ -41,12 +41,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
   /**
    * chDrawer
@@ -55,9 +55,11 @@ export default class Index extends Vue {
    * @description +
    */
   chDrawer() {
-    this.$store.commit('visible/chDrawer', { bool: true })
+    this.$store.commit("visible/chDrawer", { bool: true });
   }
-  chAdder() {}
+  chAdd() {
+    this.$store.commit("visible/chAdd", { bool: true });
+  }
 }
 </script>
 
