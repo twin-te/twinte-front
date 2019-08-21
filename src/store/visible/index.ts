@@ -3,7 +3,9 @@ import { S, G, M, A } from "./type";
 // ______________________________________________________
 //
 export const state = (): S => ({
-  drawer: false
+  drawer: false,
+  detail: false,
+  add: false
 });
 // ______________________________________________________
 //
@@ -13,6 +15,12 @@ export const state = (): S => ({
 export const getters: Getters<S, G> = {
   drawer(state) {
     return state.drawer;
+  },
+  detail(state) {
+    return state.detail;
+  },
+  add(state) {
+    return state.add;
   }
 };
 // ______________________________________________________
@@ -26,11 +34,13 @@ export const mutations: Mutations<S, M> = {
    * @param payload 任意 つけなかったら切り替え
    */
   chDrawer(state, payload) {
-    if (payload.bool === null) {
-      state.drawer = !state.drawer;
-    } else {
-      state.drawer = payload.bool;
-    }
+    state.drawer = payload.bool;
+  },
+  chDetail(state, payload) {
+    state.detail = payload.bool;
+  },
+  chAdd(state, payload) {
+    state.add = payload.bool;
   }
 };
 // ______________________________________________________
@@ -41,6 +51,6 @@ export const mutations: Mutations<S, M> = {
  * asyncSetCount(ctx, payload) {
  *   ctx.commit('setCount', { amount: payload.amount })
  * }
- * @literal => `async${Verb}`
+ * @literal `async${Verb}`
  */
 export const actions: Actions<S, A, G, M> = {};

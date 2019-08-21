@@ -1,12 +1,17 @@
 import NuxtConfiguration from "@nuxt/config";
 
 const config: NuxtConfiguration = {
+  mode: "universal",
   srcDir: "src/",
   head: {
     titleTemplate: "Twinte",
+    htmlAttrs: {
+      lang: "ja"
+    },
     meta: [
       { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" }
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "robots", content: "noindex"}
     ],
     link: [
       {

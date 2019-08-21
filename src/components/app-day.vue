@@ -1,3 +1,4 @@
+/** -> "app-table-header.vue" */
 <template>
   <!-- 時間割の日時 -->
   <div>
@@ -74,7 +75,7 @@ import { Component, Vue } from "nuxt-property-decorator";
   }
 })
 export default class Index extends Vue {
-  public today: {
+  today: {
     month: number;
     day: number;
     week: string;
