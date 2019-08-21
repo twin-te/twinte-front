@@ -2,30 +2,35 @@
 //
 export interface S {
   drawer: boolean;
-  dialog: boolean;
+  detail: boolean;
+  add: boolean;
 }
 // getters______________________________________________________
 //
 export interface G {
   drawer: boolean;
-  dialog: boolean;
+  detail: boolean;
+  add: boolean;
 }
 // 'visible/double': G['double']
 export interface RG {
   "visible/drawer": G["drawer"];
-  "visible/dialog": G["dialog"];
+  "visible/detail": G["detail"];
+  "visible/add": G["add"];
 }
 // mutations
 //
 // setCount: { amount: number }
 export interface M {
   chDrawer: { bool: boolean };
-  chDialog: { bool: boolean };
+  chDetail: { bool: boolean };
+  chAdd: { bool: boolean };
 }
 // 'visible/setCount': M['setCount']
 export interface RM {
   "visible/chDrawer": M["chDrawer"];
-  "visible/chDialog": M["chDialog"];
+  "visible/chDetail": M["chDetail"];
+  "visible/chAdd": M["chAdd"];
 }
 // actions______________________________________________________
 //

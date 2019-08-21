@@ -4,7 +4,8 @@ import { S, G, M, A } from "./type";
 //
 export const state = (): S => ({
   drawer: false,
-  dialog: false
+  detail: false,
+  add: false
 });
 // ______________________________________________________
 //
@@ -15,8 +16,11 @@ export const getters: Getters<S, G> = {
   drawer(state) {
     return state.drawer;
   },
-  dialog(state) {
-    return state.dialog;
+  detail(state) {
+    return state.detail;
+  },
+  add(state) {
+    return state.add;
   }
 };
 // ______________________________________________________
@@ -32,8 +36,11 @@ export const mutations: Mutations<S, M> = {
   chDrawer(state, payload) {
     state.drawer = payload.bool;
   },
-  chDialog(state, payload) {
-    state.dialog = payload.bool;
+  chDetail(state, payload) {
+    state.detail = payload.bool;
+  },
+  chAdd(state, payload) {
+    state.add = payload.bool;
   }
 };
 // ______________________________________________________

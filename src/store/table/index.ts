@@ -12,7 +12,6 @@ export const state = (): S => ({
  * stateを利用して作られる,vueファイル内で使う値
  */
 export const getters: Getters<S, G> = {
-
   /**
    * @description 現在の学期を返す
    */
@@ -42,7 +41,6 @@ export const getters: Getters<S, G> = {
   moduleNum(state) {
     return state.moduleList.indexOf(state.module);
   }
-
 };
 // ______________________________________________________
 //
@@ -50,7 +48,6 @@ export const getters: Getters<S, G> = {
  * 同期的なstate値の更新
  */
 export const mutations: Mutations<S, M> = {
-
   /**
    * @description 前の学期を返す
    * @param state なし
@@ -70,7 +67,6 @@ export const mutations: Mutations<S, M> = {
     const num: number = state.moduleList.indexOf(state.module) + 1;
     state.module = num === 6 ? "SpringA" : state.moduleList[num];
   }
-
 };
 // ______________________________________________________
 //
