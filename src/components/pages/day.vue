@@ -82,5 +82,4 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-</style>
+<style lang="sass" scoped></style>
