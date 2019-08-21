@@ -7,7 +7,7 @@
         <article style="padding: 25px">
           <!-- 教科名 -->
           <!-- <x> -->
-          <div class="svg-button" @click="chDialog">
+          <div class="svg-button" @click="chDetail()">
             <svg
               id="close"
               width="16"
@@ -173,30 +173,36 @@
 
     <!-- 全体を暗くする -->
     <transition name="fade">
-      <nav class="back" @click="chDialog()" v-if="dialog"></nav>
+      <nav class="back" @click="chDetail()" v-if="dialog"></nav>
     </transition>
   </section>
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Vue } from "nuxt-property-decorator";
 
-  @Component
-  export default class Index extends Vue {
+@Component
+export default class Index extends Vue {
+  //TODO implement these in store
+  table: any = {
+    number: "1A18011",
+    name: "ネットワーク社会を支える情報技術入門I",
+    season: "春AB",
+    time: "月1",
+    classroom: "3A306",
+    teacher: "朴 泰祐"
+  };
+  atmnb: string[] = ["出席", "欠席", "遅刻"];
+  count: number[] = [2, 2, 2];
 
-    //TODO implement these in store
-    table: any = { number: "1A18011", name: "ネットワーク社会を支える情報技術入門I", season: "春AB", time: "月1", classroom: "3A306", teacher: "朴 泰祐" };
-    atmnb: string[] = ["出席", "欠席", "遅刻"];
-    count: number[] = [2, 2, 2];
-
-    get dialog(): boolean {
-      return this.$store.getters["visible/dialog"];
-    }
-
-    chDialog(): void {
-      this.$store.commit("visible/chDialog", { bool: false });
-    }
+  get dialog(): boolean {
+    return this.$store.getters["visible/detail"];
   }
+
+  chDetail(): void {
+    this.$store.commit("visible/chDetail", { bool: false });
+  }
+}
 </script>
 
 <style lang="sass" scoped>
@@ -263,5 +269,4 @@
   transition: all .3s ease
 .fade-enter, .fade-leave-to
   opacity: 0
-
 </style>

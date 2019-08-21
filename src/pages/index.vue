@@ -13,11 +13,10 @@ import { Component, Vue } from "nuxt-property-decorator";
   components: {
     AppTimeTableHeader: () => import("~/components/app-table-header.vue"),
     AppTimeTable: () => import("~/components/app-table-contents.vue"),
-    AppDialog: () => import("~/components/app-dialog.vue")
+    AppDialog: () => import("~/components/app-dialog-detail.vue")
   }
 })
-export default class Index extends Vue {
-}
+export default class Index extends Vue {}
 </script>
 
 <style lang="sass" scoped></style>
