@@ -19,23 +19,28 @@
       <div v-for="m in 6" :key="m">
         <div class="row">
           <div v-for="n in 5" :key="n">
-            <ripple @click="chDetail">
+            <ripple @click="chDetail(m, n)">
               <transition name="fade">
                 <div
                   id="subject"
+                  v-if="table === null || table[module] === undefined || table[module][n - 1][m - 1].number === 'undefined'"
+                ></div>
+                <div
+                  id="subject"
                   :style="{
-                    background: getColor(data[module][n - 1][m - 1].number)
+                    background: getColor(table[module][n - 1][m - 1].number)
                   }"
+                  v-else
                 >
                   <div>
                     <div style="font-size: 9px">
-                      {{ data[module][n - 1][m - 1].number | if(data[module] === null) return "" }}
+                      {{ table[module][n - 1][m - 1].number }}
                     </div>
                     <div style="font-size: 8px">
-                      {{ data[module][n - 1][m - 1].name | if(data[module] === null) return "" }}
+                      {{ table[module][n - 1][m - 1].name }}
                     </div>
                     <div style="font-size: 9px">
-                      {{ data[module][n - 1][m - 1].classroom | if(data[module] === null) return "" }}
+                      {{ table[module][n - 1][m - 1].classroom }}
                     </div>
                   </div>
                 </div>
@@ -60,19 +65,19 @@ import * as Vuex from "vuex";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  chDetail(): void {
-    //TODO nとmを取り出す
+  chDetail(m: number, n: number): void {
+    console.log(m, n); //TODO
     this.$store.commit("visible/chDetail", { bool: true });
   }
 
   /** data() */
 
-  get data() {
+  get table() {
     return this.$store.getters["old_api/data"];
   }
 
   /** 現在の学期 */
-  get module() : number {
+  get module() {
     return this.$store.getters["table/moduleNum"];
   }
 
@@ -82,7 +87,7 @@ export default class Index extends Vue {
    * @param 授業番号
    */
   getColor(number: string): string {
-    const char: string = number.split("")[0];
+    const char = number.split("")[0];
     switch (char) {
       case "A": return "#DEFFF9";
       case "B": return "#DEFFF9";
@@ -96,7 +101,7 @@ export default class Index extends Vue {
       case "1": return "#FFEEF7";
       case "2": return "#F0EBFF";
       case "3": return "#FFFCEB";
-      default:  return "";
+      default : return "";
     }
   }
 }

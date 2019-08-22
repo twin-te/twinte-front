@@ -1,4 +1,4 @@
-interface Table {
+export interface Table {
   classroom: string;
   name: string;
   number: string;
@@ -11,13 +11,13 @@ interface Table {
 // state______________________________________________________
 //
 export interface S {
-  data: Table[];
+  data: Table[][] | null;
   list_number: string[][];
 }
 // getters______________________________________________________
 //
 export interface G {
-  data: Table[] | null;
+  data: Table[][] | null;
   list_number: string[][] | null;
 }
 export interface RG {
@@ -27,8 +27,8 @@ export interface RG {
 // mutations
 //
 export interface M {
-  updateTable: { module: string, data: Table };
-  pushNumber: { module: string, data: string[] };
+  updateTable: { module: string; data: Table[] };
+  pushNumber: { module: string; data: string[] };
 }
 export interface RM {
   "old_api/updateTable": M["updateTable"];
@@ -37,7 +37,7 @@ export interface RM {
 // actions______________________________________________________
 //
 export interface A {
-  asyncNumber: { number: string[], module: string };
+  asyncNumber: { number: string[]; module: string };
 }
 export interface RA {
   "old_api/asyncNumber": A["asyncNumber"];

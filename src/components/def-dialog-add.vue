@@ -21,7 +21,7 @@
           </div>
           <section>
             <form>
-              <input type="text" class="input-box" />
+              <textarea v-model="numbers" type="text" class="input-box" />
             </form>
           </section>
           <section
@@ -51,6 +51,7 @@ export default class Index extends Vue {
   $store!: Vuex.ExStore;
   // data______________________________________________________
   //
+  numbers: string = "";
   // props______________________________________________________
   //
   // computed______________________________________________________
@@ -64,7 +65,12 @@ export default class Index extends Vue {
     this.$store.commit("visible/chAdd", { bool: false });
   }
   async asyncNumber() {
-    this.$store.dispatch("old_api/asyncNumber", {number: ["GB11514"], module: "akiC"});
+    const moduleNum = this.$store.getters["table/moduleNum"];
+    const moduleList: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    this.$store.dispatch("old_api/asyncNumber", {
+      number: [this.numbers],
+      module: moduleList[moduleNum]
+    });
   }
 }
 </script>
