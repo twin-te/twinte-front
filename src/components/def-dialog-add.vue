@@ -21,7 +21,7 @@
           </div>
           <section>
             <form>
-              <textarea v-model="numbers" type="text" class="input-box" />
+              <textarea @keydown="findClassByName()" v-model="numbers" type="text" class="input-box" />
             </form>
           </section>
           <section
@@ -43,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
+import axios from 'axios';
 
 @Component({
   components: {}
@@ -52,6 +53,7 @@ export default class Index extends Vue {
   // data______________________________________________________
   //
   numbers: string = "";
+  result: {} = {};
   // props______________________________________________________
   //
   // computed______________________________________________________
@@ -63,6 +65,18 @@ export default class Index extends Vue {
   //
   chAdd() {
     this.$store.commit("visible/chAdd", { bool: false });
+  }
+  async findClassByName() {
+    if (this.numbers.length < 2) {
+      return;
+    }
+    await axios.post('https://twinte.net/api', {
+      "name": this.numbers
+    }).then((result) => {
+      this.result = result.data;
+    }).catch((err) => {
+      this.result = err;
+    });
   }
   async asyncNumber() {
     const moduleNum = this.$store.getters["table/moduleNum"];
