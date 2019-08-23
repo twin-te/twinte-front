@@ -1,69 +1,17 @@
 /** -> "app-table-header.vue" */
 <template>
   <!-- 時間割の日時 -->
-  <div>
-    <svg
-      width="57"
-      height="56"
-      viewBox="0 0 57 56"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g filter="url(#filter0_d)">
-        <rect
-          x="2"
-          y="2.98239"
-          width="49"
-          height="47.0176"
-          rx="5"
-          fill="white"
-        />
-      </g>
-      <rect x="2" y="2" width="49" height="13.7535" fill="#00C0C0" />
-      <text x="17" y="12.5" font-size="9" fill="#FCFCFC">
-        {{ today.month }}月
-      </text>
-      <text x="20.5" y="33" font-size="18" fill="#9A9A9A">{{ today.day }}</text>
-      <text x="18.5" y="45" font-size="9" fill="#9A9A9A">
-        ({{ today.week }})
-      </text>
-      <defs>
-        <filter
-          id="filter0_d"
-          x="0"
-          y="0.982389"
-          width="57"
-          height="55.0176"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          />
-          <feOffset dx="2" dy="2" />
-          <feGaussianBlur stdDeviation="2" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.13 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_dropShadow"
-            result="shape"
-          />
-        </filter>
-      </defs>
-    </svg>
+  <section id="day">
+  <div id="cal-month">
+      {{ today.month }}月
   </div>
+  <div id="cal-day">
+      {{ today.day }}
+  </div>
+  <div id="cal-week">
+      ({{ today.week }})
+  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -83,4 +31,32 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+#day
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25)
+  border-radius: 5px
+  height: 50px
+  width: 50px
+#cal-month
+  background: #00C0C0
+  color: #FCFCFC
+  font-size: 9px
+  text-align: center
+  width: 50px
+  height: 14px
+  line-height: 14px
+#cal-day
+  background: #FCFCFC
+  color: #9A9A9A
+  font-size: 18px
+  text-align: center
+  width: 50px
+  line-height: 20px
+#cal-week
+  background: #FCFCFC
+  color: #9A9A9A
+  font-size: 9px
+  text-align: center
+  width: 50px
+  line-height: 10px
+</style>
