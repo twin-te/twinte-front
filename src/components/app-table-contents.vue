@@ -1,9 +1,8 @@
 /** -> "../pages/index.vue" */
 <template>
-  <!-- tableタグ内で利用 時間割データの一部を受け取る -->
-  <section class="row">
+  <content class="row">
     <!-- 時限 -->
-    <div class="column">
+    <section class="column">
       <div
         id="time"
         v-for="i in 6"
@@ -12,96 +11,89 @@
       >
         {{ i }}
       </div>
-    </div>
+    </section>
 
     <!-- 授業 -->
-    <div class="column">
-      <div v-for="m in 6" :key="m">
-        <div class="row">
-          <div v-for="n in 5" :key="n">
-            <ripple @click="chDetail(m, n)">
-              <transition name="fade">
-                <div
-                  id="subject"
-                  v-if="table === null || table[module] === undefined || table[module][n - 1][m - 1].number === 'undefined'"
-                ></div>
-                <div
-                  id="subject"
-                  :style="{
-                    background: getColor(table[module][n - 1][m - 1].number)
-                  }"
-                  v-else
-                >
-                  <div>
-                    <div style="font-size: 9px">
-                      {{ table[module][n - 1][m - 1].number }}
-                    </div>
-                    <div style="font-size: 8px">
-                      {{ table[module][n - 1][m - 1].name }}
-                    </div>
-                    <div style="font-size: 9px">
-                      {{ table[module][n - 1][m - 1].classroom }}
-                    </div>
-                  </div>
-                </div>
-              </transition>
-            </ripple>
+    <section class="column">
+      <div v-for="y in 6" :key="y" class="row">
+      <ripple v-for="x in 5" :key="x">
+        <div
+          id="subject"
+          @click="chAdd()"
+          v-if="
+            table === null ||
+              table[module] === undefined ||
+              table[module][x - 1][y - 1].number === 'undefined'
+          "
+        ></div>
+        <div
+          id="subject"
+          :style="{
+            background: getColor(table[module][x - 1][y - 1].number),
+          }"
+          @click="chDetail(x, y)"
+          v-else
+        >
+          <div style="font-size: 9px">
+            {{ table[module][x - 1][y - 1].number }}
+          </div>
+          <div style="font-size: 8px">
+            {{ table[module][x - 1][y - 1].name }}
+          </div>
+          <div style="font-size: 9px">
+            {{ table[module][x - 1][y - 1].classroom }}
           </div>
         </div>
+      </ripple>
       </div>
-    </div>
-  </section>
+    </section>
+  </content>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
 
 @Component({
   components: {
-    ripple: () => import("~/components/ui-ripple.vue")
-  }
+    ripple: () => import('~/components/ui-ripple.vue'),
+  },
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
-  chDetail(m: number, n: number): void {
-    console.log(m, n); //TODO
-    this.$store.commit("visible/chDetail", { bool: true });
+  chDetail(x: number, y: number): void {
+    console.log(x, y) //TODO
+    this.$store.commit('visible/chDetail', { bool: true })
   }
-
-  /** data() */
+  chAdd() {
+    this.$store.commit('visible/chAdd', { bool: true })
+  }
 
   get table() {
-    return this.$store.getters["old_api/data"];
+    return this.$store.getters['old_api/data']
   }
-
-  /** 現在の学期 */
   get module() {
-    return this.$store.getters["table/moduleNum"];
+    return this.$store.getters['table/moduleNum']
   }
 
-  /**
-   * getColor
-   * @description その授業として適切な色を返す
-   * @param 授業番号
-   */
+  /** 授業に応じたテーマ色を返す */
   getColor(number: string): string {
-    const char = number.split("")[0];
+    const char = number.split('')[0]
     switch (char) {
-      case "A": return "#DEFFF9";
-      case "B": return "#DEFFF9";
-      case "C": return "#DEFFF9";
-      case "E": return "#DEFFF9";
-      case "F": return "#DEFFF9";
-      case "G": return "#DEFFF9";
-      case "H": return "#DEFFF9";
-      case "W": return "#DEFFF9";
-      case "Y": return "#DEFFF9";
-      case "1": return "#FFEEF7";
-      case "2": return "#F0EBFF";
-      case "3": return "#FFFCEB";
-      default : return "";
+      case 'A': return '#DEFFF9'
+      case 'B': return '#DEFFF9'
+      case 'C': return '#DEFFF9'
+      case 'E': return '#DEFFF9'
+      case 'F': return '#DEFFF9'
+      case 'G': return '#DEFFF9'
+      case 'H': return '#DEFFF9'
+      case 'W': return '#DEFFF9'
+      case 'Y': return '#DEFFF9'
+      case '1': return '#FFEEF7'
+      case '2': return '#F0EBFF'
+      case '3': return '#FFFCEB'
+      default : return ''
     }
   }
 }
@@ -111,7 +103,7 @@ export default class Index extends Vue {
 $height: calc((100vh - 43px - 58px - 40px) / 6)
 $width: calc((100vw - 48px - 13vw) / 5)
 
-section
+content
   margin-left: 14px
   margin-right: 14px
   padding: 10px
@@ -142,10 +134,4 @@ div
   font-weight: 600
   font-size: 9px
   line-height: 12px
-
-/** animation */
-.fade-enter-active, .fade-leave-active
-  transition: opacity .5s
-.fade-enter, .fade-leave-to
-  opacity: 0
 </style>
