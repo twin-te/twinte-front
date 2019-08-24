@@ -17,17 +17,19 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 
-@Component({
-  async asyncData() {
-    return {};
-  }
-})
+@Component({})
 export default class Index extends Vue {
-  today: {
-    month: number;
-    day: number;
-    week: string;
-  } = { month: 10, day: 1, week: "火" };
+  today: {month: number | null, day: number | null, week: string | null} = { month: null, day: null, week: null };
+
+  mounted() {
+    const date = new Date();
+    const weeks = ["日", "月", "火", "水", "木", "金", "土"];
+    this.today = {
+      month: date.getMonth(),
+      day: date.getDate(),
+      week: weeks[date.getDay()]
+    }
+  }
 }
 </script>
 
