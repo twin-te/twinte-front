@@ -25,7 +25,7 @@ export default class Index extends Vue {
     const date = new Date();
     const weeks = ["日", "月", "火", "水", "木", "金", "土"];
     this.today = {
-      month: date.getMonth(),
+      month: date.getMonth() + 1,
       day: date.getDate(),
       week: weeks[date.getDay()]
     }
