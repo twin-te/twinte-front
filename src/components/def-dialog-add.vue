@@ -3,30 +3,18 @@
     <transition name="bound">
       <nav class="main" v-if="add">
         <article style="padding: 25px">
-          <!-- <x> -->
-          <div class="svg-button" @click="chAdd()">
-            <svg
-              id="close"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z"
-                fill="#9A9A9A"
-              />
-            </svg>
-          </div>
+          <div class="svg-button material-icons" @click="chAdd()">close</div>
           <section>
             <form>
-              <textarea @keydown="findClassByName()" v-model="numbers" type="text" class="input-box" />
+              <textarea
+                @keydown="findClassByName()"
+                v-model="numbers"
+                type="text"
+                class="btn form"
+              />
             </form>
           </section>
-          <section
-            style="width: 100%; height: 40px; background: #00C0C0; border-radius: 7px; margin-bottom: 15px; position: relative"
-          >
+          <section class="btn">
             <span class="center" @click="asyncNumber()">時間割に追加</span>
           </section>
         </article>
@@ -41,56 +29,73 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
-import axios from 'axios';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import axios from 'axios'
 
 @Component({
-  components: {}
+  components: {},
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
   // data______________________________________________________
   //
-  numbers: string = "";
-  result: {} = {};
+  numbers: string = ''
+  result: {} = {}
   // props______________________________________________________
   //
   // computed______________________________________________________
   //
   get add() {
-    return this.$store.getters["visible/add"];
+    return this.$store.getters['visible/add']
   }
   // method______________________________________________________
   //
   chAdd() {
-    this.$store.commit("visible/chAdd", { bool: false });
+    this.$store.commit('visible/chAdd', { bool: false })
   }
   async findClassByName() {
     if (this.numbers.length < 2) {
-      return;
+      return
     }
-    await axios.post('https://twinte.net/api', {
-      "name": this.numbers
-    }).then((result) => {
-      this.result = result.data;
-    }).catch((err) => {
-      this.result = err;
-    });
+    await axios
+      .post('https://twinte.net/api', {
+        name: this.numbers,
+      })
+      .then((result) => {
+        this.result = result.data
+      })
+      .catch((err) => {
+        this.result = err
+      })
   }
   async asyncNumber() {
-    const moduleNum = this.$store.getters["table/moduleNum"];
-    const moduleList: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
-    this.$store.dispatch("old_api/asyncNumber", {
+    const moduleNum = this.$store.getters['table/moduleNum']
+    const moduleList: string[] = [
+      'haruA',
+      'haruB',
+      'haruC',
+      'akiA',
+      'akiB',
+      'akiC',
+    ]
+    await this.$store.dispatch('old_api/asyncNumber', {
       number: [this.numbers],
-      module: moduleList[moduleNum]
-    });
+      module: moduleList[moduleNum],
+    })
   }
 }
 </script>
 
 <style lang="sass" scoped>
 /** 中央寄せ */
+.btn
+  width: 100%
+  height: 40px
+  line-height: 40px
+  background: #00C0C0
+  border-radius: 0.5rem
+  position: relative
 .center
   position: absolute
   top: 50%
@@ -111,7 +116,7 @@ export default class Index extends Vue {
   height: calc(100vh - 128px)
   background: #FFFFFF
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2)
-  border-radius: 10px
+  border-radius: 0.6rem
   z-index: 6
 .back
   position: absolute
@@ -137,17 +142,19 @@ export default class Index extends Vue {
     outline: none
     transition: transform 0.3s liner
 
-.input-box
-  margin-top: 14px
-  margin-bottom: 14px
-  width: 100%
-  font-size: 1.3em
-  font-family: Arial, sans-serif
-  color: #aaa
-  border: solid 1px #ccc
-  -webkit-border-radius: 3px
-  -moz-border-radius: 3px
-  border-radius: 3px
+.form
+  background-color: #edf2f7
+  -webkit-appearance: none
+     -moz-appearance: none
+          appearance: none
+  border-width: 2px
+  border-color: #edf2f7
+  color: #4a5568
+
+.form:focus
+  border-color: #9f7aea
+  outline: 0
+  background-color: #fff
 
 /** animation */
 .bound-enter-active, .bound-leave-active

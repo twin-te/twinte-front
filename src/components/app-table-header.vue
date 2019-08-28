@@ -3,9 +3,13 @@
   <!-- 高さ 43px -->
   <section>
     <div id="module">
-      <span @click="prevModule">く</span>
+      <span class="material-icons svg-button" @click="prevModule"
+        >chevron_left</span
+      >
       <span>{{ module }}</span>
-      <span @click="nextModule">く</span>
+      <span class="material-icons svg-button" @click="nextModule"
+        >chevron_right</span
+      >
     </div>
     <div id="week">
       <app-day id="day"></app-day>
@@ -15,31 +19,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
 
 @Component({
   components: {
-    AppDay: () => import("~/components/app-day.vue")
-  }
+    AppDay: () => import('~/components/app-day.vue'),
+  },
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
-  week: string[] = ["月", "火", "水", "木", "金"];
+  week: string[] = ['月', '火', '水', '木', '金']
 
   prevModule() {
-    this.$store.commit("table/prevModule");
+    this.$store.commit('table/prevModule')
   }
 
   nextModule() {
-    this.$store.commit("table/nextModule");
+    this.$store.commit('table/nextModule')
   }
 
   get module(): string {
-    const num: number = this.$store.getters["table/moduleNum"];
-    const moduleListJp: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
-    return moduleListJp[num];
+    const num: number = this.$store.getters['table/moduleNum']
+    const moduleListJp: string[] = ['春A', '春B', '春C', '秋A', '秋B', '秋C']
+    return moduleListJp[num]
   }
 }
 </script>
