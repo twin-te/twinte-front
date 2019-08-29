@@ -5,6 +5,7 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
+        <div class="material-icons close-btn">close</div>
         <div class="login-btn">ログイン</div>
         <section class="menu-contents-wrap">
           <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
@@ -80,6 +81,12 @@ export default class Index extends Vue {
   font-size: 130%;
   font-weight: 400;
   margin: 12% auto 0 7%;
+}
+.close-btn {
+  position: absolute;
+  color: #717171;
+  top: 4%;
+  right: 7%;
 }
 .login-btn {
   margin: 8% auto 0 auto;
