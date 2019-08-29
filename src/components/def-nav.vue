@@ -4,9 +4,14 @@
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
-        設定
-        <section class="menu-contents" v-for="l in list" :key="l.id">
-          <ui-navlist class="menu-content">{{ l.name }}</ui-navlist>
+        <h1 class="settings">設定</h1>
+        <div class="login-btn">ログイン</div>
+        <section class="menu-contents-wrap">
+          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
+            <span class="material-icons menuicon">{{ l.icon }}</span>
+            {{ l.name }}
+            <span class="material-icons">chevron_right</span>
+          </div>
         </section>
       </nav>
     </transition>
@@ -38,56 +43,85 @@ export default class Index extends Vue {
   }
 
   list: any = [
-    { name: 'ホームへ戻る', link: '/' },
-    { name: '使い方', link: '/tutorial' },
-    { name: 'About', link: '/about' },
-    { name: '表示設定', link: '/settings' },
-    { name: '時間割の共有', link: '/' },
-    { name: '時間割データの消去', link: '/' },
+    { icon: 'home', name: 'ホームへ戻る', link: '/' },
+    { icon: 'help', name: '使い方', link: '/tutorial' },
+    { icon: 'supervisor_account', name: 'About', link: '/about' },
+    { icon: 'view_quilt', name: '表示設定', link: '/settings' },
+    { icon: 'share', name: '時間割の共有', link: '/' },
+    { icon: 'delete_sweep', name: '時間割データの消去', link: '/' },
   ]
 }
 </script>
 
-<style lang="sass" scoped>
-.main
-  position: absolute
-  left: 0px
-  top: 0px
-  max-width: 289px
-  width: 75vw
-  height: 100vh
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25)
-  background: #fff
-  z-index: 6
-.back
-  position: absolute
-  left: 0px
-  top: 0px
-  width: 100vw
-  height: 100vh
-  background: rgba(100, 100, 100, 0.5)
-  z-index: 5
+<style lang="scss" scoped>
+.main {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  max-width: 289px;
+  width: 75vw;
+  height: 100vh;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+  background: #fff;
+  z-index: 6;
+}
+.back {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
+}
+.settings {
+  margin: 12% auto 0 4%;
+}
+.login-btn {
+  margin: 8% 24px 0 24px;
+  text-align: center;
+  line-height: 36px;
+  max-width: 241px;
+  width: 83%;
+  height: 36px;
+  background-color: #4380f8;
+  color: #ffffff;
+  border-radius: 6px;
+}
+.main .menu-contents-wrap {
+  margin: 4% 5% auto;
+  max-width: 267px;
+}
+.menu-content {
+  line-height: 65px;
+  margin: 0;
+  height: 65px;
+  width: 100%;
+  border-bottom: 1px solid #c4c4c4;
+}
 
-.menu-content
-  margin: 0
-  padding: auto
-  height: 65px
-  width: 263px
-  border-top: 1px solid #c4c4c4
-
-.menu-contents
-  position: absolute
-  margin: 136px 10px auto
-
-
+.menuicon {
+  vertical-align: center;
+}
+#home {
+  color: #4380f8;
+}
 /** animation */
-.slide-enter-active, .slide-leave-active
-  transition: transform .2s ease
-.slide-enter, .slide-leave-to
-  transform: translateX(-100%)
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.2s ease;
+}
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(-100%);
+}
 
-.fade-enter-active, .fade-leave-active
-  transition: all .3s ease
-.fade-enter, .fade-leave-to
-  opacity: 0
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
