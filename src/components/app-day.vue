@@ -39,10 +39,11 @@ export default class Index extends Vue {
   border-radius: 5px
   height: 50px
   width: 50px
+  left: 14px
 #cal-month
   background: #00C0C0
   color: #FCFCFC
-  font-size: 9px
+  font-size: 10px
   text-align: center
   width: 50px
   height: 14px
@@ -57,7 +58,7 @@ export default class Index extends Vue {
 #cal-week
   background: #FCFCFC
   color: #9A9A9A
-  font-size: 9px
+  font-size: 10px
   text-align: center
   width: 50px
   line-height: 10px
