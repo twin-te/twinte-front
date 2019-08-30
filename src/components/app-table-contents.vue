@@ -100,15 +100,16 @@ export default class Index extends Vue {
 </script>
 
 <style lang="sass" scoped>
-$height: calc((100vh - 43px - 58px - 40px) / 6)
-$width: calc((100vw - 48px - 13vw) / 5)
+$height: calc((100vh - 58px - 62px - 37px - 96px) / 6)
+$width: calc((100vw - 20px - 20px - 13vw) / 5)
 
 content
-  margin-left: 14px
-  margin-right: 14px
+  position: relative
+  margin: 7px 10px 10px 10px
   padding: 10px
   box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
   border-radius: 10px
+  top: 54px
 .row
   display: flex
   flex-direction: row
@@ -118,7 +119,7 @@ content
 div
   color: #555555
 #time
-  width: 13vw
+  width: calc(13vw - 16px)
   height: $height
   font-style: normal
   font-weight: 600
@@ -126,7 +127,7 @@ div
   line-height: 15px
   text-align: center
   color: #9A9A9A
-  padding-top: 10%
+  padding: 8px
 #subject
   width: $width
   height: $height
