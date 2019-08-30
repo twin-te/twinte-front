@@ -10,7 +10,7 @@
         @click="chDrawer()"
       >settings</span>
       <!-- Twin:te -->
-      <div id="title" class="my-2 title-logo">Twin:te</div>
+      <img src="~/assets/img/title-logo.png"  id="title" class="my-2 title-logo">
       <!-- + -->
       <span id="i_add" class="material-icons svg-button my-2 add-btn" @click="chAdd()">add</span>
     </nav>
@@ -50,6 +50,15 @@ export default class Index extends Vue {
   position: absolute
   top: 50%
   transform: translateY(-50%)
+.top .title-logo
+  height: 35px
+  width: auto
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
 .add-btn
   color: #FFFFFF
   position: absolute
