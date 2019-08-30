@@ -35,41 +35,47 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-.top
-  position: relative
-  display: flex
-  width: 100vw
-  height: 56px
-  line-height: 56px
-  background-color: #00C0C0
-  font-size: 2em
-.setting-btn
-  color: #FFFFFF
-  left: 1vw
-  position: absolute
-  top: 50%
-  transform: translateY(-50%)
-.top .title-logo
-  height: 35px
-  width: auto
+<style lang="scss" scoped>
+.top {
+  position: relative;
+  display: flex;
+  width: 100vw;
+  height: 56px;
+  line-height: 56px;
+  background-color: #00C0C0;
+  font-size: 2em;
+}
+.setting-btn {
+  color: #FFFFFF;
+  left: 1vw;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.top .title-logo {
+  height: 35px;
+  width: auto;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   margin: auto;
-.add-btn
-  color: #FFFFFF
-  position: absolute
-  right: 1vw
-  top: 50%
-  transform: translateY(-50%)
-.sub
-  background: #C7C7C7
-  width: 100vw
-  height: 2px
-.my-2
-  margin-left: 16px
-  margin-right: 16px
+}
+.add-btn {
+  color: #FFFFFF;
+  position: absolute;
+  right: 1vw;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.sub {
+  background: #C7C7C7;
+  width: 100vw;
+  height: 2px;
+}
+.my-2 {
+  margin-left: 16px;
+  margin-right: 16px;
+}
 </style>

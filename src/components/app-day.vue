@@ -33,33 +33,37 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-#day
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25)
-  border-radius: 5px
-  height: 50px
-  width: 50px
-  left: 14px
-#cal-month
-  background: #00C0C0
-  color: #FCFCFC
-  font-size: 10px
-  text-align: center
-  width: 50px
-  height: 14px
-  line-height: 14px
-#cal-day
-  background: #FCFCFC
-  color: #9A9A9A
-  font-size: 18px
-  text-align: center
-  width: 50px
-  line-height: 20px
-#cal-week
-  background: #FCFCFC
-  color: #9A9A9A
-  font-size: 10px
-  text-align: center
-  width: 50px
-  line-height: 10px
+<style lang="scss" scoped>
+#day {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  height: 50px;
+  width: 50px;
+  left: 14px;
+}
+#cal-month {
+  background: #00C0C0;
+  color: #FCFCFC;
+  font-size: 10px;
+  text-align: center;
+  width: 50px;
+  height: 14px;
+  line-height: 14px;
+}
+#cal-day {
+  background: #FCFCFC;
+  color: #9A9A9A;
+  font-size: 18px;
+  text-align: center;
+  width: 50px;
+  line-height: 20px;
+}
+#cal-week {
+  background: #FCFCFC;
+  color: #9A9A9A;
+  font-size: 10px;
+  text-align: center;
+  width: 50px;
+  line-height: 10px;
+}
 </style>

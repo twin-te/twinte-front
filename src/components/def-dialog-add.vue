@@ -87,83 +87,81 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 /** 中央寄せ */
-.btn
-  width: 100%
-  height: 40px
-  line-height: 40px
-  background: #00C0C0
-  border-radius: 0.5rem
-  position: relative
-.center
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translateY(-50%) translateX(-50%)
-  font-family: Noto Sans JP
-  font-style: normal
-  font-weight: 500
-  font-size: 16px
-  line-height: 23px
-  text-align: center
-  color: #FFFFFF
-.main
-  position: absolute
-  top: 73px
-  left: 13px
-  width: calc(100vw - 26px)
-  height: calc(100vh - 128px)
-  background: #FFFFFF
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2)
-  border-radius: 0.6rem
-  z-index: 6
-.back
-  position: absolute
-  width: 100vw
-  height: 100vh
-  left: 0px
-  top: 0px
-  background: rgba(100, 100, 100, 0.5)
-  z-index: 5
-#close
-  float: right
+.btn {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  background: #00C0C0;
+  border-radius: 0.5rem;
+  position: relative;
+}
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  font-family: Noto Sans JP;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
+  color: #FFFFFF;
+}
+.main {
+  position: absolute;
+  top: 73px;
+  left: 13px;
+  width: calc(100vw - 26px);
+  height: calc(100vh - 128px);
+  background: #FFFFFF;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0.6rem;
+  z-index: 6;
+}
+.back {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
+}
+#close {
+  float: right;
+}
 
-.svg-button
-  border: none
-  background: none
-  cursor: pointer
-  &:focus
-    outline: 2px dashed #17171D
-  &:hover
-    svg
-      transform: scale(1.1)
-  svg
-    outline: none
-    transition: transform 0.3s liner
+.form {
+  background-color: #edf2f7;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-width: 2px;
+  border-color: #edf2f7;
+  color: #4a5568;
+}
 
-.form
-  background-color: #edf2f7
-  -webkit-appearance: none
-     -moz-appearance: none
-          appearance: none
-  border-width: 2px
-  border-color: #edf2f7
-  color: #4a5568
-
-.form:focus
-  border-color: #9f7aea
-  outline: 0
-  background-color: #fff
+.form:focus {
+  border-color: #9f7aea;
+  outline: 0;
+  background-color: #fff;
+}
 
 /** animation */
-.bound-enter-active, .bound-leave-active
-  transition: all .2s ease
-.bound-enter, .bound-leave-to
-  transform: scale(.5)
-  opacity: 0
-.fade-enter-active, .fade-leave-active
-  transition: all .3s ease
-.fade-enter, .fade-leave-to
-  opacity: 0
+.bound-enter-active, .bound-leave-active {
+  transition: all .2s ease;
+}
+.bound-enter, .bound-leave-to {
+  transform: scale(.5);
+  opacity: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all .3s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>

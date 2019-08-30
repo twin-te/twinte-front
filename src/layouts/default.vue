@@ -20,4 +20,4 @@ import { Component, Vue } from "nuxt-property-decorator";
 export default class Index extends Vue {}
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped></style>

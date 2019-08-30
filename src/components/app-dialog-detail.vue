@@ -156,80 +156,82 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-.right
-  width: 50%
-  border: 1px solid #00C0C0
-  border-radius: 0 20px 20px 0
-  height: 30px
-  position: relative
-  left: -1px
-.left
-  width: 50%
-  border: 1px solid #00C0C0
-  border-radius: 20px 0 0 20px
-  height: 30px
-.same-v
-  display: inline-block
-  vertical-align: middle
+<style lang="scss" scoped>
+.right {
+  width: 50%;
+  border: 1px solid #00C0C0;
+  border-radius: 0 20px 20px 0;
+  height: 30px;
+  position: relative;
+  left: -1px;
+}
+.left {
+  width: 50%;
+  border: 1px solid #00C0C0;
+  border-radius: 20px 0 0 20px;
+  height: 30px;
+}
+.same-v {
+  display: inline-block;
+  vertical-align: middle;
+}
 /** 中央寄せ */
-.center
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translateY(-50%) translateX(-50%)
-.main
-  position: absolute
-  top: 73px
-  left: 13px
-  width: calc(100vw - 26px)
-  height: calc(100vh - 128px)
-  background: #FFFFFF
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2)
-  border-radius: 0.6rem
-  z-index: 6
-.back
-  position: absolute
-  width: 100vw
-  height: 100vh
-  left: 0px
-  top: 0px
-  background: rgba(100, 100, 100, 0.5)
-  z-index: 5
-#close
-  float: right
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+.main {
+  position: absolute;
+  top: 73px;
+  left: 13px;
+  width: calc(100vw - 26px);
+  height: calc(100vh - 128px);
+  background: #FFFFFF;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0.6rem;
+  z-index: 6;
+}
+.back {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
+}
+#close {
+  float: right;
+}
 
-.svg-button
-  border: none
-  background: none
-  cursor: pointer
-  &:focus
-    outline: 2px dashed #17171D
-  &:hover
-    svg
-      transform: scale(1.1)
-  svg
-    outline: none
-    transition: transform 0.3s liner
-
-.wrapper
-  display: grid
-  grid-template-columns: repeat(3, 1fr)
-.one
-  grid-column: 1
-.two
-  grid-column: 2
-.three
-  grid-column: 3
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.one {
+  grid-column: 1;
+}
+.two {
+  grid-column: 2;
+}
+.three {
+  grid-column: 3;
+}
 
 /** animation */
-.bound-enter-active, .bound-leave-active
-  transition: all .2s ease
-.bound-enter, .bound-leave-to
-  transform: scale(.5)
-  opacity: 0
-.fade-enter-active, .fade-leave-active
-  transition: all .3s ease
-.fade-enter, .fade-leave-to
-  opacity: 0
+.bound-enter-active, .bound-leave-active {
+  transition: all .2s ease;
+}
+.bound-enter, .bound-leave-to {
+  transform: scale(.5);
+  opacity: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all .3s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>

@@ -99,41 +99,47 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-$height: calc((100vh - 58px - 62px - 37px - 96px) / 6)
-$width: calc((100vw - 20px - 20px - 13vw) / 5)
+<style lang="scss" scoped>
+$height: calc((100vh - 58px - 62px - 37px - 96px) / 6);
+$width: calc((100vw - 20px - 20px - 13vw) / 5);
 
-content
-  position: relative
-  margin: 7px 10px 10px 10px
-  padding: 10px
-  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
-  border-radius: 10px
-  top: 54px
-.row
-  display: flex
-  flex-direction: row
-.column
-  display: flex
-  flex-direction: column
-div
-  color: #555555
-#time
-  width: calc(13vw - 16px)
-  height: $height
-  font-style: normal
-  font-weight: 600
-  font-size: 11px
-  line-height: 15px
-  text-align: center
-  color: #9A9A9A
-  padding: 8px
-#subject
-  width: $width
-  height: $height
-  word-break: break-all
-  font-style: normal
-  font-weight: 600
-  font-size: 9px
-  line-height: 12px
+content {
+  position: relative;
+  margin: 7px 10px 10px 10px;
+  padding: 10px;
+  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25);
+  border-radius: 10px;
+  top: 54px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+div {
+  color: #555555;
+}
+#time {
+  width: calc(13vw - 16px);
+  height: $height;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 15px;
+  text-align: center;
+  color: #9A9A9A;
+  padding: 8px;
+}
+#subject {
+  width: $width;
+  height: $height;
+  word-break: break-all;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 9px;
+  line-height: 12px;
+}
 </style>
