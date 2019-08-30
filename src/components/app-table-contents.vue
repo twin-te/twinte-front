@@ -126,6 +126,7 @@ div
   line-height: 15px
   text-align: center
   color: #9A9A9A
+  padding-top: 10%
 #subject
   width: $width
   height: $height
