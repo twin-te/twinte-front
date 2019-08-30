@@ -6,46 +6,56 @@
       <!-- ⚙ -->
       <span
         id="i_settings"
-        class="material-icons svg-button my-2"
+        class="material-icons svg-button my-2 setting-btn"
         @click="chDrawer()"
-        >settings</span
-      >
+      >settings</span>
       <!-- Twin:te -->
-      <div id="title" class="my-2">Twin:te</div>
+      <div id="title" class="my-2 title-logo">Twin:te</div>
       <!-- + -->
-      <span id="i_add" class="material-icons svg-button my-2" @click="chAdd()"
-        >add</span
-      >
+      <span id="i_add" class="material-icons svg-button my-2 add-btn" @click="chAdd()">add</span>
     </nav>
     <nav class="sub"></nav>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
   chDrawer() {
-    this.$store.commit('visible/chDrawer', { bool: true })
+    this.$store.commit("visible/chDrawer", { bool: true });
   }
   chAdd() {
-    this.$store.commit('visible/chAdd', { bool: true })
+    this.$store.commit("visible/chAdd", { bool: true });
   }
 }
 </script>
 
 <style lang="sass" scoped>
 .top
+  position: relative
   display: flex
   width: 100vw
   height: 56px
   line-height: 56px
   background-color: #00C0C0
   font-size: 2em
+.setting-btn
+  color: #FFFFFF
+  left: 1vw
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+.add-btn
+  color: #FFFFFF
+  position: absolute
+  right: 1vw
+  top: 50%
+  transform: translateY(-50%)
 .sub
   background: #C7C7C7
   width: 100vw
