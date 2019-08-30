@@ -50,42 +50,47 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-$week-width: calc(100vw - 20px - 20px - 13vw)
+<style lang="scss" scoped>
+$week-width: calc(100vw - 20px - 20px - 13vw);
 
-#module
-  position: absolute
-  display: flex
-  font-family: Noto Sans JP
-  font-style: normal
-  font-weight: 500
-  font-size: 16px
-  line-height: 24px
-  height: 32px
-  color: #9A9A9A
-  justify-content: space-evenly
-  top: 60px
-  left: 50%
-  transform: translateX(-50%)
-#week
-  position: absolute
-  display: flex
-  width: 87vw
-  height: 30px
-  line-height: 27px
-  font-family: Noto Sans JP
-  font-style: normal
-  font-weight: 500
-  font-size: 15px
-  color: #9A9A9A
-  top: 90px
-#day
-  position: relative
-  top: -28px
-.week-wrapper
-  position: absolute
-  display: flex
-  width: $week-width
-  justify-content: space-around
-  left: calc(13vw + 20px)
+#module {
+  position: absolute;
+  display: flex;
+  font-family: Noto Sans JP;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  height: 32px;
+  width: 35vw;
+  color: #9A9A9A;
+  justify-content: space-between;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#week {
+  position: absolute;
+  display: flex;
+  width: 87vw;
+  height: 30px;
+  line-height: 27px;
+  font-family: Noto Sans JP;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  color: #9A9A9A;
+  top: 90px;
+}
+#day {
+  position: relative;
+  top: -28px;
+}
+.week-wrapper {
+  position: absolute;
+  display: flex;
+  width: $week-width;
+  justify-content: space-around;
+  left: calc(13vw + 20px);
+}
 </style>
