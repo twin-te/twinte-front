@@ -1,85 +1,104 @@
 /** -> "../pages/index.vue" */
 <template>
-  <content class="row">
-    <!-- 時限 -->
-    <section class="column">
-      <div
-        id="time"
-        v-for="i in 6"
-        :key="i"
-        :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
-      >
-        {{ i }}
-      </div>
-    </section>
-
-    <!-- 授業 -->
-    <section class="column">
-      <div v-for="y in 6" :key="y" class="row">
-      <ripple v-for="x in 5" :key="x">
+  <transition :name="moveDirection === 'left' ? 'slide-l' : 'slide-r'">
+    <content class="row" v-show="visible">
+      <!-- 時限 -->
+      <section class="column">
         <div
-          id="subject"
-          @click="chAdd()"
-          v-if="
-            table === null ||
-              table[module] === undefined ||
-              table[module][x - 1][y - 1].number === 'undefined'
-          "
-        ></div>
-        <div
-          id="subject"
-          :style="{
-            background: getColor(table[module][x - 1][y - 1].number),
-          }"
-          @click="chDetail(x, y)"
-          v-else
+          id="time"
+          v-for="i in 6"
+          :key="i"
+          :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
         >
-          <div style="font-size: 9px">
-            {{ table[module][x - 1][y - 1].number }}
-          </div>
-          <div style="font-size: 8px">
-            {{ table[module][x - 1][y - 1].name }}
-          </div>
-          <div style="font-size: 9px">
-            {{ table[module][x - 1][y - 1].classroom }}
+          {{ i }}
+        </div>
+      </section>
+
+      <!-- 授業 -->
+      <section class="column">
+        <div v-for="y in 6" :key="y" class="row">
+          <div v-for="x in 5" :key="x">
+            <div
+              id="subject"
+              @click="chAdd()"
+              v-if="
+                table === null ||
+                  table[module] === undefined ||
+                  table[module][x - 1][y - 1].number === 'undefined'
+              "
+            ></div>
+            <div
+              id="subject"
+              :style="{
+                background: getColor(table[module][x - 1][y - 1].number)
+              }"
+              @click="popUp(x, y)"
+              v-else
+            >
+              <div>
+                {{ table[module][x - 1][y - 1].number }}
+              </div>
+              <div>
+                {{ table[module][x - 1][y - 1].name }}
+              </div>
+              <div>
+                {{ table[module][x - 1][y - 1].classroom }}
+              </div>
+            </div>
           </div>
         </div>
-      </ripple>
-      </div>
-    </section>
-  </content>
+      </section>
+    </content>
+  </transition>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component({
   components: {
-    ripple: () => import('~/components/ui-ripple.vue'),
-  },
+    ripple: () => import("~/components/ui-ripple.vue")
+  }
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
-  chDetail(x: number, y: number): void {
-    console.log(x, y) //TODO
-    this.$store.commit('visible/chDetail', { bool: true })
+  popUp(x: number, y: number) {
+    if (
+      this.table === null ||
+      this.table[this.module] === null ||
+      this.table[this.module][x - 1][y - 1].number === ""
+    ) {
+      this.chAdd();
+    } else {
+      this.chDetail(x, y);
+    }
+  }
+  chDetail(x: number, y: number) {
+    console.log(x, y); //TODO
+    this.$store.commit("visible/chDetail", { display: true });
   }
   chAdd() {
-    this.$store.commit('visible/chAdd', { bool: true })
+    this.$store.commit("visible/chAdd", { display: true });
   }
 
   get table() {
-    return this.$store.getters['old_api/data']
+    return this.$store.getters["old_api/data"];
   }
   get module() {
-    return this.$store.getters['table/moduleNum']
+    return this.$store.getters["table/moduleNum"];
+  }
+  get visible() {
+    return this.$store.getters["visible/table"].display;
+  }
+  get moveDirection() {
+    return this.$store.getters["visible/table"].move;
   }
 
   /** 授業に応じたテーマ色を返す */
   getColor(number: string): string {
-    const char = number.split('')[0]
+    const char = number.split("")[0];
     switch (char) {
       case 'A': return '#DEFFF9'
       case 'B': return '#DEFFF9'
@@ -93,23 +112,24 @@ export default class Index extends Vue {
       case '1': return '#FFEEF7'
       case '2': return '#F0EBFF'
       case '3': return '#FFFCEB'
-      default : return ''
+      default: return ''
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-$height: calc((100vh - 58px - 62px - 37px - 96px) / 6);
-$width: calc((100vw - 20px - 20px - 13vw) / 5);
+$height: calc((100vh - 15.5vh - 6vh - 12vh) / 6);
+$subject-height: calc((100vh - 58px - 62px - 37px - 12vh) / 6);
+$width: calc((100vw - 8vw - 10vw - 13vw) / 5);
 
 content {
   position: relative;
-  margin: 7px 10px 10px 10px;
-  padding: 10px;
+  margin: 2vh 2vw;
+  padding: 2vh 2vw;
   box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25);
   border-radius: 10px;
-  top: 54px;
+  top: 6vh;
 }
 .row {
   display: flex;
@@ -123,23 +143,48 @@ div {
   color: #555555;
 }
 #time {
-  width: calc(13vw - 16px);
+  width: calc(11vw);
   height: $height;
   font-style: normal;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 1.5vh;
   line-height: 15px;
   text-align: center;
-  color: #9A9A9A;
-  padding: 8px;
+  color: #9a9a9a;
+  padding: 1vh 1vw;
 }
 #subject {
   width: $width;
   height: $height;
+  padding: 1vh 1vw;
   word-break: break-all;
   font-style: normal;
   font-weight: 600;
-  font-size: 9px;
-  line-height: 12px;
+  font-size: 1.3vh;
+  line-height: 2vh;
+  overflow: hidden;
+}
+
+/* animation */
+.slide-l-enter-active,
+.slide-l-leave-active {
+  transition: transform 0.2s ease;
+}
+.slide-l-enter {
+  transform: translateX(-100%);
+}
+.slide-l-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-r-enter-active,
+.slide-r-leave-active {
+  transition: transform 0.2s ease;
+}
+.slide-r-enter {
+  transform: translateX(100%);
+}
+.slide-r-leave-to {
+  transform: translateX(-100%);
 }
 </style>
