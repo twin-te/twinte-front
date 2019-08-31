@@ -1,6 +1,8 @@
 import axios from "axios";
 import { union } from "lodash";
 
+import tableData from "../../assets/json/data.json";
+
 /** https://twinte.net/apiとの通信の状態管理を行なう */
 import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A } from "./type";
@@ -14,6 +16,9 @@ export const state = (): S => ({
 //
 export const getters: Getters<S, G> = {
   data(state) {
+    if (state.data === null) {
+      return tableData;
+    }
     return state.data;
   },
   list_number(state) {
@@ -29,7 +34,7 @@ export const mutations: Mutations<S, M> = {
    */
   updateTable(state, payload) {
     if (state.data === null) {
-        state.data = new Array(6);
+      state.data = new Array(6);
     }
     const list: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
     const position: number = list.indexOf(payload.module);

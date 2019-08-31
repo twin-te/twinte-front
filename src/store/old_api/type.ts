@@ -7,17 +7,18 @@ export interface Table {
   time: string;
 }
 [];
+export type ResponseData = Table[][];
 
 // state______________________________________________________
 //
 export interface S {
-  data: Table[][] | null;
+  data: Table[][][] | null;
   list_number: string[][];
 }
 // getters______________________________________________________
 //
 export interface G {
-  data: Table[][] | null;
+  data: Table[][][] | null;
   list_number: string[][] | null;
 }
 export interface RG {
@@ -27,7 +28,7 @@ export interface RG {
 // mutations
 //
 export interface M {
-  updateTable: { module: string; data: Table[] };
+  updateTable: { module: string; data: Table[][] };
   pushNumber: { module: string; data: string[] };
 }
 export interface RM {

@@ -1,12 +1,19 @@
 $material-icons-font-path: "~material-icons/iconfont/";
 $material-icons-font-path: "" !default;
 $material-icons-font-name: "MaterialIcons-Regular" !default;
-$material-icons-font-size: 30px !default;
 $material-icons-font-family: "Material Icons" !default;
 
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap&subset=japanese");
 @import "~material-icons/iconfont/material-icons.scss";
 
+body {
+  overflow-x: hidden;
+  font-family: "Noto Sans JP";
+}
+
 .svg-button {
+  border: none;
+  background: none;
   transition: transform 0.3s liner;
   cursor: pointer;
   &:focus {
@@ -15,4 +22,23 @@ $material-icons-font-family: "Material Icons" !default;
   &:hover {
     transform: scale(1.1);
   }
+}
+
+/** animation */
+.bound-enter-active,
+.bound-leave-active {
+  transition: all 0.1s ease-in;
+}
+.bound-enter,
+.bound-leave-to {
+  transform: scale(0.9);
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.1s ease-in;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
