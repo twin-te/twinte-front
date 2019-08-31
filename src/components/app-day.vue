@@ -2,15 +2,11 @@
 <template>
   <!-- 時間割の日時 -->
   <section id="day">
-  <div id="cal-month">
-      {{ today.month }}月
-  </div>
-  <div id="cal-day">
+    <div id="cal-month">{{ today.month }}月</div>
+    <div id="cal-day">
       {{ today.day }}
-  </div>
-  <div id="cal-week">
-      ({{ today.week }})
-  </div>
+    </div>
+    <div id="cal-week">({{ today.week }})</div>
   </section>
 </template>
 
@@ -19,7 +15,7 @@ import { Component, Vue } from "nuxt-property-decorator";
 
 @Component({})
 export default class Index extends Vue {
-  today: {month: number | null, day: number | null, week: string | null} = { month: null, day: null, week: null };
+  today: { month: number | null, day: number | null, week: string | null } = { month: null, day: null, week: null };
 
   mounted() {
     const date = new Date();
@@ -33,32 +29,33 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-#day
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25)
-  border-radius: 5px
-  height: 50px
-  width: 50px
-#cal-month
-  background: #00C0C0
-  color: #FCFCFC
-  font-size: 9px
-  text-align: center
-  width: 50px
-  height: 14px
-  line-height: 14px
-#cal-day
-  background: #FCFCFC
-  color: #9A9A9A
-  font-size: 18px
-  text-align: center
-  width: 50px
-  line-height: 20px
-#cal-week
-  background: #FCFCFC
-  color: #9A9A9A
-  font-size: 9px
-  text-align: center
-  width: 50px
-  line-height: 10px
+<style lang="scss" scoped>
+#day {
+  position: absolute;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 1vh;
+  height: 7vh;
+  width: 6.5vh;
+  left: 4.5vw;
+  top: -3.7vh;
+}
+#cal-month {
+  background: #00c0c0;
+  color: #fcfcfc;
+  font-size: 1.5vh;
+  text-align: center;
+  line-height: 2vh;
+}
+#cal-day {
+  color: #9a9a9a;
+  font-size: 2.6vh;
+  text-align: center;
+  line-height: 3vh;
+}
+#cal-week {
+  color: #9a9a9a;
+  font-size: 1.4vh;
+  text-align: center;
+  line-height: 2vh;
+}
 </style>

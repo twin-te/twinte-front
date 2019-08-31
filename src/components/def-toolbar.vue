@@ -6,14 +6,21 @@
       <!-- ⚙ -->
       <span
         id="i_settings"
-        class="material-icons svg-button my-2"
+        class="material-icons svg-button my-2 setting-btn"
         @click="chDrawer()"
         >settings</span
       >
       <!-- Twin:te -->
-      <div id="title" class="my-2">Twin:te</div>
+      <img
+        src="~/assets/img/title-logo.png"
+        id="title"
+        class="my-2 title-logo"
+      />
       <!-- + -->
-      <span id="i_add" class="material-icons svg-button my-2" @click="chAdd()"
+      <span
+        id="i_add"
+        class="material-icons svg-button my-2 add-btn"
+        @click="chAdd()"
         >add</span
       >
     </nav>
@@ -22,35 +29,65 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
   chDrawer() {
-    this.$store.commit('visible/chDrawer', { bool: true })
+    this.$store.commit("visible/chDrawer", { display: true });
   }
   chAdd() {
-    this.$store.commit('visible/chAdd', { bool: true })
+    this.$store.commit("visible/chAdd", { display: true });
   }
 }
 </script>
 
-<style lang="sass" scoped>
-.top
-  display: flex
-  width: 100vw
-  height: 56px
-  line-height: 56px
-  background-color: #00C0C0
-  font-size: 2em
-.sub
-  background: #C7C7C7
-  width: 100vw
-  height: 2px
-.my-2
-  margin-left: 16px
-  margin-right: 16px
+<style lang="scss" scoped>
+.top {
+  position: relative;
+  display: flex;
+  width: 100vw;
+  height: 8vh;
+  line-height: 8vh;
+  background-color: #00c0c0;
+  font-size: 2em;
+}
+.setting-btn {
+  font-size: 4.3vh;
+  color: #ffffff;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.top .title-logo {
+  height: 5vh;
+  width: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+.add-btn {
+  font-size: 5.5vh;
+  color: #ffffff;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.sub {
+  background: #c7c7c7;
+  width: 100vw;
+  height: 2px;
+}
+.my-2 {
+  margin-left: 3vw;
+  margin-right: 3vw;
+}
 </style>

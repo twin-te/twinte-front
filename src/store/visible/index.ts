@@ -5,7 +5,8 @@ import { S, G, M, A } from "./type";
 export const state = (): S => ({
   drawer: false,
   detail: false,
-  add: false
+  add: false,
+  table: { display: true, move: "" }
 });
 // ______________________________________________________
 //
@@ -21,6 +22,9 @@ export const getters: Getters<S, G> = {
   },
   add(state) {
     return state.add;
+  },
+  table(state) {
+    return state.table;
   }
 };
 // ______________________________________________________
@@ -34,13 +38,16 @@ export const mutations: Mutations<S, M> = {
    * @param payload 任意 つけなかったら切り替え
    */
   chDrawer(state, payload) {
-    state.drawer = payload.bool;
+    state.drawer = payload.display;
   },
   chDetail(state, payload) {
-    state.detail = payload.bool;
+    state.detail = payload.display;
   },
   chAdd(state, payload) {
-    state.add = payload.bool;
+    state.add = payload.display;
+  },
+  chTable(state, payload) {
+    state.table = { display: payload.display, move: payload.move };
   }
 };
 // ______________________________________________________

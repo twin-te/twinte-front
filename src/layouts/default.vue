@@ -17,7 +17,7 @@ import { Component, Vue } from "nuxt-property-decorator";
     "def-dialog-add": () => import("~/components/def-dialog-add.vue")
   }
 })
-export default class Index extends Vue {}
+export default class Index extends Vue { }
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped></style>
