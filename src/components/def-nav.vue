@@ -5,7 +5,7 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
-        <div class="material-icons close-btn">close</div>
+        <div class="material-icons close-btn" @click="chDrawer()">close</div>
         <div class="login-btn">ログイン</div>
         <section class="menu-contents-wrap">
           <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
@@ -27,11 +27,7 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
-@Component({
-  components: {
-    "ui-navlist": () => import("~/components/ui-nav-list.vue")
-  }
-})
+@Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
@@ -39,8 +35,8 @@ export default class Index extends Vue {
     return this.$store.getters["visible/drawer"];
   }
 
-  chDrawer(): void {
-    this.$store.commit("visible/chDrawer", { bool: false });
+  chDrawer() {
+    this.$store.commit("visible/chDrawer", { display: false });
   }
 
   list: any = [

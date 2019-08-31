@@ -3,7 +3,7 @@
   <!-- 科目詳細画面 -->
   <section class="contents">
     <transition name="bound">
-      <nav class="main" v-if="dialog">
+      <nav class="main" v-show="dialog">
         <article style="padding: 25px">
           <!-- 教科名 -->
           <div class="svg-button material-icons" @click="chDetail()">close</div>
@@ -30,25 +30,25 @@
             </div>
             <div style="margin-top: 10px; margin-left: 21px; line-height: 28px">
               <div>
-                <span style="font-weight: 500">担当教員</span
-                ><span
+                <span style="font-weight: 500">担当教員</span>
+                <span
                   style="position: relative; left: 30px; color: #555555; font-weight: normal"
-                  >{{ table.teacher }}
-                </span>
+                  >{{ table.teacher }}</span
+                >
               </div>
               <div>
-                <span style="font-weight: 500">開講時限</span
-                ><span
+                <span style="font-weight: 500">開講時限</span>
+                <span
                   style="position: relative; left: 30px; color: #555555; font-weight: normal"
                   >{{ table.season }} {{ table.time }}</span
                 >
               </div>
               <div>
-                <span style="font-weight: 500">教室 </span
-                ><span
+                <span style="font-weight: 500">教室</span>
+                <span
                   style="position: relative; left: 30px; color: #555555; font-weight: normal"
-                  >{{ table.classroom }}
-                </span>
+                  >{{ table.classroom }}</span
+                >
               </div>
             </div>
           </section>
@@ -84,8 +84,8 @@
                 >
                 <!-- <+|-> -->
                 <div style="display: flex; margin-bottom: 15px">
-                  <span @click="" class="left">+</span>
-                  <span @click="" class="right">-</span>
+                  <span class="left">+</span>
+                  <span class="right">-</span>
                 </div>
               </div>
             </div>
@@ -130,28 +130,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class Index extends Vue {
   //TODO implement these in store
   table: any = {
-    number: '1A18011',
-    name: 'ネットワーク社会を支える情報技術入門I',
-    season: '春AB',
-    time: '月1',
-    classroom: '3A306',
-    teacher: '朴 泰祐',
-  }
-  atmnb: string[] = ['出席', '欠席', '遅刻']
-  count: number[] = [2, 2, 2]
+    number: "1A18011",
+    name: "ネットワーク社会を支える情報技術入門I",
+    season: "春AB",
+    time: "月1",
+    classroom: "3A306",
+    teacher: "朴 泰祐"
+  };
+  atmnb: string[] = ["出席", "欠席", "遅刻"];
+  count: number[] = [2, 2, 2];
 
   get dialog(): boolean {
-    return this.$store.getters['visible/detail']
+    return this.$store.getters["visible/detail"];
   }
 
   chDetail(): void {
-    this.$store.commit('visible/chDetail', { bool: false })
+    this.$store.commit("visible/chDetail", { display: false });
   }
 }
 </script>
@@ -159,7 +159,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 .right {
   width: 50%;
-  border: 1px solid #00C0C0;
+  border: 1px solid #00c0c0;
   border-radius: 0 20px 20px 0;
   height: 30px;
   position: relative;
@@ -167,7 +167,7 @@ export default class Index extends Vue {
 }
 .left {
   width: 50%;
-  border: 1px solid #00C0C0;
+  border: 1px solid #00c0c0;
   border-radius: 20px 0 0 20px;
   height: 30px;
 }
@@ -188,7 +188,7 @@ export default class Index extends Vue {
   left: 13px;
   width: calc(100vw - 26px);
   height: calc(100vh - 128px);
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 0.6rem;
   z-index: 6;
@@ -218,20 +218,5 @@ export default class Index extends Vue {
 }
 .three {
   grid-column: 3;
-}
-
-/** animation */
-.bound-enter-active, .bound-leave-active {
-  transition: all .2s ease;
-}
-.bound-enter, .bound-leave-to {
-  transform: scale(.5);
-  opacity: 0;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: all .3s ease;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
 }
 </style>
