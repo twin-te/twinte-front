@@ -11,6 +11,9 @@
           :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
         >
           {{ i }}
+          <p>{{ timeTable[i - 1][0] }}</p>
+          <p class="tilde">~</p>
+          <p>{{ timeTable[i - 1][1] }}</p>
         </div>
       </section>
 
@@ -35,13 +38,13 @@
               @click="popUp(x, y)"
               v-else
             >
-              <div>
+              <div class="sbj-number">
                 {{ table[module][x - 1][y - 1].number }}
               </div>
-              <div>
+              <div class="sbj-name">
                 {{ table[module][x - 1][y - 1].name }}
               </div>
-              <div>
+              <div class="sbj-classroom">
                 {{ table[module][x - 1][y - 1].classroom }}
               </div>
             </div>
@@ -63,7 +66,14 @@ import * as Vuex from "vuex";
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
-
+  timeTable = [
+    ['8:40', '9:55'],
+    ['10:10', '11:25'],
+    ['12:15', '13:30'],
+    ['13:45', '15:00'],
+    ['15:15', '16:30'],
+    ['16:45', '18:00']
+  ]
   popUp(x: number, y: number) {
     if (
       this.table === null ||
@@ -119,17 +129,17 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$height: calc((100vh - 15.5vh - 6vh - 12vh) / 6);
+$height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $subject-height: calc((100vh - 58px - 62px - 37px - 12vh) / 6);
 $width: calc((100vw - 8vw - 10vw - 13vw) / 5);
 
 content {
   position: relative;
-  margin: 2vh 2vw;
-  padding: 2vh 2vw;
+  margin: 2vmin 2vw;
+  padding: 2vmin 2vw;
   box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25);
   border-radius: 10px;
-  top: 6vh;
+  top: 7vh;
 }
 .row {
   display: flex;
@@ -146,23 +156,41 @@ div {
   width: calc(11vw);
   height: $height;
   font-style: normal;
-  font-weight: 600;
-  font-size: 1.5vh;
-  line-height: 15px;
+  font-weight: 500;
+  font-size: 1.9vh;
+  line-height: 3vh;
   text-align: center;
   color: #9a9a9a;
-  padding: 1vh 1vw;
+  padding: 1vmin 1vw;
+}
+
+.column p {
+  font-size: 1.5vh;
+  line-height: 1vh;
+  font-weight: 400;
+}
+.tilde {
+  transform: rotate(90deg);
 }
 #subject {
   width: $width;
   height: $height;
-  padding: 1vh 1vw;
+  padding: 1vmin 1vw;
   word-break: break-all;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.3vh;
   line-height: 2vh;
   overflow: hidden;
+}
+.sbj-number {
+  font-weight: 400;
+}
+.sbj-name {
+  font-weight: 700;
+}
+.sbj-classroom {
+  font-weight: 400;
 }
 
 /* animation */
