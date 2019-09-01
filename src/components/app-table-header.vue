@@ -63,7 +63,7 @@ $week-width: calc(
   100vw - 8vw /*contentのmargin+padding*/ - 13vw /*timeのwidth+padding*/
 );
 .s4 {
-  font-size: 4vh;
+  font-size: 4.6vh;
 }
 #module {
   position: absolute;
@@ -71,8 +71,8 @@ $week-width: calc(
   font-family: Noto Sans JP;
   font-style: normal;
   font-weight: 500;
-  font-size: 2vh;
-  line-height: 4vh;
+  font-size: 2.2vh;
+  line-height: 4.6vh;
   width: 35vw;
   color: #9a9a9a;
   justify-content: space-between;
@@ -99,5 +99,6 @@ $week-width: calc(
   width: $week-width;
   justify-content: space-around;
   left: calc(13vw + 4vw);
+  top: 0.2vh;
 }
 </style>

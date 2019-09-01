@@ -34,7 +34,7 @@ export default class Index extends Vue {
   position: absolute;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 1vh;
-  height: 7vh;
+  height: 6.7vh;
   width: 6.5vh;
   left: 4.5vw;
   top: -3.7vh;
@@ -50,12 +50,12 @@ export default class Index extends Vue {
   color: #9a9a9a;
   font-size: 2.6vh;
   text-align: center;
-  line-height: 3vh;
+  line-height: 2.5vh;
 }
 #cal-week {
   color: #9a9a9a;
   font-size: 1.4vh;
   text-align: center;
-  line-height: 2vh;
+  line-height: 2.1vh;
 }
 </style>

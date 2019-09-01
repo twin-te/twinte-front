@@ -10,15 +10,13 @@ import { S, G, M, A } from "./type";
 //
 export const state = (): S => ({
   data: null,
-  list_number: []
+  list_number: [],
+  moduleList: ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"]
 });
 // ______________________________________________________
 //
 export const getters: Getters<S, G> = {
   data(state) {
-    if (state.data === null) {
-      return tableData;
-    }
     return state.data;
   },
   list_number(state) {
@@ -39,10 +37,15 @@ export const mutations: Mutations<S, M> = {
     const list: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
     const position: number = list.indexOf(payload.module);
     state.data[position] = payload.data; // -1の状態だめじゃん
+    localStorage.setItem("table", JSON.stringify(state.data));
+  },
+  updateTableAll(state, payload) {
+    state.data = payload.data;
+    localStorage.setItem("table", JSON.stringify(state.data));
   },
   /**
    * 授業番号のリストに重複なく追加+nullチェック
-   * @param payload module: 追加する学期, data: 授業番号
+   * @param payload module: 追加する学期 ex) "haruA", data: 授業番号
    */
   pushNumber(state, payload) {
     const list: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
@@ -51,25 +54,46 @@ export const mutations: Mutations<S, M> = {
       state.list_number[position],
       payload.data
     );
+    localStorage.setItem("number", JSON.stringify(state.list_number));
+  },
+  pushNumberAll(state, payload) {
+    state.list_number = payload.data;
+    localStorage.setItem("number", JSON.stringify(state.list_number));
   }
 };
 // ______________________________________________________
 //
 export const actions: Actions<S, A, G, M> = {
+  /** dispatch("old_api/asyncNumber", {
+      number: number[],
+      module: "haruA"
+    }); */
   async asyncNumber(ctx, payload) {
+    const list =
+      ctx.state.list_number[ctx.state.moduleList.indexOf(payload.module)];
+    const numbers = union(list, payload.number);
     try {
       await axios
         .post("https://twinte.net/api", {
-          number: payload.number,
+          number: numbers,
           view_season: payload.module
         })
         .then(items => {
           if (items.data[0] === null) return; // 違うデータだった場合は追加しない
-          ctx.commit("updateTable", { module: "haruA", data: items.data });
-          ctx.commit("pushNumber", { module: "haruA", data: payload.number });
+          ctx.commit("updateTable", {
+            module: payload.module,
+            data: items.data
+          });
+          ctx.commit("pushNumber", {
+            module: payload.module,
+            data: payload.number
+          });
         });
     } catch (error) {
       console.error(error);
     }
+  },
+  dev(ctx) {
+    ctx.commit("updateTableAll", { data: tableData });
   }
 };
