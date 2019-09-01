@@ -14,6 +14,7 @@ export type ResponseData = Table[][];
 export interface S {
   data: Table[][][] | null;
   list_number: string[][];
+  moduleList: string[];
 }
 // getters______________________________________________________
 //
@@ -30,16 +31,22 @@ export interface RG {
 export interface M {
   updateTable: { module: string; data: Table[][] };
   pushNumber: { module: string; data: string[] };
+  updateTableAll: { data: Table[][][] };
+  pushNumberAll: { data: string[][] };
 }
 export interface RM {
   "old_api/updateTable": M["updateTable"];
   "old_api/pushNumber": M["pushNumber"];
+  "old_api/updateTableAll": M["updateTableAll"];
+  "old_api/pushNumberAll": M["pushNumberAll"];
 }
 // actions______________________________________________________
 //
 export interface A {
   asyncNumber: { number: string[]; module: string };
+  dev: null;
 }
 export interface RA {
   "old_api/asyncNumber": A["asyncNumber"];
+  "old_api/dev": A["dev"];
 }
