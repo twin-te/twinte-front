@@ -1,51 +1,55 @@
 /** -> "../pages/index.vue" */
 <template>
-  <!-- tableタグ内で利用 時間割データの一部を受け取る -->
-  <section class="row">
-    <!-- 時限 -->
-    <div class="column">
-      <div
-        id="time"
-        v-for="i in 6"
-        :key="i"
-        :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
-      >
-        {{ i }}
-      </div>
-    </div>
+  <transition :name="moveDirection === 'left' ? 'slide-l' : 'slide-r'">
+    <content class="row" v-show="visible">
+      <!-- 時限 -->
+      <section class="column">
+        <div
+          id="time"
+          v-for="i in 6"
+          :key="i"
+          :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
+        >
+          {{ i }}
+        </div>
+      </section>
 
-    <!-- 授業 -->
-    <div class="column">
-      <div v-for="m in 6" :key="m">
-        <div class="row">
-          <div v-for="n in 5" :key="n">
-            <ripple @click="chDetail">
-              <transition name="fade">
-                <div
-                  id="subject"
-                  :style="{
-                    background: getColor(data[module][n - 1][m - 1].number)
-                  }"
-                >
-                  <div>
-                    <div style="font-size: 9px">
-                      {{ data[module][n - 1][m - 1].number | if(data[module] === null) return "" }}
-                    </div>
-                    <div style="font-size: 8px">
-                      {{ data[module][n - 1][m - 1].name | if(data[module] === null) return "" }}
-                    </div>
-                    <div style="font-size: 9px">
-                      {{ data[module][n - 1][m - 1].classroom | if(data[module] === null) return "" }}
-                    </div>
-                  </div>
-                </div>
-              </transition>
-            </ripple>
+      <!-- 授業 -->
+      <section class="column">
+        <div v-for="y in 6" :key="y" class="row">
+          <div v-for="x in 5" :key="x">
+            <div
+              id="subject"
+              @click="chAdd()"
+              v-if="
+                table === null ||
+                  table[module] === undefined ||
+                  table[module][x - 1][y - 1].number === 'undefined'
+              "
+            ></div>
+            <div
+              id="subject"
+              :style="{
+                background: getColor(table[module][x - 1][y - 1].number)
+              }"
+              @click="popUp(x, y)"
+              v-else
+            >
+              <div>
+                {{ table[module][x - 1][y - 1].number }}
+              </div>
+              <div>
+                {{ table[module][x - 1][y - 1].name }}
+              </div>
+              <div>
+                {{ table[module][x - 1][y - 1].classroom }}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    </content>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -60,87 +64,127 @@ import * as Vuex from "vuex";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  chDetail(): void {
-    //TODO nとmを取り出す
-    this.$store.commit("visible/chDetail", { bool: true });
+  popUp(x: number, y: number) {
+    if (
+      this.table === null ||
+      this.table[this.module] === null ||
+      this.table[this.module][x - 1][y - 1].number === ""
+    ) {
+      this.chAdd();
+    } else {
+      this.chDetail(x, y);
+    }
+  }
+  chDetail(x: number, y: number) {
+    console.log(x, y); //TODO
+    this.$store.commit("visible/chDetail", { display: true });
+  }
+  chAdd() {
+    this.$store.commit("visible/chAdd", { display: true });
   }
 
-  /** data() */
-
-  get data() {
+  get table() {
     return this.$store.getters["old_api/data"];
   }
-
-  /** 現在の学期 */
-  get module() : number {
+  get module() {
     return this.$store.getters["table/moduleNum"];
   }
+  get visible() {
+    return this.$store.getters["visible/table"].display;
+  }
+  get moveDirection() {
+    return this.$store.getters["visible/table"].move;
+  }
 
-  /**
-   * getColor
-   * @description その授業として適切な色を返す
-   * @param 授業番号
-   */
+  /** 授業に応じたテーマ色を返す */
   getColor(number: string): string {
-    const char: string = number.split("")[0];
+    const char = number.split("")[0];
     switch (char) {
-      case "A": return "#DEFFF9";
-      case "B": return "#DEFFF9";
-      case "C": return "#DEFFF9";
-      case "E": return "#DEFFF9";
-      case "F": return "#DEFFF9";
-      case "G": return "#DEFFF9";
-      case "H": return "#DEFFF9";
-      case "W": return "#DEFFF9";
-      case "Y": return "#DEFFF9";
-      case "1": return "#FFEEF7";
-      case "2": return "#F0EBFF";
-      case "3": return "#FFFCEB";
-      default:  return "";
+      case 'A': return '#DEFFF9'
+      case 'B': return '#DEFFF9'
+      case 'C': return '#DEFFF9'
+      case 'E': return '#DEFFF9'
+      case 'F': return '#DEFFF9'
+      case 'G': return '#DEFFF9'
+      case 'H': return '#DEFFF9'
+      case 'W': return '#DEFFF9'
+      case 'Y': return '#DEFFF9'
+      case '1': return '#FFEEF7'
+      case '2': return '#F0EBFF'
+      case '3': return '#FFFCEB'
+      default: return ''
     }
   }
 }
 </script>
 
-<style lang="sass" scoped>
-$height: calc((100vh - 43px - 58px - 40px) / 6)
-$width: calc((100vw - 48px - 13vw) / 5)
+<style lang="scss" scoped>
+$height: calc((100vh - 15.5vh - 6vh - 12vh) / 6);
+$subject-height: calc((100vh - 58px - 62px - 37px - 12vh) / 6);
+$width: calc((100vw - 8vw - 10vw - 13vw) / 5);
 
-section
-  margin-left: 14px
-  margin-right: 14px
-  padding: 10px
-  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25)
-  border-radius: 10px
-.row
-  display: flex
-  flex-direction: row
-.column
-  display: flex
-  flex-direction: column
-div
-  color: #555555
-#time
-  width: 13vw
-  height: $height
-  font-style: normal
-  font-weight: 600
-  font-size: 11px
-  line-height: 15px
-  text-align: center
-  color: #9A9A9A
-#subject
-  width: $width
-  height: $height
-  word-break: break-all
-  font-style: normal
-  font-weight: 600
-  font-size: 9px
-  line-height: 12px
+content {
+  position: relative;
+  margin: 2vh 2vw;
+  padding: 2vh 2vw;
+  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25);
+  border-radius: 10px;
+  top: 6vh;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+div {
+  color: #555555;
+}
+#time {
+  width: calc(11vw);
+  height: $height;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.5vh;
+  line-height: 15px;
+  text-align: center;
+  color: #9a9a9a;
+  padding: 1vh 1vw;
+}
+#subject {
+  width: $width;
+  height: $height;
+  padding: 1vh 1vw;
+  word-break: break-all;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.3vh;
+  line-height: 2vh;
+  overflow: hidden;
+}
 
-/** animation */
-.fade-enter-active, .fade-leave-active
-  transition: opacity .5s
-.fade-enter, .fade-leave-to
-  opacity: 0
+/* animation */
+.slide-l-enter-active,
+.slide-l-leave-active {
+  transition: transform 0.2s ease;
+}
+.slide-l-enter {
+  transform: translateX(-100%);
+}
+.slide-l-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-r-enter-active,
+.slide-r-leave-active {
+  transition: transform 0.2s ease;
+}
+.slide-r-enter {
+  transform: translateX(100%);
+}
+.slide-r-leave-to {
+  transform: translateX(-100%);
+}
 </style>

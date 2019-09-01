@@ -1,32 +1,23 @@
 <template>
   <section class="contents">
     <transition name="bound">
-      <nav class="main" v-if="add">
-        <article style="padding: 25px">
-          <!-- <x> -->
-          <div class="svg-button" @click="chAdd()">
-            <svg
-              id="close"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z"
-                fill="#9A9A9A"
-              />
-            </svg>
-          </div>
-          <section>
-            <form>
-              <input type="text" class="input-box" />
-            </form>
+      <nav class="main" v-show="add">
+        <article>
+          <div class="svg-button material-icons" @click="chAdd()">close</div>
+          <h1 class="add-title">授業の追加</h1>
+          <section class="search-form">
+            <textarea
+              @keydown="findClassByName()"
+              v-model="numbers"
+              type="text"
+              class="form"
+            />
           </section>
-          <section
-            style="width: 100%; height: 40px; background: #00C0C0; border-radius: 7px; margin-bottom: 15px; position: relative"
-          >
+          <section class="others">
+            <p class="othercontent">CSVファイルから追加</p>
+            <p class="othercontent">手動入力で授業を作成</p>
+          </section>
+          <section class="btn">
             <span class="center" @click="asyncNumber()">時間割に追加</span>
           </section>
         </article>
@@ -43,6 +34,7 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
+import axios from "axios";
 
 @Component({
   components: {}
@@ -51,6 +43,8 @@ export default class Index extends Vue {
   $store!: Vuex.ExStore;
   // data______________________________________________________
   //
+  numbers: string = "";
+  result: {} = {};
   // props______________________________________________________
   //
   // computed______________________________________________________
@@ -61,82 +55,125 @@ export default class Index extends Vue {
   // method______________________________________________________
   //
   chAdd() {
-    this.$store.commit("visible/chAdd", { bool: false });
+    this.$store.commit("visible/chAdd", { display: false });
+  }
+  async findClassByName() {
+    if (this.numbers.length < 2) {
+      return;
+    }
+    await axios
+      .post("https://twinte.net/api", {
+        name: this.numbers
+      })
+      .then(result => {
+        this.result = result.data;
+      })
+      .catch(err => {
+        this.result = err;
+      });
   }
   async asyncNumber() {
-    this.$store.dispatch("old_api/asyncNumber", {number: ["GB11514"], module: "akiC"});
+    const moduleNum = this.$store.getters["table/moduleNum"];
+    const moduleList: string[] = [
+      "haruA",
+      "haruB",
+      "haruC",
+      "akiA",
+      "akiB",
+      "akiC"
+    ];
+    await this.$store.dispatch("old_api/asyncNumber", {
+      number: [this.numbers],
+      module: moduleList[moduleNum]
+    });
   }
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 /** 中央寄せ */
-.center
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translateY(-50%) translateX(-50%)
-  font-family: Noto Sans JP
-  font-style: normal
-  font-weight: 500
-  font-size: 16px
-  line-height: 23px
-  text-align: center
-  color: #FFFFFF
-.main
-  position: absolute
-  top: 73px
-  left: 13px
-  width: calc(100vw - 26px)
-  height: calc(100vh - 128px)
-  background: #FFFFFF
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2)
-  border-radius: 10px
-  z-index: 6
-.back
-  position: absolute
-  width: 100vw
-  height: 100vh
-  left: 0px
-  top: 0px
-  background: rgba(100, 100, 100, 0.5)
-  z-index: 5
-#close
-  float: right
+article {
+  position: relative;
+  margin: 5.7vw;
+  height: calc(80vh - 11.4vw);
+}
+.add-title {
+}
+.btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: auto;
+  width: 100%;
+  max-width: 600px;
+  height: 6vh;
+  line-height: 40px;
+  background: #00c0c0;
+  border-radius: 0.5rem;
+  bottom: 2vh;
+}
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  font-family: Noto Sans JP;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
+  color: #ffffff;
+}
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 92vw;
+  height: 80vh;
+  background: #ffffff;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0.6rem;
+  z-index: 6;
+}
+.back {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
+}
+#close {
+  float: right;
+  font-size: 40px;
+}
+.search-form {
+  width: 90%;
+  max-width: 600px;
+  height: 6vh;
+  margin: 0 auto;
+  line-height: 40px;
+  border-radius: 0.5rem;
+  position: relative;
+}
 
-.svg-button
-  border: none
-  background: none
-  cursor: pointer
-  &:focus
-    outline: 2px dashed #17171D
-  &:hover
-    svg
-      transform: scale(1.1)
-  svg
-    outline: none
-    transition: transform 0.3s liner
+.form {
+  height: 5vh;
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;
+  border: 1px solid #adadad;
+  color: #4a5568;
+  border-radius: 3vh;
+  position: relative;
+}
 
-.input-box
-  margin-top: 14px
-  margin-bottom: 14px
-  width: 100%
-  font-size: 1.3em
-  font-family: Arial, sans-serif
-  color: #aaa
-  border: solid 1px #ccc
-  -webkit-border-radius: 3px
-  -moz-border-radius: 3px
-  border-radius: 3px
-
-/** animation */
-.bound-enter-active, .bound-leave-active
-  transition: all .2s ease
-.bound-enter, .bound-leave-to
-  transform: scale(.5)
-  opacity: 0
-.fade-enter-active, .fade-leave-active
-  transition: all .3s ease
-.fade-enter, .fade-leave-to
-  opacity: 0
+.form:focus {
+  border-color: #9f7aea;
+  outline: 0;
+  background-color: #fff;
+}
 </style>

@@ -46,48 +46,57 @@ export default class Index extends Vue {
 }
 </script>
 
-<style lang="sass" scoped>
-$main-color: white
+<style lang="scss" scoped>
+$main-color: white;
 
-.main
-  border: none
-  position: relative
-  background-color: $main-color
-  overflow: hidden
-  cursor: pointer
-  transition: background-color 0.2s
-  &:hove
-    background-color: darken($main-color, 10%)
-    .labe
-      transform: translateY(1px)
-  &:focu
-    outline: none
-  &:disable
-    background-color: darken($main-color, 10%)
-    .labe
-      opacity: 0.5
-      transform: translateY(1px)
-.label
-  display: block
-  pointer-events: none
-  color: white
-  transform: translateY(0)
-  transition: transform 0.2s
-.ripple
-  z-index: 9999
-  display: block
-  width: 20px
-  height: 20px
-  border-radius: 10px
-  position: absolute
-  top: 0
-  left: 0
-  pointer-events: none
-  background-color: rgba(darken($main-color, 10%), 1)
-  opacity: 0
-  transform: translate(-50%, -50%) scale(10)
-  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out
-  &-enter
-    opacity: 1
-    transform: translate(-50%, -50%) scale(0)
+.main {
+  border: none;
+  position: relative;
+  background-color: $main-color;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  &:hove {
+    background-color: darken($main-color, 10%);
+  }
+    .labe {
+      transform: translateY(1px);
+    }
+  &:focu {
+    outline: none;
+  }
+  &:disable {
+    background-color: darken($main-color, 10%);
+  }
+    .labe {
+      opacity: 0.5;
+      transform: translateY(1px);
+    }
+}
+.label {
+  display: block;
+  pointer-events: none;
+  color: white;
+  transform: translateY(0);
+  transition: transform 0.2s;
+}
+.ripple {
+  z-index: 9999;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-color: rgba(darken($main-color, 10%), 1);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(10);
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  &-enter {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
 </style>
