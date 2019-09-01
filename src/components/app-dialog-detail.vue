@@ -218,7 +218,7 @@ h2 {
   transform: translateX(-50%);
   width: 93%;
   height: 12.5vh;
-  border: 1px solid #dddddd;
+  border: 0.2vh solid #dddddd;
   box-sizing: border-box;
   border-radius: 8px;
 }
