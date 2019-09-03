@@ -44,7 +44,7 @@ export default class Index extends Vue {
 
     if (process.env.NODE_ENV !== 'production') {
       console.info(`mode: ${process.env.NODE_ENV}`);
-      this.$store.dispatch("old_api/dev");
+      this.$store.dispatch("old_api/login");
     }
 
   }

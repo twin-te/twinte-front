@@ -6,7 +6,8 @@
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
         <div class="material-icons close-btn" @click="chDrawer()">close</div>
-        <div class="login-btn">ログイン</div>
+        <div class="login-btn" @click="logout()" v-if='isLogin'>ログアウト</div>
+        <div class="login-btn" @click="login()" v-else>ログイン</div>
         <section class="menu-contents-wrap">
           <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
             <span class="material-icons menu-icon">{{ l.icon }}</span>
@@ -35,8 +36,20 @@ export default class Index extends Vue {
     return this.$store.getters["visible/drawer"];
   }
 
+  get isLogin(): boolean {
+    return this.$store.getters["old_api/isLogin"];
+  }
+
   chDrawer() {
     this.$store.commit("visible/chDrawer", { display: false });
+  }
+
+  login() {
+    this.$store.dispatch("old_api/login");
+  }
+
+  logout() {
+    this.$store.dispatch("old_api/logout");
   }
 
   list: any = [

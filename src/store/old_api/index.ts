@@ -21,6 +21,9 @@ export const getters: Getters<S, G> = {
   },
   list_number(state) {
     return state.list_number;
+  },
+  isLogin(state) {
+    return state.data !== null;
   }
 };
 // ______________________________________________________
@@ -40,6 +43,11 @@ export const mutations: Mutations<S, M> = {
     localStorage.setItem("table", JSON.stringify(state.data));
   },
   updateTableAll(state, payload) {
+    if (payload.data === null) {
+      state.data = null;
+      localStorage.removeItem("table");
+      return;
+    }
     state.data = payload.data;
     localStorage.setItem("table", JSON.stringify(state.data));
   },
@@ -57,6 +65,11 @@ export const mutations: Mutations<S, M> = {
     localStorage.setItem("number", JSON.stringify(state.list_number));
   },
   pushNumberAll(state, payload) {
+    if (payload.data === null) {
+      state.list_number = [];
+      localStorage.removeItem("number");
+      return;
+    }
     state.list_number = payload.data;
     localStorage.setItem("number", JSON.stringify(state.list_number));
   }
@@ -93,7 +106,11 @@ export const actions: Actions<S, A, G, M> = {
       console.error(error);
     }
   },
-  dev(ctx) {
+  login(ctx) {
     ctx.commit("updateTableAll", { data: tableData });
+  },
+  logout(ctx) {
+    ctx.commit("updateTableAll", { data: null });
+    ctx.commit("pushNumberAll", { data: null });
   }
 };
