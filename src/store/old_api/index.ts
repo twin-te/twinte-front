@@ -106,6 +106,17 @@ export const actions: Actions<S, A, G, M> = {
       console.error(error);
     }
   },
+  async asyncCSV(ctx, payload) {
+    ctx.commit('pushNumberAll', { data: [] });
+    await axios
+      .post('https://twinte.net/api', payload.formData, payload.config)
+      .then(function (items) {
+        ctx.commit('updateTable', { module: payload.module, data: items.data })
+      })
+      .catch(function (err) {
+        console.error(err)
+      })
+  },
   login(ctx) {
     ctx.commit("updateTableAll", { data: tableData });
   },

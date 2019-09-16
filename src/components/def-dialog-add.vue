@@ -15,11 +15,12 @@
               type="text"
               class="form"
             />
-            <span class="material-icons search-btn">search</span>
+            <!-- <span class="material-icons search-btn">search</span> -->
           </form>
           <section class="others">
-            <p class="other-content">CSVファイルから追加</p>
-            <p class="other-content">手動入力で授業を作成</p>
+            <p class="other-content">CSVファイルから追加<small>*{{ moduleMessage }}</small></p>
+            <input class="other-content" type='file' name='file' id="fileElem" @change="onFileChange">
+            <!-- <p class="other-content">手動入力で授業を作成</p> -->
           </section>
           <section class="register-btn" @click="asyncNumber()">
             時間割に追加
@@ -45,23 +46,35 @@ import axios from "axios";
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
-  // data______________________________________________________
-  //
+
   numbers: string = "";
   result: {} = {};
-  // props______________________________________________________
-  //
-  // computed______________________________________________________
-  //
+  uploadFile: any = "";
+  moduleList: string[] = [
+    "haruA",
+    "haruB",
+    "haruC",
+    "akiA",
+    "akiB",
+    "akiC"
+  ];
+  get moduleMessage(): string {
+    const list:string[] = ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"];
+    const i: number = list.indexOf(this.$store.getters["table/module"]);
+    const li: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
+    return `${li[i]}のCSVファイルを入力してください`
+  }
   get add() {
     return this.$store.getters["visible/add"];
   }
-  // method______________________________________________________
-  //
-  chAdd() {
+  get moduleNum() {
+    return this.$store.getters["table/moduleNum"];
+  }
+
+  chAdd = () => {
     this.$store.commit("visible/chAdd", { display: false });
   }
-  async findClassByName() {
+  findClassByName = async () => {
     if (this.numbers.length < 2) {
       return;
     }
@@ -76,19 +89,26 @@ export default class Index extends Vue {
         this.result = err;
       });
   }
-  async asyncNumber() {
-    const moduleNum = this.$store.getters["table/moduleNum"];
-    const moduleList: string[] = [
-      "haruA",
-      "haruB",
-      "haruC",
-      "akiA",
-      "akiB",
-      "akiC"
-    ];
+  onFileChange = async (e: any) => {
+    e.preventDefault();
+    const files = e.target.files;
+    this.uploadFile = files[0];
+    if (this.uploadFile === null) {
+      console.log('ファイルが入力されてません');
+    } else {
+      const formData = new FormData();
+      formData.append('file_upload', this.uploadFile);
+      const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+      };
+      this.$store.dispatch('old_api/asyncCSV', {formData, config, module: this.moduleList[this.moduleNum]});
+      this.$store.commit('visible/chAdd', { display: false });
+    }
+  }
+  asyncNumber = async () => {
     await this.$store.dispatch("old_api/asyncNumber", {
       number: [this.numbers],
-      module: moduleList[moduleNum]
+      module: this.moduleList[this.moduleNum]
     });
   }
 }
@@ -212,6 +232,9 @@ article {
   bottom: 0;
   color: #fff;
   text-align: center;
+}
+.register-btn:hover, .search-btn:hover {
+  background-color: #05dbdb;
 }
 @media screen and (min-width: 1300px) {
   .register-btn {

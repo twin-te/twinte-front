@@ -46,11 +46,13 @@ export interface RM {
 //
 export interface A {
   asyncNumber: { number: string[]; module: string };
+  asyncCSV: { formData: any, config: any, module: string };
   login: null;
   logout: null;
 }
 export interface RA {
   "old_api/asyncNumber": A["asyncNumber"];
+  "old_api/asyncCSV": A["asyncCSV"];
   "old_api/login": A["login"];
   "old_api/logout": A["logout"];
 }

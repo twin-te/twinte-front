@@ -42,6 +42,11 @@ export default class Index extends Vue {
       this.$store.commit("old_api/pushNumberAll", { data: json })
     }
 
+    const module = localStorage.getItem('module')
+    if (module) {
+      this.$store.commit("table/setModule", { module });
+    }
+
     if (process.env.NODE_ENV !== 'production') {
       console.info(`mode: ${process.env.NODE_ENV}`);
       this.$store.dispatch("old_api/login");

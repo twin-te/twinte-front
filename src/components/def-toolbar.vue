@@ -4,12 +4,12 @@
   <div>
     <nav class="top">
       <!-- ⚙ -->
-      <span
+      <!-- <span
         id="i_settings"
         class="material-icons svg-button my-2 setting-btn"
         @click="chDrawer()"
         >settings</span
-      >
+      > -->
       <!-- Twin:te -->
       <img
         src="~/assets/img/title-logo.png"
@@ -50,7 +50,7 @@ export default class Index extends Vue {
   position: relative;
   display: flex;
   width: 100vw;
-  height: 8vh;
+  height: calc(8vh - 2px);
   line-height: 8vh;
   background-color: #00c0c0;
   font-size: 2em;
