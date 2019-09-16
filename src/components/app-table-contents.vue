@@ -86,7 +86,7 @@ export default class Index extends Vue {
     }
   }
   chDetail(x: number, y: number) {
-    console.log(x, y); //TODO
+    this.$store.commit("table/setClick", { x, y });
     this.$store.commit("visible/chDetail", { display: true });
   }
   chAdd() {
@@ -131,7 +131,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $subject-height: calc((100vh - 58px - 62px - 37px - 12vh) / 6);
-$width: calc((100vw - 8vw - 10vw - 13vw) / 5);
+$width: calc((100vw - 8vw /**外枠 */ - 11vw /** 時限 */ - 12vw/** padding */) / 5);
 
 content {
   position: relative;
@@ -153,7 +153,7 @@ div {
   color: #555555;
 }
 #time {
-  width: calc(11vw);
+  width: 11vw;
   height: $height;
   font-style: normal;
   font-weight: 500;
@@ -161,7 +161,7 @@ div {
   line-height: 3vh;
   text-align: center;
   color: #9a9a9a;
-  padding: 1vmin 1vw;
+  padding: 1vw 1vw;
 }
 
 .column p {

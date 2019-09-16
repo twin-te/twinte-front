@@ -4,7 +4,8 @@ import { S, G, M, A } from "./type";
 //
 export const state = (): S => ({
   moduleList: ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"],
-  module: "SpringA"
+  module: "SpringA",
+  click: null,
 });
 // ______________________________________________________
 //
@@ -40,6 +41,12 @@ export const getters: Getters<S, G> = {
    */
   moduleNum(state) {
     return state.moduleList.indexOf(state.module);
+  },
+  click(state) {
+    if (state.click === null) {
+      return {x: 1, y: 1}
+    }
+    return state.click;
   }
 };
 // ______________________________________________________
@@ -48,6 +55,10 @@ export const getters: Getters<S, G> = {
  * 同期的なstate値の更新
  */
 export const mutations: Mutations<S, M> = {
+  setModule(state, payload) {
+    state.module = payload.module;
+    localStorage.setItem("module", state.module);
+  },
   /**
    * @description 前の学期を返す
    * @param state なし
@@ -56,6 +67,7 @@ export const mutations: Mutations<S, M> = {
     //TODO getterの値を使いたかった
     const num: number = state.moduleList.indexOf(state.module) - 1;
     state.module = num === -1 ? "FallC" : state.moduleList[num];
+    localStorage.setItem("module", state.module);
   },
 
   /**
@@ -66,6 +78,10 @@ export const mutations: Mutations<S, M> = {
     //TODO getterの値を使いたかった
     const num: number = state.moduleList.indexOf(state.module) + 1;
     state.module = num === 6 ? "SpringA" : state.moduleList[num];
+    localStorage.setItem("module", state.module);
+  },
+  setClick(state, payload) {
+    state.click = { x: payload.x, y: payload.y };
   }
 };
 // ______________________________________________________

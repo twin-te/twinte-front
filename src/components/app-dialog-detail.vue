@@ -78,21 +78,27 @@
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
 
 @Component
 export default class Index extends Vue {
-  //TODO implement these in store
-  table: any = {
-    number: "1A18011",
-    name: "ネットワーク社会を支える情報技術入門I",
-    season: "春AB",
-    time: "月1",
-    classroom: "3A306",
-    teacher: "朴 泰祐"
-  };
+  $store!: Vuex.ExStore;
+  
   atmnb: string[] = ["出席", "欠席", "遅刻"];
-  count: number[] = [2, 2, 2];
+  count: number[] = [0, 0, 0];
 
+  get table() {
+    let num = this.$store.getters["table/click"];
+    
+    const list:string[] = ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"];
+    const i: number = list.indexOf(this.$store.getters["table/module"]);
+
+    if (this.$store.getters["old_api/data"] === null) {
+      return {name: null, number: null, teacher: null, season: null, time: null, classroom: null};
+    } else {
+      return this.$store.getters["old_api/data"][i][num.x - 1][num.y - 1];
+    }
+  }
   get dialog(): boolean {
     return this.$store.getters["visible/detail"];
   }
