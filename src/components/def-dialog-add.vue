@@ -3,22 +3,26 @@
     <transition name="bound">
       <nav class="main" v-show="add">
         <article>
-          <div class="svg-button material-icons" @click="chAdd()">close</div>
-          <h1 class="add-title">授業の追加</h1>
-          <section class="search-form">
-            <textarea
+          <div class="svg-button material-icons close-btn" @click="chAdd()">
+            close
+          </div>
+          <h3 class="add-title">授業の追加</h3>
+          <p class="content">科目名・授業番号で検索</p>
+          <form class="search-form">
+            <input
               @keydown="findClassByName()"
               v-model="numbers"
               type="text"
               class="form"
             />
-          </section>
+            <span class="material-icons search-btn">search</span>
+          </form>
           <section class="others">
-            <p class="othercontent">CSVファイルから追加</p>
-            <p class="othercontent">手動入力で授業を作成</p>
+            <p class="other-content">CSVファイルから追加</p>
+            <p class="other-content">手動入力で授業を作成</p>
           </section>
-          <section class="btn">
-            <span class="center" @click="asyncNumber()">時間割に追加</span>
+          <section class="register-btn" @click="asyncNumber()">
+            時間割に追加
           </section>
         </article>
       </nav>
@@ -91,52 +95,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-/** 中央寄せ */
-article {
-  position: relative;
-  margin: 5.7vw;
-  height: calc(80vh - 11.4vw);
-}
-.add-title {
-}
-.btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: auto;
-  width: 100%;
-  max-width: 600px;
-  height: 6vh;
-  line-height: 40px;
-  background: #00c0c0;
-  border-radius: 0.5rem;
-  bottom: 2vh;
-}
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-  font-family: Noto Sans JP;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 23px;
-  text-align: center;
-  color: #ffffff;
-}
-.main {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  width: 92vw;
-  height: 80vh;
-  background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 0.6rem;
-  z-index: 6;
-}
 .back {
   position: absolute;
   width: 100vw;
@@ -146,34 +104,118 @@ article {
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
 }
-#close {
-  float: right;
-  font-size: 40px;
+
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 92vw;
+  max-width: 700px;
+  height: 80vh;
+  background: #ffffff;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1vh;
+  z-index: 6;
 }
-.search-form {
-  width: 90%;
-  max-width: 600px;
-  height: 6vh;
-  margin: 0 auto;
-  line-height: 40px;
-  border-radius: 0.5rem;
+@media screen and (min-width: 1300px) {
+  .main {
+    max-width: 1000px;
+  }
+}
+article {
   position: relative;
+  margin: 5vh;
+  height: calc(80vh - 10vh);
 }
 
+.close-btn {
+  position: absolute;
+  top: -1.5vh;
+  right: -1.5vh;
+  font-size: 4vh;
+  color: #717171;
+}
+.add-title {
+  position: absolute;
+  top: -0.8vh;
+  font-size: 2.9vh;
+  color: #00c0c0;
+  font-weight: 500;
+}
+.content {
+  position: absolute;
+  top: 5.9vh;
+  font-size: 2vh;
+  color: #adadad;
+  margin-left: 1.5vh;
+}
+.search-form {
+  position: absolute;
+  width: calc(100% - 3vh);
+  height: 4.5vh;
+  top: 11.6vh;
+  margin: 0 1.5vh;
+}
 .form {
-  height: 5vh;
-  width: 100%;
-  max-width: 600px;
+  height: 100%;
+  width: 98%;
+  max-width: 1000px;
   background-color: #fff;
   border: 1px solid #adadad;
   color: #4a5568;
   border-radius: 3vh;
   position: relative;
+  padding-left: 2%;
 }
-
+.search-btn {
+  position: absolute;
+  top: 0;
+  right: -0.6vh;
+  height: 5vh;
+  width: 5vh;
+  border-radius: 50% 50%;
+  background-color: #00c0c0;
+  color: #fff;
+  font-size: 3.5vh;
+  text-align: center;
+  line-height: 4.8vh;
+}
 .form:focus {
-  border-color: #9f7aea;
+  border-color: #558afa;
   outline: 0;
   background-color: #fff;
+}
+.others {
+  position: absolute;
+  bottom: 7.2vh;
+  border-top: 1px solid #adadad;
+  width: 100%;
+}
+.other-content {
+  font-size: 2vh;
+  color: #adadad;
+  margin-left: 1.5vh;
+}
+.register-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: auto;
+  width: 100%;
+  max-width: 550px;
+  font-size: 2.3vh;
+  height: 6vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  bottom: 0;
+  color: #fff;
+  text-align: center;
+}
+@media screen and (min-width: 1300px) {
+  .register-btn {
+    max-width: 1000px;
+  }
 }
 </style>
