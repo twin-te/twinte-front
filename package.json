@@ -5,16 +5,16 @@
   "author": "Twin:te <twinte.net@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "nuxt build",
-    "start": "nuxt build && nuxt start",
-    "dev": "nuxt",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts build && nuxt-ts start",
+    "dev": "nuxt-ts",
     "format": "prettier --write \"{,!(node_modules|dist|build|coverage|.nuxt|.serverless)/**/}*.{ts,json,vue,md}\"",
     "lint": "eslint ./ --ext .ts --ext .vue --ignore-path .gitignore",
     "lint:fix": "yarn lint --fix",
-    "generate": "nuxt generate"
+    "generate": "nuxt-ts generate"
   },
   "devDependencies": {
-    "@nuxt/typescript": "^2.6.3",
+    "@nuxt/typescript-build": "^0.2.8",
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.16.0",
     "eslint-plugin-prettier": "^3.1.0",
@@ -24,12 +24,13 @@
     "vue-eslint-parser": "^6.0.4"
   },
   "dependencies": {
+    "@nuxt/typescript-runtime": "^0.1.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@types/lodash": "^4.14.137",
     "axios": "^0.19.0",
     "lodash": "^4.17.15",
     "material-icons": "^0.3.1",
-    "nuxt": "^2.8.1",
+    "nuxt": "^2.9.2",
     "nuxt-property-decorator": "^2.3.0",
     "ts-node": "^8.3.0"
   }
