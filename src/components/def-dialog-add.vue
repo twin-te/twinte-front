@@ -1,0 +1,221 @@
+<template>
+  <section class="contents">
+    <transition name="bound">
+      <nav class="main" v-show="add">
+        <article>
+          <div class="svg-button material-icons close-btn" @click="chAdd()">
+            close
+          </div>
+          <h3 class="add-title">授業の追加</h3>
+          <p class="content">科目名・授業番号で検索</p>
+          <form class="search-form">
+            <input
+              @keydown="findClassByName()"
+              v-model="numbers"
+              type="text"
+              class="form"
+            />
+            <span class="material-icons search-btn">search</span>
+          </form>
+          <section class="others">
+            <p class="other-content">CSVファイルから追加</p>
+            <p class="other-content">手動入力で授業を作成</p>
+          </section>
+          <section class="register-btn" @click="asyncNumber()">
+            時間割に追加
+          </section>
+        </article>
+      </nav>
+    </transition>
+
+    <!-- 全体を暗くする -->
+    <transition name="fade">
+      <nav class="back" @click="chAdd()" v-if="add"></nav>
+    </transition>
+  </section>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
+import axios from "axios";
+
+@Component({
+  components: {}
+})
+export default class Index extends Vue {
+  $store!: Vuex.ExStore;
+  // data______________________________________________________
+  //
+  numbers: string = "";
+  result: {} = {};
+  // props______________________________________________________
+  //
+  // computed______________________________________________________
+  //
+  get add() {
+    return this.$store.getters["visible/add"];
+  }
+  // method______________________________________________________
+  //
+  chAdd() {
+    this.$store.commit("visible/chAdd", { display: false });
+  }
+  async findClassByName() {
+    if (this.numbers.length < 2) {
+      return;
+    }
+    await axios
+      .post("https://twinte.net/api", {
+        name: this.numbers
+      })
+      .then(result => {
+        this.result = result.data;
+      })
+      .catch(err => {
+        this.result = err;
+      });
+  }
+  async asyncNumber() {
+    const moduleNum = this.$store.getters["table/moduleNum"];
+    const moduleList: string[] = [
+      "haruA",
+      "haruB",
+      "haruC",
+      "akiA",
+      "akiB",
+      "akiC"
+    ];
+    await this.$store.dispatch("old_api/asyncNumber", {
+      number: [this.numbers],
+      module: moduleList[moduleNum]
+    });
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.back {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
+}
+
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 92vw;
+  max-width: 700px;
+  height: 80vh;
+  background: #ffffff;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1vh;
+  z-index: 6;
+}
+@media screen and (min-width: 1300px) {
+  .main {
+    max-width: 1000px;
+  }
+}
+article {
+  position: relative;
+  margin: 5vh;
+  height: calc(80vh - 10vh);
+}
+
+.close-btn {
+  position: absolute;
+  top: -1.5vh;
+  right: -1.5vh;
+  font-size: 4vh;
+  color: #717171;
+}
+.add-title {
+  position: absolute;
+  top: -0.8vh;
+  font-size: 2.9vh;
+  color: #00c0c0;
+  font-weight: 500;
+}
+.content {
+  position: absolute;
+  top: 5.9vh;
+  font-size: 2vh;
+  color: #adadad;
+  margin-left: 1.5vh;
+}
+.search-form {
+  position: absolute;
+  width: calc(100% - 3vh);
+  height: 4.5vh;
+  top: 11.6vh;
+  margin: 0 1.5vh;
+}
+.form {
+  height: 100%;
+  width: 98%;
+  max-width: 1000px;
+  background-color: #fff;
+  border: 1px solid #adadad;
+  color: #4a5568;
+  border-radius: 3vh;
+  position: relative;
+  padding-left: 2%;
+}
+.search-btn {
+  position: absolute;
+  top: 0;
+  right: -0.6vh;
+  height: 5vh;
+  width: 5vh;
+  border-radius: 50% 50%;
+  background-color: #00c0c0;
+  color: #fff;
+  font-size: 3.5vh;
+  text-align: center;
+  line-height: 4.8vh;
+}
+.form:focus {
+  border-color: #558afa;
+  outline: 0;
+  background-color: #fff;
+}
+.others {
+  position: absolute;
+  bottom: 7.2vh;
+  border-top: 1px solid #adadad;
+  width: 100%;
+}
+.other-content {
+  font-size: 2vh;
+  color: #adadad;
+  margin-left: 1.5vh;
+}
+.register-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: auto;
+  width: 100%;
+  max-width: 550px;
+  font-size: 2.3vh;
+  height: 6vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  bottom: 0;
+  color: #fff;
+  text-align: center;
+}
+@media screen and (min-width: 1300px) {
+  .register-btn {
+    max-width: 1000px;
+  }
+}
+</style>

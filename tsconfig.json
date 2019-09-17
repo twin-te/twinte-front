@@ -10,6 +10,7 @@
     "sourceMap": true,
     "noEmit": true,
     "baseUrl": ".",
+    "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -20,6 +21,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "resolveJsonModule": true,
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"]
