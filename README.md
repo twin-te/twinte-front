@@ -80,9 +80,7 @@ ripple: タップしたときのエフェクト
 
 [components/ui-](src/components) : components 内で用いるコンポネントをまとめたもの
 
-[components/ui/nav-list.vue](src/components/ui-nav-list.vue) : リスト型の表示を nav.vue で用いる
-
-[components/ui/ripple.vue](src/components/ui-ripple.vue) : これで囲うと ripple になる
+[components/ui/ripple.vue](src/components/ui-ripple.vue) : これで囲うと ripple になる（非推奨）
 
 ## 次やること
 

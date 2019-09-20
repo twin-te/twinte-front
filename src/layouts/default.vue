@@ -42,15 +42,17 @@ export default class Index extends Vue {
       this.$store.commit("old_api/pushNumberAll", { data: json })
     }
 
-    const module = localStorage.getItem('module')
+    const module = localStorage.getItem('module') // 前回見ていた学期
     if (module) {
       this.$store.commit("table/setModule", { module });
     }
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.info(`mode: ${process.env.NODE_ENV}`);
-      this.$store.dispatch("old_api/login");
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   console.info(`mode: ${process.env.NODE_ENV}`);
+    //   console.info(`you are: ${this.$nuxt.$route.path}`);
+    //   this.$store.dispatch("old_api/login");
+    //   this.$store.dispatch("old_api/assignObj");
+    // }
 
   }
 }

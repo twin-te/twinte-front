@@ -7,7 +7,10 @@
         "season": "春AB",
         "time": "月1",
         "classroom": "3A306",
-        "teacher": "朴 泰祐"
+        "teacher": "朴 泰祐",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1B17031",
@@ -15,7 +18,10 @@
         "season": "春AB",
         "time": "月2",
         "classroom": "3A204",
-        "teacher": "生稲 史彦,高野 祐一"
+        "teacher": "生稲 史彦,高野 祐一",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -23,7 +29,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31CH052",
@@ -31,7 +40,10 @@
         "season": "春AB",
         "time": "月4",
         "classroom": "CA509",
-        "teacher": "スタウト マイケル デンリー フランシス"
+        "teacher": "スタウト マイケル デンリー フランシス",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -39,7 +51,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -47,7 +62,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -57,7 +75,10 @@
         "season": "春AB",
         "time": "火1,2",
         "classroom": "3B202",
-        "teacher": "建部 修見,保國 惠一"
+        "teacher": "建部 修見,保國 惠一",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10114",
@@ -65,7 +86,10 @@
         "season": "春AB",
         "time": "火1,2",
         "classroom": "3B202",
-        "teacher": "建部 修見,保國 惠一"
+        "teacher": "建部 修見,保國 惠一",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "2133143",
@@ -73,7 +97,10 @@
         "season": "春AB",
         "time": "火3",
         "classroom": "",
-        "teacher": "齊藤 武利"
+        "teacher": "齊藤 武利",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -81,7 +108,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10615",
@@ -89,7 +119,10 @@
         "season": "春AB",
         "time": "火5,6\n金2",
         "classroom": "3A416",
-        "teacher": "建部 修見,早瀬 康裕"
+        "teacher": "建部 修見,早瀬 康裕",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10615",
@@ -97,7 +130,10 @@
         "season": "春AB",
         "time": "火5,6\n金2",
         "classroom": "3A416",
-        "teacher": "建部 修見,早瀬 康裕"
+        "teacher": "建部 修見,早瀬 康裕",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -107,7 +143,10 @@
         "season": "春AB",
         "time": "水1,2",
         "classroom": "3A203",
-        "teacher": "古川 宏"
+        "teacher": "古川 宏",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10314",
@@ -115,7 +154,10 @@
         "season": "春AB",
         "time": "水1,2",
         "classroom": "3A203",
-        "teacher": "古川 宏"
+        "teacher": "古川 宏",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -123,7 +165,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -131,7 +176,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB00231",
@@ -139,7 +187,10 @@
         "season": "春ABC",
         "time": "水5",
         "classroom": "3A402",
-        "teacher": "中村 潤児"
+        "teacher": "中村 潤児",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -147,7 +198,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -157,7 +211,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1118102",
@@ -165,7 +222,10 @@
         "season": "春AB",
         "time": "木2",
         "classroom": "3A213",
-        "teacher": "古川 宏"
+        "teacher": "古川 宏",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -173,7 +233,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31AH052",
@@ -181,7 +244,10 @@
         "season": "春AB",
         "time": "木4",
         "classroom": "CA304",
-        "teacher": "長谷部 郁子"
+        "teacher": "長谷部 郁子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -189,7 +255,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -197,7 +266,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -207,7 +279,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10615",
@@ -215,7 +290,10 @@
         "season": "春AB",
         "time": "火5,6\n金2",
         "classroom": "3A416",
-        "teacher": "建部 修見,早瀬 康裕"
+        "teacher": "建部 修見,早瀬 康裕",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB11214",
@@ -223,7 +301,10 @@
         "season": "春AB",
         "time": "金3,4",
         "classroom": "3A416",
-        "teacher": "合原 一究,滝沢 穂高"
+        "teacher": "合原 一究,滝沢 穂高",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB11214",
@@ -231,7 +312,10 @@
         "season": "春AB",
         "time": "金3,4",
         "classroom": "3A416",
-        "teacher": "合原 一究,滝沢 穂高"
+        "teacher": "合原 一究,滝沢 穂高",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31BH052",
@@ -239,7 +323,10 @@
         "season": "春AB",
         "time": "金5",
         "classroom": "1B208",
-        "teacher": "清水 知子"
+        "teacher": "清水 知子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -247,7 +334,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ]
   ],
@@ -259,7 +349,10 @@
         "season": "春AB",
         "time": "月1",
         "classroom": "3A306",
-        "teacher": "朴 泰祐"
+        "teacher": "朴 泰祐",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1B17031",
@@ -267,7 +360,10 @@
         "season": "春AB",
         "time": "月2",
         "classroom": "3A204",
-        "teacher": "生稲 史彦,高野 祐一"
+        "teacher": "生稲 史彦,高野 祐一",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -275,7 +371,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31CH052",
@@ -283,7 +382,10 @@
         "season": "春AB",
         "time": "月4",
         "classroom": "CA509",
-        "teacher": "スタウト マイケル デンリー フランシス"
+        "teacher": "スタウト マイケル デンリー フランシス",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -291,7 +393,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -299,7 +404,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -309,7 +417,10 @@
         "season": "春AB",
         "time": "火1,2",
         "classroom": "3B202",
-        "teacher": "建部 修見,保國 惠一"
+        "teacher": "建部 修見,保國 惠一",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10114",
@@ -317,7 +428,10 @@
         "season": "春AB",
         "time": "火1,2",
         "classroom": "3B202",
-        "teacher": "建部 修見,保國 惠一"
+        "teacher": "建部 修見,保國 惠一",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "2133143",
@@ -325,7 +439,10 @@
         "season": "春AB",
         "time": "火3",
         "classroom": "",
-        "teacher": "齊藤 武利"
+        "teacher": "齊藤 武利",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -333,7 +450,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10615",
@@ -341,7 +461,10 @@
         "season": "春AB",
         "time": "火5,6\n金2",
         "classroom": "3A416",
-        "teacher": "建部 修見,早瀬 康裕"
+        "teacher": "建部 修見,早瀬 康裕",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10615",
@@ -349,7 +472,10 @@
         "season": "春AB",
         "time": "火5,6\n金2",
         "classroom": "3A416",
-        "teacher": "建部 修見,早瀬 康裕"
+        "teacher": "建部 修見,早瀬 康裕",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -359,7 +485,10 @@
         "season": "春AB",
         "time": "水1,2",
         "classroom": "3A203",
-        "teacher": "古川 宏"
+        "teacher": "古川 宏",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10314",
@@ -367,7 +496,10 @@
         "season": "春AB",
         "time": "水1,2",
         "classroom": "3A203",
-        "teacher": "古川 宏"
+        "teacher": "古川 宏",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -375,7 +507,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -383,7 +518,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB00231",
@@ -391,7 +529,10 @@
         "season": "春ABC",
         "time": "水5",
         "classroom": "3A402",
-        "teacher": "中村 潤児"
+        "teacher": "中村 潤児",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -399,7 +540,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -409,7 +553,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1118102",
@@ -417,7 +564,10 @@
         "season": "春AB",
         "time": "木2",
         "classroom": "3A213",
-        "teacher": "古川 宏"
+        "teacher": "古川 宏",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -425,7 +575,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31AH052",
@@ -433,7 +586,10 @@
         "season": "春AB",
         "time": "木4",
         "classroom": "CA304",
-        "teacher": "長谷部 郁子"
+        "teacher": "長谷部 郁子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -441,7 +597,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -449,7 +608,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -459,7 +621,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10615",
@@ -467,7 +632,10 @@
         "season": "春AB",
         "time": "火5,6\n金2",
         "classroom": "3A416",
-        "teacher": "建部 修見,早瀬 康裕"
+        "teacher": "建部 修見,早瀬 康裕",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB11214",
@@ -475,7 +643,10 @@
         "season": "春AB",
         "time": "金3,4",
         "classroom": "3A416",
-        "teacher": "合原 一究,滝沢 穂高"
+        "teacher": "合原 一究,滝沢 穂高",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB11214",
@@ -483,7 +654,10 @@
         "season": "春AB",
         "time": "金3,4",
         "classroom": "3A416",
-        "teacher": "合原 一究,滝沢 穂高"
+        "teacher": "合原 一究,滝沢 穂高",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31BH052",
@@ -491,7 +665,10 @@
         "season": "春AB",
         "time": "金5",
         "classroom": "1B208",
-        "teacher": "清水 知子"
+        "teacher": "清水 知子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -499,7 +676,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ]
   ],
@@ -511,7 +691,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -519,7 +702,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -527,7 +713,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -535,7 +724,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -543,7 +735,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -551,7 +746,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -561,7 +759,10 @@
         "season": "春C",
         "time": "火・木1,2\n金3,4",
         "classroom": "3A403",
-        "teacher": "滝沢,保國,山際 他"
+        "teacher": "滝沢,保國,山際 他",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10981",
@@ -569,7 +770,10 @@
         "season": "春C",
         "time": "火・木1,2\n金3,4",
         "classroom": "3A403",
-        "teacher": "滝沢,保國,山際 他"
+        "teacher": "滝沢,保國,山際 他",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10664",
@@ -577,7 +781,10 @@
         "season": "春C",
         "time": "火3-5",
         "classroom": "3A403",
-        "teacher": "前田 敦司"
+        "teacher": "前田 敦司",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10664",
@@ -585,7 +792,10 @@
         "season": "春C",
         "time": "火3-5",
         "classroom": "3A403",
-        "teacher": "前田 敦司"
+        "teacher": "前田 敦司",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10664",
@@ -593,7 +803,10 @@
         "season": "春C",
         "time": "火3-5",
         "classroom": "3A403",
-        "teacher": "前田 敦司"
+        "teacher": "前田 敦司",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -601,7 +814,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -611,7 +827,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -619,7 +838,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -627,7 +849,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -635,7 +860,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB00231",
@@ -643,7 +871,10 @@
         "season": "春ABC",
         "time": "水5",
         "classroom": "3A402",
-        "teacher": "中村 潤児"
+        "teacher": "中村 潤児",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -651,7 +882,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -661,7 +895,10 @@
         "season": "春C",
         "time": "火・木1,2\n金3,4",
         "classroom": "3A403",
-        "teacher": "滝沢,保國,山際 他"
+        "teacher": "滝沢,保國,山際 他",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10981",
@@ -669,7 +906,10 @@
         "season": "春C",
         "time": "火・木1,2\n金3,4",
         "classroom": "3A403",
-        "teacher": "滝沢,保國,山際 他"
+        "teacher": "滝沢,保國,山際 他",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB11814",
@@ -677,7 +917,10 @@
         "season": "春C",
         "time": "木3,4",
         "classroom": "3A202",
-        "teacher": "櫻井 鉄也,多田野 寛人,今倉 暁"
+        "teacher": "櫻井 鉄也,多田野 寛人,今倉 暁",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB11814",
@@ -685,7 +928,10 @@
         "season": "春C",
         "time": "木3,4",
         "classroom": "3A202",
-        "teacher": "櫻井 鉄也,多田野 寛人,今倉 暁"
+        "teacher": "櫻井 鉄也,多田野 寛人,今倉 暁",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -693,7 +939,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -701,7 +950,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -711,7 +963,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -719,7 +974,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10981",
@@ -727,7 +985,10 @@
         "season": "春C",
         "time": "火・木1,2\n金3,4",
         "classroom": "3A403",
-        "teacher": "滝沢,保國,山際 他"
+        "teacher": "滝沢,保國,山際 他",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10981",
@@ -735,7 +996,10 @@
         "season": "春C",
         "time": "火・木1,2\n金3,4",
         "classroom": "3A403",
-        "teacher": "滝沢,保國,山際 他"
+        "teacher": "滝沢,保國,山際 他",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -743,7 +1007,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -751,7 +1018,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ]
   ],
@@ -763,7 +1033,10 @@
         "season": "秋AB",
         "time": "月1",
         "classroom": "3A304",
-        "teacher": "磯辺 智範"
+        "teacher": "磯辺 智範",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1A12021",
@@ -771,7 +1044,10 @@
         "season": "秋AB",
         "time": "月2",
         "classroom": "3A403",
-        "teacher": "坂井 公"
+        "teacher": "坂井 公",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -779,7 +1055,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31GH052",
@@ -787,7 +1066,10 @@
         "season": "秋ABC",
         "time": "月4",
         "classroom": "CA509",
-        "teacher": "スタウト マイケル デンリー フランシス"
+        "teacher": "スタウト マイケル デンリー フランシス",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -795,7 +1077,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -803,7 +1088,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -813,7 +1101,10 @@
         "season": "秋AB",
         "time": "火1,2",
         "classroom": "ユニオン講義室",
-        "teacher": "石井 夏生利"
+        "teacher": "石井 夏生利",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GA10101",
@@ -821,7 +1112,10 @@
         "season": "秋AB",
         "time": "火1,2",
         "classroom": "ユニオン講義室",
-        "teacher": "石井 夏生利"
+        "teacher": "石井 夏生利",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "2116153",
@@ -829,7 +1123,10 @@
         "season": "秋AB",
         "time": "火3",
         "classroom": "陸上競技場",
-        "teacher": "榎本 靖士"
+        "teacher": "榎本 靖士",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10684",
@@ -837,7 +1134,10 @@
         "season": "秋ABC",
         "time": "火4,5",
         "classroom": "3A402",
-        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃"
+        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10684",
@@ -845,7 +1145,10 @@
         "season": "秋ABC",
         "time": "火4,5",
         "classroom": "3A402",
-        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃"
+        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -853,7 +1156,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -863,7 +1169,10 @@
         "season": "秋AB",
         "time": "水1,2",
         "classroom": "3A308",
-        "teacher": "片岸 一起"
+        "teacher": "片岸 一起",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10414",
@@ -871,7 +1180,10 @@
         "season": "秋AB",
         "time": "水1,2",
         "classroom": "3A308",
-        "teacher": "片岸 一起"
+        "teacher": "片岸 一起",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -879,7 +1191,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -887,7 +1202,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -895,7 +1213,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -903,7 +1224,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -913,7 +1237,10 @@
         "season": "秋AB",
         "time": "木1,2",
         "classroom": "3A403",
-        "teacher": "朴 泰祐,三宮 秀次"
+        "teacher": "朴 泰祐,三宮 秀次",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10804",
@@ -921,7 +1248,10 @@
         "season": "秋AB",
         "time": "木1,2",
         "classroom": "3A403",
-        "teacher": "朴 泰祐,三宮 秀次"
+        "teacher": "朴 泰祐,三宮 秀次",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -929,7 +1259,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31EH052",
@@ -937,7 +1270,10 @@
         "season": "秋ABC",
         "time": "木4",
         "classroom": "CA304",
-        "teacher": "長谷部 郁子"
+        "teacher": "長谷部 郁子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GC13101",
@@ -945,7 +1281,10 @@
         "season": "秋AB",
         "time": "木5,6",
         "classroom": "7A104,7C202",
-        "teacher": "陳 漢雄"
+        "teacher": "陳 漢雄",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GC13101",
@@ -953,7 +1292,10 @@
         "season": "秋AB",
         "time": "木5,6",
         "classroom": "7A104,7C202",
-        "teacher": "陳 漢雄"
+        "teacher": "陳 漢雄",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -963,7 +1305,10 @@
         "season": "秋AB",
         "time": "金1,2",
         "classroom": "3A209",
-        "teacher": "福井 和広"
+        "teacher": "福井 和広",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10214",
@@ -971,7 +1316,10 @@
         "season": "秋AB",
         "time": "金1,2",
         "classroom": "3A209",
-        "teacher": "福井 和広"
+        "teacher": "福井 和広",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10914",
@@ -979,7 +1327,10 @@
         "season": "秋AB",
         "time": "金3,4",
         "classroom": "3A301",
-        "teacher": "海野 広志,金澤 健治"
+        "teacher": "海野 広志,金澤 健治",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10914",
@@ -987,7 +1338,10 @@
         "season": "秋AB",
         "time": "金3,4",
         "classroom": "3A301",
-        "teacher": "海野 広志,金澤 健治"
+        "teacher": "海野 広志,金澤 健治",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31FH052",
@@ -995,7 +1349,10 @@
         "season": "秋A\n秋BC",
         "time": "金5",
         "classroom": "CA507,CA304\nCA507",
-        "teacher": "モリス ジェームズ ハリー"
+        "teacher": "モリス ジェームズ ハリー",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1003,7 +1360,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ]
   ],
@@ -1015,7 +1375,10 @@
         "season": "秋AB",
         "time": "月1",
         "classroom": "3A304",
-        "teacher": "磯辺 智範"
+        "teacher": "磯辺 智範",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1A12021",
@@ -1023,7 +1386,10 @@
         "season": "秋AB",
         "time": "月2",
         "classroom": "3A403",
-        "teacher": "坂井 公"
+        "teacher": "坂井 公",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1031,7 +1397,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31GH052",
@@ -1039,7 +1408,10 @@
         "season": "秋ABC",
         "time": "月4",
         "classroom": "CA509",
-        "teacher": "スタウト マイケル デンリー フランシス"
+        "teacher": "スタウト マイケル デンリー フランシス",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1047,7 +1419,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1055,7 +1430,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1065,7 +1443,10 @@
         "season": "秋AB",
         "time": "火1,2",
         "classroom": "ユニオン講義室",
-        "teacher": "石井 夏生利"
+        "teacher": "石井 夏生利",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GA10101",
@@ -1073,7 +1454,10 @@
         "season": "秋AB",
         "time": "火1,2",
         "classroom": "ユニオン講義室",
-        "teacher": "石井 夏生利"
+        "teacher": "石井 夏生利",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "2116153",
@@ -1081,7 +1465,10 @@
         "season": "秋AB",
         "time": "火3",
         "classroom": "陸上競技場",
-        "teacher": "榎本 靖士"
+        "teacher": "榎本 靖士",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10684",
@@ -1089,7 +1476,10 @@
         "season": "秋ABC",
         "time": "火4,5",
         "classroom": "3A402",
-        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃"
+        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10684",
@@ -1097,7 +1487,10 @@
         "season": "秋ABC",
         "time": "火4,5",
         "classroom": "3A402",
-        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃"
+        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1105,7 +1498,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1115,7 +1511,10 @@
         "season": "秋AB",
         "time": "水1,2",
         "classroom": "3A308",
-        "teacher": "片岸 一起"
+        "teacher": "片岸 一起",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10414",
@@ -1123,7 +1522,10 @@
         "season": "秋AB",
         "time": "水1,2",
         "classroom": "3A308",
-        "teacher": "片岸 一起"
+        "teacher": "片岸 一起",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1131,7 +1533,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1139,7 +1544,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1147,7 +1555,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1155,7 +1566,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1165,7 +1579,10 @@
         "season": "秋AB",
         "time": "木1,2",
         "classroom": "3A403",
-        "teacher": "朴 泰祐,三宮 秀次"
+        "teacher": "朴 泰祐,三宮 秀次",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10804",
@@ -1173,7 +1590,10 @@
         "season": "秋AB",
         "time": "木1,2",
         "classroom": "3A403",
-        "teacher": "朴 泰祐,三宮 秀次"
+        "teacher": "朴 泰祐,三宮 秀次",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1181,7 +1601,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31EH052",
@@ -1189,7 +1612,10 @@
         "season": "秋ABC",
         "time": "木4",
         "classroom": "CA304",
-        "teacher": "長谷部 郁子"
+        "teacher": "長谷部 郁子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GC13101",
@@ -1197,7 +1623,10 @@
         "season": "秋AB",
         "time": "木5,6",
         "classroom": "7A104,7C202",
-        "teacher": "陳 漢雄"
+        "teacher": "陳 漢雄",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GC13101",
@@ -1205,7 +1634,10 @@
         "season": "秋AB",
         "time": "木5,6",
         "classroom": "7A104,7C202",
-        "teacher": "陳 漢雄"
+        "teacher": "陳 漢雄",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1215,7 +1647,10 @@
         "season": "秋AB",
         "time": "金1,2",
         "classroom": "3A209",
-        "teacher": "福井 和広"
+        "teacher": "福井 和広",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10214",
@@ -1223,7 +1658,10 @@
         "season": "秋AB",
         "time": "金1,2",
         "classroom": "3A209",
-        "teacher": "福井 和広"
+        "teacher": "福井 和広",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10914",
@@ -1231,7 +1669,10 @@
         "season": "秋AB",
         "time": "金3,4",
         "classroom": "3A301",
-        "teacher": "海野 広志,金澤 健治"
+        "teacher": "海野 広志,金澤 健治",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10914",
@@ -1239,7 +1680,10 @@
         "season": "秋AB",
         "time": "金3,4",
         "classroom": "3A301",
-        "teacher": "海野 広志,金澤 健治"
+        "teacher": "海野 広志,金澤 健治",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31FH052",
@@ -1247,7 +1691,10 @@
         "season": "秋A\n秋BC",
         "time": "金5",
         "classroom": "CA507,CA304\nCA507",
-        "teacher": "モリス ジェームズ ハリー"
+        "teacher": "モリス ジェームズ ハリー",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1255,7 +1702,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ]
   ],
@@ -1267,7 +1717,10 @@
         "season": "秋C",
         "time": "月1,2",
         "classroom": "1D301-1",
-        "teacher": "宇陀 則彦,辻 慶太"
+        "teacher": "宇陀 則彦,辻 慶太",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "1220021",
@@ -1275,7 +1728,10 @@
         "season": "秋C",
         "time": "月1,2",
         "classroom": "1D301-1",
-        "teacher": "宇陀 則彦,辻 慶太"
+        "teacher": "宇陀 則彦,辻 慶太",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1283,7 +1739,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31GH052",
@@ -1291,7 +1750,10 @@
         "season": "秋ABC",
         "time": "月4",
         "classroom": "CA509",
-        "teacher": "スタウト マイケル デンリー フランシス"
+        "teacher": "スタウト マイケル デンリー フランシス",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1299,7 +1761,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1307,7 +1772,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1317,7 +1785,10 @@
         "season": "秋C",
         "time": "火・金1,2",
         "classroom": "3A308",
-        "teacher": "櫻井,庄野,二村"
+        "teacher": "櫻井,庄野,二村",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10754",
@@ -1325,7 +1796,10 @@
         "season": "秋C",
         "time": "火・金1,2",
         "classroom": "3A308",
-        "teacher": "櫻井,庄野,二村"
+        "teacher": "櫻井,庄野,二村",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1333,7 +1807,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10684",
@@ -1341,7 +1818,10 @@
         "season": "秋ABC",
         "time": "火4,5",
         "classroom": "3A402",
-        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃"
+        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10684",
@@ -1349,7 +1829,10 @@
         "season": "秋ABC",
         "time": "火4,5",
         "classroom": "3A402",
-        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃"
+        "teacher": "加藤 和彦,西出 隆志,馬場 雪乃",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1357,7 +1840,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1367,7 +1853,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1375,7 +1864,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1383,7 +1875,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1391,7 +1886,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1399,7 +1897,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1407,7 +1908,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1417,7 +1921,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1425,7 +1932,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1433,7 +1943,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31EH052",
@@ -1441,7 +1954,10 @@
         "season": "秋ABC",
         "time": "木4",
         "classroom": "CA304",
-        "teacher": "長谷部 郁子"
+        "teacher": "長谷部 郁子",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "FH63161",
@@ -1449,7 +1965,10 @@
         "season": "秋C",
         "time": "木5,6",
         "classroom": "3C102",
-        "teacher": "繁野 麻衣子,八森 正泰"
+        "teacher": "繁野 麻衣子,八森 正泰",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "FH63161",
@@ -1457,7 +1976,10 @@
         "season": "秋C",
         "time": "木5,6",
         "classroom": "3C102",
-        "teacher": "繁野 麻衣子,八森 正泰"
+        "teacher": "繁野 麻衣子,八森 正泰",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ],
     [
@@ -1467,7 +1989,10 @@
         "season": "秋C",
         "time": "火・金1,2",
         "classroom": "3A308",
-        "teacher": "櫻井,庄野,二村"
+        "teacher": "櫻井,庄野,二村",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "GB10754",
@@ -1475,7 +2000,10 @@
         "season": "秋C",
         "time": "火・金1,2",
         "classroom": "3A308",
-        "teacher": "櫻井,庄野,二村"
+        "teacher": "櫻井,庄野,二村",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1483,7 +2011,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1491,7 +2022,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "31FH052",
@@ -1499,7 +2033,10 @@
         "season": "秋A\n秋BC",
         "time": "金5",
         "classroom": "CA507,CA304\nCA507",
-        "teacher": "モリス ジェームズ ハリー"
+        "teacher": "モリス ジェームズ ハリー",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       },
       {
         "number": "",
@@ -1507,7 +2044,10 @@
         "season": "",
         "time": "",
         "classroom": "",
-        "teacher": ""
+        "teacher": "",
+        "attend": 0,
+        "absent": 0,
+        "memo": ""
       }
     ]
   ]

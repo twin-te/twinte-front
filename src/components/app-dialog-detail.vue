@@ -83,13 +83,15 @@ import * as Vuex from "vuex";
 @Component
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
-  
+
   atmnb: string[] = ["出席", "欠席", "遅刻"];
-  count: number[] = [0, 0, 0];
+  get count() {
+    return [this.table.attend, this.table.absent, 0];
+  }
 
   get table() {
     let num = this.$store.getters["table/click"];
-    
+
     const list:string[] = ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"];
     const i: number = list.indexOf(this.$store.getters["table/module"]);
 
