@@ -8,21 +8,11 @@
         id="i_settings"
         class="material-icons svg-button my-2 setting-btn"
         @click="chDrawer()"
-        >settings</span
-      >
+      >settings</span>
       <!-- Twin:te -->
-      <img
-        src="~/assets/img/title-logo.png"
-        id="title"
-        class="my-2 title-logo"
-      />
+      <img src="~/assets/img/title-logo.png" id="title" class="my-2 title-logo" alt="Twin:te" />
       <!-- + -->
-      <span
-        id="i_add"
-        class="material-icons svg-button my-2 add-btn"
-        @click="chAdd()"
-        >add</span
-      >
+      <span id="i_add" class="material-icons svg-button my-2 add-btn" @click="chAdd()">add</span>
     </nav>
     <nav class="sub"></nav>
   </div>
