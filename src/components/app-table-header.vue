@@ -1,6 +1,6 @@
 /** -> "../pages/index.vue" */
 <template>
-  <!-- 高さ 43px -->
+  <!-- 高さ  -->
   <section>
     <div id="module">
       <span class="s4 material-icons svg-button" @click="prevModule"

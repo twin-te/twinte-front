@@ -3,7 +3,7 @@
 export interface S {
   moduleList: string[];
   module: string;
-  click: {x: number, y: number} | null;
+  click: { x: number; y: number } | null;
 }
 // getters______________________________________________________
 //
@@ -12,7 +12,7 @@ export interface G {
   prevModule: string;
   nextModule: string;
   moduleNum: number;
-  click: { x: number, y: number };
+  click: { x: number; y: number };
 }
 export interface RG {
   "table/module": G["module"];
@@ -27,7 +27,7 @@ export interface M {
   setModule: { module: string };
   prevModule: void;
   nextModule: void;
-  setClick: { x: number, y: number };
+  setClick: { x: number; y: number };
 }
 export interface RM {
   "table/setModule": M["setModule"];

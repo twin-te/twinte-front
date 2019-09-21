@@ -5,7 +5,7 @@ import { S, G, M, A } from "./type";
 export const state = (): S => ({
   moduleList: ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"],
   module: "SpringA",
-  click: null,
+  click: null
 });
 // ______________________________________________________
 //
@@ -44,7 +44,7 @@ export const getters: Getters<S, G> = {
   },
   click(state) {
     if (state.click === null) {
-      return {x: 1, y: 1}
+      return { x: 0, y: 0 };
     }
     return state.click;
   }

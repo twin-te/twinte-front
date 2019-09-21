@@ -15,7 +15,11 @@ import { Component, Vue } from "nuxt-property-decorator";
 
 @Component({})
 export default class Index extends Vue {
-  today: { month: number | null, day: number | null, week: string | null } = { month: null, day: null, week: null };
+  today: { month: number | null; day: number | null; week: string | null } = {
+    month: null,
+    day: null,
+    week: null
+  };
 
   mounted() {
     const date = new Date();
@@ -24,7 +28,7 @@ export default class Index extends Vue {
       month: date.getMonth() + 1,
       day: date.getDate(),
       week: weeks[date.getDay()]
-    }
+    };
   }
 }
 </script>
@@ -32,7 +36,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 #day {
   position: absolute;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0, 0, 0, 0.226);
   border-radius: 1vh;
   height: 6.7vh;
   width: 6.5vh;
