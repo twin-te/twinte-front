@@ -67,26 +67,28 @@ import * as Vuex from "vuex";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
   timeTable = [
-    ['8:40', '9:55'],
-    ['10:10', '11:25'],
-    ['12:15', '13:30'],
-    ['13:45', '15:00'],
-    ['15:15', '16:30'],
-    ['16:45', '18:00']
-  ]
+    ["8:40", "9:55"],
+    ["10:10", "11:25"],
+    ["12:15", "13:30"],
+    ["13:45", "15:00"],
+    ["15:15", "16:30"],
+    ["16:45", "18:00"]
+  ];
   popUp(x: number, y: number) {
-    if (
-      this.table === null ||
-      this.table[this.module] === null ||
-      this.table[this.module][x - 1][y - 1].number === ""
-    ) {
-      this.chAdd();
-    } else {
-      this.chDetail(x, y);
-    }
+    setTimeout(() => {
+      if (
+        this.table === null ||
+        this.table[this.module] === null ||
+        this.table[this.module][x - 1][y - 1].number === ""
+      ) {
+        this.chAdd();
+      } else {
+        this.chDetail(x, y);
+      }
+    }, 20);
   }
   chDetail(x: number, y: number) {
-    console.log(x, y); //TODO
+    this.$store.commit("table/setClick", { x: x - 1, y: y - 1 });
     this.$store.commit("visible/chDetail", { display: true });
   }
   chAdd() {
@@ -110,19 +112,32 @@ export default class Index extends Vue {
   getColor(number: string): string {
     const char = number.split("")[0];
     switch (char) {
-      case 'A': return '#DEFFF9'
-      case 'B': return '#DEFFF9'
-      case 'C': return '#DEFFF9'
-      case 'E': return '#DEFFF9'
-      case 'F': return '#DEFFF9'
-      case 'G': return '#DEFFF9'
-      case 'H': return '#DEFFF9'
-      case 'W': return '#DEFFF9'
-      case 'Y': return '#DEFFF9'
-      case '1': return '#FFEEF7'
-      case '2': return '#F0EBFF'
-      case '3': return '#FFFCEB'
-      default: return ''
+      case "A":
+        return "#DEFFF9";
+      case "B":
+        return "#DEFFF9";
+      case "C":
+        return "#DEFFF9";
+      case "E":
+        return "#DEFFF9";
+      case "F":
+        return "#DEFFF9";
+      case "G":
+        return "#DEFFF9";
+      case "H":
+        return "#DEFFF9";
+      case "W":
+        return "#DEFFF9";
+      case "Y":
+        return "#DEFFF9";
+      case "1":
+        return "#FFEEF7";
+      case "2":
+        return "#F0EBFF";
+      case "3":
+        return "#FFFCEB";
+      default:
+        return "";
     }
   }
 }
@@ -131,16 +146,26 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $subject-height: calc((100vh - 58px - 62px - 37px - 12vh) / 6);
-$width: calc((100vw - 8vw - 10vw - 13vw) / 5);
+$width: calc(
+  (
+      100vw - 8vw /**外枠 */ - 11vw /** 時限のwidth */ - 12vw
+        /** 科目と時限のpaddingの合計 */
+    ) / 5
+);
 
+//++++++++++++++++++++++++// 時間割表の枠 //++++++++++++++++++++++++//
 content {
   position: relative;
   margin: 2vmin 2vw;
   padding: 2vmin 2vw;
-  box-shadow: 3px 3px 16px rgba(147, 147, 147, 0.25);
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.226);
   border-radius: 10px;
   top: 7vh;
 }
+
+//+++++++++++++++++++// 以下時間割の内容（中身） //++++++++++++++++++//
+
+/* 縦横の整列 */
 .row {
   display: flex;
   flex-direction: row;
@@ -149,11 +174,10 @@ content {
   display: flex;
   flex-direction: column;
 }
-div {
-  color: #555555;
-}
+
+/* 時限 */
 #time {
-  width: calc(11vw);
+  width: 11vw;
   height: $height;
   font-style: normal;
   font-weight: 500;
@@ -163,7 +187,6 @@ div {
   color: #9a9a9a;
   padding: 1vmin 1vw;
 }
-
 .column p {
   font-size: 1.5vh;
   line-height: 1vh;
@@ -172,7 +195,10 @@ div {
 .tilde {
   transform: rotate(90deg);
 }
+
+/* 科目 */
 #subject {
+  color: #555;
   width: $width;
   height: $height;
   padding: 1vmin 1vw;
@@ -182,6 +208,10 @@ div {
   font-size: 1.3vh;
   line-height: 2vh;
   overflow: hidden;
+  &:active {
+    transition: all 0.3s;
+    filter: brightness(150%);
+  }
 }
 .sbj-number {
   font-weight: 400;

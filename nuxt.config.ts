@@ -1,6 +1,7 @@
-import NuxtConfiguration from "@nuxt/config";
+import { Configuration } from "@nuxt/types";
 
-const config: NuxtConfiguration = {
+const nuxtConfig: Configuration = {
+  buildModules: ["@nuxt/typescript-build"],
   mode: "universal",
   srcDir: "src/",
   head: {
@@ -22,7 +23,10 @@ const config: NuxtConfiguration = {
     ]
   },
   css: ["@/assets/css/main.scss"],
-  modules: ["@nuxtjs/pwa"],
+  modules: [
+    "@nuxtjs/pwa",
+    /**"@nuxtjs/localtunnel"*/
+  ],
   workbox: {
     dev: true
   },
@@ -41,4 +45,4 @@ const config: NuxtConfiguration = {
   }
 };
 
-export default config;
+module.exports = nuxtConfig;

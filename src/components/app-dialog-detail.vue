@@ -10,23 +10,22 @@
             close
           </div>
           <h1>
-            <div class="sbj-name">
-              {{ table.name }}
-            </div>
+            <div class="sbj-name">{{ table.name }}</div>
             <p class="sbj-number">科目番号 {{ table.number }}</p>
           </h1>
           <!-- 科目詳細 -->
           <h2>
             <span class="material-icons icon">info</span>科目詳細
-            <span class="syllabus-btn"
+            <!-- <span class="syllabus-btn"
               >シラバス<span class="material-icons syllabus-chevron"
                 >chevron_right</span
               ></span
-            >
+            >-->
           </h2>
           <section class="sbj-detail-wrapper">
             <p class="h3">
-              担当教員 <span class="sbj-detail">{{ table.teacher }}</span>
+              担当教員
+              <span class="sbj-detail">{{ table.teacher }}</span>
             </p>
             <p class="h3">
               開講時限
@@ -35,7 +34,8 @@
               >
             </p>
             <p class="h3">
-              授業教室 <span class="sbj-detail">{{ table.classroom }}</span>
+              授業教室
+              <span class="sbj-detail">{{ table.classroom }}</span>
             </p>
           </section>
           <!-- メモ -->
@@ -43,7 +43,7 @@
             <span class="material-icons icon">create</span>メモ
           </h2>
           <!-- 入力の枠 -->
-          <input class="memo" type="text" />
+          <textarea @input="updateMemo" class="memo" type="text" v-model="text"></textarea>
           <section class="counters-wrapper">
             <div
               v-for="n in 3"
@@ -56,13 +56,13 @@
               >
               <!-- <+|-> -->
               <div class="counter">
-                <span class="counter-left">+</span>
-                <span class="counter-right">&#8211;</span>
+                <span @click="increment(n)" class="counter-left">+</span>
+                <span @click="decrement(n)" class="counter-right">&#8211;</span>
               </div>
             </div>
           </section>
           <div class="save-btn">変更を保存</div>
-          <p class="delete-btn">
+          <p @click="deleteItem()" class="delete-btn">
             <span class="material-icons delete-icon">delete</span>この科目を削除
           </p>
         </article>
@@ -78,25 +78,193 @@
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
+import cloneDeep from "lodash/cloneDeep";
 
-@Component
+@Component({
+  components: {
+    ripple: () => import("~/components/ui-ripple.vue")
+  }
+})
 export default class Index extends Vue {
-  //TODO implement these in store
-  table: any = {
-    number: "1A18011",
-    name: "ネットワーク社会を支える情報技術入門I",
-    season: "春AB",
-    time: "月1",
-    classroom: "3A306",
-    teacher: "朴 泰祐"
-  };
-  atmnb: string[] = ["出席", "欠席", "遅刻"];
-  count: number[] = [2, 2, 2];
+  $store!: Vuex.ExStore;
 
+  atmnb: string[] = ["出席", "欠席", "遅刻"];
+  moduleNum: number = [
+    "SpringA",
+    "SpringB",
+    "SpringC",
+    "FallA",
+    "FallB",
+    "FallC"
+  ].indexOf(this.$store.getters["table/module"]);
+  text: string = "";
+
+  get count() {
+    const attend = this.table.attend;
+    const absent = this.table.absent;
+    const late = this.table.late;
+    return [attend, absent, late];
+  }
+
+  get table() {
+    let num = this.$store.getters["table/click"];
+
+    if (this.$store.getters["old_api/data"] === null) {
+      return {
+        name: null,
+        number: null,
+        teacher: null,
+        season: null,
+        time: null,
+        classroom: null,
+        absent: null,
+        attend: null,
+        late: null,
+        memo: null
+      };
+    } else {
+      this.text =  this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y].memo;
+      return this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y];
+    }
+  }
   get dialog(): boolean {
     return this.$store.getters["visible/detail"];
   }
 
+  syllabus() {
+    if (this.table !== null) {
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.number}/jpn/#course-title`;
+    }
+  }
+
+  updateMemo() {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    new_table[location.x][location.y]["memo"] = this.text;
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+  }
+
+  /**
+   * i = 1: 出席+1
+   * i = 2: 欠席+1
+   * i = 3: 遅刻+1
+   */
+  increment(i: number) {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    switch (i) {
+      case 1:
+        new_table[location.x][location.y]["attend"]++;
+        break;
+      case 2:
+        new_table[location.x][location.y]["absent"]++;
+        break;
+      case 3:
+        new_table[location.x][location.y]["late"]++;
+        break;
+      default:
+        return;
+    }
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+  }
+
+  /**
+   * i = 1: 出席-1
+   * i = 2: 欠席-1
+   * i = 3: 遅刻-1
+   */
+  decrement(i: number) {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    switch (i) {
+      case 1:
+        new_table[location.x][location.y]["attend"]--;
+        break;
+      case 2:
+        new_table[location.x][location.y]["absent"]--;
+        break;
+      case 3:
+        new_table[location.x][location.y]["late"]--;
+        break;
+      default:
+        return;
+    }
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+  }
+
+  deleteItem() {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    if (!confirm("この時間割を削除しますか?")) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    new_table[location.x][location.y]["number"] = "undefined";
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+    this.chDetail();
+  }
+  
   chDetail(): void {
     this.$store.commit("visible/chDetail", { display: false });
   }
@@ -104,20 +272,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.icon {
-  font-size: 2.9vh;
-  margin-bottom: 0;
-}
-.back {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  left: 0px;
-  top: 0px;
-  background: rgba(100, 100, 100, 0.5);
-  z-index: 5;
-}
-
+//++++++++++++++++++// ダイアログの枠 //++++++++++++++++++++++//
 .main {
   position: absolute;
   top: 50%;
@@ -127,7 +282,7 @@ export default class Index extends Vue {
   max-width: 700px;
   height: 80vh;
   background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.363);
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   border-radius: 1vh;
   z-index: 6;
 }
@@ -136,10 +291,18 @@ export default class Index extends Vue {
     max-width: 1000px;
   }
 }
+
+//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
   margin: 5vh;
   height: calc(80vh - 10vh);
+}
+
+/* ボタン・アイコン */
+.icon {
+  font-size: 2.9vh;
+  margin-bottom: 0;
 }
 .close-btn {
   position: absolute;
@@ -147,7 +310,55 @@ article {
   right: -2.1vh;
   font-size: 4vh;
   color: #717171;
+  cursor: pointer;
 }
+.save-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 550px;
+  font-size: 2.3vh;
+  height: 6vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  bottom: 3.1vh;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  &:active {
+    transition: all 0.2s;
+    transform: translateX(-50%) scale(1.05);
+    background-color: #05dbdb;
+  }
+}
+.delete-btn {
+  position: absolute;
+  bottom: -1.7vh;
+  font-size: 2vh;
+  color: rgb(255, 98, 98);
+  margin: 0;
+  cursor: pointer;
+}
+.icon {
+  font-size: 2.7vh;
+  position: relative;
+  bottom: -0.4vh;
+  margin-right: 0.4vh;
+}
+.syllabus-chevron {
+  position: relative;
+  bottom: -0.9vh;
+}
+.delete-icon {
+  position: relative;
+  font-size: 3.2vh;
+  vertical-align: middle;
+  top: -0.2vh;
+}
+
+/* 科目の情報 */
 h1 {
   position: absolute;
   top: -0.6vh;
@@ -207,6 +418,7 @@ h2 {
   font-weight: 400;
 }
 
+/* メモ */
 .h2-2 {
   position: absolute;
   top: 29.6vh;
@@ -222,6 +434,8 @@ h2 {
   box-sizing: border-box;
   border-radius: 8px;
 }
+
+/* 出欠 */
 .counters-wrapper {
   text-align: center;
   position: absolute;
@@ -272,43 +486,20 @@ h2 {
   position: relative;
   left: -0.2vh;
 }
+.counter-left:active,
+.counter-right:active {
+  background-color: #00c0c0;
+  color: white;
+}
 
-.save-btn {
+//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
+.back {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 550px;
-  font-size: 2.3vh;
-  height: 6vh;
-  line-height: 6vh;
-  background: #00c0c0;
-  border-radius: 1vh;
-  bottom: 3.1vh;
-  color: #fff;
-  text-align: center;
-}
-.delete-btn {
-  position: absolute;
-  bottom: -1.7vh;
-  font-size: 2vh;
-  color: rgb(255, 98, 98);
-  margin: 0;
-}
-.icon {
-  font-size: 2.7vh;
-  position: relative;
-  bottom: -0.4vh;
-  margin-right: 0.4vh;
-}
-.syllabus-chevron {
-  position: relative;
-  bottom: -0.9vh;
-}
-.delete-icon {
-  position: relative;
-  font-size: 3.2vh;
-  vertical-align: middle;
-  top: -0.2vh;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
 }
 </style>
