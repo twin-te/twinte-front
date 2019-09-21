@@ -1,6 +1,5 @@
-/** -> "../pages/index.vue" */
-/** -> "..//.vue" */
-/**TODO directiveで実装したい */
+/** -> "../pages/index.vue" */ /** -> "..//.vue" */ /**TODO
+directiveで実装したい */
 <template>
   <div class="main" @click="onClick" :disabled="ripple">
     <transition
@@ -59,19 +58,19 @@ $main-color: white;
   &:hove {
     background-color: darken($main-color, 10%);
   }
-    .labe {
-      transform: translateY(1px);
-    }
+  .labe {
+    transform: translateY(1px);
+  }
   &:focu {
     outline: none;
   }
   &:disable {
     background-color: darken($main-color, 10%);
   }
-    .labe {
-      opacity: 0.5;
-      transform: translateY(1px);
-    }
+  .labe {
+    opacity: 0.5;
+    transform: translateY(1px);
+  }
 }
 .label {
   display: block;

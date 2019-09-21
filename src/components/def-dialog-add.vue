@@ -3,22 +3,35 @@
     <transition name="bound">
       <nav class="main" v-show="add">
         <article>
-          <div class="svg-button material-icons" @click="chAdd()">close</div>
-          <h1 class="add-title">授業の追加</h1>
-          <section class="search-form">
-            <textarea
+          <div class="svg-button material-icons close-btn" @click="chAdd()">
+            close
+          </div>
+          <h1>授業の追加</h1>
+          <p class="content">授業番号で追加<!-- 科目名・授業番号で検索 --></p>
+          <form class="search-form">
+            <input
               @keydown="findClassByName()"
               v-model="numbers"
               type="text"
               class="form"
             />
-          </section>
+            <!-- <span class="material-icons search-btn">search</span> -->
+          </form>
           <section class="others">
-            <p class="othercontent">CSVファイルから追加</p>
-            <p class="othercontent">手動入力で授業を作成</p>
+            <p class="other-content">
+              CSVファイルから追加<br /><small>*{{ moduleMessage }}</small>
+            </p>
+            <input
+              class="other-content"
+              type="file"
+              name="file"
+              id="fileElem"
+              @change="onFileChange"
+            />
+            <!-- <p class="other-content">手動入力で授業を作成</p> -->
           </section>
-          <section class="btn">
-            <span class="center" @click="asyncNumber()">時間割に追加</span>
+          <section class="register-btn" @click="asyncNumber()">
+            時間割に追加
           </section>
         </article>
       </nav>
@@ -41,23 +54,35 @@ import axios from "axios";
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
-  // data______________________________________________________
-  //
+
   numbers: string = "";
   result: {} = {};
-  // props______________________________________________________
-  //
-  // computed______________________________________________________
-  //
+  uploadFile: any = "";
+  moduleList: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+  get moduleMessage(): string {
+    const list: string[] = [
+      "SpringA",
+      "SpringB",
+      "SpringC",
+      "FallA",
+      "FallB",
+      "FallC"
+    ];
+    const i: number = list.indexOf(this.$store.getters["table/module"]);
+    const li: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
+    return `${li[i]}のCSVファイルを入力してください`;
+  }
   get add() {
     return this.$store.getters["visible/add"];
   }
-  // method______________________________________________________
-  //
-  chAdd() {
-    this.$store.commit("visible/chAdd", { display: false });
+  get moduleNum() {
+    return this.$store.getters["table/moduleNum"];
   }
-  async findClassByName() {
+
+  chAdd = () => {
+    this.$store.commit("visible/chAdd", { display: false });
+  };
+  findClassByName = async () => {
     if (this.numbers.length < 2) {
       return;
     }
@@ -71,72 +96,187 @@ export default class Index extends Vue {
       .catch(err => {
         this.result = err;
       });
-  }
-  async asyncNumber() {
-    const moduleNum = this.$store.getters["table/moduleNum"];
-    const moduleList: string[] = [
-      "haruA",
-      "haruB",
-      "haruC",
-      "akiA",
-      "akiB",
-      "akiC"
-    ];
+  };
+  onFileChange = async (e: any) => {
+    e.preventDefault();
+    const files = e.target.files;
+    this.uploadFile = files[0];
+    if (this.uploadFile === null) {
+      window.alert("ファイルが入力されてません");
+    } else {
+      if (
+        !window.confirm(
+          "科目追加を行いますか？現在表示されている時間割は上書きされます！"
+        )
+      ) {
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file_upload", this.uploadFile);
+      const config = {
+        headers: { "content-type": "multipart/form-data" }
+      };
+      this.$store.dispatch("old_api/asyncCSV", {
+        formData,
+        config,
+        module: this.moduleList[this.moduleNum]
+      });
+      this.$store.commit("visible/chAdd", { display: false });
+    }
+  };
+  asyncNumber = async () => {
+    if (
+      !confirm(
+        "科目追加を行いますか？現在表示されている時間割は上書きされます！"
+      )
+    ) {
+      return;
+    }
     await this.$store.dispatch("old_api/asyncNumber", {
       number: [this.numbers],
-      module: moduleList[moduleNum]
+      module: this.moduleList[this.moduleNum]
     });
-  }
+  };
 }
 </script>
 
 <style lang="scss" scoped>
-/** 中央寄せ */
-article {
-  position: relative;
-  margin: 5.7vw;
-  height: calc(80vh - 11.4vw);
-}
-.add-title {
-}
-.btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: auto;
-  width: 100%;
-  max-width: 600px;
-  height: 6vh;
-  line-height: 40px;
-  background: #00c0c0;
-  border-radius: 0.5rem;
-  bottom: 2vh;
-}
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-  font-family: Noto Sans JP;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 23px;
-  text-align: center;
-  color: #ffffff;
-}
+//++++++++++++++++++++++++// ダイアログの枠 //++++++++++++++++++++++++//
 .main {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   width: 92vw;
+  max-width: 700px;
   height: 80vh;
-  background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 0.6rem;
+  background: #fff;
+  box-shadow: 1vmine;
+  border-radius: 1vh;
   z-index: 6;
 }
+@media screen and (min-width: 1300px) {
+  .main {
+    max-width: 1000px;
+  }
+}
+
+//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
+article {
+  position: relative;
+  margin: 5vh;
+  height: calc(80vh - 10vh);
+}
+
+/* ボタン・アイコン */
+.close-btn {
+  position: absolute;
+  top: -1.5vh;
+  cursor: pointer;
+  right: -1.5vh;
+  font-size: 4vh;
+  transition: all 0.15s;
+  color: #717171;
+}
+.register-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: auto;
+  width: 100%;
+  max-width: 550px;
+  font-size: 2.3vh;
+  height: 6vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  bottom: 0;
+  color: #fff;
+  text-align: center;
+  &:active {
+    transition: all 0.2s;
+    transform: translateX(-50%) scale(1.05);
+    background-color: #05dbdb;
+  }
+}
+@media screen and (min-width: 1300px) {
+  .register-btn {
+    max-width: 1000px;
+  }
+}
+
+/* 授業の追加 */
+h1 {
+  position: absolute;
+  top: -0.8vh;
+  font-size: 2.9vh;
+  color: #00c0c0;
+  font-weight: 500;
+}
+.content {
+  position: absolute;
+  top: 5.9vh;
+  font-size: 2vh;
+  color: #555;
+  margin-left: 1.5vh;
+}
+.others {
+  position: absolute;
+  bottom: 8.5vh;
+  border-top: 1px solid #adadad;
+  width: 100%;
+}
+.other-content {
+  font-size: 2vh;
+  color: #adadad;
+  margin-left: 1.5vh;
+}
+
+/* 検索フォーム */
+.search-form {
+  position: absolute;
+  width: calc(100% - 3vh);
+  height: 4.5vh;
+  top: 11.6vh;
+  margin: 0 1.5vh;
+}
+.form {
+  height: 100%;
+  width: 98%;
+  max-width: 1000px;
+  background-color: #fff;
+  border: 1px solid #adadad;
+  color: #4a5568;
+  border-radius: 3vh;
+  position: relative;
+  padding-left: 2%;
+}
+.search-btn {
+  position: absolute;
+  top: 0;
+  right: -0.6vh;
+  height: 5vh;
+  width: 5vh;
+  border-radius: 50% 50%;
+  background-color: #00c0c0;
+  color: #fff;
+  font-size: 3.5vh;
+  text-align: center;
+  line-height: 4.8vh;
+  &:active {
+    transition: all 0.2s;
+    transform: scale(1.1);
+    background-color: #05dbdb;
+  }
+}
+
+.form:focus {
+  border-color: #558afa;
+  outline: 0;
+  background-color: #fff;
+}
+
+//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
 .back {
   position: absolute;
   width: 100vw;
@@ -145,35 +285,5 @@ article {
   top: 0px;
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
-}
-#close {
-  float: right;
-  font-size: 40px;
-}
-.search-form {
-  width: 90%;
-  max-width: 600px;
-  height: 6vh;
-  margin: 0 auto;
-  line-height: 40px;
-  border-radius: 0.5rem;
-  position: relative;
-}
-
-.form {
-  height: 5vh;
-  width: 100%;
-  max-width: 600px;
-  background-color: #fff;
-  border: 1px solid #adadad;
-  color: #4a5568;
-  border-radius: 3vh;
-  position: relative;
-}
-
-.form:focus {
-  border-color: #9f7aea;
-  outline: 0;
-  background-color: #fff;
 }
 </style>

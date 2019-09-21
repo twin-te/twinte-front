@@ -4,120 +4,67 @@
   <section class="contents">
     <transition name="bound">
       <nav class="main" v-show="dialog">
-        <article style="padding: 25px">
+        <article>
           <!-- 教科名 -->
-          <div class="svg-button material-icons" @click="chDetail()">close</div>
-          <section
-            style="padding-left: 9px; margin-top: 14px; border-left: 5px solid #00C0C0; text-overflow: ellipsis;overflow: hidden; white-space: nowrap; text-overflow: ellipsis"
-          >
-            <section style="color: #555555;font-size: 21px;">
-              {{ table.name }}
-            </section>
-            <section style="color: #C4C4C4;font-size: 12px;">
-              科目番号 {{ table.number }}
-            </section>
-          </section>
+          <div class="svg-button material-icons close-btn" @click="chDetail()">
+            close
+          </div>
+          <h1>
+            <div class="sbj-name">{{ table.name }}</div>
+            <p class="sbj-number">科目番号 {{ table.number }}</p>
+          </h1>
           <!-- 科目詳細 -->
-          <section>
-            <div
-              style="display: flex; width: 100%; justify-content: space-between; margin-top: 26px; border-bottom: 1px solid #00C0C0; font-size: 14px"
-            >
-              <div style="color: #00C0C0">
-                <span class="material-icons">info</span>
-                <div class="same-v">科目詳細</div>
-              </div>
-              <div style="color: #C4C4C4">シラバス</div>
-            </div>
-            <div style="margin-top: 10px; margin-left: 21px; line-height: 28px">
-              <div>
-                <span style="font-weight: 500">担当教員</span>
-                <span
-                  style="position: relative; left: 30px; color: #555555; font-weight: normal"
-                  >{{ table.teacher }}</span
-                >
-              </div>
-              <div>
-                <span style="font-weight: 500">開講時限</span>
-                <span
-                  style="position: relative; left: 30px; color: #555555; font-weight: normal"
-                  >{{ table.season }} {{ table.time }}</span
-                >
-              </div>
-              <div>
-                <span style="font-weight: 500">教室</span>
-                <span
-                  style="position: relative; left: 30px; color: #555555; font-weight: normal"
-                  >{{ table.classroom }}</span
-                >
-              </div>
-            </div>
+          <h2>
+            <span class="material-icons icon">info</span>科目詳細
+            <!-- <span class="syllabus-btn"
+              >シラバス<span class="material-icons syllabus-chevron"
+                >chevron_right</span
+              ></span
+            >-->
+          </h2>
+          <section class="sbj-detail-wrapper">
+            <p class="h3">
+              担当教員
+              <span class="sbj-detail">{{ table.teacher }}</span>
+            </p>
+            <p class="h3">
+              開講時限
+              <span class="sbj-detail"
+                >{{ table.season }} {{ table.time }}</span
+              >
+            </p>
+            <p class="h3">
+              授業教室
+              <span class="sbj-detail">{{ table.classroom }}</span>
+            </p>
           </section>
           <!-- メモ -->
-          <section>
+          <h2 class="h2-2">
+            <span class="material-icons icon">create</span>メモ
+          </h2>
+          <!-- 入力の枠 -->
+          <textarea @input="updateMemo" class="memo" type="text" v-model="text"></textarea>
+          <section class="counters-wrapper">
             <div
-              style="width: 100%; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #00C0C0;　color: #00C0C0; font-size: 14px; line-height: 20px"
+              v-for="n in 3"
+              :key="n"
+              :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
+              style="width: 30%"
             >
-              <span class="material-icons">create</span>
-              <div class="same-v">メモ</div>
-            </div>
-            <!-- 入力の枠 -->
-            <div
-              style="margin-bottom: 8px; margin-left: 10px; margin-right: 10px"
-            >
-              <input
-                type="text"
-                style="width: 100%; height: 85px; border: 1px solid #DDDDDD; box-sizing: border-box; border-radius: 8px;"
-              />
-            </div>
-            <div
-              style="display: flex; justify-content: space-between; margin-bottom: 12px; margin-left: 10px; margin-right: 10px"
-            >
-              <div
-                v-for="n in 3"
-                :key="n"
-                :class="{ one: n === 1, two: n === 2, three: n === 3 }"
-                style="width: 30%"
+              <span class="counter-name"
+                >{{ atmnb[n - 1] }} {{ count[n - 1] }}回</span
               >
-                <span
-                  style="font-family: Noto Sans JP; font-style: normal; font-weight: 500; font-size: 13px; line-height: 19px; text-align: center; color: #555555"
-                  >{{ atmnb[n - 1] }} {{ count[n - 1] }}回</span
-                >
-                <!-- <+|-> -->
-                <div style="display: flex; margin-bottom: 15px">
-                  <span class="left">+</span>
-                  <span class="right">-</span>
-                </div>
+              <!-- <+|-> -->
+              <div class="counter">
+                <span @click="increment(n)" class="counter-left">+</span>
+                <span @click="decrement(n)" class="counter-right">&#8211;</span>
               </div>
             </div>
           </section>
-
-          <section
-            style="width: 100%; height: 40px; background: #00C0C0; border-radius: 7px; margin-bottom: 15px; position: relative"
-          >
-            <!-- 変更を保存 -->
-            <span
-              style="font-family: Noto Sans JP; font-style: normal; font-weight: 500; font-size: 16px; line-height: 23px; text-align: center; color: #FFFFFF; position: absolute; top: 50%; left: 50%; transform: translateY(-50%) translateX(-50%)"
-              >変更を保存</span
-            >
-          </section>
-          <section
-            style="margin-buttom: 25px; font-family: Noto Sans JP; font-style: normal; font-weight: normal; font-size: 12px; line-height: 18px; color: #92B1FF"
-          >
-            <svg
-              class="same-v"
-              width="14"
-              height="18"
-              viewBox="0 0 14 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0.99662 18H12.9561V4H0.99662V18ZM13.9527 1H10.4645L9.46789 0H4.48479L3.48817 1H0V3H13.9527V1Z"
-                fill="#92B1FF"
-              />
-            </svg>
-            <div class="same-v">この科目を削除</div>
-          </section>
+          <div class="save-btn">変更を保存</div>
+          <p @click="deleteItem()" class="delete-btn">
+            <span class="material-icons delete-icon">delete</span>この科目を削除
+          </p>
         </article>
       </nav>
     </transition>
@@ -131,25 +78,193 @@
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
+import cloneDeep from "lodash/cloneDeep";
 
-@Component
+@Component({
+  components: {
+    ripple: () => import("~/components/ui-ripple.vue")
+  }
+})
 export default class Index extends Vue {
-  //TODO implement these in store
-  table: any = {
-    number: "1A18011",
-    name: "ネットワーク社会を支える情報技術入門I",
-    season: "春AB",
-    time: "月1",
-    classroom: "3A306",
-    teacher: "朴 泰祐"
-  };
-  atmnb: string[] = ["出席", "欠席", "遅刻"];
-  count: number[] = [2, 2, 2];
+  $store!: Vuex.ExStore;
 
+  atmnb: string[] = ["出席", "欠席", "遅刻"];
+  moduleNum: number = [
+    "SpringA",
+    "SpringB",
+    "SpringC",
+    "FallA",
+    "FallB",
+    "FallC"
+  ].indexOf(this.$store.getters["table/module"]);
+  text: string = "";
+
+  get count() {
+    const attend = this.table.attend;
+    const absent = this.table.absent;
+    const late = this.table.late;
+    return [attend, absent, late];
+  }
+
+  get table() {
+    let num = this.$store.getters["table/click"];
+
+    if (this.$store.getters["old_api/data"] === null) {
+      return {
+        name: null,
+        number: null,
+        teacher: null,
+        season: null,
+        time: null,
+        classroom: null,
+        absent: null,
+        attend: null,
+        late: null,
+        memo: null
+      };
+    } else {
+      this.text =  this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y].memo;
+      return this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y];
+    }
+  }
   get dialog(): boolean {
     return this.$store.getters["visible/detail"];
   }
 
+  syllabus() {
+    if (this.table !== null) {
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.number}/jpn/#course-title`;
+    }
+  }
+
+  updateMemo() {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    new_table[location.x][location.y]["memo"] = this.text;
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+  }
+
+  /**
+   * i = 1: 出席+1
+   * i = 2: 欠席+1
+   * i = 3: 遅刻+1
+   */
+  increment(i: number) {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    switch (i) {
+      case 1:
+        new_table[location.x][location.y]["attend"]++;
+        break;
+      case 2:
+        new_table[location.x][location.y]["absent"]++;
+        break;
+      case 3:
+        new_table[location.x][location.y]["late"]++;
+        break;
+      default:
+        return;
+    }
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+  }
+
+  /**
+   * i = 1: 出席-1
+   * i = 2: 欠席-1
+   * i = 3: 遅刻-1
+   */
+  decrement(i: number) {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    switch (i) {
+      case 1:
+        new_table[location.x][location.y]["attend"]--;
+        break;
+      case 2:
+        new_table[location.x][location.y]["absent"]--;
+        break;
+      case 3:
+        new_table[location.x][location.y]["late"]--;
+        break;
+      default:
+        return;
+    }
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+  }
+
+  deleteItem() {
+    if (
+      !this.$store.getters["old_api/data"] ||
+      !this.$store.getters["old_api/data"][this.moduleNum]
+    ) {
+      return;
+    }
+
+    if (!confirm("この時間割を削除しますか?")) {
+      return;
+    }
+
+    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+    let location = this.$store.getters["table/click"];
+    const new_table = cloneDeep(
+      this.$store.getters["old_api/data"][this.moduleNum]
+    );
+
+    new_table[location.x][location.y]["number"] = "undefined";
+
+    this.$store.commit("old_api/updateTable", {
+      module: moduleList[this.moduleNum],
+      data: new_table
+    });
+    this.chDetail();
+  }
+  
   chDetail(): void {
     this.$store.commit("visible/chDetail", { display: false });
   }
@@ -157,42 +272,227 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.right {
-  width: 50%;
-  border: 1px solid #00c0c0;
-  border-radius: 0 20px 20px 0;
-  height: 30px;
-  position: relative;
-  left: -1px;
-}
-.left {
-  width: 50%;
-  border: 1px solid #00c0c0;
-  border-radius: 20px 0 0 20px;
-  height: 30px;
-}
-.same-v {
-  display: inline-block;
-  vertical-align: middle;
-}
-/** 中央寄せ */
-.center {
+//++++++++++++++++++// ダイアログの枠 //++++++++++++++++++++++//
+.main {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-.main {
-  position: absolute;
-  top: 73px;
-  left: 13px;
-  width: calc(100vw - 26px);
-  height: calc(100vh - 128px);
+  transform: translateX(-50%) translateY(-50%);
+  width: 92vw;
+  max-width: 700px;
+  height: 80vh;
   background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 0.6rem;
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
+  border-radius: 1vh;
   z-index: 6;
 }
+@media screen and (min-width: 1300px) {
+  .main {
+    max-width: 1000px;
+  }
+}
+
+//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
+article {
+  position: relative;
+  margin: 5vh;
+  height: calc(80vh - 10vh);
+}
+
+/* ボタン・アイコン */
+.icon {
+  font-size: 2.9vh;
+  margin-bottom: 0;
+}
+.close-btn {
+  position: absolute;
+  top: -2.2vh;
+  right: -2.1vh;
+  font-size: 4vh;
+  color: #717171;
+  cursor: pointer;
+}
+.save-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 550px;
+  font-size: 2.3vh;
+  height: 6vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  bottom: 3.1vh;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  &:active {
+    transition: all 0.2s;
+    transform: translateX(-50%) scale(1.05);
+    background-color: #05dbdb;
+  }
+}
+.delete-btn {
+  position: absolute;
+  bottom: -1.7vh;
+  font-size: 2vh;
+  color: rgb(255, 98, 98);
+  margin: 0;
+  cursor: pointer;
+}
+.icon {
+  font-size: 2.7vh;
+  position: relative;
+  bottom: -0.4vh;
+  margin-right: 0.4vh;
+}
+.syllabus-chevron {
+  position: relative;
+  bottom: -0.9vh;
+}
+.delete-icon {
+  position: relative;
+  font-size: 3.2vh;
+  vertical-align: middle;
+  top: -0.2vh;
+}
+
+/* 科目の情報 */
+h1 {
+  position: absolute;
+  top: -0.6vh;
+  padding-left: 1.2vh;
+  width: calc(100% - 1.5vh - 2vh);
+  border-left: 0.8vh solid #00c0c0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 8vh;
+}
+.sbj-name {
+  color: #555555;
+  font-size: 2.7vh;
+  font-weight: 500;
+  line-height: 4.5vh;
+  margin: 0;
+}
+.sbj-number {
+  color: #c4c4c4;
+  font-size: 1.8vh;
+  font-weight: 400;
+  line-height: 3.5vh;
+  margin: 0;
+}
+h2 {
+  position: absolute;
+  top: 10.3vh;
+  width: 100%;
+  color: #00c0c0;
+  border-bottom: 0.2vh solid #00c0c0;
+  padding-bottom: 0.1vh;
+  font-weight: 500;
+  font-size: 2.2vh;
+}
+.syllabus-btn {
+  position: absolute;
+  right: 0;
+  font-size: 1.9vh;
+  font-weight: 400;
+  color: #c4c4c4;
+  bottom: 2px;
+}
+.sbj-detail-wrapper {
+  position: absolute;
+  top: 15.7vh;
+  font-size: 2vh;
+  left: 4%;
+  width: 96%;
+}
+.h3 {
+  color: #555555;
+  font-weight: 500;
+}
+.sbj-detail {
+  padding-left: 5%;
+  font-weight: 400;
+}
+
+/* メモ */
+.h2-2 {
+  position: absolute;
+  top: 29.6vh;
+}
+.memo {
+  position: absolute;
+  bottom: 21vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 93%;
+  height: 12.5vh;
+  border: 0.2vh solid #dddddd;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+/* 出欠 */
+.counters-wrapper {
+  text-align: center;
+  position: absolute;
+  bottom: 11.3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 94%;
+  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: space-between;
+}
+.counter-name {
+  line-height: 4.4vh;
+  font-size: 2vh;
+  color: #555555;
+  margin-left: -0.7vh;
+}
+.counter {
+  display: flex;
+}
+.attend {
+  grid-column: 1;
+}
+.absent {
+  grid-column: 2;
+}
+.late {
+  grid-column: 3;
+}
+.counter-left {
+  color: #00c0c0;
+  font-size: 5vh;
+  line-height: 4.3vh;
+  width: 50%;
+  border: 0.2vh solid #00c0c0;
+  border-radius: 2.8vh 0 0 2.8vh;
+  height: 4.6vh;
+  position: relative;
+}
+.counter-right {
+  color: #00c0c0;
+  font-size: 4.9vh;
+  line-height: 3.4vh;
+  width: 50%;
+  border: 0.2vh solid #00c0c0;
+  border-radius: 0 2.8vh 2.8vh 0;
+  height: 4.6vh;
+  position: relative;
+  left: -0.2vh;
+}
+.counter-left:active,
+.counter-right:active {
+  background-color: #00c0c0;
+  color: white;
+}
+
+//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
 .back {
   position: absolute;
   width: 100vw;
@@ -201,22 +501,5 @@ export default class Index extends Vue {
   top: 0px;
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
-}
-#close {
-  float: right;
-}
-
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-.one {
-  grid-column: 1;
-}
-.two {
-  grid-column: 2;
-}
-.three {
-  grid-column: 3;
 }
 </style>

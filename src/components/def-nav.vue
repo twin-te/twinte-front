@@ -5,8 +5,11 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
-        <div class="material-icons close-btn" @click="chDrawer()">close</div>
-        <div class="login-btn">ログイン</div>
+        <div class="material-icons svg-button close-btn" @click="chDrawer()">
+          close
+        </div>
+        <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
+        <div class="login-btn" @click="login()" v-else>ログイン</div>
         <section class="menu-contents-wrap">
           <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
             <span class="material-icons menu-icon">{{ l.icon }}</span>
@@ -35,8 +38,22 @@ export default class Index extends Vue {
     return this.$store.getters["visible/drawer"];
   }
 
+  get isLogin(): boolean {
+    return this.$store.getters["old_api/isLogin"];
+  }
+
   chDrawer() {
     this.$store.commit("visible/chDrawer", { display: false });
+  }
+
+  login() {
+    this.$store.dispatch("old_api/login");
+    this.$store.dispatch("old_api/createNumbers");
+    alert("時間割を追加しました");
+  }
+
+  logout() {
+    this.$store.dispatch("old_api/logout");
   }
 
   list: any = [
@@ -51,30 +68,32 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+//++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
   font-family: Noto Sans JP;
   position: absolute;
   left: 0px;
   top: 0px;
-  max-width: 289px;
+  max-width: 300px;
   width: 75vw;
   height: 100vh;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   background: #fff;
   z-index: 6;
 }
-.back {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(100, 100, 100, 0.5);
-  z-index: 5;
+@media screen and (min-width: 800px) {
+  .main {
+    min-width: 600px;
+    max-width: 1000px;
+    width: 40vmax;
+  }
 }
+
+//++++++++++++++++++++++++// ドロワーメニューの内容（中身） //++++++++++++++++++++++++//
+
 .settings {
   color: #717171;
-  font-size: 130%;
+  font-size: 3.8vh;
   font-weight: 400;
   margin: 12% auto 0 7%;
 }
@@ -83,43 +102,50 @@ export default class Index extends Vue {
   color: #717171;
   top: 4%;
   right: 7%;
+  font-size: 4vh;
 }
 .login-btn {
   margin: 8% auto 0 auto;
   text-align: center;
-  line-height: 36px;
-  max-width: 241px;
+  line-height: 5.5vh;
   width: 83%;
-  height: 36px;
+  height: 5.5vh;
   background-color: #4380f8;
   color: #ffffff;
-  border-radius: 6px;
+  border-radius: 1vh;
+  font-size: 2.5vh;
+  cursor: pointer;
+  &:active {
+    transition: all 0.15s;
+    transform: scale(1.05);
+    background-color: #7aa6fd;
+  }
 }
-.login-btn:hover {
-  background-color: #5e94ff;
-}
+
+/* メニュー項目 */
 .main .menu-contents-wrap {
   margin: 4% 5% auto 7%;
-  max-width: 267px;
 }
 .menu-content {
   position: relative;
-  line-height: 65px;
+  line-height: 9vh;
   margin: 0;
-  height: 65px;
+  height: 9vh;
   width: 100%;
-  border-bottom: 1px solid #c4c4c4;
+  border-bottom: 0.2vh solid #c4c4c4;
 }
+
 .menu-icon {
   color: #00c0c0;
   position: absolute;
   left: 3%;
   top: 50%;
   transform: translateY(-50%);
+  font-size: 4.4vh;
 }
 .menu-content p {
   color: #717171;
-  font-size: 105%;
+  font-size: 2.5vh;
   font-weight: 300;
   padding-left: 19%;
   margin: 0;
@@ -130,6 +156,7 @@ export default class Index extends Vue {
   top: 50%;
   right: 1%;
   transform: translateY(-50%);
+  font-size: 4.4vh;
 }
 #home span {
   color: #4380f8;
@@ -137,6 +164,7 @@ export default class Index extends Vue {
 #home p {
   color: #4380f8;
 }
+
 /** animation */
 .slide-enter-active,
 .slide-leave-active {
@@ -154,5 +182,16 @@ export default class Index extends Vue {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
+.back {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
 }
 </style>
