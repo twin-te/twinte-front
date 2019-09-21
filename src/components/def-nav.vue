@@ -5,8 +5,10 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
-        <div class="material-icons close-btn" @click="chDrawer()">close</div>
-        <div class="login-btn" @click="logout()" v-if='isLogin'>ログアウト</div>
+        <div class="material-icons svg-button close-btn" @click="chDrawer()">
+          close
+        </div>
+        <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
         <div class="login-btn" @click="login()" v-else>ログイン</div>
         <section class="menu-contents-wrap">
           <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
@@ -46,6 +48,8 @@ export default class Index extends Vue {
 
   login() {
     this.$store.dispatch("old_api/login");
+    this.$store.dispatch("old_api/createNumbers");
+    alert("時間割を追加しました");
   }
 
   logout() {
@@ -64,6 +68,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+//++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
   font-family: Noto Sans JP;
   position: absolute;
@@ -72,7 +77,7 @@ export default class Index extends Vue {
   max-width: 300px;
   width: 75vw;
   height: 100vh;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   background: #fff;
   z-index: 6;
 }
@@ -83,15 +88,9 @@ export default class Index extends Vue {
     width: 40vmax;
   }
 }
-.back {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(100, 100, 100, 0.5);
-  z-index: 5;
-}
+
+//++++++++++++++++++++++++// ドロワーメニューの内容（中身） //++++++++++++++++++++++++//
+
 .settings {
   color: #717171;
   font-size: 3.8vh;
@@ -115,10 +114,15 @@ export default class Index extends Vue {
   color: #ffffff;
   border-radius: 1vh;
   font-size: 2.5vh;
+  cursor: pointer;
+  &:active {
+    transition: all 0.15s;
+    transform: scale(1.05);
+    background-color: #7aa6fd;
+  }
 }
-.login-btn:hover {
-  background-color: #5e94ff;
-}
+
+/* メニュー項目 */
 .main .menu-contents-wrap {
   margin: 4% 5% auto 7%;
 }
@@ -130,6 +134,7 @@ export default class Index extends Vue {
   width: 100%;
   border-bottom: 0.2vh solid #c4c4c4;
 }
+
 .menu-icon {
   color: #00c0c0;
   position: absolute;
@@ -159,6 +164,7 @@ export default class Index extends Vue {
 #home p {
   color: #4380f8;
 }
+
 /** animation */
 .slide-enter-active,
 .slide-leave-active {
@@ -176,5 +182,16 @@ export default class Index extends Vue {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
+.back {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
 }
 </style>

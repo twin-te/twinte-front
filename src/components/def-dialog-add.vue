@@ -6,8 +6,8 @@
           <div class="svg-button material-icons close-btn" @click="chAdd()">
             close
           </div>
-          <h3 class="add-title">授業の追加</h3>
-          <p class="content">科目名・授業番号で検索</p>
+          <h1>授業の追加</h1>
+          <p class="content">授業番号で追加<!-- 科目名・授業番号で検索 --></p>
           <form class="search-form">
             <input
               @keydown="findClassByName()"
@@ -18,8 +18,16 @@
             <!-- <span class="material-icons search-btn">search</span> -->
           </form>
           <section class="others">
-            <p class="other-content">CSVファイルから追加<small>*{{ moduleMessage }}</small></p>
-            <input class="other-content" type='file' name='file' id="fileElem" @change="onFileChange">
+            <p class="other-content">
+              CSVファイルから追加<br /><small>*{{ moduleMessage }}</small>
+            </p>
+            <input
+              class="other-content"
+              type="file"
+              name="file"
+              id="fileElem"
+              @change="onFileChange"
+            />
             <!-- <p class="other-content">手動入力で授業を作成</p> -->
           </section>
           <section class="register-btn" @click="asyncNumber()">
@@ -50,19 +58,19 @@ export default class Index extends Vue {
   numbers: string = "";
   result: {} = {};
   uploadFile: any = "";
-  moduleList: string[] = [
-    "haruA",
-    "haruB",
-    "haruC",
-    "akiA",
-    "akiB",
-    "akiC"
-  ];
+  moduleList: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
   get moduleMessage(): string {
-    const list:string[] = ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"];
+    const list: string[] = [
+      "SpringA",
+      "SpringB",
+      "SpringC",
+      "FallA",
+      "FallB",
+      "FallC"
+    ];
     const i: number = list.indexOf(this.$store.getters["table/module"]);
     const li: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
-    return `${li[i]}のCSVファイルを入力してください`
+    return `${li[i]}のCSVファイルを入力してください`;
   }
   get add() {
     return this.$store.getters["visible/add"];
@@ -73,7 +81,7 @@ export default class Index extends Vue {
 
   chAdd = () => {
     this.$store.commit("visible/chAdd", { display: false });
-  }
+  };
   findClassByName = async () => {
     if (this.numbers.length < 2) {
       return;
@@ -88,43 +96,52 @@ export default class Index extends Vue {
       .catch(err => {
         this.result = err;
       });
-  }
+  };
   onFileChange = async (e: any) => {
     e.preventDefault();
     const files = e.target.files;
     this.uploadFile = files[0];
     if (this.uploadFile === null) {
-      console.log('ファイルが入力されてません');
+      window.alert("ファイルが入力されてません");
     } else {
+      if (
+        !window.confirm(
+          "科目追加を行いますか？現在表示されている時間割は上書きされます！"
+        )
+      ) {
+        return;
+      }
       const formData = new FormData();
-      formData.append('file_upload', this.uploadFile);
+      formData.append("file_upload", this.uploadFile);
       const config = {
-        headers: { 'content-type': 'multipart/form-data' }
+        headers: { "content-type": "multipart/form-data" }
       };
-      this.$store.dispatch('old_api/asyncCSV', {formData, config, module: this.moduleList[this.moduleNum]});
-      this.$store.commit('visible/chAdd', { display: false });
+      this.$store.dispatch("old_api/asyncCSV", {
+        formData,
+        config,
+        module: this.moduleList[this.moduleNum]
+      });
+      this.$store.commit("visible/chAdd", { display: false });
     }
-  }
+  };
   asyncNumber = async () => {
+    if (
+      !confirm(
+        "科目追加を行いますか？現在表示されている時間割は上書きされます！"
+      )
+    ) {
+      return;
+    }
     await this.$store.dispatch("old_api/asyncNumber", {
       number: [this.numbers],
       module: this.moduleList[this.moduleNum]
     });
-  }
+  };
 }
 </script>
 
 <style lang="scss" scoped>
-.back {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  left: 0px;
-  top: 0px;
-  background: rgba(100, 100, 100, 0.5);
-  z-index: 5;
-}
-
+//++++++++++++++++++++++++// ダイアログの枠 //++++++++++++++++++++++++//
 .main {
   position: absolute;
   top: 50%;
@@ -133,8 +150,8 @@ export default class Index extends Vue {
   width: 92vw;
   max-width: 700px;
   height: 80vh;
-  background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  box-shadow: 1vmine;
   border-radius: 1vh;
   z-index: 6;
 }
@@ -143,20 +160,53 @@ export default class Index extends Vue {
     max-width: 1000px;
   }
 }
+
+//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
   margin: 5vh;
   height: calc(80vh - 10vh);
 }
 
+/* ボタン・アイコン */
 .close-btn {
   position: absolute;
   top: -1.5vh;
+  cursor: pointer;
   right: -1.5vh;
   font-size: 4vh;
+  transition: all 0.15s;
   color: #717171;
 }
-.add-title {
+.register-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: auto;
+  width: 100%;
+  max-width: 550px;
+  font-size: 2.3vh;
+  height: 6vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  bottom: 0;
+  color: #fff;
+  text-align: center;
+  &:active {
+    transition: all 0.2s;
+    transform: translateX(-50%) scale(1.05);
+    background-color: #05dbdb;
+  }
+}
+@media screen and (min-width: 1300px) {
+  .register-btn {
+    max-width: 1000px;
+  }
+}
+
+/* 授業の追加 */
+h1 {
   position: absolute;
   top: -0.8vh;
   font-size: 2.9vh;
@@ -167,9 +217,22 @@ article {
   position: absolute;
   top: 5.9vh;
   font-size: 2vh;
+  color: #555;
+  margin-left: 1.5vh;
+}
+.others {
+  position: absolute;
+  bottom: 8.5vh;
+  border-top: 1px solid #adadad;
+  width: 100%;
+}
+.other-content {
+  font-size: 2vh;
   color: #adadad;
   margin-left: 1.5vh;
 }
+
+/* 検索フォーム */
 .search-form {
   position: absolute;
   width: calc(100% - 3vh);
@@ -200,45 +263,27 @@ article {
   font-size: 3.5vh;
   text-align: center;
   line-height: 4.8vh;
+  &:active {
+    transition: all 0.2s;
+    transform: scale(1.1);
+    background-color: #05dbdb;
+  }
 }
+
 .form:focus {
   border-color: #558afa;
   outline: 0;
   background-color: #fff;
 }
-.others {
+
+//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
+.back {
   position: absolute;
-  bottom: 7.2vh;
-  border-top: 1px solid #adadad;
-  width: 100%;
-}
-.other-content {
-  font-size: 2vh;
-  color: #adadad;
-  margin-left: 1.5vh;
-}
-.register-btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: auto;
-  width: 100%;
-  max-width: 550px;
-  font-size: 2.3vh;
-  height: 6vh;
-  line-height: 6vh;
-  background: #00c0c0;
-  border-radius: 1vh;
-  bottom: 0;
-  color: #fff;
-  text-align: center;
-}
-.register-btn:hover, .search-btn:hover {
-  background-color: #05dbdb;
-}
-@media screen and (min-width: 1300px) {
-  .register-btn {
-    max-width: 1000px;
-  }
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
 }
 </style>
