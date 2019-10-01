@@ -4,6 +4,10 @@ const nuxtConfig: Configuration = {
   buildModules: ["@nuxt/typescript-build"],
   mode: "universal",
   srcDir: "src/",
+  server: {
+    port: 5000,
+    host: "localhost",
+  },
   head: {
     titleTemplate: "Twinte",
     htmlAttrs: {
@@ -25,6 +29,9 @@ const nuxtConfig: Configuration = {
   css: ["@/assets/css/main.scss"],
   modules: [
     "@nuxtjs/pwa",
+    ["@nuxtjs/google-analytics", {
+      id: "UA-133970007-1"
+    }]
     /**"@nuxtjs/localtunnel"*/
   ],
   workbox: {
