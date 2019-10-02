@@ -6,7 +6,7 @@ const nuxtConfig: Configuration = {
   srcDir: "src/",
   server: {
     port: 5000,
-    host: "localhost",
+    host: "localhost"
   },
   head: {
     titleTemplate: "Twinte",
@@ -26,12 +26,19 @@ const nuxtConfig: Configuration = {
       }
     ]
   },
+  loading: {
+    color: "teal",
+    height: "5px"
+  },
   css: ["@/assets/css/main.scss"],
   modules: [
     "@nuxtjs/pwa",
-    ["@nuxtjs/google-analytics", {
-      id: "UA-133970007-1"
-    }]
+    [
+      "@nuxtjs/google-analytics",
+      {
+        id: "UA-133970007-1"
+      }
+    ]
     /**"@nuxtjs/localtunnel"*/
   ],
   workbox: {
