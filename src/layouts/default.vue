@@ -1,4 +1,4 @@
-<template　ontouchstart="">
+<template ontouchstart="">
   <div>
     <def-toolbar />
     <def-navigation />
