@@ -33,6 +33,7 @@ const nuxtConfig: Configuration = {
   css: ["@/assets/css/main.scss"],
   modules: [
     "@nuxtjs/pwa",
+    "@nuxtjs/proxy",
     [
       "@nuxtjs/google-analytics",
       {
@@ -41,6 +42,10 @@ const nuxtConfig: Configuration = {
     ]
     /**"@nuxtjs/localtunnel"*/
   ],
+  proxy: {
+    "/api": "http://dev.api.twinte.net"
+  },
+  plugins: ["~/plugins/vue-notifications"],
   workbox: {
     dev: true
   },

@@ -98,7 +98,7 @@ export default class Index extends Vue {
       this.result = "有効な入力です。「時間割に追加」ボタンを押してください";
     }
     await axios
-      .post("https://dev.api.twinte.net/lectures/search", {
+      .post("/api/lectures/search", {
         q: this.number,
         year: 2019
       })
@@ -109,6 +109,7 @@ export default class Index extends Vue {
         console.error(err);
         this.result = "一致する授業は見つかりませんでした。";
       });
+    console.log(this.result);
   };
   onFileChange = async (e: any) => {
     e.preventDefault();

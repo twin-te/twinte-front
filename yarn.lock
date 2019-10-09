@@ -1284,6 +1284,14 @@
   dependencies:
     "@nuxtjs/pwa-utils" "3.0.0-beta.16"
 
+"@nuxtjs/proxy@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/proxy/-/proxy-1.3.3.tgz#3de3d9f073e8e57167168100940be2a824a220e0"
+  integrity sha512-ykpCUdOqPOH79mQG30QfWZmbRD8yjTD+TTSBbwow5GkROUQEtXw+HE+q6i+YFpuChvgJNbwVrXdZ3YmfXbZtTw==
+  dependencies:
+    consola "^2.5.6"
+    http-proxy-middleware "^0.19.1"
+
 "@nuxtjs/pwa-utils@3.0.0-beta.16":
   version "3.0.0-beta.16"
   resolved "https://registry.yarnpkg.com/@nuxtjs/pwa-utils/-/pwa-utils-3.0.0-beta.16.tgz#808ddb090f3831c5b32931ab2d08231cc55abff9"
@@ -2856,7 +2864,7 @@ connect@^3.7.0:
     parseurl "~1.3.3"
     utils-merge "1.0.1"
 
-consola@^2.10.0, consola@^2.10.1, consola@^2.6.0, consola@^2.9.0:
+consola@^2.10.0, consola@^2.10.1, consola@^2.5.6, consola@^2.6.0, consola@^2.9.0:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/consola/-/consola-2.10.1.tgz#4693edba714677c878d520e4c7e4f69306b4b927"
   integrity sha512-4sxpH6SGFYLADfUip4vuY65f/gEogrzJoniVhNUYkJHtng0l8ZjnDCqxxrSVRHOHwKxsy8Vm5ONZh1wOR3/l/w==
@@ -3280,7 +3288,7 @@ debug@=3.1.0:
   dependencies:
     ms "2.0.0"
 
-debug@^3.2.6:
+debug@^3.0.0, debug@^3.2.6:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
   integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
@@ -3772,6 +3780,11 @@ etag@^1.8.1, etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
+eventemitter3@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.0.tgz#d65176163887ee59f386d64c82610b696a4a74eb"
+  integrity sha512-qerSRB0p+UDEssxTtm6EDKcE7W4OaoisfIMl4CngyEhjpYglocpNg6UEqCvemdGhosAsg4sO2dXJOdyBifPGCg==
+
 events@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.0.0.tgz#9a0a0dfaf62893d92b875b8f2698ca4114973e88"
@@ -4109,6 +4122,13 @@ follow-redirects@1.5.10:
   integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
   dependencies:
     debug "=3.1.0"
+
+follow-redirects@^1.0.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.9.0.tgz#8d5bcdc65b7108fe1508649c79c12d732dcedb4f"
+  integrity sha512-CRcPzsSIbXyVDl0QI01muNDu69S8trU4jArW9LpOt2WtC6LyUJetcIrmfHsRBx7/Jb6GHJUiuqyYxPooFfNt6A==
+  dependencies:
+    debug "^3.0.0"
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -4641,6 +4661,25 @@ http-errors@~1.7.2:
     setprototypeof "1.1.1"
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
+
+http-proxy-middleware@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/http-proxy-middleware/-/http-proxy-middleware-0.19.1.tgz#183c7dc4aa1479150306498c210cdaf96080a43a"
+  integrity sha512-yHYTgWMQO8VvwNS22eLLloAkvungsKdKTLO8AJlftYIKNfJr3GK3zK0ZCfzDDGUBttdGc8xFy1mCitvNKQtC3Q==
+  dependencies:
+    http-proxy "^1.17.0"
+    is-glob "^4.0.0"
+    lodash "^4.17.11"
+    micromatch "^3.1.10"
+
+http-proxy@^1.17.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.0.tgz#dbe55f63e75a347db7f3d99974f2692a314a6a3a"
+  integrity sha512-84I2iJM/n1d4Hdgc6y2+qY5mDaz2PUVjlg9znE9byl+q0uC3DeByqBGReQu5tpLK0TAqTIXScRUV+dg7+bUPpQ==
+  dependencies:
+    eventemitter3 "^4.0.0"
+    follow-redirects "^1.0.0"
+    requires-port "^1.0.0"
 
 http-signature@~1.2.0:
   version "1.2.0"
@@ -7642,6 +7681,11 @@ require-main-filename@^1.0.1:
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
   integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
 
+requires-port@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+  integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
+
 resolve-from@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-3.0.0.tgz#b22c7af7d9d6881bc8b6e653335eebcb0a188748"
@@ -9009,6 +9053,11 @@ vue-no-ssr@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
   integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
+
+vue-notifications@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vue-notifications/-/vue-notifications-1.0.2.tgz#988a0f42b472eb28afdcae4d7300307da3de1734"
+  integrity sha512-D9a3bhqW18tf4uRqFwh3Q0vIlcP9ipVnieyX2hAb/bqrGyVAx/JWPTqky7py9mU/DDaL5BY49MJzsctIDr7i2g==
 
 vue-property-decorator@^8.1.1:
   version "8.2.1"
