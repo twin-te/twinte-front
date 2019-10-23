@@ -59,11 +59,7 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
-@Component({
-  components: {
-    ripple: () => import("~/components/ui-ripple.vue")
-  }
-})
+@Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
   timeTable = [
