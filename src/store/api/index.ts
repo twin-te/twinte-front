@@ -3,21 +3,18 @@ import union from "lodash/union";
 
 import tableData from "../../assets/json/data.json";
 
-const BASE_URL = "https://dev.api.twinte.net";
+export const BASE_URL = "https://dev.api.twinte.net";
 
-/** BASE_URLとの通信の状態管理を行なう */
 import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A } from "./type";
-// ______________________________________________________
-//
+
 export const state = (): S => ({
   data: null,
   list_number: [],
   moduleList: ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"],
   isLogin: false
 });
-// ______________________________________________________
-//
+
 export const getters: Getters<S, G> = {
   data(state) {
     return state.data;
@@ -29,8 +26,7 @@ export const getters: Getters<S, G> = {
     return state.isLogin;
   }
 };
-// ______________________________________________________
-//
+
 export const mutations: Mutations<S, M> = {
   UPDATE_TABLE(state, payload) {
     if (state.data === null) {
@@ -74,8 +70,7 @@ export const mutations: Mutations<S, M> = {
     state.data = null;
   }
 };
-// ______________________________________________________
-//
+
 export const actions: Actions<S, A, G, M> = {
   async asyncNumber(ctx, payload) {
     ctx.dispatch("createNumbers");
@@ -87,7 +82,7 @@ export const actions: Actions<S, A, G, M> = {
         /**tableを作成する */
 
         /**tableを作成する */
-        if (items.data[0] === null) return; // 違うデータだった場合は追加しない
+        if (items.data[0] === null) return;
         ctx.commit("UPDATE_TABLE", {
           module: payload.module,
           data: items.data
@@ -106,13 +101,10 @@ export const actions: Actions<S, A, G, M> = {
     ctx.commit("SET_NUMBER", { module: payload.module, data: [] });
 
     const reader = new FileReader();
-    // ファイル読み取りに失敗したとき
     reader.onerror = function() {
       alert("ファイル読み取りに失敗しました");
     };
-    // ファイル読み取りに成功したとき
     reader.onload = function() {
-      // 行単位で配列にする
       const lineArr: string[] =
         typeof reader.result === "string" ? reader.result.split("\n") : [];
       for (let i = 0; i < lineArr.length; i++) {
@@ -160,6 +152,7 @@ export const actions: Actions<S, A, G, M> = {
     console.log(data);
   },
   login(ctx) {
+    //TODO axiosで時間割をとってくる
     ctx.commit("UPDATE_TABLES", { data: tableData });
     ctx.dispatch("createNumbers"); // SET_NUMBERS
     ctx.commit("LOGIN");

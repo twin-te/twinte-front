@@ -50,7 +50,13 @@ export interface M {
    * すべての学期の授業番号を変更するため`data`配列は[module][number配列]の形にする
    */
   SET_NUMBERS: { data: string[][] | null };
+  /**
+   * ログインするときに呼ぶ、isLoginがtrueになるだけ
+   */
   LOGIN: null;
+  /**
+   * ログアウトするときに呼ぶ、isLoginがfalseになるだけ
+   */
   LOGOUT: null;
 }
 export interface RM {
