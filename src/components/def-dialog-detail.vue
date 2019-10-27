@@ -1,4 +1,4 @@
-/** -> "../pages/index.vue" */
+/** -> "../layout/default.vue" */
 <template>
   <!-- 科目詳細画面 -->
   <section class="contents">

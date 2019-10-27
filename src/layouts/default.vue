@@ -3,6 +3,7 @@
     <def-toolbar />
     <def-navigation />
     <def-dialog-add />
+    <def-dialog-detail />
     <nuxt />
   </div>
 </template>
@@ -13,9 +14,10 @@ import * as Vuex from "vuex";
 
 @Component({
   components: {
-    "def-toolbar": () => import("~/components/def-toolbar.vue"),
-    "def-navigation": () => import("~/components/def-nav.vue"),
-    "def-dialog-add": () => import("~/components/def-dialog-add.vue")
+    DefToolbar: () => import("~/components/def-toolbar.vue"),
+    DefNavigation: () => import("~/components/def-nav.vue"),
+    DefDialogAdd: () => import("~/components/def-dialog-add.vue"),
+    DefDialogDetail: () => import("~/components/def-dialog-detail.vue")
   }
 })
 export default class Index extends Vue {
