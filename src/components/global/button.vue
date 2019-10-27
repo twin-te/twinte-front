@@ -7,8 +7,8 @@ import { Component, Vue, Prop } from "nuxt-property-decorator"
 
 @Component({})
 export default class Index extends Vue {
-  @Prop({ default: 300 }) width: number;
-  @Prop({ default: 60 }) height: number;
+  @Prop({ default: 300 }) width!: number;
+  @Prop({ default: 60 }) height!: number;
 }
 </script>
 

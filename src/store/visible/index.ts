@@ -1,5 +1,5 @@
-import { Getters, Mutations, Actions } from "vuex";
-import { S, G, M, A } from "./type";
+import { Getters, Mutations } from "vuex";
+import { S, G, M } from "./type";
 // ______________________________________________________
 //
 export const state = (): S => ({
@@ -10,9 +10,6 @@ export const state = (): S => ({
 });
 // ______________________________________________________
 //
-/**
- * stateを利用して作られる,vueファイル内で使う値
- */
 export const getters: Getters<S, G> = {
   drawer(state) {
     return state.drawer;
@@ -29,14 +26,7 @@ export const getters: Getters<S, G> = {
 };
 // ______________________________________________________
 //
-/**
- * 同期的なstate値の更新
- */
 export const mutations: Mutations<S, M> = {
-  /**
-   * ナビゲーションバーの表示のon/off
-   * @param payload 任意 つけなかったら切り替え
-   */
   chDrawer(state, payload) {
     state.drawer = payload.display;
   },
@@ -50,14 +40,3 @@ export const mutations: Mutations<S, M> = {
     state.table = { display: payload.display, move: payload.move };
   }
 };
-// ______________________________________________________
-//
-/**
- * 非同期な処理を行なう
- * @example
- * asyncSetCount(ctx, payload) {
- *   ctx.commit('setCount', { amount: payload.amount })
- * }
- * @literal `async${Verb}`
- */
-export const actions: Actions<S, A, G, M> = {};
