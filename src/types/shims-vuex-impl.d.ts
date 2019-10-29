@@ -13,5 +13,5 @@ declare module "vuex" {
   };
   type RootGetters = Visible.RG & Table.RG & Old_api.RG & Api.RG;
   type RootMutations = Visible.RM & Table.RM & Old_api.RM & Api.RM;
-  type RootActions = Visible.RA & Table.RA & Old_api.RA & Api.RA;
+  type RootActions = Old_api.RA & Api.RA;
 }
