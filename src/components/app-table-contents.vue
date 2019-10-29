@@ -58,7 +58,6 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
-$subject-height: calc((100vh - 58px - 62px - 37px - 12vh) / 6);
 $width: calc(
   (
       100vw - 8vw /**外枠 */ - 11vw /** 時限のwidth */ - 12vw
@@ -107,33 +106,6 @@ content {
 }
 .tilde {
   transform: rotate(90deg);
-}
-
-/* 科目 */
-#subject {
-  color: #555;
-  width: $width;
-  height: $height;
-  padding: 1vmin 1vw;
-  word-break: break-all;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 1.3vh;
-  line-height: 2vh;
-  overflow: hidden;
-  &:active {
-    transition: all 0.3s;
-    filter: brightness(150%);
-  }
-}
-.sbj-number {
-  font-weight: 400;
-}
-.sbj-name {
-  font-weight: 700;
-}
-.sbj-classroom {
-  font-weight: 400;
 }
 
 /* animation */
