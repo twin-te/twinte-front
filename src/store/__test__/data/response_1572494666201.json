@@ -1,0 +1,78 @@
+[
+  {
+    "_id": "5d92cd4ca120466df9fe5ef7",
+    "lectureID": "GB21601",
+    "year": 2019,
+    "__v": 0,
+    "details": [
+      {
+        "_id": "5d92cd4cd78a82057da0299c",
+        "module": "秋A",
+        "period": 5,
+        "day": "木",
+        "room": "3A202"
+      },
+      {
+        "_id": "5d92cd4cd78a82057da0299b",
+        "module": "秋A",
+        "period": 6,
+        "day": "木",
+        "room": "3A202"
+      },
+      {
+        "_id": "5d92cd4cd78a82057da0299a",
+        "module": "秋B",
+        "period": 5,
+        "day": "木",
+        "room": "3A202"
+      },
+      {
+        "_id": "5d92cd4cd78a82057da02999",
+        "module": "秋B",
+        "period": 6,
+        "day": "木",
+        "room": "3A202"
+      }
+    ],
+    "instructor": "亀山 幸義",
+    "name": "オートマトンと形式言語"
+  },
+  {
+    "_id": "5d92cd4da120466df9fe5fe7",
+    "lectureID": "GC50201",
+    "year": 2019,
+    "__v": 0,
+    "details": [
+      {
+        "_id": "5d92cd4dd78a82057da02b1b",
+        "module": "秋A",
+        "period": 5,
+        "day": "木",
+        "room": "3A202"
+      },
+      {
+        "_id": "5d92cd4dd78a82057da02b1a",
+        "module": "秋A",
+        "period": 6,
+        "day": "木",
+        "room": "3A202"
+      },
+      {
+        "_id": "5d92cd4dd78a82057da02b19",
+        "module": "秋B",
+        "period": 5,
+        "day": "木",
+        "room": "3A202"
+      },
+      {
+        "_id": "5d92cd4dd78a82057da02b18",
+        "module": "秋B",
+        "period": 6,
+        "day": "木",
+        "room": "3A202"
+      }
+    ],
+    "instructor": "亀山 幸義",
+    "name": "オートマトンと形式言語"
+  }
+]
