@@ -4,14 +4,14 @@ import { BASE_URL } from '.'
 const url = BASE_URL + '/user'
 
 async function getMe() {
-  await axios
-    .get(`${url}/me`)
-    .then((res) => {
-      return res.data
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+  try {
+    const { data } = await axios.get(`${url}/me`)
+    return data
+  } catch (error) {
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
+  }
 }
 
 export { getMe }
