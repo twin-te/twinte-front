@@ -20,7 +20,7 @@ async function getUserData(lectureId: string, year: number = 2019) {
 }
 
 /**
- * /userdatas/{year}/{lectureID}
+ * 指定した講義のユーザーデータを更新
  * @param lectureId
  * @param year
  */
