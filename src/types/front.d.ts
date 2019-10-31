@@ -1,12 +1,6 @@
-export interface Table {
-  classroom: string
-  name: string
-  number: string
-  season: string
-  teacher: string
-  time: string
-}
-/** [module][x][y] */
-export type UserTableData = Table[][][]
-/** [x][y] */
-export type ModuleData = Table[][]
+import { Lecture } from './server'
+
+/** [module][x: day][y: period] */
+export type LecturesAnual = Lecture[][][]
+/** [x: day][y: period] */
+export type LecturesModule = Lecture[][]
