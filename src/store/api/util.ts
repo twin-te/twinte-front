@@ -1,23 +1,22 @@
-import { LecturesAnual, LecturesModule } from '../../types/front'
-import { Lecture } from '../../types/server'
+import { getLectureById } from './lectures'
+import union from 'lodash/union'
 
-async function fetchLectures(data: string[]): Promise<Lecture[]> {
-  return []
+import { Lecture } from '../../types/index'
+
+/**
+ * @param data 授業番号の配列
+ * @returns 授業詳細配列
+ */
+async function fetchLectures(
+  data: string[],
+  year: number
+): Promise<(Lecture | null)[]> {
+  const unionData = await Promise.all(
+    union(data).map(async (id) => {
+      return await getLectureById(id, year)
+    })
+  )
+  return unionData.filter((d) => d)
 }
 
-function createTableModule(data: Lecture, module: number): LecturesModule {
-  return []
-}
-
-function createTableAnual(data: LecturesAnual | null, moduleData: LecturesModule, module: number): LecturesAnual {
-  if (data === null) {
-    const res = new Array(6)
-    res[module] = moduleData
-    return res
-  } else {
-    data[module] = moduleData
-    return data
-  }
-}
-
-export { fetchLectures, createTableModule, createTableAnual}
+export { fetchLectures }

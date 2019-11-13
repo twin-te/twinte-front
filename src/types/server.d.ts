@@ -3,6 +3,9 @@ import { Lecture as _Lecture } from './parser'
 
 // https://github.com/twin-te/twinte-server/blob/working-clean/src/domain/entities/user.ts
 
+/**
+ * 出欠などの個人データ構造
+ */
 export interface UserData {
   year: number
   lectureID: string
@@ -13,6 +16,9 @@ export interface UserData {
   late: number
 }
 
+/**
+ * 授業データ構造
+ */
 export interface Period {
   year: number
   module: Module
@@ -26,6 +32,9 @@ export interface Period {
   instructor: string
 }
 
+/**
+ * ログイン時のデータ構造
+ */
 export interface User {
   twitter: {
     id: string
@@ -41,6 +50,7 @@ export interface User {
 }
 
 // https://github.com/twin-te/twinte-server/blob/working-clean/src/domain/entities/lecture.ts
+
 
 export interface Lecture extends _Lecture {
   year: number

@@ -1,11 +1,16 @@
+import { Module } from '../../types/index'
+
+export { Module }
+
 export interface S {
   moduleList: string[];
   module: string;
-  click: { x: number; y: number } | null;
+  click: { day: number; period: number } | null;
 }
 export interface G {
   /**
    * 現在の学期を返す
+   * @returns Module.SpringA etc...
    */
   module: string;
   /**
@@ -23,7 +28,7 @@ export interface G {
   /**
    * 直前にクリックした授業の座標を保持する
    */
-  click: { x: number; y: number };
+  click: { day: number; period: number };
 }
 export interface RG {
   "table/module": G["module"];
@@ -49,10 +54,10 @@ export interface M {
   nextModule: void;
   /**
    * 直前にクリックした授業の座標を保持する
-   * @param x 0-4
-   * @param y 0-5
+   * @param day 0 - 4
+   * @param period 0 - 5
    */
-  setClick: { x: number; y: number };
+  setClick: { day: number; period: number };
 }
 export interface RM {
   "table/setModule": M["setModule"];

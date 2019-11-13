@@ -6,19 +6,17 @@ const todo = true
 
 beforeEach(() => {
   state = {
-    data: null,
-    list_number: [],
-    moduleList: ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC'],
-    isLogin: false,
+    timeTables: null,
+    isLogin: false
   }
 })
 
 describe('add lecture', () => {
-  it('no login', () => {
+  it.skip('no login', () => {
     state.isLogin = false
     expect(todo).toBe(todo)
   })
-  it('logined', () => {
+  it.skip('logined', () => {
     state.isLogin = true
     expect(todo).toBe(todo)
   })

@@ -1,10 +1,19 @@
+/**
+ * # State of Table #
+ *
+ * - ユーザーが閲覧している学期の情報はここで管理する。
+ * - 授業をクリックしたときの場所情報も保持している
+ * - サーバーとの型の統一化のためモジュール情報はすべて"SpringA": Moduleなどのフォーマットで記述します。
+ *
+ */
+
 import { Getters, Mutations } from "vuex";
-import { S, G, M } from "./type";
+import { S, G, M, Module } from "./type";
 // ______________________________________________________
 //
 export const state = (): S => ({
-  moduleList: ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"],
-  module: "SpringA",
+  moduleList: [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC],
+  module: Module.SpringA,
   click: null
 });
 // ______________________________________________________
@@ -17,12 +26,12 @@ export const getters: Getters<S, G> = {
 
   prevModule(state) {
     const num: number = state.moduleList.indexOf(state.module) - 1;
-    return num === -1 ? "FallC" : state.moduleList[num];
+    return num === -1 ? Module.FallC : state.moduleList[num];
   },
 
   nextModule(state) {
     const num: number = state.moduleList.indexOf(state.module) + 1;
-    return num === 6 ? "SpringA" : state.moduleList[num];
+    return num === 6 ? Module.SpringA : state.moduleList[num];
   },
 
   moduleNum(state) {
@@ -31,7 +40,7 @@ export const getters: Getters<S, G> = {
 
   click(state) {
     if (state.click === null) {
-      return { x: 0, y: 0 };
+      return { day: 0, period: 0 };
     }
     return state.click;
   }
@@ -48,18 +57,18 @@ export const mutations: Mutations<S, M> = {
   prevModule(state) {
     //TODO getterの値を使いたかった
     const num: number = state.moduleList.indexOf(state.module) - 1;
-    state.module = num === -1 ? "FallC" : state.moduleList[num];
+    state.module = num === -1 ? Module.FallC : state.moduleList[num];
     localStorage.setItem("module", state.module);
   },
 
   nextModule(state) {
     //TODO getterの値を使いたかった
     const num: number = state.moduleList.indexOf(state.module) + 1;
-    state.module = num === 6 ? "SpringA" : state.moduleList[num];
+    state.module = num === 6 ? Module.SpringA : state.moduleList[num];
     localStorage.setItem("module", state.module);
   },
 
   setClick(state, payload) {
-    state.click = { x: payload.x, y: payload.y };
+    state.click = { day: payload.day, period: payload.period };
   }
 };
