@@ -159,7 +159,7 @@ export default class Index extends Vue {
       this.$store.getters['old_api/data'][this.moduleNum]
     )
 
-    new_table[location.x][location.y]['memo'] = this.text
+    new_table[location.day][location.period]['memo'] = this.text
 
     this.$store.commit('old_api/updateTable', {
       module: moduleList[this.moduleNum],
@@ -188,13 +188,13 @@ export default class Index extends Vue {
 
     switch (i) {
       case 1:
-        new_table[location.x][location.y]['attend']++
+        new_table[location.day][location.period]['attend']++
         break
       case 2:
-        new_table[location.x][location.y]['absent']++
+        new_table[location.day][location.period]['absent']++
         break
       case 3:
-        new_table[location.x][location.y]['late']++
+        new_table[location.day][location.period]['late']++
         break
       default:
         return
@@ -227,13 +227,13 @@ export default class Index extends Vue {
 
     switch (i) {
       case 1:
-        new_table[location.x][location.y]['attend']--
+        new_table[location.day][location.period]['attend']--
         break
       case 2:
-        new_table[location.x][location.y]['absent']--
+        new_table[location.day][location.period]['absent']--
         break
       case 3:
-        new_table[location.x][location.y]['late']--
+        new_table[location.day][location.period]['late']--
         break
       default:
         return
@@ -263,7 +263,7 @@ export default class Index extends Vue {
       this.$store.getters['old_api/data'][this.moduleNum]
     )
 
-    new_table[location.x][location.y]['number'] = 'undefined'
+    new_table[location.day][location.period]['number'] = 'undefined'
 
     this.$store.commit('old_api/updateTable', {
       module: moduleList[this.moduleNum],

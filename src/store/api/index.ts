@@ -1,20 +1,20 @@
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
 
-import { Lecture } from '../../types/index'
+// import { Lecture } from '../../types/index'
 
-import { isLogin, login, logout } from './auth'
-import { getLectureById, searchLectures } from './lectures'
-import { getUserData, updateUserData } from './userdata'
+// import { isLogin, login, logout } from './auth'
+// import { getLectureById, searchLectures } from './lectures'
+// import { getUserData, updateUserData } from './userdata'
 import { fetchLectures } from './util'
-import {
-  createLecture,
-  deleteLecture,
-  getTable,
-  getTableAll,
-  getToday,
-  postLecture,
-} from './timetables'
+// import {
+//   createLecture,
+//   deleteLecture,
+//   getTable,
+//   getTableAll,
+//   getToday,
+//   postLecture,
+// } from './timetables'
 
 export const BASE_URL = 'https://dev.api.twinte.net'
 
@@ -54,9 +54,14 @@ export const mutations: Mutations<S, M> = {
 export const actions: Actions<S, A, G, M> = {
   async addTable(ctx, payload) {
     const lectures = await fetchLectures(payload.lectureId, 2019)
+    console.log(ctx, lectures)
   },
-  async deleteTable(ctx, payload) {},
-  async asyncCSV(ctx, payload) {},
+  async deleteTable(ctx, payload) {
+    console.log(ctx, payload)
+  },
+  async asyncCSV(ctx, payload) {
+    console.log(ctx, payload)
+  },
   async login(ctx) {
     ctx.commit('LOGIN')
   },

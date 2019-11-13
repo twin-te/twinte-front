@@ -6,7 +6,7 @@ const todo = true
 
 beforeEach(() => {
   state = {
-    timeTables: null,
+    timeTables: [],
     isLogin: false
   }
 })

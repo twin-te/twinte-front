@@ -125,10 +125,10 @@ export default class Index extends Vue {
 
     this.$nuxt.$loading.start();
 
-    await this.$store.dispatch("api/asyncCSV", {
-      fileData,
-      module: this.li[this.moduleNum]
-    });
+    // await this.$store.dispatch("old_api/asyncCSV", {
+    //   fileData,
+    //   module: this.li[this.moduleNum]
+    // });
 
     this.$store.commit("visible/chAdd", { display: false });
     this.$nuxt.$loading.finish();
@@ -140,10 +140,10 @@ export default class Index extends Vue {
     }
     this.$nuxt.$loading.start();
 
-    await this.$store.dispatch("api/asyncNumber", {
-      number: this.number,
-      module: this.li[this.moduleNum]
-    });
+    // await this.$store.dispatch("old_api/asyncNumber", {
+    //   number: this.number,
+    //   module: this.li[this.moduleNum]
+    // });
 
     this.$nuxt.$loading.finish();
   };
