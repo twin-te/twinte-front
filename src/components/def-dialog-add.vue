@@ -11,11 +11,11 @@
           <form class="search-form">
             <input
               @keydown="findClassByName()"
-              v-model="numbers"
+              v-model="number"
               type="text"
               class="form"
             />
-            <!-- <span class="material-icons search-btn">search</span> -->
+            <span class="material-icons search-btn">search</span>
           </form>
           <section class="others">
             <p class="other-content">
@@ -55,10 +55,17 @@ import axios from "axios";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  numbers: string = "";
-  result: {} = {};
-  uploadFile: any = "";
+  // data___________________________________________________________________________________
+  //
+  number: string = "";
+  assertMessage: string =
+    "科目追加を行いますか？現在表示されている時間割は上書きされます";
+  result: {} | string = "一致する授業がここに表示されます。";
   moduleList: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
+  li: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
+
+  // computed___________________________________________________________________________________
+  //
   get moduleMessage(): string {
     const list: string[] = [
       "SpringA",
@@ -69,73 +76,76 @@ export default class Index extends Vue {
       "FallC"
     ];
     const i: number = list.indexOf(this.$store.getters["table/module"]);
-    const li: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
-    return `${li[i]}のCSVファイルを入力してください`;
+    return `${this.li[i]}のCSVファイルを入力してください`;
   }
-  get add() {
+  get add(): boolean {
     return this.$store.getters["visible/add"];
   }
-  get moduleNum() {
+  get moduleNum(): number {
     return this.$store.getters["table/moduleNum"];
   }
 
+  // method___________________________________________________________________________________
+  //
   chAdd = () => {
     this.$store.commit("visible/chAdd", { display: false });
   };
   findClassByName = async () => {
-    if (this.numbers.length < 2) {
+    if (this.number.length < 4) {
       return;
     }
+    if (this.number.length === 7) {
+      this.result = "有効な入力です。「時間割に追加」ボタンを押してください";
+    }
     await axios
-      .post("https://twinte.net/api", {
-        name: this.numbers
+      .post("/api/lectures/search", {
+        q: this.number,
+        year: 2019
       })
       .then(result => {
         this.result = result.data;
       })
       .catch(err => {
-        this.result = err;
+        console.error(err);
+        this.result = "一致する授業は見つかりませんでした。";
       });
+    console.log(this.result);
   };
   onFileChange = async (e: any) => {
     e.preventDefault();
-    const files = e.target.files;
-    this.uploadFile = files[0];
-    if (this.uploadFile === null) {
-      window.alert("ファイルが入力されてません");
-    } else {
-      if (
-        !window.confirm(
-          "科目追加を行いますか？現在表示されている時間割は上書きされます！"
-        )
-      ) {
-        return;
-      }
-      const formData = new FormData();
-      formData.append("file_upload", this.uploadFile);
-      const config = {
-        headers: { "content-type": "multipart/form-data" }
-      };
-      this.$store.dispatch("old_api/asyncCSV", {
-        formData,
-        config,
-        module: this.moduleList[this.moduleNum]
-      });
-      this.$store.commit("visible/chAdd", { display: false });
-    }
-  };
-  asyncNumber = async () => {
-    if (
-      !confirm(
-        "科目追加を行いますか？現在表示されている時間割は上書きされます！"
-      )
-    ) {
+    const fileData = e.target.files[0];
+    if (fileData === null) {
+      alert("ファイルが入力されてません");
       return;
     }
-    await this.$store.dispatch("old_api/asyncNumber", {
-      number: [this.numbers],
-      module: this.moduleList[this.moduleNum]
+    if (confirm(this.assertMessage)) {
+      // 確認
+      return;
+    }
+
+    this.$nuxt.$loading.start();
+
+    await this.$store.dispatch("api/asyncCSV", {
+      fileData,
+      module: this.li[this.moduleNum]
     });
+
+    this.$store.commit("visible/chAdd", { display: false });
+    this.$nuxt.$loading.finish();
+  };
+  asyncNumber = async () => {
+    if (confirm(this.assertMessage)) {
+      // 確認
+      return;
+    }
+    this.$nuxt.$loading.start();
+
+    await this.$store.dispatch("api/asyncNumber", {
+      number: this.number,
+      module: this.li[this.moduleNum]
+    });
+
+    this.$nuxt.$loading.finish();
   };
 }
 </script>

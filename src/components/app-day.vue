@@ -13,9 +13,11 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 
+type Today = { month: number | null; day: number | null; week: string | null };
+
 @Component({})
 export default class Index extends Vue {
-  today: { month: number | null; day: number | null; week: string | null } = {
+  today: Today = {
     month: null,
     day: null,
     week: null

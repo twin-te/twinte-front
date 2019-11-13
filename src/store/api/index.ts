@@ -3,18 +3,18 @@ import union from "lodash/union";
 
 import tableData from "../../assets/json/data.json";
 
-/** https://twinte.net/apiとの通信の状態管理を行なう */
+export const BASE_URL = "https://dev.api.twinte.net";
+
 import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A } from "./type";
-// ______________________________________________________
-//
+
 export const state = (): S => ({
   data: null,
   list_number: [],
-  moduleList: ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"]
+  moduleList: ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"],
+  isLogin: false
 });
-// ______________________________________________________
-//
+
 export const getters: Getters<S, G> = {
   data(state) {
     return state.data;
@@ -23,13 +23,12 @@ export const getters: Getters<S, G> = {
     return state.list_number;
   },
   isLogin(state) {
-    return state.data !== null;
+    return state.isLogin;
   }
 };
-// ______________________________________________________
-//
+
 export const mutations: Mutations<S, M> = {
-  updateTable(state, payload) {
+  UPDATE_TABLE(state, payload) {
     if (state.data === null) {
       state.data = new Array(6);
     }
@@ -37,7 +36,7 @@ export const mutations: Mutations<S, M> = {
     state.data[position] = payload.data; // -1の状態だめじゃん
     localStorage.setItem("table", JSON.stringify(state.data));
   },
-  updateTableAll(state, payload) {
+  UPDATE_TABLES(state, payload) {
     if (payload.data === null) {
       state.data = null;
       localStorage.removeItem("table");
@@ -62,44 +61,32 @@ export const mutations: Mutations<S, M> = {
     }
     state.list_number = payload.data;
     localStorage.setItem("number", JSON.stringify(state.list_number));
+  },
+  LOGIN(state) {
+    state.isLogin = true;
+  },
+  LOGOUT(state) {
+    state.isLogin = false;
+    state.data = null;
   }
 };
-// ______________________________________________________
-//
+
 export const actions: Actions<S, A, G, M> = {
   async asyncNumber(ctx, payload) {
     ctx.dispatch("createNumbers");
-    const list =
-      ctx.state.list_number[ctx.state.moduleList.indexOf(payload.module)];
-    const numbers = union(list, payload.number);
-    try {
-      await axios
-        .post("https://twinte.net/api", {
-          number: numbers,
-          view_season: payload.module
-        })
-        .then(items => {
-          if (items.data[0] === null) return; // 違うデータだった場合は追加しない
-          ctx.commit("updateTable", {
-            module: payload.module,
-            data: items.data
-          });
-          ctx.dispatch("assignObj", {
-            moduleNum: ctx.state.moduleList.indexOf(payload.module)
-          });
-          ctx.dispatch("createNumbers");
-          window.alert("時間割を追加しました");
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  async asyncCSV(ctx, payload) {
-    ctx.commit("SET_NUMBER", { module: payload.module, data: [] });
     await axios
-      .post("https://twinte.net/api", payload.formData, payload.config)
-      .then(function(items) {
-        ctx.commit("updateTable", { module: payload.module, data: items.data });
+      .post(BASE_URL + "lectures", {
+        number: payload.number
+      })
+      .then(items => {
+        /**tableを作成する */
+
+        /**tableを作成する */
+        if (items.data[0] === null) return;
+        ctx.commit("UPDATE_TABLE", {
+          module: payload.module,
+          data: items.data
+        });
         ctx.dispatch("assignObj", {
           moduleNum: ctx.state.moduleList.indexOf(payload.module)
         });
@@ -109,6 +96,23 @@ export const actions: Actions<S, A, G, M> = {
       .catch(function(err) {
         console.error(err);
       });
+  },
+  async asyncCSV(ctx, payload) {
+    ctx.commit("SET_NUMBER", { module: payload.module, data: [] });
+
+    const reader = new FileReader();
+    reader.onerror = function() {
+      alert("ファイル読み取りに失敗しました");
+    };
+    reader.onload = function() {
+      const lineArr: string[] =
+        typeof reader.result === "string" ? reader.result.split("\n") : [];
+      for (let i = 0; i < lineArr.length; i++) {
+        const number = lineArr[i];
+        const module = payload.module;
+        ctx.dispatch("asyncNumber", { number, module });
+      }
+    };
   },
   assignObj(ctx, payload) {
     const source = { attend: 0, absent: 0, late: 0, memo: "" };
@@ -125,7 +129,7 @@ export const actions: Actions<S, A, G, M> = {
       });
     });
     console.dir(data);
-    ctx.commit("updateTableAll", { data: data });
+    ctx.commit("UPDATE_TABLES", { data: data });
   },
   createNumbers(ctx) {
     const table = ctx.getters["data"];
@@ -148,10 +152,14 @@ export const actions: Actions<S, A, G, M> = {
     console.log(data);
   },
   login(ctx) {
-    ctx.commit("updateTableAll", { data: tableData });
+    //TODO axiosで時間割をとってくる
+    ctx.commit("UPDATE_TABLES", { data: tableData });
+    ctx.dispatch("createNumbers"); // SET_NUMBERS
+    ctx.commit("LOGIN");
   },
   logout(ctx) {
-    ctx.commit("updateTableAll", { data: null });
+    ctx.commit("UPDATE_TABLES", { data: null });
     ctx.commit("SET_NUMBERS", { data: null });
+    ctx.commit("LOGOUT");
   }
 };

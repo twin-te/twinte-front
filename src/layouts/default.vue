@@ -1,8 +1,9 @@
-<template　ontouchstart="">
+<template ontouchstart="">
   <div>
     <def-toolbar />
     <def-navigation />
     <def-dialog-add />
+    <def-dialog-detail />
     <nuxt />
   </div>
 </template>
@@ -13,9 +14,10 @@ import * as Vuex from "vuex";
 
 @Component({
   components: {
-    "def-toolbar": () => import("~/components/def-toolbar.vue"),
-    "def-navigation": () => import("~/components/def-nav.vue"),
-    "def-dialog-add": () => import("~/components/def-dialog-add.vue")
+    DefToolbar: () => import("~/components/def-toolbar.vue"),
+    DefNavigation: () => import("~/components/def-nav.vue"),
+    DefDialogAdd: () => import("~/components/def-dialog-add.vue"),
+    DefDialogDetail: () => import("~/components/def-dialog-detail.vue")
   }
 })
 export default class Index extends Vue {
@@ -46,21 +48,6 @@ export default class Index extends Vue {
       this.$store.commit("table/setModule", { module });
     }
 
-    // 開発用
-    // if (process.env.NODE_ENV !== "production" && !table) {
-    //   console.info(`mode: ${process.env.NODE_ENV}`);
-    //   console.info(`you are: ${this.$nuxt.$route.path}`);
-    //   this.$store.dispatch("old_api/login");
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 0 });
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 1 });
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 2 });
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 3 });
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 4 });
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 5 });
-    //   this.$store.dispatch("old_api/assignObj", { moduleNum: 6 });
-    //   this.$store.dispatch("old_api/createNumbers");
-    //   window.alert("時間割を追加しました");
-    // }
   }
 }
 </script>

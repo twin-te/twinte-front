@@ -1,4 +1,4 @@
-/** -> "../pages/index.vue" */
+/** -> "../layout/default.vue" */
 <template>
   <!-- 科目詳細画面 -->
   <section class="contents">
@@ -43,7 +43,12 @@
             <span class="material-icons icon">create</span>メモ
           </h2>
           <!-- 入力の枠 -->
-          <textarea @input="updateMemo" class="memo" type="text" v-model="text"></textarea>
+          <textarea
+            @input="updateMemo"
+            class="memo"
+            type="text"
+            v-model="text"
+          ></textarea>
           <section class="counters-wrapper">
             <div
               v-for="n in 3"
@@ -82,9 +87,7 @@ import * as Vuex from "vuex";
 import cloneDeep from "lodash/cloneDeep";
 
 @Component({
-  components: {
-    ripple: () => import("~/components/ui-ripple.vue")
-  }
+  components: {}
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
@@ -124,7 +127,9 @@ export default class Index extends Vue {
         memo: null
       };
     } else {
-      this.text =  this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y].memo;
+      this.text = this.$store.getters["old_api/data"][this.moduleNum][num.x][
+        num.y
+      ].memo;
       return this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y];
     }
   }
@@ -264,7 +269,7 @@ export default class Index extends Vue {
     });
     this.chDetail();
   }
-  
+
   chDetail(): void {
     this.$store.commit("visible/chDetail", { display: false });
   }

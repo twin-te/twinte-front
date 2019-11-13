@@ -46,9 +46,6 @@ export default class Index extends Vue {
   border-bottom: 2px solid #c7c7c7;
 }
 .setting-btn {
-  /** wip */
-  display: none;
-  /** wip */
   font-size: 4.3vh;
   color: #ffffff;
   left: 0;
