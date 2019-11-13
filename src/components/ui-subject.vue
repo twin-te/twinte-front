@@ -5,10 +5,12 @@
       @click="chAdd()"
       v-if="
         table === null ||
-          table[module] === undefined ||
-          table[module][day - 1][period - 1].number === 'undefined'
+        table[module] === undefined ||
+        table[module][day - 1][period - 1].number === 'undefined'
       "
     ></div>
+    <!-- → 授業が入っていない -->
+
     <div
       id="subject"
       :style="{
@@ -27,6 +29,8 @@
         {{ table[module][day - 1][period - 1].classroom }}
       </div>
     </div>
+    <!-- → 授業が入っている -->
+
   </section>
 </template>
 

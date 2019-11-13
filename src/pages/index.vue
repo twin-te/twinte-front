@@ -1,7 +1,7 @@
 <template>
   <section>
-    <table-header />
-    <table />
+    <TableHeader />
+    <Table />
   </section>
 </template>
 

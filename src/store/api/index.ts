@@ -16,7 +16,6 @@ import { fetchLectures } from './util'
 //   postLecture,
 // } from './timetables'
 
-export const BASE_URL = 'https://dev.api.twinte.net'
 
 export const state = (): S => ({
   timeTables: [],

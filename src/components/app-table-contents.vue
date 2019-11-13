@@ -1,7 +1,7 @@
-/** -> "../pages/index.vue" */
 <template>
   <transition :name="moveDirection === 'left' ? 'slide-l' : 'slide-r'">
     <content class="row" v-show="visible">
+
       <!-- 時限 -->
       <section class="column">
         <div
@@ -25,6 +25,7 @@
           </div>
         </div>
       </section>
+
     </content>
   </transition>
 </template>

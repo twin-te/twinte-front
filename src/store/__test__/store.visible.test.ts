@@ -13,33 +13,33 @@ beforeEach(() => {
 })
 
 describe('科目詳細の画面の表示の切り替え chDetail', () => {
-  it.skip('set true', () => {
+  it('set true', () => {
     mutations.chDetail(state, { display: true })
     expect(state.detail).toBe(true)
   })
-  it.skip('set false', () => {
+  it('set false', () => {
     mutations.chDetail(state, { display: false })
     expect(state.detail).toBe(false)
   })
 })
 
 describe('サイドバーの表示の切り替え chDrawer', () => {
-  it.skip('set true', () => {
+  it('set true', () => {
     mutations.chDrawer(state, { display: true })
     expect(state.drawer).toBe(true)
   })
-  it.skip('set false', () => {
+  it('set false', () => {
     mutations.chDrawer(state, { display: false })
     expect(state.drawer).toBe(false)
   })
 })
 
 describe('科目追加画面の表示の切り替え chAdd', () => {
-  it.skip('set true', () => {
+  it('set true', () => {
     mutations.chAdd(state, { display: true })
     expect(state.add).toBe(true)
   })
-  it.skip('set false', () => {
+  it('set false', () => {
     mutations.chAdd(state, { display: false })
     expect(state.add).toBe(false)
   })

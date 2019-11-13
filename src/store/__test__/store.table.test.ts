@@ -1,59 +1,59 @@
 import { mutations } from '../table'
-import { S } from '../table/type'
+import { S, Module } from '../table/type'
 
 let state: S
 
 beforeEach(() => {
   state = {
-    moduleList: ['SpringA', 'SpringB', 'SpringC', 'FallA', 'FallB', 'FallC'],
-    module: 'SpringA',
+    moduleList: [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC],
+    module: Module.SpringA,
     click: null,
   }
 })
 
 describe('nextModule', () => {
-  it.skip('SpringA -> SpringA : loop', () => {
+  it('SpringA -> SpringA : loop', () => {
     mutations.nextModule(state)
-    expect(state.module).toBe('SpringB')
+    expect(state.module).toBe(Module.SpringB)
     mutations.nextModule(state)
-    expect(state.module).toBe('SpringC')
+    expect(state.module).toBe(Module.SpringC)
     mutations.nextModule(state)
-    expect(state.module).toBe('FallA')
+    expect(state.module).toBe(Module.FallA)
     mutations.nextModule(state)
-    expect(state.module).toBe('FallB')
+    expect(state.module).toBe(Module.FallB)
     mutations.nextModule(state)
-    expect(state.module).toBe('FallC')
+    expect(state.module).toBe(Module.FallC)
     mutations.nextModule(state)
-    expect(state.module).toBe('SpringA')
+    expect(state.module).toBe(Module.SpringA)
   })
 })
 
 describe('prevModule', () => {
-  it.skip('SpringA -> SpringA : loop', () => {
+  it('SpringA -> SpringA : loop', () => {
     mutations.prevModule(state)
-    expect(state.module).toBe('FallC')
+    expect(state.module).toBe(Module.FallC)
     mutations.prevModule(state)
-    expect(state.module).toBe('FallB')
+    expect(state.module).toBe(Module.FallB)
     mutations.prevModule(state)
-    expect(state.module).toBe('FallA')
+    expect(state.module).toBe(Module.FallA)
     mutations.prevModule(state)
-    expect(state.module).toBe('SpringC')
+    expect(state.module).toBe(Module.SpringC)
     mutations.prevModule(state)
-    expect(state.module).toBe('SpringB')
+    expect(state.module).toBe(Module.SpringB)
     mutations.prevModule(state)
-    expect(state.module).toBe('SpringA')
+    expect(state.module).toBe(Module.SpringA)
   })
 })
 
 describe('setModule', () => {
-  it.skip('set module to SpringC', () => {
-    mutations.setModule(state, { module: 'SpringC' })
-    expect(state.module).toBe('SpringC')
+  it('set module to SpringC', () => {
+    mutations.setModule(state, { module: Module.SpringC })
+    expect(state.module).toBe(Module.SpringC)
   })
 })
 
 describe('setClick', () => {
-  it.skip('value change when number click', () => {
+  it('value change when number click', () => {
     mutations.setClick(state, { day: 3, period: 2 })
     expect(state.click).toMatchObject({ day: 3, period: 2 })
   })

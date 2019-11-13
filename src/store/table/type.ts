@@ -1,6 +1,15 @@
-import { Module } from '../../types/index'
-
-export { Module }
+export enum Module {
+  SpringA = '春A',
+  SpringB = '春B',
+  SpringC = '春C',
+  FallA = '秋A',
+  FallB = '秋B',
+  FallC = '秋C',
+  SummerVacation = '夏季休業中',
+  SpringVacation = '春季休業中',
+  Annual = '通年',
+  Unknown = '不明',
+}
 
 export interface S {
   moduleList: string[];

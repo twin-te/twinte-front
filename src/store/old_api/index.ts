@@ -1,8 +1,6 @@
 import axios from "axios";
 import union from "lodash/union";
 
-import tableData from "../../assets/json/data.json";
-
 /** https://twinte.net/apiとの通信の状態管理を行なう */
 import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A } from "./type";
@@ -148,7 +146,7 @@ export const actions: Actions<S, A, G, M> = {
     console.log(data);
   },
   login(ctx) {
-    ctx.commit("updateTableAll", { data: tableData });
+    ctx.commit("updateTableAll", { data: null });
   },
   logout(ctx) {
     ctx.commit("updateTableAll", { data: null });

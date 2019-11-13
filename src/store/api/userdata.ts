@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { BASE_URL } from '.'
 
+const BASE_URL = 'https://dev.api.twinte.net'
 const url = BASE_URL + '/userdatas'
 
 /**

@@ -1,3 +1,9 @@
+/**
+ * Twin:teの最小構成
+ *
+ * ある程度の仕組み
+ */
+
 <template>
   <table>
     <thead>

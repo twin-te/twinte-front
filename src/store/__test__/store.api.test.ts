@@ -12,11 +12,11 @@ beforeEach(() => {
 })
 
 describe('add lecture', () => {
-  it.skip('no login', () => {
+  it('no login', () => {
     state.isLogin = false
     expect(todo).toBe(todo)
   })
-  it.skip('logined', () => {
+  it('logined', () => {
     state.isLogin = true
     expect(todo).toBe(todo)
   })
