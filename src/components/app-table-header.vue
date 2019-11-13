@@ -12,7 +12,7 @@
       >
     </div>
     <div id="week">
-      <app-day id="day"></app-day>
+      <day id="day"></day>
       <section class="week-wrapper">
         <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
       </section>
@@ -26,7 +26,7 @@ import * as Vuex from "vuex";
 
 @Component({
   components: {
-    AppDay: () => import("~/components/app-day.vue")
+    Day: () => import("~/components/ui-day.vue")
   }
 })
 export default class Index extends Vue {

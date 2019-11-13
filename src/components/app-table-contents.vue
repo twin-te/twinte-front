@@ -19,9 +19,9 @@
 
       <!-- 授業 -->
       <section class="column">
-        <div v-for="y in 6" :key="y" class="row">
-          <div v-for="x in 5" :key="x">
-            <Subject :x=x :y=y />
+        <div v-for="period in 6" :key="period" class="row">
+          <div v-for="day in 5" :key="day">
+            <Subject :day=day :period=period />
           </div>
         </div>
       </section>
@@ -58,12 +58,7 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
-$width: calc(
-  (
-      100vw - 8vw /**外枠 */ - 11vw /** 時限のwidth */ - 12vw
-        /** 科目と時限のpaddingの合計 */
-    ) / 5
-);
+$width: calc((100vw - 8vw - 11vw - 12vw) / 5);
 
 //++++++++++++++++++++++++// 時間割表の枠 //++++++++++++++++++++++++//
 content {
