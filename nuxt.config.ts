@@ -18,13 +18,6 @@ const nuxtConfig: Configuration = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'robots', content: 'noindex' },
     ],
-    link: [
-      {
-        rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css',
-      },
-    ],
   },
   loading: {
     color: 'teal',
@@ -42,7 +35,10 @@ const nuxtConfig: Configuration = {
   ],
   plugins: [],
   workbox: {
-    dev: true,
+    dev: false,
+  },
+  build: {
+    analyze: true,
   },
   meta: {
     mobileAppIOS: true,
