@@ -1,5 +1,5 @@
-import { mutations } from '../table'
-import { S, Module } from '../table/type'
+import { mutations } from '../src/store/table'
+import { S, Module } from '../src/store/table/type'
 
 let state: S
 

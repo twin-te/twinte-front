@@ -1,6 +1,6 @@
-import { getLectureById, searchLectures } from '../api/lectures'
-import res_tomato from '../__test__/data/response_1572494666201.json'
-import res_GB11514 from '../__test__/data/response_1572495022957.json'
+import { getLectureById, searchLectures } from '../src/store/api/lectures'
+import res_tomato from './data/response_1572494666201.json'
+import res_GB11514 from './data/response_1572495022957.json'
 
 describe('授業名での検索 searchLectures', () => {
   it('search トマト -> オートマトン', async () => {

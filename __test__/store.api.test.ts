@@ -1,5 +1,5 @@
 // import { mutations } from '../api'
-import { S } from '../api/type'
+import { S } from '../src/store/api/type'
 
 let state: S
 const todo = true

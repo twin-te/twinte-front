@@ -1,4 +1,4 @@
-import { fetchLectures } from '../api/util'
+import { fetchLectures } from '../src/store/api/util'
 import res_GB11514 from './data/response_1572495022957.json'
 import res_GB21601 from './data/GB21621.json'
 
