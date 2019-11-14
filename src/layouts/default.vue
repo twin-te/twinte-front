@@ -12,6 +12,8 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
+import { isLogin } from "../store/api/auth";
+
 @Component({
   components: {
     Toolbar: () => import("~/components/def-toolbar.vue"),
@@ -48,6 +50,15 @@ export default class Index extends Vue {
     }
     // → 前回見ていた学期
 
+    this.login();
+  }
+  async login() {
+    if (await isLogin()) {
+      this.$store.dispatch('api/login')
+      console.log('logined')
+    } else {
+      console.log('not logined')
+    }
   }
 }
 </script>
