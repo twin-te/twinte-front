@@ -9,12 +9,12 @@ const url = BASE_URL + '/timetables'
  */
 async function getToday() {
   try {
-    const { data } = await axios.post(`${url}/today`)
+    const { data } = await axios.post<Period[]>(`${url}/today`)
     return data
   } catch (error) {
     const { status, statusText } = error.response
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    return []
   }
 }
 
@@ -25,12 +25,12 @@ async function getToday() {
  */
 async function getTable(module: Module, year: number) {
   try {
-    const { data } = await axios.post(`${url}/${year}/${module}`)
+    const { data } = await axios.post<Period[]>(`${url}/${year}/${module}`)
     return data
   } catch (error) {
     const { status, statusText } = error.response
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    return []
   }
 }
 
@@ -40,12 +40,12 @@ async function getTable(module: Module, year: number) {
  */
 async function getTableAll(year: number) {
   try {
-    const { data } = await axios.post(`${url}/${year}`)
+    const { data } = await axios.post<Period[]>(`${url}/${year}`)
     return data
   } catch (error) {
     const { status, statusText } = error.response
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    return []
   }
 }
 
@@ -56,14 +56,14 @@ async function getTableAll(year: number) {
  */
 async function postLecture(lectureID: string, year: number) {
   try {
-    const { data } = await axios.post(`${url}/${year}`, {
+    const { data } = await axios.post<string>(`${url}/${year}`, {
       lectureID,
     })
     return data
   } catch (error) {
     const { status, statusText } = error.response
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    return "error"
   }
 }
 

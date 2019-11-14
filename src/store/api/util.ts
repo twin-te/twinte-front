@@ -1,7 +1,7 @@
 import { getLectureById } from './lectures'
 import union from 'lodash/union'
 
-import { Lecture } from '../../types/index'
+import { Lecture } from '../../types/server'
 
 /**
  * @param data 授業番号の配列

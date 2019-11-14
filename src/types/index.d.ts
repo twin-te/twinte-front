@@ -8,4 +8,4 @@ import { Day, Module } from './parser'
 /** 時間割 */
 type TimeTables = Period[]
 
-export { Period, User, UserData, Day, Module, TimeTables, Lecture }
+export { Period, User, UserData, Day, Module, TimeTables }

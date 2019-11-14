@@ -7,7 +7,8 @@
             close
           </div>
           <h1>授業の追加</h1>
-          <p class="content">授業番号で追加<!-- 科目名・授業番号で検索 --></p>
+          <p class="content">科目名・授業番号で検索</p>
+
           <form class="search-form">
             <input
               v-model="input"
@@ -16,6 +17,13 @@
             />
             <span class="material-icons search-btn">search</span>
           </form>
+          <!-- → 検索ボックス -->
+
+          <ul>
+            <li v-for="n in lectureIds" :key="n">{{ n }}</li>
+          </ul>
+          <!-- → 検索結果 -->
+
           <section class="others">
             <p class="other-content">
               CSVファイルから追加<br /><small>*{{ moduleMessage }}</small>
@@ -29,6 +37,8 @@
             />
             <!-- <p class="other-content">手動入力で授業を作成</p> -->
           </section>
+          <!-- → その他オプション -->
+
           <section class="register-btn" @click="asyncNumber()">
             時間割に追加
           </section>
@@ -56,7 +66,7 @@ export default class Index extends Vue {
   // data___________________________________________________________________________________
   //
   input: string = "";
-  numbers: string[] = [];
+  lectureIds: string[] = [];
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
 
@@ -77,7 +87,7 @@ export default class Index extends Vue {
   chAdd = () => {
     this.$store.commit("visible/chAdd", { display: false });
   };
-  onFileChange = (e: any) => {
+  onFileChange = async (e: any) => {
     e.preventDefault();
     const fileData = e.target.files[0];
     if (fileData === null) {
@@ -85,16 +95,19 @@ export default class Index extends Vue {
       return;
     }
     //TODO numbersに番号をいれる
-    this.asyncNumber();
+    await this.asyncNumber();
+    alert("完了");
   };
   asyncNumber = async () => {
+    console.log(confirm(this.assertMessage))
     if (confirm(this.assertMessage)) {
+      console.log(this.input);
       return;
     }
-    this.numbers.push("number");
-    this.$nuxt.$loading.start();
-    //TODO createTable(numbers)
-    this.$nuxt.$loading.finish();
+    console.log(this.input);
+    
+    this.lectureIds.push(this.input);
+    await this.$store.dispatch('api/addTable', { lectureIds: this.lectureIds })
   };
 }
 </script>
