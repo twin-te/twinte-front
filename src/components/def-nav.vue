@@ -14,7 +14,7 @@
         <div class="login-btn" @click="login()" v-else>ログイン</div>
 
         <section class="menu-contents-wrap">
-          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
+          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon" @click="$router.push(l.link)">
             <span class="material-icons menu-icon">{{ l.icon }}</span>
             <p>{{ l.name }}</p>
             <span class="material-icons menu-allow">chevron_right</span>
@@ -61,7 +61,7 @@ export default class Index extends Vue {
 
   list: any = [
     { icon: "home", name: "ホームへ戻る", link: "/" },
-    { icon: "help", name: "使い方", link: "/tutorial" },
+    { icon: "help", name: "使い方", link: "/table" },
     { icon: "supervisor_account", name: "About", link: "/about" },
     { icon: "view_quilt", name: "表示設定", link: "/settings" },
     { icon: "share", name: "時間割の共有", link: "/" },

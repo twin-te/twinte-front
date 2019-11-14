@@ -19,6 +19,12 @@ const nuxtConfig: Configuration = {
       { name: 'robots', content: 'noindex' },
     ],
   },
+  loadingIndicator: {
+    name: 'wandering-cubes',
+    color: 'teal',
+    color2: 'white',
+    background: 'gray'
+  },
   loading: {
     color: 'teal',
     height: '5px',
