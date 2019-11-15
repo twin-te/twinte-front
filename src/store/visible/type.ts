@@ -1,3 +1,15 @@
+/**
+ *
+ * # State of Visible #
+ *
+ * - 表示の切り替えを行うときの状態管理はここで行います。
+ * - drawer: 横からでるナビゲーションバー
+ * - detail: 詳細画面のポップアップ
+ * - add: 追加画面のポップアップ
+ * - table: 時間割。アニメーション時に状態を変えます
+ *
+ */
+
 export interface S {
   drawer: boolean
   detail: boolean

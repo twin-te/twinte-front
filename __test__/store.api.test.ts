@@ -1,15 +1,13 @@
 // import { mutations } from '../api'
-import { S } from '../api/type'
+import { S } from '../src/store/api/type'
 
 let state: S
 const todo = true
 
 beforeEach(() => {
   state = {
-    data: null,
-    list_number: [],
-    moduleList: ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC'],
-    isLogin: false,
+    timeTables: [],
+    isLogin: false
   }
 })
 

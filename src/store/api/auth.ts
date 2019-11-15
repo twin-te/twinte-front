@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { BASE_URL } from '.'
 
+const BASE_URL = 'https://dev.api.twinte.net'
 const url = BASE_URL
 
 async function login() {
@@ -27,19 +27,19 @@ async function logout() {
 
 /**
  * ログインされているかの判定 true : false
- * nullの場合はネートワークエラー
+ * ネートワークエラーもfalse
  */
-async function isLogin() {
+async function isLogin(): Promise<boolean> {
   try {
-    const { data } = await axios.get(`${url}/users/me`)
-    return data ? true : false
+    await axios.get(`${url}/users/me`)
+    return true
   } catch (error) {
     const { status, statusText } = error.response
     if (status === 401) {
       return false
     }
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    return false
   }
 }
 

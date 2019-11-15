@@ -7,16 +7,23 @@
             close
           </div>
           <h1>授業の追加</h1>
-          <p class="content">授業番号で追加<!-- 科目名・授業番号で検索 --></p>
+          <p class="content">科目名・授業番号で検索</p>
+
           <form class="search-form">
             <input
-              @keydown="findClassByName()"
-              v-model="number"
+              v-model="input"
               type="text"
               class="form"
             />
             <span class="material-icons search-btn">search</span>
           </form>
+          <!-- → 検索ボックス -->
+
+          <ul>
+            <li v-for="n in lectureIds" :key="n">{{ n }}</li>
+          </ul>
+          <!-- → 検索結果 -->
+
           <section class="others">
             <p class="other-content">
               CSVファイルから追加<br /><small>*{{ moduleMessage }}</small>
@@ -30,6 +37,8 @@
             />
             <!-- <p class="other-content">手動入力で授業を作成</p> -->
           </section>
+          <!-- → その他オプション -->
+
           <section class="register-btn" @click="asyncNumber()">
             時間割に追加
           </section>
@@ -47,7 +56,6 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import axios from "axios";
 
 @Component({
   components: {}
@@ -57,26 +65,15 @@ export default class Index extends Vue {
 
   // data___________________________________________________________________________________
   //
-  number: string = "";
+  input: string = "";
+  lectureIds: string[] = [];
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
-  result: {} | string = "一致する授業がここに表示されます。";
-  moduleList: string[] = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
-  li: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
 
   // computed___________________________________________________________________________________
   //
   get moduleMessage(): string {
-    const list: string[] = [
-      "SpringA",
-      "SpringB",
-      "SpringC",
-      "FallA",
-      "FallB",
-      "FallC"
-    ];
-    const i: number = list.indexOf(this.$store.getters["table/module"]);
-    return `${this.li[i]}のCSVファイルを入力してください`;
+    return `${this.$store.getters["table/module"]}のCSVファイルを入力してください`;
   }
   get add(): boolean {
     return this.$store.getters["visible/add"];
@@ -90,27 +87,6 @@ export default class Index extends Vue {
   chAdd = () => {
     this.$store.commit("visible/chAdd", { display: false });
   };
-  findClassByName = async () => {
-    if (this.number.length < 4) {
-      return;
-    }
-    if (this.number.length === 7) {
-      this.result = "有効な入力です。「時間割に追加」ボタンを押してください";
-    }
-    await axios
-      .post("/api/lectures/search", {
-        q: this.number,
-        year: 2019
-      })
-      .then(result => {
-        this.result = result.data;
-      })
-      .catch(err => {
-        console.error(err);
-        this.result = "一致する授業は見つかりませんでした。";
-      });
-    console.log(this.result);
-  };
   onFileChange = async (e: any) => {
     e.preventDefault();
     const fileData = e.target.files[0];
@@ -118,34 +94,20 @@ export default class Index extends Vue {
       alert("ファイルが入力されてません");
       return;
     }
-    if (confirm(this.assertMessage)) {
-      // 確認
-      return;
-    }
-
-    this.$nuxt.$loading.start();
-
-    await this.$store.dispatch("api/asyncCSV", {
-      fileData,
-      module: this.li[this.moduleNum]
-    });
-
-    this.$store.commit("visible/chAdd", { display: false });
-    this.$nuxt.$loading.finish();
+    //TODO numbersに番号をいれる
+    await this.asyncNumber();
+    alert("完了");
   };
   asyncNumber = async () => {
+    console.log(confirm(this.assertMessage))
     if (confirm(this.assertMessage)) {
-      // 確認
+      console.log(this.input);
       return;
     }
-    this.$nuxt.$loading.start();
-
-    await this.$store.dispatch("api/asyncNumber", {
-      number: this.number,
-      module: this.li[this.moduleNum]
-    });
-
-    this.$nuxt.$loading.finish();
+    console.log(this.input);
+    
+    this.lectureIds.push(this.input);
+    await this.$store.dispatch('api/addTable', { lectureIds: this.lectureIds })
   };
 }
 </script>

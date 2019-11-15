@@ -12,7 +12,7 @@
       >
     </div>
     <div id="week">
-      <app-day id="day"></app-day>
+      <day id="day"></day>
       <section class="week-wrapper">
         <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
       </section>
@@ -24,15 +24,26 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
+enum Day {
+  Sun = '日',
+  Mon = '月',
+  Tue = '火',
+  Wed = '水',
+  Thu = '木',
+  Fri = '金',
+  Sat = '土',
+  Unknown = '不明',
+}
+
 @Component({
   components: {
-    AppDay: () => import("~/components/app-day.vue")
+    Day: () => import("~/components/ui-day.vue")
   }
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  week: string[] = ["月", "火", "水", "木", "金"];
+  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
   prevModule() {
     this.$store.commit("visible/chTable", { display: false, move: "left" });
@@ -51,9 +62,7 @@ export default class Index extends Vue {
   }
 
   get module(): string {
-    const num: number = this.$store.getters["table/moduleNum"];
-    const moduleListJp: string[] = ["春A", "春B", "春C", "秋A", "秋B", "秋C"];
-    return moduleListJp[num];
+    return this.$store.getters["table/module"];
   }
 }
 </script>

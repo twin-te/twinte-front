@@ -5,28 +5,32 @@
       @click="chAdd()"
       v-if="
         table === null ||
-          table[module] === undefined ||
-          table[module][x - 1][y - 1].number === 'undefined'
+        table[module] === undefined ||
+        table[module][day - 1][period - 1].number === 'undefined'
       "
     ></div>
+    <!-- → 授業が入っていない -->
+
     <div
       id="subject"
       :style="{
-        background: getColor(table[module][x - 1][y - 1].number),
+        background: getColor(table[module][day - 1][period - 1].number),
       }"
-      @click="popUp(x, y)"
+      @click="popUp(day, period)"
       v-else
     >
       <div class="sbj-number">
-        {{ table[module][x - 1][y - 1].number }}
+        {{ table[module][day - 1][period - 1].number }}
       </div>
       <div class="sbj-name">
-        {{ table[module][x - 1][y - 1].name }}
+        {{ table[module][day - 1][period - 1].name }}
       </div>
       <div class="sbj-classroom">
-        {{ table[module][x - 1][y - 1].classroom }}
+        {{ table[module][day - 1][period - 1].classroom }}
       </div>
     </div>
+    <!-- → 授業が入っている -->
+
   </section>
 </template>
 
@@ -38,8 +42,8 @@ import * as Vuex from "vuex";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  @Prop() x!: number
-  @Prop() y!: number
+  @Prop() day!: number
+  @Prop() period!: number
 
   get table() {
     return this.$store.getters['old_api/data']
@@ -47,23 +51,25 @@ export default class Index extends Vue {
   get module() {
     return this.$store.getters['table/moduleNum']
   }
-  chDetail(x: number, y: number) {
-    this.$store.commit('table/setClick', { x: x - 1, y: y - 1 })
+  chDetail(day: number, period: number) {
+    this.$store.commit('table/setClick', { day, period })
     this.$store.commit('visible/chDetail', { display: true })
   }
   chAdd() {
     this.$store.commit('visible/chAdd', { display: true })
   }
-  popUp(x: number, y: number) {
+  popUp(day: number, period: number) {
+    day--
+    period--
     setTimeout(() => {
       if (
         this.table === null ||
         this.table[this.module] === null ||
-        this.table[this.module][x - 1][y - 1].number === ''
+        this.table[this.module][day][period].number === ''
       ) {
         this.chAdd()
       } else {
-        this.chDetail(x, y)
+        this.chDetail(day, period)
       }
     }, 20)
   }

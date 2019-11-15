@@ -1,3 +1,9 @@
+/**
+ * Twin:teの最小構成
+ *
+ * ある程度の仕組み
+ */
+
 <template>
   <table>
     <thead>
@@ -8,11 +14,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="y in 6">
-        <td v-for="x in 5" class="subject">
-          <div @click="chAdd()" v-if="table === null">初期画面</div>
-          <div @click="chAdd()" v-else-if="table[module][x - 1][y - 1].number === ''">なし</div>
-          <div @click="chDetail(x, y)" v-else>{{ table[module][x - 1][y - 1].name }}</div>
+      <tr v-for="period in 6" :key="period">
+        <td v-for="day in 5" :key="day" class="subject">
+          <div @click="chAdd()" v-if="table[day - 1][period - 1] === null">初期状態 or なし</div>
+          <div @click="chDetail(day - 1, period - 1)" v-else>{{ table[day - 1][period - 1].name }}</div>
         </td>
       </tr>
     </tbody>
@@ -22,26 +27,59 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
+import { TimeTables, Period } from '../types'
+
+enum Day {
+  Sun = '日',
+  Mon = '月',
+  Tue = '火',
+  Wed = '水',
+  Thu = '木',
+  Fri = '金',
+  Sat = '土',
+  Unknown = '不明',
+}
 
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore
+  day = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
 
   get table() {
-    return this.$store.getters['old_api/data']
+    const periods = this.$store.getters['api/table']
+    return this.createTable(periods)
   }
   get module() {
-    return this.$store.getters['table/moduleNum']
+    return this.$store.getters['table/module']
   }
 
-  chDetail(x: number, y: number) {
-    this.$store.commit('table/setClick', { x: x - 1, y: y - 1 })
+  /**
+   * 時間割の作成
+   */
+  createTable(periods: TimeTables): (Period | null)[][] {
+    const table: (Period | null)[][] = [];
+    for (let d = 0; d < 5; d++) {
+      const periodsArr: (Period | null)[] = [];
+      for (let p = 0; p < 6; p++) {
+        const validPeriod = periods
+          .find(period =>
+            period.module === this.module && // module
+            this.day.indexOf(period.day) === p && // day
+            period.period === p ) // period
+        periodsArr.push(validPeriod ? validPeriod : null)
+      }
+      table.push(periodsArr)
+    }
+    return table
+  }
+  chDetail(day: number, period: number) {
+    this.$store.commit('table/setClick', { day, period })
     this.$store.commit('visible/chDetail', { display: true })
   }
   chAdd() {
     this.$store.commit('visible/chAdd', { display: true })
   }
-  chModule(direction="left") {
+  chModule(direction: ("left" | "right")) {
     this.$store.commit("visible/chTable", { display: false, move: direction });
     setTimeout(() => {
       this.$store.commit(direction==='left' ? "table/prevModule" : "table/nextModule");
@@ -59,11 +97,4 @@ table,
 td {
   border: 1px solid #333;
 }
-//** debug css */
-// *:not(path):not(g) {
-//   color: hsla(210, 100%, 100%, 0.9) !important;
-//   background: hsla(210, 100%, 50%, 0.5) !important;
-//   outline: solid 0.25rem hsla(210, 100%, 100%, 0.5) !important;
-//   box-shadow: none !important;
-// }
 </style>

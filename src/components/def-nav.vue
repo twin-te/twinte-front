@@ -4,25 +4,30 @@
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
+        
         <h1 class="settings">設定</h1>
         <div class="material-icons svg-button close-btn" @click="chDrawer()">
           close
         </div>
+        
         <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
         <div class="login-btn" @click="login()" v-else>ログイン</div>
+
         <section class="menu-contents-wrap">
-          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon">
+          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon" @click="$router.push(l.link)">
             <span class="material-icons menu-icon">{{ l.icon }}</span>
             <p>{{ l.name }}</p>
             <span class="material-icons menu-allow">chevron_right</span>
           </div>
         </section>
+      
       </nav>
     </transition>
 
     <transition name="fade">
       <nav class="back" @click="chDrawer()" v-if="drawer"></nav>
     </transition>
+    
   </section>
 </template>
 
@@ -39,7 +44,7 @@ export default class Index extends Vue {
   }
 
   get isLogin(): boolean {
-    return this.$store.getters["old_api/isLogin"];
+    return this.$store.getters["api/isLogin"];
   }
 
   chDrawer() {
@@ -47,18 +52,16 @@ export default class Index extends Vue {
   }
 
   login() {
-    this.$store.dispatch("old_api/login");
-    this.$store.dispatch("old_api/createNumbers");
-    alert("時間割を追加しました");
+    location.href = 'https://dev.api.twinte.net/login'
   }
 
   logout() {
-    this.$store.dispatch("old_api/logout");
+    this.$store.dispatch("api/logout");
   }
 
   list: any = [
     { icon: "home", name: "ホームへ戻る", link: "/" },
-    { icon: "help", name: "使い方", link: "/tutorial" },
+    { icon: "help", name: "使い方", link: "/table" },
     { icon: "supervisor_account", name: "About", link: "/about" },
     { icon: "view_quilt", name: "表示設定", link: "/settings" },
     { icon: "share", name: "時間割の共有", link: "/" },

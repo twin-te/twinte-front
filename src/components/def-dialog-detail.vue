@@ -82,38 +82,38 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
-import cloneDeep from "lodash/cloneDeep";
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import cloneDeep from 'lodash/cloneDeep'
 
 @Component({
-  components: {}
+  components: {},
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
-  atmnb: string[] = ["出席", "欠席", "遅刻"];
+  atmnb: string[] = ['出席', '欠席', '遅刻']
   moduleNum: number = [
-    "SpringA",
-    "SpringB",
-    "SpringC",
-    "FallA",
-    "FallB",
-    "FallC"
-  ].indexOf(this.$store.getters["table/module"]);
-  text: string = "";
+    'SpringA',
+    'SpringB',
+    'SpringC',
+    'FallA',
+    'FallB',
+    'FallC',
+  ].indexOf(this.$store.getters['table/module'])
+  text: string = ''
 
   get count() {
-    const attend = this.table.attend;
-    const absent = this.table.absent;
-    const late = this.table.late;
-    return [attend, absent, late];
+    const attend = this.table.attend
+    const absent = this.table.absent
+    const late = this.table.late
+    return [attend, absent, late]
   }
 
   get table() {
-    let num = this.$store.getters["table/click"];
+    let num = this.$store.getters['table/click']
 
-    if (this.$store.getters["old_api/data"] === null) {
+    if (this.$store.getters['old_api/data'] === null) {
       return {
         name: null,
         number: null,
@@ -124,45 +124,47 @@ export default class Index extends Vue {
         absent: null,
         attend: null,
         late: null,
-        memo: null
-      };
+        memo: null,
+      }
     } else {
-      this.text = this.$store.getters["old_api/data"][this.moduleNum][num.x][
-        num.y
-      ].memo;
-      return this.$store.getters["old_api/data"][this.moduleNum][num.x][num.y];
+      this.text = this.$store.getters['old_api/data'][this.moduleNum][num.day][
+        num.period
+      ].memo
+      return this.$store.getters['old_api/data'][this.moduleNum][num.day][
+        num.period
+      ]
     }
   }
   get dialog(): boolean {
-    return this.$store.getters["visible/detail"];
+    return this.$store.getters['visible/detail']
   }
 
   syllabus() {
     if (this.table !== null) {
-      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.number}/jpn/#course-title`;
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.number}/jpn/#course-title`
     }
   }
 
   updateMemo() {
     if (
-      !this.$store.getters["old_api/data"] ||
-      !this.$store.getters["old_api/data"][this.moduleNum]
+      !this.$store.getters['old_api/data'] ||
+      !this.$store.getters['old_api/data'][this.moduleNum]
     ) {
-      return;
+      return
     }
 
-    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
-    let location = this.$store.getters["table/click"];
+    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
+    let location = this.$store.getters['table/click']
     const new_table = cloneDeep(
-      this.$store.getters["old_api/data"][this.moduleNum]
-    );
+      this.$store.getters['old_api/data'][this.moduleNum]
+    )
 
-    new_table[location.x][location.y]["memo"] = this.text;
+    new_table[location.day][location.period]['memo'] = this.text
 
-    this.$store.commit("old_api/updateTable", {
+    this.$store.commit('old_api/updateTable', {
       module: moduleList[this.moduleNum],
-      data: new_table
-    });
+      data: new_table,
+    })
   }
 
   /**
@@ -172,36 +174,36 @@ export default class Index extends Vue {
    */
   increment(i: number) {
     if (
-      !this.$store.getters["old_api/data"] ||
-      !this.$store.getters["old_api/data"][this.moduleNum]
+      !this.$store.getters['old_api/data'] ||
+      !this.$store.getters['old_api/data'][this.moduleNum]
     ) {
-      return;
+      return
     }
 
-    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
-    let location = this.$store.getters["table/click"];
+    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
+    let location = this.$store.getters['table/click']
     const new_table = cloneDeep(
-      this.$store.getters["old_api/data"][this.moduleNum]
-    );
+      this.$store.getters['old_api/data'][this.moduleNum]
+    )
 
     switch (i) {
       case 1:
-        new_table[location.x][location.y]["attend"]++;
-        break;
+        new_table[location.day][location.period]['attend']++
+        break
       case 2:
-        new_table[location.x][location.y]["absent"]++;
-        break;
+        new_table[location.day][location.period]['absent']++
+        break
       case 3:
-        new_table[location.x][location.y]["late"]++;
-        break;
+        new_table[location.day][location.period]['late']++
+        break
       default:
-        return;
+        return
     }
 
-    this.$store.commit("old_api/updateTable", {
+    this.$store.commit('old_api/updateTable', {
       module: moduleList[this.moduleNum],
-      data: new_table
-    });
+      data: new_table,
+    })
   }
 
   /**
@@ -211,67 +213,67 @@ export default class Index extends Vue {
    */
   decrement(i: number) {
     if (
-      !this.$store.getters["old_api/data"] ||
-      !this.$store.getters["old_api/data"][this.moduleNum]
+      !this.$store.getters['old_api/data'] ||
+      !this.$store.getters['old_api/data'][this.moduleNum]
     ) {
-      return;
+      return
     }
 
-    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
-    let location = this.$store.getters["table/click"];
+    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
+    let location = this.$store.getters['table/click']
     const new_table = cloneDeep(
-      this.$store.getters["old_api/data"][this.moduleNum]
-    );
+      this.$store.getters['old_api/data'][this.moduleNum]
+    )
 
     switch (i) {
       case 1:
-        new_table[location.x][location.y]["attend"]--;
-        break;
+        new_table[location.day][location.period]['attend']--
+        break
       case 2:
-        new_table[location.x][location.y]["absent"]--;
-        break;
+        new_table[location.day][location.period]['absent']--
+        break
       case 3:
-        new_table[location.x][location.y]["late"]--;
-        break;
+        new_table[location.day][location.period]['late']--
+        break
       default:
-        return;
+        return
     }
 
-    this.$store.commit("old_api/updateTable", {
+    this.$store.commit('old_api/updateTable', {
       module: moduleList[this.moduleNum],
-      data: new_table
-    });
+      data: new_table,
+    })
   }
 
   deleteItem() {
     if (
-      !this.$store.getters["old_api/data"] ||
-      !this.$store.getters["old_api/data"][this.moduleNum]
+      !this.$store.getters['old_api/data'] ||
+      !this.$store.getters['old_api/data'][this.moduleNum]
     ) {
-      return;
+      return
     }
 
-    if (!confirm("この時間割を削除しますか?")) {
-      return;
+    if (!confirm('この時間割を削除しますか?')) {
+      return
     }
 
-    const moduleList = ["haruA", "haruB", "haruC", "akiA", "akiB", "akiC"];
-    let location = this.$store.getters["table/click"];
+    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
+    let location = this.$store.getters['table/click']
     const new_table = cloneDeep(
-      this.$store.getters["old_api/data"][this.moduleNum]
-    );
+      this.$store.getters['old_api/data'][this.moduleNum]
+    )
 
-    new_table[location.x][location.y]["number"] = "undefined";
+    new_table[location.day][location.period]['number'] = 'undefined'
 
-    this.$store.commit("old_api/updateTable", {
+    this.$store.commit('old_api/updateTable', {
       module: moduleList[this.moduleNum],
-      data: new_table
-    });
-    this.chDetail();
+      data: new_table,
+    })
+    this.chDetail()
   }
 
   chDetail(): void {
-    this.$store.commit("visible/chDetail", { display: false });
+    this.$store.commit('visible/chDetail', { display: false })
   }
 }
 </script>

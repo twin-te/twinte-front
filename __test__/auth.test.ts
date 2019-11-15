@@ -1,4 +1,4 @@
-import { isLogin } from '../api/auth'
+import { isLogin } from '../src/store/api/auth'
 
 describe('isLogin', () => {
   it('isLogin is false', async () => {
