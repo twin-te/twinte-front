@@ -4,9 +4,7 @@
  *
  */
 
-import axios from 'axios'
-
-import { BASE_URL } from './config'
+import { BASE_URL, axios } from './config'
 const url = BASE_URL + '/user'
 
 async function getMe() {

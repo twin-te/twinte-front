@@ -1,7 +1,6 @@
-import axios from 'axios'
 import { Module, Day, Period } from '../../types'
 
-import { BASE_URL } from './config'
+import { BASE_URL, axios } from './config'
 const url = BASE_URL + '/timetables'
 
 /**
