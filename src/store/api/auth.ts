@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://dev.api.twinte.net'
+import { BASE_URL } from './config'
 const url = BASE_URL
 
 async function login() {
@@ -31,6 +31,7 @@ async function logout() {
  */
 async function isLogin(): Promise<boolean> {
   try {
+    console.log(url)
     await axios.get(`${url}/users/me`)
     return true
   } catch (error) {

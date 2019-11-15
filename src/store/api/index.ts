@@ -8,7 +8,6 @@ import {
   postLecture,
 } from './timetables'
 
-
 export const state = (): S => ({
   timeTables: [],
   isLogin: false,

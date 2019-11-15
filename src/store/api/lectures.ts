@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Period } from '../../types/index'
 import { Lecture } from '../../types/server'
 
-const BASE_URL = 'https://dev.api.twinte.net'
+import { BASE_URL } from './config'
 const url = BASE_URL + '/lectures'
 
 /**

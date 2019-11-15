@@ -6,7 +6,7 @@
 
 import axios from 'axios'
 
-const BASE_URL = 'https://dev.api.twinte.net'
+import { BASE_URL } from './config'
 const url = BASE_URL + '/user'
 
 async function getMe() {

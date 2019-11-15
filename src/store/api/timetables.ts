@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Module, Day, Period } from '../../types'
 
-const BASE_URL = 'https://dev.api.twinte.net'
+import { BASE_URL } from './config'
 const url = BASE_URL + '/timetables'
 
 /**
@@ -12,8 +12,7 @@ async function getToday() {
     const { data } = await axios.post<Period[]>(`${url}/today`)
     return data
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return []
   }
 }
@@ -28,8 +27,7 @@ async function getTable(module: Module, year: number) {
     const { data } = await axios.post<Period[]>(`${url}/${year}/${module}`)
     return data
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return []
   }
 }
@@ -43,8 +41,7 @@ async function getTableAll(year: number) {
     const { data } = await axios.post<Period[]>(`${url}/${year}`)
     return data
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return []
   }
 }
@@ -61,8 +58,7 @@ async function postLecture(lectureID: string, year: number) {
     })
     return data
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return "error"
   }
 }
@@ -108,8 +104,7 @@ async function createLecture(
     )
     return data
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return null
   }
 }
@@ -133,8 +128,7 @@ async function deleteLecture(
     )
     return data
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return null
   }
 }
