@@ -1,8 +1,8 @@
-import { Period } from '../../types/index'
-import { Lecture } from '../../types/server'
+import { Period } from "../../types/index";
+import { Lecture } from "../../types/server";
 
-import { BASE_URL, axios } from './config'
-const url = BASE_URL + '/lectures'
+import { BASE_URL, axios } from "./config";
+const url = BASE_URL + "/lectures";
 
 /**
  * 授業名（ `maybeLecture` ）から該当する授業を返す
@@ -10,19 +10,19 @@ const url = BASE_URL + '/lectures'
  * @param year 年度
  */
 async function searchLectures(maybeLecture: string, year: number) {
-  const q = maybeLecture
+  const q = maybeLecture;
   try {
-    const { data } = await axios.get<Period>(`${url}/search`, {
+    const { data } = await axios.get<Period[]>(`${url}/search`, {
       params: {
         q,
-        year,
-      },
-    })
-    return data
+        year
+      }
+    });
+    return data;
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    return null;
   }
 }
 
@@ -33,11 +33,11 @@ async function searchLectures(maybeLecture: string, year: number) {
  */
 async function getLectureById(maybeId: string, year: number) {
   try {
-    const { data } = await axios.get<Lecture>(`${url}/${year}/${maybeId}`)
-    return data
+    const { data } = await axios.get<Lecture>(`${url}/${year}/${maybeId}`);
+    return data;
   } catch {
-    return null
+    return null;
   }
 }
 
-export { searchLectures, getLectureById }
+export { searchLectures, getLectureById };

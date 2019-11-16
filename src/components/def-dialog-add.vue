@@ -10,17 +10,24 @@
           <p class="content">科目名・授業番号で検索</p>
 
           <form class="search-form">
-            <input
-              v-model="input"
-              type="text"
-              class="form"
-            />
-            <span class="material-icons search-btn">search</span>
+            <input v-model="input" type="text" class="form" />
+            <span @click="search()" class="material-icons search-btn">
+              search
+            </span>
           </form>
           <!-- → 検索ボックス -->
 
-          <ul>
-            <li v-for="n in lectureIds" :key="n">{{ n }}</li>
+          <ul class="result-list">
+            <li
+              class="list"
+              v-for="n in lectures"
+              :key="n.lectureID"
+              @click="input = n.lectureId"
+            >
+              {{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
+              }}{{ n.period }}
+              <hr />
+            </li>
           </ul>
           <!-- → 検索結果 -->
 
@@ -56,6 +63,15 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
+import { searchLectures, getLectureById } from "../store/api/lectures";
+
+type miniLecture = {
+  lectureId: string;
+  name: string;
+  module: string;
+  day: string;
+  period: number;
+};
 
 @Component({
   components: {}
@@ -66,7 +82,7 @@ export default class Index extends Vue {
   // data___________________________________________________________________________________
   //
   input: string = "";
-  lectureIds: string[] = [];
+  lectures: miniLecture[] = [];
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
 
@@ -84,9 +100,34 @@ export default class Index extends Vue {
 
   // method___________________________________________________________________________________
   //
-  chAdd = () => {
+  chAdd() {
     this.$store.commit("visible/chAdd", { display: false });
-  };
+  }
+  async search() {
+    this.lectures = [];
+    const id = await getLectureById(this.input, 2019);
+    const le = await searchLectures(this.input, 2019);
+    if (id) {
+      this.lectures.push({
+        lectureId: id.lectureID,
+        name: id.name,
+        module: id.details[0].module,
+        day: id.details[0].day,
+        period: id.details[0].period
+      });
+    } else if (le) {
+      le.forEach(l => {
+        this.lectures.push({
+          lectureId: l.lectureID,
+          name: l.name,
+          module: l.module,
+          day: l.day,
+          period: l.period
+        });
+      });
+    }
+    this.input = "";
+  }
   async onFileChange(e: any) {
     e.preventDefault();
     const fileData = e.target.files[0];
@@ -97,18 +138,15 @@ export default class Index extends Vue {
     //TODO numbersに番号をいれる
     await this.asyncNumber();
     alert("完了");
-  };
+  }
   async asyncNumber() {
     if (!confirm(this.assertMessage)) {
       return;
     }
-    console.log(this.input);
-    
-    this.lectureIds.push(this.input);
-    await this.$store.dispatch('api/addTable', { lectureIds: this.lectureIds })
+    await this.$store.dispatch("api/addTable", { lectureIds: [this.input] });
     alert("完了");
-    this.input = ""
-  };
+    this.input = "";
+  }
 }
 </script>
 
@@ -246,6 +284,22 @@ h1 {
   border-color: #558afa;
   outline: 0;
   background-color: #fff;
+}
+
+/** 検索結果 */
+.result-list {
+  position: absolute;
+  width: calc(100% - 3vh);
+  height: 30vh;
+  top: 17.6vh;
+  margin: 0 1.8vh;
+  padding: 0;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+ul {
+  list-style: none;
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
