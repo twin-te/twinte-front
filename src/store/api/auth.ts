@@ -29,7 +29,6 @@ async function logout() {
  */
 async function isLogin(): Promise<boolean> {
   try {
-    console.log(url)
     await axios.get(`${url}/users/me`)
     return true
   } catch (error) {

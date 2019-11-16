@@ -21,7 +21,7 @@
       <section class="column">
         <div v-for="period in 6" :key="period" class="row">
           <div v-for="day in 5" :key="day">
-            <Subject :day=day :period=period />
+            <Subject :day='day - 1' :period='period - 1' />
           </div>
         </div>
       </section>

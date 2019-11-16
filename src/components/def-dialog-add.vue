@@ -87,7 +87,7 @@ export default class Index extends Vue {
   chAdd = () => {
     this.$store.commit("visible/chAdd", { display: false });
   };
-  onFileChange = async (e: any) => {
+  async onFileChange(e: any) {
     e.preventDefault();
     const fileData = e.target.files[0];
     if (fileData === null) {
@@ -98,16 +98,16 @@ export default class Index extends Vue {
     await this.asyncNumber();
     alert("完了");
   };
-  asyncNumber = async () => {
-    console.log(confirm(this.assertMessage))
-    if (confirm(this.assertMessage)) {
-      console.log(this.input);
+  async asyncNumber() {
+    if (!confirm(this.assertMessage)) {
       return;
     }
     console.log(this.input);
     
     this.lectureIds.push(this.input);
     await this.$store.dispatch('api/addTable', { lectureIds: this.lectureIds })
+    alert("完了");
+    this.input = ""
   };
 }
 </script>

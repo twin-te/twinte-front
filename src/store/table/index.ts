@@ -14,7 +14,7 @@ import { S, G, M, Module } from "./type";
 export const state = (): S => ({
   moduleList: [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC],
   module: Module.SpringA,
-  click: null
+  looking: null
 });
 // ______________________________________________________
 //
@@ -38,11 +38,8 @@ export const getters: Getters<S, G> = {
     return state.moduleList.indexOf(state.module);
   },
 
-  click(state) {
-    if (state.click === null) {
-      return { day: 0, period: 0 };
-    }
-    return state.click;
+  looking(state) {
+    return state.looking;
   }
 };
 // ______________________________________________________
@@ -68,7 +65,7 @@ export const mutations: Mutations<S, M> = {
     localStorage.setItem("module", state.module);
   },
 
-  setClick(state, payload) {
-    state.click = { day: payload.day, period: payload.period };
+  setLooking(state, { period }) {
+    state.looking = period;
   }
 };

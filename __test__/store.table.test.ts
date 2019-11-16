@@ -7,7 +7,7 @@ beforeEach(() => {
   state = {
     moduleList: [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC],
     module: Module.SpringA,
-    click: null,
+    looking: null,
   }
 })
 
@@ -52,9 +52,4 @@ describe('setModule', () => {
   })
 })
 
-describe('setClick', () => {
-  it('value change when number click', () => {
-    mutations.setClick(state, { day: 3, period: 2 })
-    expect(state.click).toMatchObject({ day: 3, period: 2 })
-  })
-})
+//TODO looking

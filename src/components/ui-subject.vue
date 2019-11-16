@@ -1,32 +1,26 @@
 <template>
-  <section>
+  <section @click="popUp(table[day][period])">
     <div
       id="subject"
-      @click="chAdd()"
-      v-if="
-        table === null ||
-        table[module] === undefined ||
-        table[module][day - 1][period - 1].number === 'undefined'
-      "
+      v-if="!table[day][period]"
     ></div>
     <!-- → 授業が入っていない -->
 
     <div
       id="subject"
       :style="{
-        background: getColor(table[module][day - 1][period - 1].number),
+        background: getColor(table[day][period].lectureID),
       }"
-      @click="popUp(day, period)"
       v-else
     >
-      <div class="sbj-number">
-        {{ table[module][day - 1][period - 1].number }}
+      <div class="sbj-lectureId">
+        {{ table[day][period].lectureId }}
       </div>
       <div class="sbj-name">
-        {{ table[module][day - 1][period - 1].name }}
+        {{ table[day][period].name }}
       </div>
-      <div class="sbj-classroom">
-        {{ table[module][day - 1][period - 1].classroom }}
+      <div class="sbj-room">
+        {{ table[day][period].room }}
       </div>
     </div>
     <!-- → 授業が入っている -->
@@ -37,6 +31,18 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import * as Vuex from "vuex";
+import { TimeTables, Period } from "../types/index";
+
+enum Day {
+  Sun = '日',
+  Mon = '月',
+  Tue = '火',
+  Wed = '水',
+  Thu = '木',
+  Fri = '金',
+  Sat = '土',
+  Unknown = '不明',
+}
 
 @Component({})
 export default class Index extends Vue {
@@ -45,36 +51,56 @@ export default class Index extends Vue {
   @Prop() day!: number
   @Prop() period!: number
 
+  week = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
+
   get table() {
-    return this.$store.getters['old_api/data']
+    const periods = this.$store.getters['api/table']
+    return this.createTable(periods)
   }
   get module() {
-    return this.$store.getters['table/moduleNum']
+    return this.$store.getters['table/module']
   }
-  chDetail(day: number, period: number) {
-    this.$store.commit('table/setClick', { day, period })
+  /**
+   * 時間割の作成
+   */  
+  createTable(periods: TimeTables): (Period | null)[][] {
+    const table: (Period | null)[][] = [];
+    const module = this.module;
+    const week = this.week;
+    
+    for (let d = 0; d < 5; d++) {
+      const periodsArr: (Period | null)[] = [];
+      for (let p = 1; p <= 6; p++) {
+        const validPeriod = periods
+          .find(function(period) {
+            return period.module === module && // module
+                   week.indexOf(period.day) === d && // day
+                   period.period === p // period
+            })
+        periodsArr.push(validPeriod ? validPeriod : null)
+      }
+      table.push(periodsArr)
+    }
+    return table
+  }
+  chDetail(period: Period) {
+    this.$store.commit('table/setLooking', { period })
     this.$store.commit('visible/chDetail', { display: true })
   }
   chAdd() {
     this.$store.commit('visible/chAdd', { display: true })
   }
-  popUp(day: number, period: number) {
-    day--
-    period--
+  popUp(period: Period | null) {
     setTimeout(() => {
-      if (
-        this.table === null ||
-        this.table[this.module] === null ||
-        this.table[this.module][day][period].number === ''
-      ) {
-        this.chAdd()
+      if (period) {
+        this.chDetail(period)
       } else {
-        this.chDetail(day, period)
+        this.chAdd()
       }
     }, 20)
   }
   /** 授業に応じたテーマ色を返す */
-  getColor(number: string): string {
+  getColor(number: string): string {    
     const char = number.split('')[0]
     switch (char) {
       case 'A':
@@ -133,13 +159,13 @@ $width: calc(
     filter: brightness(150%);
   }
 }
-.sbj-number {
+.sbj-lectureId {
   font-weight: 400;
 }
 .sbj-name {
   font-weight: 700;
 }
-.sbj-classroom {
+.sbj-room {
   font-weight: 400;
 }
 </style>

@@ -1,14 +1,37 @@
-import { Module, Day, Period } from '../../types'
-
+import { Period } from '../../types'
 import { BASE_URL, axios } from './config'
 const url = BASE_URL + '/timetables'
+
+export enum Module {
+  SpringA = '春A',
+  SpringB = '春B',
+  SpringC = '春C',
+  FallA = '秋A',
+  FallB = '秋B',
+  FallC = '秋C',
+  SummerVacation = '夏季休業中',
+  SpringVacation = '春季休業中',
+  Annual = '通年',
+  Unknown = '不明',
+}
+
+export enum Day {
+  Sun = '日',
+  Mon = '月',
+  Tue = '火',
+  Wed = '水',
+  Thu = '木',
+  Fri = '金',
+  Sat = '土',
+  Unknown = '不明',
+}
 
 /**
  * 今日の時間割を取得
  */
 async function getToday() {
   try {
-    const { data } = await axios.post<Period[]>(`${url}/today`)
+    const { data } = await axios.get<Period[]>(`${url}/today`)
     return data
   } catch (error) {
     console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
@@ -23,7 +46,7 @@ async function getToday() {
  */
 async function getTable(module: Module, year: number) {
   try {
-    const { data } = await axios.post<Period[]>(`${url}/${year}/${module}`)
+    const { data } = await axios.get<Period[]>(`${url}/${year}/${module}`)
     return data
   } catch (error) {
     console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
@@ -37,7 +60,7 @@ async function getTable(module: Module, year: number) {
  */
 async function getTableAll(year: number) {
   try {
-    const { data } = await axios.post<Period[]>(`${url}/${year}`)
+    const { data } = await axios.get<Period[]>(`${url}/${year}`)
     return data
   } catch (error) {
     console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
@@ -92,7 +115,7 @@ async function createLecture(
   body: CustomLecture
 ) {
   try {
-    const { data } = await axios.post(
+    const { data } = await axios.put(
       `${url}/${year}/${module}/${day}/${period}`,
       {
         lectureID: body.lectureID,
@@ -119,16 +142,31 @@ async function deleteLecture(
   year: number,
   module: Module,
   day: Day,
-  period: Period
+  period: number
 ) {
   try {
-    const { data } = await axios.post(
+    const { data } = await axios.delete(
       `${url}/${year}/${module}/${day}/${period}`
     )
     return data
   } catch (error) {
     console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
     return null
+  }
+}
+
+/** サーバー側の時間割のリセット WIP */
+async function reset(
+  year: number=2019
+) {
+  const moduleList = [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC]
+  const dayList = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
+  for (let module = 0; module < moduleList.length; module++) {
+    for (let day = 0; day < dayList.length; day++) {  
+      for (let period = 0; period < 6; period++) {
+        await deleteLecture(year, moduleList[module], dayList[day], period)
+      }
+    }
   }
 }
 
@@ -139,4 +177,5 @@ export {
   postLecture,
   createLecture,
   deleteLecture,
+  reset,
 }

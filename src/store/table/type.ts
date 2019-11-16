@@ -1,3 +1,5 @@
+import { Period } from '../../types';
+
 export enum Module {
   SpringA = '春A',
   SpringB = '春B',
@@ -14,8 +16,9 @@ export enum Module {
 export interface S {
   moduleList: string[];
   module: string;
-  click: { day: number; period: number } | null;
+  looking: Period | null;
 }
+
 export interface G {
   /**
    * 現在の学期を返す
@@ -37,14 +40,14 @@ export interface G {
   /**
    * 直前にクリックした授業の座標を保持する
    */
-  click: { day: number; period: number };
+  looking: Period | null;
 }
 export interface RG {
   "table/module": G["module"];
   "table/prevModule": G["prevModule"];
   "table/nextModule": G["prevModule"];
   "table/moduleNum": G["moduleNum"];
-  "table/click": G["click"];
+  "table/looking": G["looking"];
 }
 export interface M {
   /**
@@ -62,15 +65,13 @@ export interface M {
    */
   nextModule: void;
   /**
-   * 直前にクリックした授業の座標を保持する
-   * @param day 0 - 4
-   * @param period 0 - 5
+   * 直前にクリックした授業の内容を更新
    */
-  setClick: { day: number; period: number };
+  setLooking: { period: Period };
 }
 export interface RM {
   "table/setModule": M["setModule"];
   "table/prevModule": M["prevModule"];
   "table/nextModule": M["nextModule"];
-  "table/setClick": M["setClick"];
+  "table/setLooking": M["setLooking"];
 }

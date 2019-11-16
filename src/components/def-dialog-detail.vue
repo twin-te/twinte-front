@@ -4,14 +4,14 @@
   <section class="contents">
     <transition name="bound">
       <nav class="main" v-show="dialog">
-        <article>
+        <article v-if="table">
           <!-- 教科名 -->
           <div class="svg-button material-icons close-btn" @click="chDetail()">
             close
           </div>
           <h1>
             <div class="sbj-name">{{ table.name }}</div>
-            <p class="sbj-number">科目番号 {{ table.number }}</p>
+            <p class="sbj-number">科目番号 {{ table.lectureID }}</p>
           </h1>
           <!-- 科目詳細 -->
           <h2>
@@ -25,17 +25,17 @@
           <section class="sbj-detail-wrapper">
             <p class="h3">
               担当教員
-              <span class="sbj-detail">{{ table.teacher }}</span>
+              <span class="sbj-detail">{{ table.instructor }}</span>
             </p>
             <p class="h3">
               開講時限
               <span class="sbj-detail"
-                >{{ table.season }} {{ table.time }}</span
+                >{{ table.mofule }} {{ table.day }}{{ table.Period }}</span
               >
             </p>
             <p class="h3">
               授業教室
-              <span class="sbj-detail">{{ table.classroom }}</span>
+              <span class="sbj-detail">{{ table.room }}</span>
             </p>
           </section>
           <!-- メモ -->
@@ -44,10 +44,10 @@
           </h2>
           <!-- 入力の枠 -->
           <textarea
-            @input="updateMemo"
+            @input="updateData"
             class="memo"
             type="text"
-            v-model="text"
+            v-model="memo"
           ></textarea>
           <section class="counters-wrapper">
             <div
@@ -57,12 +57,12 @@
               style="width: 30%"
             >
               <span class="counter-name"
-                >{{ atmnb[n - 1] }} {{ count[n - 1] }}回</span
+                >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
               >
               <!-- <+|-> -->
               <div class="counter">
-                <span @click="increment(n)" class="counter-left">+</span>
-                <span @click="decrement(n)" class="counter-right">&#8211;</span>
+                <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
+                <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
               </div>
             </div>
           </section>
@@ -84,196 +84,91 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import cloneDeep from 'lodash/cloneDeep'
+import { Period } from '../types'
+import { UserData } from '../types/server'
+import { getUserData, updateUserData } from '../store/api/userdata'
 
 @Component({
-  components: {},
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
-  atmnb: string[] = ['出席', '欠席', '遅刻']
-  moduleNum: number = [
-    'SpringA',
-    'SpringB',
-    'SpringC',
-    'FallA',
-    'FallB',
-    'FallC',
-  ].indexOf(this.$store.getters['table/module'])
-  text: string = ''
+  atmnb = ['出席', '欠席', '遅刻']
+  moduleNum = this.$store.getters['table/moduleNum']
+  memo = ''
 
-  get count() {
-    const attend = this.table.attend
-    const absent = this.table.absent
-    const late = this.table.late
-    return [attend, absent, late]
+  userData: UserData | null = null
+
+  mounted() {
+    this.$nextTick(async () => {
+      this.update()
+    })
   }
 
-  get table() {
-    let num = this.$store.getters['table/click']
-
-    if (this.$store.getters['old_api/data'] === null) {
-      return {
-        name: null,
-        number: null,
-        teacher: null,
-        season: null,
-        time: null,
-        classroom: null,
-        absent: null,
-        attend: null,
-        late: null,
-        memo: null,
+  async update() {
+    if (this.table) {
+      this.userData = await getUserData(this.table.lectureID, this.table.year)
+      if (this.userData) {
+        this.memo = this.userData.memo
       }
     } else {
-      this.text = this.$store.getters['old_api/data'][this.moduleNum][num.day][
-        num.period
-      ].memo
-      return this.$store.getters['old_api/data'][this.moduleNum][num.day][
-        num.period
-      ]
+      setTimeout(this.update, 10000);
     }
+    console.log(this.userData)
+  }
+
+  get atmnbCount() {
+    if (this.userData) {
+      return [this.userData.attendance, this.userData.absence, this.userData.late]
+    } else {
+      return [0, 0, 0]
+    }
+  }
+  get table(): Period | null {
+    return this.$store.getters['table/looking']
   }
   get dialog(): boolean {
     return this.$store.getters['visible/detail']
   }
 
   syllabus() {
-    if (this.table !== null) {
-      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.number}/jpn/#course-title`
+    if (this.table) {
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lectureID}/jpn/#course-title`
     }
   }
 
-  updateMemo() {
-    if (
-      !this.$store.getters['old_api/data'] ||
-      !this.$store.getters['old_api/data'][this.moduleNum]
-    ) {
+  counter(type: '出席' | '欠席' | '遅刻', num: number) {
+    if (!this.userData) {
+      console.log('エラー')
       return
     }
-
-    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
-    let location = this.$store.getters['table/click']
-    const new_table = cloneDeep(
-      this.$store.getters['old_api/data'][this.moduleNum]
-    )
-
-    new_table[location.day][location.period]['memo'] = this.text
-
-    this.$store.commit('old_api/updateTable', {
-      module: moduleList[this.moduleNum],
-      data: new_table,
-    })
-  }
-
-  /**
-   * i = 1: 出席+1
-   * i = 2: 欠席+1
-   * i = 3: 遅刻+1
-   */
-  increment(i: number) {
-    if (
-      !this.$store.getters['old_api/data'] ||
-      !this.$store.getters['old_api/data'][this.moduleNum]
-    ) {
-      return
+    switch (type) {
+      case '出席':
+        this.userData.attendance + num
+        break;
+      case '欠席':
+        this.userData.absence + num
+        break;
+      case '遅刻':
+        this.userData.late + num
+        break;
     }
-
-    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
-    let location = this.$store.getters['table/click']
-    const new_table = cloneDeep(
-      this.$store.getters['old_api/data'][this.moduleNum]
-    )
-
-    switch (i) {
-      case 1:
-        new_table[location.day][location.period]['attend']++
-        break
-      case 2:
-        new_table[location.day][location.period]['absent']++
-        break
-      case 3:
-        new_table[location.day][location.period]['late']++
-        break
-      default:
-        return
-    }
-
-    this.$store.commit('old_api/updateTable', {
-      module: moduleList[this.moduleNum],
-      data: new_table,
-    })
-  }
-
-  /**
-   * i = 1: 出席-1
-   * i = 2: 欠席-1
-   * i = 3: 遅刻-1
-   */
-  decrement(i: number) {
-    if (
-      !this.$store.getters['old_api/data'] ||
-      !this.$store.getters['old_api/data'][this.moduleNum]
-    ) {
-      return
-    }
-
-    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
-    let location = this.$store.getters['table/click']
-    const new_table = cloneDeep(
-      this.$store.getters['old_api/data'][this.moduleNum]
-    )
-
-    switch (i) {
-      case 1:
-        new_table[location.day][location.period]['attend']--
-        break
-      case 2:
-        new_table[location.day][location.period]['absent']--
-        break
-      case 3:
-        new_table[location.day][location.period]['late']--
-        break
-      default:
-        return
-    }
-
-    this.$store.commit('old_api/updateTable', {
-      module: moduleList[this.moduleNum],
-      data: new_table,
-    })
   }
 
   deleteItem() {
-    if (
-      !this.$store.getters['old_api/data'] ||
-      !this.$store.getters['old_api/data'][this.moduleNum]
-    ) {
-      return
-    }
-
     if (!confirm('この時間割を削除しますか?')) {
       return
     }
-
-    const moduleList = ['haruA', 'haruB', 'haruC', 'akiA', 'akiB', 'akiC']
-    let location = this.$store.getters['table/click']
-    const new_table = cloneDeep(
-      this.$store.getters['old_api/data'][this.moduleNum]
-    )
-
-    new_table[location.day][location.period]['number'] = 'undefined'
-
-    this.$store.commit('old_api/updateTable', {
-      module: moduleList[this.moduleNum],
-      data: new_table,
-    })
-    this.chDetail()
   }
 
   chDetail(): void {
     this.$store.commit('visible/chDetail', { display: false })
+  }
+
+  updateData() {
+    if (this.userData) {
+      updateUserData(this.userData)
+    }
   }
 }
 </script>

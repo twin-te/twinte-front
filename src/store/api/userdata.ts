@@ -1,5 +1,6 @@
 import { BASE_URL, axios } from './config'
 const url = BASE_URL + '/userdatas'
+import { UserData } from "../../types/server";
 
 /**
  * 指定した講義のユーザーデータを取得
@@ -8,7 +9,7 @@ const url = BASE_URL + '/userdatas'
  */
 async function getUserData(lectureId: string, year: number = 2019) {
   try {
-    const { data } = await axios.post(`${url}/${year}/${lectureId}`)
+    const { data } = await axios.get<UserData>(`${url}/${year}/${lectureId}`)
     return data
   } catch (error) {
     const { status, statusText } = error.response
@@ -22,9 +23,14 @@ async function getUserData(lectureId: string, year: number = 2019) {
  * @param lectureId
  * @param year
  */
-async function updateUserData(lectureId: string, year: number = 2019) {
+async function updateUserData(userData: UserData) {
   try {
-    const { data } = await axios.put(`${url}/${year}/${lectureId}`)
+    const { data } = await axios.put<UserData>(`${url}/${userData.year}/${userData.lectureID}`, {
+      memo: userData.memo,
+      attendance: userData.attendance,
+      absence: userData.absence,
+      late: userData.late
+    })
     return data
   } catch (error) {
     const { status, statusText } = error.response
