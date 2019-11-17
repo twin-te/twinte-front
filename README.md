@@ -1,4 +1,18 @@
-# twinte-front
+<div style="background: #00c0c0; padding: 20px" align="center">
+
+<p>
+    <img src="./src/assets/img/title-logo.png" width="300">
+    </a>
+</p>
+<p>
+    <a href="https://github.com/prettier/prettier">
+    <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
+    </a>
+</p>
+
+</div>
+
+# twin:te-front
 
 twinte のフロントエンドです。WIP。
 
@@ -80,9 +94,7 @@ ripple: タップしたときのエフェクト
 
 [components/ui-](src/components) : components 内で用いるコンポネントをまとめたもの
 
-[components/ui/nav-list.vue](src/components/ui-nav-list.vue) : リスト型の表示を nav.vue で用いる
-
-[components/ui/ripple.vue](src/components/ui-ripple.vue) : これで囲うと ripple になる
+[components/ui/ripple.vue](src/components/ui-ripple.vue) : これで囲うと ripple になる（非推奨）
 
 ## 次やること
 
@@ -90,3 +102,5 @@ ripple: タップしたときのエフェクト
 - 科目追加機能実装
 - バックエンドとのやりとり
 - ログイン機能実装
+
+![build with Nuxt](https://ja.nuxtjs.org/logos/built-with-nuxt.svg)

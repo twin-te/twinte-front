@@ -1,0 +1,24 @@
+{
+  "_id": "5d92cd4ca120466df9fe5ea5",
+  "lectureID": "GB11514",
+  "year": 2019,
+  "__v": 0,
+  "details": [
+    {
+      "_id": "5d92cd4cd78a82057da02921",
+      "module": "秋C",
+      "period": 1,
+      "day": "木",
+      "room": "3A403"
+    },
+    {
+      "_id": "5d92cd4cd78a82057da02920",
+      "module": "秋C",
+      "period": 2,
+      "day": "木",
+      "room": "3A403"
+    }
+  ],
+  "instructor": "狩野 均",
+  "name": "シミュレーション物理"
+}

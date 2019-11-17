@@ -5,32 +5,57 @@
   "author": "Twin:te <twinte.net@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "nuxt build",
-    "start": "nuxt build && nuxt start",
-    "dev": "nuxt",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts build && nuxt-ts start",
+    "dev": "nuxt-ts",
     "format": "prettier --write \"{,!(node_modules|dist|build|coverage|.nuxt|.serverless)/**/}*.{ts,json,vue,md}\"",
     "lint": "eslint ./ --ext .ts --ext .vue --ignore-path .gitignore",
     "lint:fix": "yarn lint --fix",
-    "generate": "nuxt generate"
+    "generate": "nuxt-ts generate",
+    "test": "jest"
   },
   "devDependencies": {
-    "@nuxt/typescript": "^2.6.3",
-    "@typescript-eslint/parser": "^1.9.0",
-    "eslint": "^5.16.0",
+    "@nuxt/typescript-build": "^0.3.4",
+    "@types/jest": "^24.0.22",
+    "@types/lodash": "^4.14.146",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "node-sass": "^4.12.0",
-    "prettier": "^1.18.2",
-    "sass-loader": "^7.1.0",
-    "vue-eslint-parser": "^6.0.4"
+    "jest": "^24.9.0",
+    "node-sass": "^4.13.0",
+    "prettier": "^1.19.1",
+    "sass-loader": "^8.0.0",
+    "ts-jest": "^24.1.0",
+    "vue-eslint-parser": "^7.0.0"
   },
   "dependencies": {
+    "@nuxt/typescript-runtime": "^0.2.4",
+    "@nuxtjs/google-analytics": "^2.2.1",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
-    "@types/lodash": "^4.14.137",
     "axios": "^0.19.0",
-    "lodash": "^4.17.15",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.union": "^4.6.0",
     "material-icons": "^0.3.1",
-    "nuxt": "^2.8.1",
+    "normalize.css": "^8.0.1",
+    "nuxt": "^2.10.2",
     "nuxt-property-decorator": "^2.3.0",
-    "ts-node": "^8.3.0"
+    "ts-node": "^8.5.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/__test__/**/*.test.ts"
+    ]
   }
 }

@@ -1,8 +1,9 @@
-<template>
+<template ontouchstart="">
   <div>
-    <def-toolbar />
-    <def-navigation />
-    <def-dialog-add />
+    <Toolbar />
+    <Navigation />
+    <DialogAdd />
+    <DialogDetail />
     <nuxt />
   </div>
 </template>
@@ -11,42 +12,53 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
+import { isLogin } from "../store/api/auth";
+
 @Component({
   components: {
-    "def-toolbar": () => import("~/components/def-toolbar.vue"),
-    "def-navigation": () => import("~/components/def-nav.vue"),
-    "def-dialog-add": () => import("~/components/def-dialog-add.vue")
+    Toolbar: () => import("~/components/def-toolbar.vue"),
+    Navigation: () => import("~/components/def-nav.vue"),
+    DialogAdd: () => import("~/components/def-dialog-add.vue"),
+    DialogDetail: () => import("~/components/def-dialog-detail.vue")
   }
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
   mounted() {
 
-    // ローカルデータの読み込み
-    const data = localStorage.getItem('twinte-data') // 旧データ
-    if (data) {
-      const json = JSON.parse(data);
-      this.$store.commit("old_api/updateTableAll", { data: json.item })
-      localStorage.removeItem('twinte-data')
-    }
+    /**
+     * ローカルデータの読み込み
+     *
+     * | ローカルデータがあるか確認
+     * | ↓
+     * | storeに格納
+     *
+     * の処理をここで行う
+     *
+     */
 
-    const table = localStorage.getItem('table') // 時間割データ
+    const table = localStorage.getItem("table");
     if (table) {
-      const json = JSON.parse(table);
-      this.$store.commit("old_api/updateTableAll", { data: json })
+      const periods = JSON.parse(table);
+      this.$store.commit('API/CREATE_TABLE', { periods });
     }
+    // → 時間割データ
 
-    const number = localStorage.getItem('number') // 授業番号配列
-    if (number) {
-      const json = JSON.parse(number);
-      this.$store.commit("old_api/pushNumberAll", { data: json })
+    const module = localStorage.getItem("module");
+    if (module) {
+      this.$store.commit("table/setModule", { module });
     }
+    // → 前回見ていた学期
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.info(`mode: ${process.env.NODE_ENV}`);
-      this.$store.dispatch("old_api/login");
+    this.login();
+  }
+  async login() {
+    if (await isLogin()) {
+      this.$store.dispatch('api/login')
+      console.log('logined')
+    } else {
+      console.log('not logined')
     }
-
   }
 }
 </script>

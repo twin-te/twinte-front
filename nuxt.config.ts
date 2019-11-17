@@ -1,44 +1,80 @@
-import NuxtConfiguration from "@nuxt/config";
+import { Configuration } from '@nuxt/types'
 
-const config: NuxtConfiguration = {
-  mode: "universal",
-  srcDir: "src/",
+const nuxtConfig: Configuration = {
+  buildModules: ['@nuxt/typescript-build'],
+  mode: 'universal',
+  srcDir: 'src/',
+  server: {
+    port: 5000,
+    host: 'localhost',
+  },
   head: {
-    titleTemplate: "Twinte",
+    titleTemplate: 'Twinte',
     htmlAttrs: {
-      lang: "ja"
+      lang: 'ja',
     },
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "robots", content: "noindex" }
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'robots', content: 'noindex' },
     ],
-    link: [
-      {
-        rel: "stylesheet",
-        href:
-          "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-      }
-    ]
   },
-  css: ["@/assets/css/main.scss"],
-  modules: ["@nuxtjs/pwa"],
+  loadingIndicator: {
+    name: 'wandering-cubes',
+    color: 'teal',
+    color2: 'white',
+    background: 'gray'
+  },
+  loading: {
+    color: 'teal',
+    height: '5px',
+  },
+  css: ['@/assets/css/main.scss'],
+  modules: [
+    '@nuxtjs/pwa',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-133970007-1',
+      },
+    ],
+  ],
+  plugins: [],
   workbox: {
-    dev: true
+    dev: false,
+  },
+  build: {
+    analyze: true,
   },
   meta: {
     mobileAppIOS: true,
     appleStatusBarStyle: false,
-    lang: "ja",
-    nativeUI: true
+    lang: 'ja',
+    nativeUI: true,
   },
   manifest: {
-    name: "Twin:te",
-    short_name: "Twin:te",
-    lang: "ja",
-    start_url: "/",
-    display: "standalone"
-  }
-};
+    name: 'Twin:te',
+    short_name: 'Twin:te',
+    lang: 'ja',
+    start_url: '/',
+    display: 'standalone',
+  },
+  features: {
+    store: true,
+    layouts: true,
+    meta: true,
+    middleware: false,
+    transitions: true,
+    deprecations: true,
+    validate: false,
+    asyncData: false,
+    fetch: true,
+    clientOnline: true,
+    clientPrefetch: true,
+    clientUseUrl: true,
+    componentAliases: true,
+    componentClientOnly: true,
+  },
+}
 
-export default config;
+module.exports = nuxtConfig

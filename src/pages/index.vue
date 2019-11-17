@@ -1,20 +1,18 @@
 <template>
   <section>
-    <app-time-table-header />
-    <app-time-table />
-    <app-dialog />
+    <TableHeader />
+    <Table />
   </section>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from "nuxt-property-decorator";
 
 @Component({
   components: {
-    AppTimeTableHeader: () => import('~/components/app-table-header.vue'),
-    AppTimeTable: () => import('~/components/app-table-contents.vue'),
-    AppDialog: () => import('~/components/app-dialog-detail.vue'),
-  },
+    TableHeader: () => import("~/components/app-table-header.vue"),
+    Table: () => import("~/components/app-table-contents.vue")
+  }
 })
 export default class Index extends Vue {}
 </script>

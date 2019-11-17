@@ -6,25 +6,14 @@
       <!-- ⚙ -->
       <span
         id="i_settings"
-        class="material-icons svg-button my-2 setting-btn"
+        class="material-icons svg-button setting-btn"
         @click="chDrawer()"
-        >settings</span
-      >
+      >settings</span>
       <!-- Twin:te -->
-      <img
-        src="~/assets/img/title-logo.png"
-        id="title"
-        class="my-2 title-logo"
-      />
+      <img src="~/assets/img/title-logo.png" id="title" class="my-2 title-logo" alt="Twin:te" />
       <!-- + -->
-      <span
-        id="i_add"
-        class="material-icons svg-button my-2 add-btn"
-        @click="chAdd()"
-        >add</span
-      >
+      <span id="i_add" class="material-icons svg-button my-2 add-btn" @click="chAdd()">add</span>
     </nav>
-    <nav class="sub"></nav>
   </div>
 </template>
 
@@ -54,6 +43,7 @@ export default class Index extends Vue {
   line-height: 8vh;
   background-color: #00c0c0;
   font-size: 2em;
+  border-bottom: 2px solid #c7c7c7;
 }
 .setting-btn {
   font-size: 4.3vh;
@@ -62,6 +52,10 @@ export default class Index extends Vue {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
+  &:active {
+    transform: translateY(-50%) scale(1.1);
+  }
 }
 .top .title-logo {
   height: 5vh;
@@ -80,13 +74,12 @@ export default class Index extends Vue {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
+  &:active {
+    transform: translateY(-50%) scale(1.1);
+  }
 }
-.sub {
-  background: #c7c7c7;
-  width: 100vw;
-  height: 2px;
-}
-.my-2 {
+.top span {
   margin-left: 3vw;
   margin-right: 3vw;
 }
