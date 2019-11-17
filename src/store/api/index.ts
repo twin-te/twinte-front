@@ -1,3 +1,11 @@
+/**
+ * API通信を伴う状態処理
+ * 
+ * - 時間割はPeriod配列ですべてのモジュールをまとめて保持する
+ * - 任意のコンポネントで時間割は作成される
+ * - isLoginはページ初回に毎回確認が行われる
+ */
+
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
 
@@ -7,7 +15,6 @@ import {
   getTableAll,
   postLecture,
 } from './timetables'
-
 
 export const state = (): S => ({
   timeTables: [],
@@ -44,25 +51,38 @@ export const actions: Actions<S, A, G, M> = {
 
   async addTable(ctx, { lectureIds }) {
 
-    lectureIds.forEach(async lectureId => {
-      await postLecture(lectureId, 2019)
-    })
-    // 時間割の登録
+    lectureIds
+      .filter(v => {
+        ctx.state.timeTables.forEach((table): (false | void) => {
+          if (table.lectureID === v) {
+            return false
+          }
+        })
+        return true
+      })
+      // → すでにテーブルにあるものは除外する
+
+      .forEach(async lectureId => {        
+        await postLecture(lectureId, 2019)
+      })
+      // → 時間割の登録
 
     const periods = await getTableAll(2019)
+    console.log(periods)
+    
     ctx.commit('CREATE_TABLE', { periods })
     localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
-    // ローカルに追加
+    // → ローカルに追加
 
   },
 
 
-  async deleteTable(ctx, { module, day, period }) {
+  async deleteTable(ctx, { module, day, period, table }) {
 
     await deleteLecture(2019, module, day, period)
     // サーバーから削除
 
-    ctx.commit('DELETE_TABLE', { period })
+    ctx.commit('DELETE_TABLE', { period: table })
     localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
     // ローカルデータの削除
 

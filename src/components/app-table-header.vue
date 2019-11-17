@@ -1,6 +1,6 @@
-/** -> "../pages/index.vue" */
+/** * モジュール名 * 矢印 * 曜日名 * width: 79vw x height: 7.6vh *
+prevModule、nextModule は アニメーションの関係上いろんな処理を行っている */
 <template>
-  <!-- 高さ  -->
   <section>
     <div id="module">
       <span class="s4 material-icons svg-button" @click="prevModule"
@@ -25,14 +25,14 @@ import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 
 enum Day {
-  Sun = '日',
-  Mon = '月',
-  Tue = '火',
-  Wed = '水',
-  Thu = '木',
-  Fri = '金',
-  Sat = '土',
-  Unknown = '不明',
+  Sun = "日",
+  Mon = "月",
+  Tue = "火",
+  Wed = "水",
+  Thu = "木",
+  Fri = "金",
+  Sat = "土",
+  Unknown = "不明"
 }
 
 @Component({

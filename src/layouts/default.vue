@@ -39,8 +39,8 @@ export default class Index extends Vue {
 
     const table = localStorage.getItem("table");
     if (table) {
-      const data = JSON.parse(table);
-      this.$store.commit("old_api/updateTableAll", { data });
+      const periods = JSON.parse(table);
+      this.$store.commit('API/CREATE_TABLE', { periods });
     }
     // → 時間割データ
 

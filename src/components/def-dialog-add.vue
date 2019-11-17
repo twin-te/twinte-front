@@ -1,32 +1,39 @@
+/** * 時間割追加画面 *
+ボタン、フォーム、CSVファイル追加辺りは別コンポネントに分けたい * TODO
+CSVの処理はここで行う */
 <template>
   <section class="contents">
     <transition name="bound">
       <nav class="main" v-show="add">
         <article>
-          <div class="svg-button material-icons close-btn" @click="chAdd()">
-            close
-          </div>
+          <div class="svg-button material-icons close-btn" @click="chAdd()">close</div>
           <h1>授業の追加</h1>
           <p class="content">科目名・授業番号で検索</p>
 
           <form class="search-form">
-            <input
-              v-model="input"
-              type="text"
-              class="form"
-            />
-            <span class="material-icons search-btn">search</span>
+            <input v-model="input" type="text" class="form" />
+            <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
+            <span v-else @click="search(input)" class="material-icons search-btn">search</span>
           </form>
           <!-- → 検索ボックス -->
 
-          <ul>
-            <li v-for="n in lectureIds" :key="n">{{ n }}</li>
-          </ul>
+          <section class="result-list">
+            <div v-for="n in lectures" :key="n.lectureId">
+              <input type="checkbox" :id="n.lectureId" :value="n.lectureId" v-model="n.checked" />
+              <label :for="n.lectureId">
+                {{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
+                }}{{ n.period }}
+              </label>
+              <hr />
+            </div>
+          </section>
           <!-- → 検索結果 -->
 
           <section class="others">
             <p class="other-content">
-              CSVファイルから追加<br /><small>*{{ moduleMessage }}</small>
+              CSVファイルから追加
+              <br />
+              <small>*{{ moduleMessage }}</small>
             </p>
             <input
               class="other-content"
@@ -39,9 +46,7 @@
           </section>
           <!-- → その他オプション -->
 
-          <section class="register-btn" @click="asyncNumber()">
-            時間割に追加
-          </section>
+          <section class="register-btn" @click="asyncNumber()">時間割に追加</section>
         </article>
       </nav>
     </transition>
@@ -56,6 +61,16 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
+import { searchLectures, getLectureById } from "../store/api/lectures";
+
+type miniLecture = {
+  lectureId: string;
+  name: string;
+  module: string;
+  day: string;
+  period: number;
+  checked: boolean;
+};
 
 @Component({
   components: {}
@@ -66,7 +81,7 @@ export default class Index extends Vue {
   // data___________________________________________________________________________________
   //
   input: string = "";
-  lectureIds: string[] = [];
+  lectures: miniLecture[] = [];
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
 
@@ -84,31 +99,77 @@ export default class Index extends Vue {
 
   // method___________________________________________________________________________________
   //
-  chAdd = () => {
+  chAdd() {
     this.$store.commit("visible/chAdd", { display: false });
-  };
-  onFileChange = async (e: any) => {
+  }
+  async search(input: string) {
+    const id = await getLectureById(input, 2019);
+    const le = await searchLectures(input, 2019);
+    if (id) {
+      this.lectures.push({
+        lectureId: id.lectureID,
+        name: id.name,
+        module: id.details[0].module,
+        day: id.details[0].day,
+        period: id.details[0].period,
+        checked: false
+      });
+    } else if (le) {
+      le.forEach(l => {
+        this.lectures.push({
+          lectureId: l.lectureID,
+          name: l.name,
+          module: l.module,
+          day: l.day,
+          period: l.period,
+          checked: false
+        });
+      });
+    }
+    this.input = "";
+  }
+  async onFileChange(e: any) {
     e.preventDefault();
+
     const fileData = e.target.files[0];
     if (fileData === null) {
       alert("ファイルが入力されてません");
       return;
     }
-    //TODO numbersに番号をいれる
-    await this.asyncNumber();
-    alert("完了");
-  };
-  asyncNumber = async () => {
-    console.log(confirm(this.assertMessage))
-    if (confirm(this.assertMessage)) {
-      console.log(this.input);
+    let csvLectureList: string[] = [];
+    const reader = new FileReader();
+    reader.onload = function() {
+      if (typeof reader.result === "string") {
+        csvLectureList = reader.result
+          .split("\n")
+          .map(csv => {
+            return csv.replace(/["]/g, "");
+          }) // drop "
+          .filter(csv => csv); // drop black line
+      }
+    };
+    reader.readAsText(fileData);
+    setTimeout(() => {
+      csvLectureList.forEach(csv => {
+        this.search(csv);
+      });
+    }, 1000);
+  }
+  async asyncNumber() {
+    const lectureIds = await Promise.all(
+      this.lectures.filter(l => l.checked).map(l => l.lectureId)
+    );
+    if (!confirm(this.assertMessage)) {
       return;
     }
-    console.log(this.input);
-    
-    this.lectureIds.push(this.input);
-    await this.$store.dispatch('api/addTable', { lectureIds: this.lectureIds })
-  };
+    console.log(lectureIds);
+
+    await this.$store.dispatch("api/addTable", { lectureIds });
+    if (!confirm("完了 continue?")) {
+      location.href = "/";
+    }
+    this.input = "";
+  }
 }
 </script>
 
@@ -246,6 +307,19 @@ h1 {
   border-color: #558afa;
   outline: 0;
   background-color: #fff;
+}
+
+/** 検索結果 */
+.result-list {
+  position: absolute;
+  width: calc(100% - 3vh);
+  height: 30vh;
+  top: 17.6vh;
+  margin: 0 1.8vh;
+  padding: 0;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//

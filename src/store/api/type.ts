@@ -30,7 +30,7 @@ export interface RM {
 
 export interface A {
   addTable: { lectureIds: string[] }
-  deleteTable: { module: Module, day: Day, period: Period }
+  deleteTable: { module: Module, day: Day, period: number, table: Period }
   asyncCSV: { fileData: any }
 
   login: null
