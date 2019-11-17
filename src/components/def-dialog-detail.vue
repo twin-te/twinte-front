@@ -6,9 +6,7 @@
       <nav class="main" v-show="dialog">
         <article v-if="table">
           <!-- 教科名 -->
-          <div class="svg-button material-icons close-btn" @click="chDetail()">
-            close
-          </div>
+          <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
           <h1>
             <div class="sbj-name">{{ table.name }}</div>
             <p class="sbj-number">科目番号 {{ table.lectureID }}</p>
@@ -29,9 +27,7 @@
             </p>
             <p class="h3">
               開講時限
-              <span class="sbj-detail"
-                >{{ table.mofule }} {{ table.day }}{{ table.Period }}</span
-              >
+              <span class="sbj-detail">{{ table.mofule }} {{ table.day }}{{ table.Period }}</span>
             </p>
             <p class="h3">
               授業教室
@@ -43,12 +39,7 @@
             <span class="material-icons icon">create</span>メモ
           </h2>
           <!-- 入力の枠 -->
-          <textarea
-            @input="updateData"
-            class="memo"
-            type="text"
-            v-model="memo"
-          ></textarea>
+          <textarea @input="updateData" class="memo" type="text" v-model="memo"></textarea>
           <section class="counters-wrapper">
             <div
               v-for="n in 3"
@@ -56,17 +47,11 @@
               :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
               style="width: 30%"
             >
-              <span class="counter-name"
-                >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
-              >
+              <span class="counter-name">{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span>
               <!-- <+|-> -->
               <div class="counter">
-                <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
-                  >+</span
-                >
-                <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
-                  >&#8211;</span
-                >
+                <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
+                <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
               </div>
             </div>
           </section>
@@ -91,6 +76,7 @@ import * as Vuex from "vuex";
 import { Period } from "../types";
 import { UserData } from "../types/server";
 import { getUserData, updateUserData } from "../store/api/userdata";
+import { deleteLecture } from "../store/api/timetables";
 
 @Component({})
 export default class Index extends Vue {
@@ -161,10 +147,20 @@ export default class Index extends Vue {
     }
   }
 
-  deleteItem() {
+  async deleteItem() {
     if (!confirm("この時間割を削除しますか?")) {
       return;
     }
+    if (this.table) {
+      await deleteLecture(
+        2019,
+        this.table.module,
+        this.table.day,
+        this.table.period
+      );
+    }
+    alert("finish this page will be reloaded");
+    location.href = "/";
   }
 
   chDetail(): void {
