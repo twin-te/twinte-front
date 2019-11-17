@@ -14,11 +14,10 @@
           <!-- 科目詳細 -->
           <h2>
             <span class="material-icons icon">info</span>科目詳細
-            <!-- <span class="syllabus-btn"
-              >シラバス<span class="material-icons syllabus-chevron"
-                >chevron_right</span
-              ></span
-            >-->
+            <span class="syllabus-btn" @click="syllabus()">
+              シラバス
+              <span class="material-icons syllabus-chevron">chevron_right</span>
+            </span>
           </h2>
           <section class="sbj-detail-wrapper">
             <p class="h3">
@@ -73,9 +72,8 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import { Period } from "../types";
-import { UserData } from "../types/server";
-import { getUserData, updateUserData } from "../store/api/userdata";
+import { Period, UserData } from "../types";
+import { updateUserData } from "../store/api/userdata";
 import { deleteLecture } from "../store/api/timetables";
 
 @Component({})
@@ -84,37 +82,25 @@ export default class Index extends Vue {
 
   atmnb = ["出席", "欠席", "遅刻"];
   moduleNum = this.$store.getters["table/moduleNum"];
-  memo = "";
+  localUserData: UserData = {
+    year: 0,
+    lectureID: "",
+    memo: "",
+    attendance: 0,
+    absence: 0,
+    late: 0
+  };
 
-  userData: UserData | null = null;
-
-  mounted() {
-    this.$nextTick(async () => {
-      this.update();
-    });
-  }
-
-  async update() {
-    if (this.table) {
-      this.userData = await getUserData(this.table.lectureID, this.table.year);
-      if (this.userData) {
-        this.memo = this.userData.memo;
-      }
-    } else {
-      setTimeout(this.update, 10000);
-    }
+  get userData() {
+    return this.$store.getters["table/userData"];
   }
 
   get atmnbCount() {
-    if (this.userData) {
-      return [
-        this.userData.attendance,
-        this.userData.absence,
-        this.userData.late
-      ];
-    } else {
-      return [0, 0, 0];
-    }
+    return [
+      this.localUserData.attendance,
+      this.localUserData.absence,
+      this.localUserData.late
+    ];
   }
   get table(): Period | null {
     return this.$store.getters["table/looking"];

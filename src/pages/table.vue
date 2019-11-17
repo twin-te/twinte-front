@@ -83,39 +83,39 @@ export default class Index extends Vue {
     }
     return table;
   }
-  getColor(number: string): string {    
-    const char = number.split('')[0]
+  getColor(number: string): string {
+    const char = number.split("")[0];
     switch (char) {
-      case 'A':
-        return '#DEFFF9'
-      case 'B':
-        return '#DEFFF9'
-      case 'C':
-        return '#DEFFF9'
-      case 'E':
-        return '#DEFFF9'
-      case 'F':
-        return '#DEFFF9'
-      case 'G':
-        return '#DEFFF9'
-      case 'H':
-        return '#DEFFF9'
-      case 'W':
-        return '#DEFFF9'
-      case 'Y':
-        return '#DEFFF9'
-      case '1':
-        return '#FFEEF7'
-      case '2':
-        return '#F0EBFF'
-      case '3':
-        return '#FFFCEB'
+      case "A":
+        return "#DEFFF9";
+      case "B":
+        return "#DEFFF9";
+      case "C":
+        return "#DEFFF9";
+      case "E":
+        return "#DEFFF9";
+      case "F":
+        return "#DEFFF9";
+      case "G":
+        return "#DEFFF9";
+      case "H":
+        return "#DEFFF9";
+      case "W":
+        return "#DEFFF9";
+      case "Y":
+        return "#DEFFF9";
+      case "1":
+        return "#FFEEF7";
+      case "2":
+        return "#F0EBFF";
+      case "3":
+        return "#FFFCEB";
       default:
-        return ''
+        return "";
     }
   }
   chDetail(period: Period) {
-    this.$store.commit("table/setLooking", { period });
+    this.$store.dispatch("table/setPeriod", { period });
     this.$store.commit("visible/chDetail", { display: true });
   }
   chAdd() {
