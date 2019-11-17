@@ -1,3 +1,6 @@
+/** * 時間割追加画面 *
+ボタン、フォーム、CSVファイル追加辺りは別コンポネントに分けたい * TODO
+CSVの処理はここで行う */
 <template>
   <section class="contents">
     <transition name="bound">
@@ -11,24 +14,38 @@
 
           <form class="search-form">
             <input v-model="input" type="text" class="form" />
-            <span @click="search()" class="material-icons search-btn">
+            <span
+              v-if="input === ''"
+              @click="lectures = []"
+              class="material-icons search-btn"
+            >
+              close
+            </span>
+            <span
+              v-else
+              @click="search(input)"
+              class="material-icons search-btn"
+            >
               search
             </span>
           </form>
           <!-- → 検索ボックス -->
 
-          <ul class="result-list">
-            <li
-              class="list"
-              v-for="n in lectures"
-              :key="n.lectureID"
-              @click="input = n.lectureId"
-            >
-              {{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
-              }}{{ n.period }}
+          <section class="result-list">
+            <div v-for="n in lectures" :key="n.lectureId">
+              <input
+                type="checkbox"
+                :id="n.lectureId"
+                :value="n.lectureId"
+                v-model="n.check"
+              />
+              <label :for="n.lectureId"
+                >{{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
+                }}{{ n.period }}</label
+              >
               <hr />
-            </li>
-          </ul>
+            </div>
+          </section>
           <!-- → 検索結果 -->
 
           <section class="others">
@@ -71,6 +88,7 @@ type miniLecture = {
   module: string;
   day: string;
   period: number;
+  checked: boolean;
 };
 
 @Component({
@@ -103,17 +121,17 @@ export default class Index extends Vue {
   chAdd() {
     this.$store.commit("visible/chAdd", { display: false });
   }
-  async search() {
-    this.lectures = [];
-    const id = await getLectureById(this.input, 2019);
-    const le = await searchLectures(this.input, 2019);
+  async search(input: string) {
+    const id = await getLectureById(input, 2019);
+    const le = await searchLectures(input, 2019);
     if (id) {
       this.lectures.push({
         lectureId: id.lectureID,
         name: id.name,
         module: id.details[0].module,
         day: id.details[0].day,
-        period: id.details[0].period
+        period: id.details[0].period,
+        checked: false
       });
     } else if (le) {
       le.forEach(l => {
@@ -122,7 +140,8 @@ export default class Index extends Vue {
           name: l.name,
           module: l.module,
           day: l.day,
-          period: l.period
+          period: l.period,
+          checked: false
         });
       });
     }
@@ -130,20 +149,39 @@ export default class Index extends Vue {
   }
   async onFileChange(e: any) {
     e.preventDefault();
+
     const fileData = e.target.files[0];
     if (fileData === null) {
       alert("ファイルが入力されてません");
       return;
     }
-    //TODO numbersに番号をいれる
-    await this.asyncNumber();
-    alert("完了");
+    let csvLectureList: string[] = [];
+    const reader = new FileReader();
+    reader.onload = function() {
+      if (typeof reader.result === "string") {
+        csvLectureList = reader.result
+          .split("\n")
+          .map(csv => {
+            return csv.replace(/["]/g, "");
+          }) // drop "
+          .filter(csv => csv); // drop black line
+      }
+    };
+    reader.readAsText(fileData);
+    setTimeout(() => {
+      csvLectureList.forEach(csv => {
+        this.search(csv);
+      });
+    }, 1000);
   }
   async asyncNumber() {
     if (!confirm(this.assertMessage)) {
       return;
     }
-    await this.$store.dispatch("api/addTable", { lectureIds: [this.input] });
+    const lectureIds = this.lectures
+      .filter(l => l.checked)
+      .map(l => l.lectureId);
+    await this.$store.dispatch("api/addTable", { lectureIds });
     alert("完了");
     this.input = "";
   }
@@ -297,9 +335,6 @@ h1 {
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
-}
-ul {
-  list-style: none;
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//

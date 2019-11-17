@@ -61,8 +61,12 @@
               >
               <!-- <+|-> -->
               <div class="counter">
-                <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
-                <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
+                <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
+                  >+</span
+                >
+                <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
+                  >&#8211;</span
+                >
               </div>
             </div>
           </section>
@@ -82,92 +86,94 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
-import { Period } from '../types'
-import { UserData } from '../types/server'
-import { getUserData, updateUserData } from '../store/api/userdata'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
+import { Period } from "../types";
+import { UserData } from "../types/server";
+import { getUserData, updateUserData } from "../store/api/userdata";
 
-@Component({
-})
+@Component({})
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
-  atmnb = ['出席', '欠席', '遅刻']
-  moduleNum = this.$store.getters['table/moduleNum']
-  memo = ''
+  atmnb = ["出席", "欠席", "遅刻"];
+  moduleNum = this.$store.getters["table/moduleNum"];
+  memo = "";
 
-  userData: UserData | null = null
+  userData: UserData | null = null;
 
   mounted() {
     this.$nextTick(async () => {
-      this.update()
-    })
+      this.update();
+    });
   }
 
   async update() {
     if (this.table) {
-      this.userData = await getUserData(this.table.lectureID, this.table.year)
+      this.userData = await getUserData(this.table.lectureID, this.table.year);
       if (this.userData) {
-        this.memo = this.userData.memo
+        this.memo = this.userData.memo;
       }
     } else {
       setTimeout(this.update, 10000);
     }
-    console.log(this.userData)
   }
 
   get atmnbCount() {
     if (this.userData) {
-      return [this.userData.attendance, this.userData.absence, this.userData.late]
+      return [
+        this.userData.attendance,
+        this.userData.absence,
+        this.userData.late
+      ];
     } else {
-      return [0, 0, 0]
+      return [0, 0, 0];
     }
   }
   get table(): Period | null {
-    return this.$store.getters['table/looking']
+    return this.$store.getters["table/looking"];
   }
   get dialog(): boolean {
-    return this.$store.getters['visible/detail']
+    return this.$store.getters["visible/detail"];
   }
 
   syllabus() {
     if (this.table) {
-      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lectureID}/jpn/#course-title`
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lectureID}/jpn/#course-title`;
     }
   }
 
-  counter(type: '出席' | '欠席' | '遅刻', num: number) {
+  counter(type: "出席" | "欠席" | "遅刻", num: number) {
     if (!this.userData) {
-      console.log('エラー')
-      return
+      console.log("エラー");
+      return;
     }
     switch (type) {
-      case '出席':
-        this.userData.attendance + num
+      case "出席":
+        this.userData.attendance + num;
         break;
-      case '欠席':
-        this.userData.absence + num
+      case "欠席":
+        this.userData.absence + num;
         break;
-      case '遅刻':
-        this.userData.late + num
+      case "遅刻":
+        this.userData.late + num;
         break;
     }
   }
 
   deleteItem() {
-    if (!confirm('この時間割を削除しますか?')) {
-      return
+    if (!confirm("この時間割を削除しますか?")) {
+      return;
     }
   }
 
   chDetail(): void {
-    this.$store.commit('visible/chDetail', { display: false })
+    this.$store.commit("visible/chDetail", { display: false });
   }
 
   updateData() {
     if (this.userData) {
-      updateUserData(this.userData)
+      updateUserData(this.userData);
     }
   }
 }

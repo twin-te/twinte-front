@@ -1,7 +1,8 @@
+/** * 時間割カード * * height 65vh x width 69vw * period: 時限, day: 曜日 *
+授業内容は ./ui-subject.vue を参照 */
 <template>
   <transition :name="moveDirection === 'left' ? 'slide-l' : 'slide-r'">
     <content class="row" v-show="visible">
-
       <!-- 時限 -->
       <section class="column">
         <div
@@ -21,11 +22,10 @@
       <section class="column">
         <div v-for="period in 6" :key="period" class="row">
           <div v-for="day in 5" :key="day">
-            <Subject :day='day - 1' :period='period - 1' />
+            <Subject :day="day - 1" :period="period - 1" />
           </div>
         </div>
       </section>
-
     </content>
   </transition>
 </template>
@@ -36,8 +36,9 @@ import * as Vuex from "vuex";
 
 @Component({
   components: {
-    Subject: () => import("~/components/ui-subject.vue"),
-  }})
+    Subject: () => import("~/components/ui-subject.vue")
+  }
+})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
   timeTable = [
@@ -56,7 +57,6 @@ export default class Index extends Vue {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $width: calc((100vw - 8vw - 11vw - 12vw) / 5);
