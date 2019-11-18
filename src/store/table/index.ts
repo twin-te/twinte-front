@@ -85,15 +85,24 @@ export const mutations: Mutations<S, M> = {
 
 export const actions: Actions<S, A, G, M> = {
   async setPeriod(ctx, { period }) {
-    const userData = await getUserData(period.lectureID, 2019);
-    if (userData) {
-      ctx.commit("setUserData", { userData });
+    let userData = await getUserData(period.lectureID, 2019);
+    if (!userData) {
+      userData = {
+        year: period.year,
+        lectureID: period.lectureID,
+        memo: "",
+        attendance: 0,
+        absence: 0,
+        late: 0
+      };
     }
     ctx.commit("setLooking", { period });
+    ctx.dispatch("updatePeriod", { userData });
   },
 
   async updatePeriod(ctx, { userData }) {
     await updateUserData(userData);
+    console.log(await getUserData(userData.lectureID, 2019), userData);
     ctx.commit("setUserData", { userData });
   }
 };

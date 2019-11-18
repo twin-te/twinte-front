@@ -78,7 +78,7 @@ export interface RM {
   "table/prevModule": M["prevModule"];
   "table/nextModule": M["nextModule"];
   "table/setLooking": M["setLooking"];
-  "table/serUserData": M["setUserData"];
+  "table/setUserData": M["setUserData"];
 }
 
 export interface A {

@@ -38,7 +38,7 @@
             <span class="material-icons icon">create</span>メモ
           </h2>
           <!-- 入力の枠 -->
-          <textarea @input="updateData" class="memo" type="text" v-model="memo"></textarea>
+          <textarea @input="updateMemo" class="memo" type="text" v-model="localMemo"></textarea>
           <section class="counters-wrapper">
             <div
               v-for="n in 3"
@@ -73,7 +73,6 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { Period, UserData } from "../types";
-import { updateUserData } from "../store/api/userdata";
 import { deleteLecture } from "../store/api/timetables";
 
 @Component({})
@@ -82,25 +81,20 @@ export default class Index extends Vue {
 
   atmnb = ["出席", "欠席", "遅刻"];
   moduleNum = this.$store.getters["table/moduleNum"];
-  localUserData: UserData = {
-    year: 0,
-    lectureID: "",
-    memo: "",
-    attendance: 0,
-    absence: 0,
-    late: 0
-  };
-
-  get userData() {
-    return this.$store.getters["table/userData"];
-  }
+  localMemo = "";
 
   get atmnbCount() {
-    return [
-      this.localUserData.attendance,
-      this.localUserData.absence,
-      this.localUserData.late
-    ];
+    if (this.userData) {
+      return [
+        this.userData.attendance,
+        this.userData.absence,
+        this.userData.late
+      ];
+    }
+    return [0, 0, 0];
+  }
+  get userData() {
+    return this.$store.getters["table/userData"];
   }
   get table(): Period | null {
     return this.$store.getters["table/looking"];
@@ -115,22 +109,32 @@ export default class Index extends Vue {
     }
   }
 
-  counter(type: "出席" | "欠席" | "遅刻", num: number) {
+  counter(type: string, num: number) {
     if (!this.userData) {
-      console.log("エラー");
       return;
     }
+    let { year, lectureID, memo, attendance, absence, late } = this.userData;
     switch (type) {
       case "出席":
-        this.userData.attendance + num;
+        attendance + num > 0 ? (attendance += num) : 0;
         break;
       case "欠席":
-        this.userData.absence + num;
+        absence + num > 0 ? (absence += num) : 0;
         break;
       case "遅刻":
-        this.userData.late + num;
+        late + num > 0 ? (late += num) : 0;
         break;
     }
+    const userData: UserData = {
+      year,
+      lectureID,
+      memo,
+      attendance,
+      absence,
+      late
+    };
+
+    this.$store.dispatch("table/updatePeriod", { userData });
   }
 
   async deleteItem() {
@@ -153,10 +157,37 @@ export default class Index extends Vue {
     this.$store.commit("visible/chDetail", { display: false });
   }
 
-  updateData() {
-    if (this.userData) {
-      updateUserData(this.userData);
+  updateMemo() {
+    if (!this.userData) {
+      return;
     }
+    let { year, lectureID, memo, attendance, absence, late } = this.userData;
+    memo = this.localMemo;
+    const userData: UserData = {
+      year,
+      lectureID,
+      memo,
+      attendance,
+      absence,
+      late
+    };
+
+    this.$store.dispatch("table/updatePeriod", { userData });
+  }
+
+  fetchMemo() {
+    setTimeout(() => {
+      if (this.userData && this.localMemo !== this.userData.memo) {
+        this.localMemo = this.userData.memo;
+      }
+      this.fetchMemo();
+    }, 1000);
+  }
+
+  mounted() {
+    this.$nextTick(() => {
+      this.fetchMemo();
+    });
   }
 }
 </script>
