@@ -8,7 +8,10 @@ CSVの処理はここで行う */
         <article>
           <div class="svg-button material-icons close-btn" @click="chAdd()">close</div>
           <h1>授業の追加</h1>
-          <p class="content">科目名・授業番号で検索</p>
+          <p class="content">
+            科目名・授業番号で検索
+            <span v-if="isIOS" class="twins-btn" @click="twins()">Twinsからインポート</span>
+          </p>
 
           <form class="search-form">
             <input v-model="input" type="text" class="form" />
@@ -84,6 +87,7 @@ export default class Index extends Vue {
   lectures: miniLecture[] = [];
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
+  isIOS = false;
 
   // computed___________________________________________________________________________________
   //
@@ -101,6 +105,9 @@ export default class Index extends Vue {
   //
   chAdd() {
     this.$store.commit("visible/chAdd", { display: false });
+  }
+  twins() {
+    location.href = "https://twins.tsukuba.ac.jp";
   }
   async search(input: string) {
     const id = await getLectureById(input, 2019);
@@ -169,6 +176,10 @@ export default class Index extends Vue {
       location.href = "/";
     }
     this.input = "";
+  }
+
+  mounted() {
+    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
   }
 }
 </script>
@@ -331,5 +342,10 @@ h1 {
   top: 0px;
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
+}
+.twins-btn {
+  font-size: 1.9vh;
+  font-weight: 400;
+  color: #8c6cff;
 }
 </style>

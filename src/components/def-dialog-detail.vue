@@ -36,6 +36,10 @@
           <!-- メモ -->
           <h2 class="h2-2">
             <span class="material-icons icon">create</span>メモ
+            <span class="syllabus-btn" @click="syllabus()">
+              出席
+              <span class="material-icons syllabus-chevron">chevron_right</span>
+            </span>
           </h2>
           <!-- 入力の枠 -->
           <textarea @input="updateMemo" class="memo" type="text" v-model="localMemo"></textarea>
@@ -54,7 +58,7 @@
               </div>
             </div>
           </section>
-          <div class="save-btn">変更を保存</div>
+          <div @click="save()" class="save-btn">変更を保存</div>
           <p @click="deleteItem()" class="delete-btn">
             <span class="material-icons delete-icon">delete</span>この科目を削除
           </p>
@@ -82,6 +86,7 @@ export default class Index extends Vue {
   atmnb = ["出席", "欠席", "遅刻"];
   moduleNum = this.$store.getters["table/moduleNum"];
   localMemo = "";
+  localLectureId = "";
 
   get atmnbCount() {
     if (this.userData) {
@@ -157,6 +162,24 @@ export default class Index extends Vue {
     this.$store.commit("visible/chDetail", { display: false });
   }
 
+  save() {
+    if (!this.userData) {
+      return;
+    }
+    let { year, lectureID, memo, attendance, absence, late } = this.userData;
+    memo = this.localMemo;
+    const userData: UserData = {
+      year,
+      lectureID,
+      memo,
+      attendance,
+      absence,
+      late
+    };
+
+    this.$store.dispatch("table/updatePeriod", { userData });
+  }
+
   updateMemo() {
     if (!this.userData) {
       return;
@@ -177,8 +200,9 @@ export default class Index extends Vue {
 
   fetchMemo() {
     setTimeout(() => {
-      if (this.userData && this.localMemo !== this.userData.memo) {
+      if (this.userData && this.localLectureId !== this.userData.lectureID) {
         this.localMemo = this.userData.memo;
+        this.localLectureId = this.userData.lectureID;
       }
       this.fetchMemo();
     }, 1000);

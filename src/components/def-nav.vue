@@ -4,30 +4,31 @@
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
-        
         <h1 class="settings">設定</h1>
-        <div class="material-icons svg-button close-btn" @click="chDrawer()">
-          close
-        </div>
-        
+        <div class="material-icons svg-button close-btn" @click="chDrawer()">close</div>
+
         <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
         <div class="login-btn" @click="login()" v-else>ログイン</div>
 
         <section class="menu-contents-wrap">
-          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon" @click="$router.push(l.link)">
+          <div
+            class="menu-content"
+            v-for="l in list"
+            :key="l.id"
+            :id="l.icon"
+            @click="goto(l.link)"
+          >
             <span class="material-icons menu-icon">{{ l.icon }}</span>
             <p>{{ l.name }}</p>
             <span class="material-icons menu-allow">chevron_right</span>
           </div>
         </section>
-      
       </nav>
     </transition>
 
     <transition name="fade">
       <nav class="back" @click="chDrawer()" v-if="drawer"></nav>
     </transition>
-    
   </section>
 </template>
 
@@ -39,6 +40,8 @@ import * as Vuex from "vuex";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
+  isIOS = false;
+
   get drawer(): boolean {
     return this.$store.getters["visible/drawer"];
   }
@@ -47,26 +50,48 @@ export default class Index extends Vue {
     return this.$store.getters["api/isLogin"];
   }
 
+  get list(): any {
+    const list = [
+      { icon: "home", name: "ホームへ戻る", link: "/" }
+      // , { icon: "help", name: "使い方", link: "/table" }
+      // , { icon: "supervisor_account", name: "About", link: "/about" }
+      // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
+      // , { icon: "share", name: "時間割の共有", link: "/" }
+      // , { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
+    ];
+    if (this.isIOS) {
+      list.push({
+        icon: "vertical_align_bottom",
+        name: "Twinsからインポート",
+        link: "https://twins.tsukuba.ac.jp"
+      });
+    }
+    return list;
+  }
+
   chDrawer() {
     this.$store.commit("visible/chDrawer", { display: false });
   }
 
+  goto(link: string) {
+    if (link.startsWith("https://")) {
+      location.href = link;
+    } else {
+      this.$router.push(link);
+    }
+  }
+
   login() {
-    location.href = 'https://dev.api.twinte.net/login'
+    location.href = "https://dev.api.twinte.net/login";
   }
 
   logout() {
     this.$store.dispatch("api/logout");
   }
 
-  list: any = [
-    { icon: "home", name: "ホームへ戻る", link: "/" },
-    { icon: "help", name: "使い方", link: "/table" },
-    { icon: "supervisor_account", name: "About", link: "/about" },
-    { icon: "view_quilt", name: "表示設定", link: "/settings" },
-    { icon: "share", name: "時間割の共有", link: "/" },
-    { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
-  ];
+  mounted() {
+    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+  }
 }
 </script>
 
