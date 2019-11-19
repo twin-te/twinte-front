@@ -1,11 +1,21 @@
-/** -> "../layouts/default.vue" */
 <template>
+  <!--
+  //
+  // ナビゲーションバー
+  //
+  // 歯車を押したら出現するバー
+  // list変数で、様々なコンテンツを追加できます
+  // list[].linkは相対urlも絶対urlも対応
+  //
+  -->
   <!-- 左側に出現するサイドバー -->
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
-        <div class="material-icons svg-button close-btn" @click="chDrawer()">close</div>
+        <div class="material-icons svg-button close-btn" @click="chDrawer()">
+          close
+        </div>
 
         <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
         <div class="login-btn" @click="login()" v-else>ログイン</div>
@@ -86,7 +96,9 @@ export default class Index extends Vue {
   }
 
   logout() {
-    this.$store.dispatch("api/logout");
+    if (confirm("ログアウトしますか?")) {
+      this.$store.dispatch("api/logout");
+    }
   }
 
   mounted() {
