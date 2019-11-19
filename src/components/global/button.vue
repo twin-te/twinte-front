@@ -1,14 +1,15 @@
 <template>
-  <div class="btn" :style="{ width, height }"></div>
+  <div class="btn" :style="{ width, height }">{{ text }}</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "nuxt-property-decorator"
+import { Component, Vue, Prop } from "nuxt-property-decorator";
 
 @Component({})
 export default class Index extends Vue {
-  @Prop({ default: 300 }) width!: number;
-  @Prop({ default: 60 }) height!: number;
+  @Prop({ default: "300" }) width!: number;
+  @Prop({ default: "60" }) height!: number;
+  @Prop({ default: "text" }) text!: number;
 }
 </script>
 

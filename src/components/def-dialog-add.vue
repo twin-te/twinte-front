@@ -29,6 +29,7 @@ CSVの処理はここで行う */
               </label>
               <hr />
             </div>
+            <cbuForm v-if="createByUser"></cbuForm>
           </section>
           <!-- → 検索結果 -->
 
@@ -45,7 +46,7 @@ CSVの処理はここで行う */
               id="fileElem"
               @change="onFileChange"
             />
-            <!-- <p class="other-content">手動入力で授業を作成</p> -->
+            <!-- <p class="other-content" @click="createByUser=!createByUser">手動入力で授業を作成</p> -->
           </section>
           <!-- → その他オプション -->
 
@@ -76,7 +77,9 @@ type miniLecture = {
 };
 
 @Component({
-  components: {}
+  components: {
+    cbuForm: () => import("~/components/ui-form.vue")
+  }
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
@@ -88,6 +91,7 @@ export default class Index extends Vue {
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
   isIOS = false;
+  createByUser = false;
 
   // computed___________________________________________________________________________________
   //
@@ -324,7 +328,7 @@ h1 {
 .result-list {
   position: absolute;
   width: calc(100% - 3vh);
-  height: 30vh;
+  height: 25vh;
   top: 17.6vh;
   margin: 0 1.8vh;
   padding: 0;
