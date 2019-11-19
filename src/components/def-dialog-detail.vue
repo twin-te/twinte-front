@@ -26,7 +26,7 @@
             </p>
             <p class="h3">
               開講時限
-              <span class="sbj-detail">{{ table.mofule }} {{ table.day }}{{ table.Period }}</span>
+              <span class="sbj-detail">{{ table.module }} {{ table.day }}{{ table.Period }}</span>
             </p>
             <p class="h3">
               授業教室
@@ -36,7 +36,7 @@
           <!-- メモ -->
           <h2 class="h2-2">
             <span class="material-icons icon">create</span>メモ
-            <span class="syllabus-btn" @click="syllabus()">
+            <span class="syllabus-btn" @click="attend()">
               出席
               <span class="material-icons syllabus-chevron">chevron_right</span>
             </span>
@@ -112,6 +112,9 @@ export default class Index extends Vue {
     if (this.table) {
       location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lectureID}/jpn/#course-title`;
     }
+  }
+  attend() {
+    location.href = "https://atmnb.tsukuba.ac.jp";
   }
 
   counter(type: string, num: number) {

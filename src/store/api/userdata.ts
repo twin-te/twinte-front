@@ -1,5 +1,5 @@
-import { BASE_URL, axios } from './config'
-const url = BASE_URL + '/userdatas'
+import { BASE_URL, axios } from "./config";
+const url = BASE_URL + "/userdatas";
 import { UserData } from "../../types/server";
 
 /**
@@ -9,12 +9,12 @@ import { UserData } from "../../types/server";
  */
 async function getUserData(lectureId: string, year: number = 2019) {
   try {
-    const { data } = await axios.get<UserData>(`${url}/${year}/${lectureId}`)
-    return data
+    const { data } = await axios.get<UserData>(`${url}/${year}/${lectureId}`);
+    return data;
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    return null;
   }
 }
 
@@ -25,18 +25,21 @@ async function getUserData(lectureId: string, year: number = 2019) {
  */
 async function updateUserData(userData: UserData) {
   try {
-    const { data } = await axios.put<UserData>(`${url}/${userData.year}/${userData.lectureID}`, {
-      memo: userData.memo,
-      attendance: userData.attendance,
-      absence: userData.absence,
-      late: userData.late
-    })
-    return data
+    const { data } = await axios.put<UserData>(
+      `${url}/${userData.year}/${userData.lectureID}`,
+      {
+        memo: userData.memo,
+        attendance: userData.attendance,
+        absence: userData.absence,
+        late: userData.late
+      }
+    );
+    return data;
   } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    return null;
   }
 }
 
-export { getUserData, updateUserData }
+export { getUserData, updateUserData };

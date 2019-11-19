@@ -13,9 +13,7 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1 class="settings">設定</h1>
-        <div class="material-icons svg-button close-btn" @click="chDrawer()">
-          close
-        </div>
+        <div class="material-icons svg-button close-btn" @click="chDrawer()">close</div>
 
         <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
         <div class="login-btn" @click="login()" v-else>ログイン</div>
@@ -50,7 +48,14 @@ import * as Vuex from "vuex";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  isIOS = false;
+  list = [
+    { icon: "home", name: "ホームへ戻る", link: "/" }
+    // , { icon: "help", name: "使い方", link: "/table" }
+    // , { icon: "supervisor_account", name: "About", link: "/about" }
+    // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
+    // , { icon: "share", name: "時間割の共有", link: "/" }
+    // , { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
+  ];
 
   get drawer(): boolean {
     return this.$store.getters["visible/drawer"];
@@ -58,25 +63,6 @@ export default class Index extends Vue {
 
   get isLogin(): boolean {
     return this.$store.getters["api/isLogin"];
-  }
-
-  get list(): any {
-    const list = [
-      { icon: "home", name: "ホームへ戻る", link: "/" }
-      // , { icon: "help", name: "使い方", link: "/table" }
-      // , { icon: "supervisor_account", name: "About", link: "/about" }
-      // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
-      // , { icon: "share", name: "時間割の共有", link: "/" }
-      // , { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
-    ];
-    if (this.isIOS) {
-      list.push({
-        icon: "vertical_align_bottom",
-        name: "Twinsからインポート",
-        link: "https://twins.tsukuba.ac.jp"
-      });
-    }
-    return list;
   }
 
   chDrawer() {
@@ -102,7 +88,14 @@ export default class Index extends Vue {
   }
 
   mounted() {
-    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+    if (isIOS) {
+      this.list.push({
+        icon: "vertical_align_bottom",
+        name: "Twinsからインポート",
+        link: "https://twins.tsukuba.ac.jp"
+      });
+    }
   }
 }
 </script>

@@ -39,7 +39,7 @@ const nuxtConfig: Configuration = {
       {
         hid: "og:image",
         property: "og:image",
-        content: "https://app.twinte.net/icon.png"
+        content: `${baseUrl}/icon.png`
       },
       { name: "twitter:card", content: baseDesc },
       { name: "twitter:site", content: "@te_twin" }
