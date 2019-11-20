@@ -7,9 +7,9 @@ import { Component, Vue, Prop } from "nuxt-property-decorator";
 
 @Component({})
 export default class Index extends Vue {
-  @Prop({ default: "300" }) width!: number;
-  @Prop({ default: "60" }) height!: number;
-  @Prop({ default: "text" }) text!: number;
+  @Prop({ default: "300" }) width!: string;
+  @Prop({ default: "60" }) height!: string;
+  @Prop({ default: "text" }) text!: string;
 }
 </script>
 
@@ -25,7 +25,6 @@ export default class Index extends Vue {
   line-height: 6vh;
   background: #00c0c0;
   border-radius: 1vh;
-  bottom: 3.1vh;
   color: #fff;
   text-align: center;
   cursor: pointer;

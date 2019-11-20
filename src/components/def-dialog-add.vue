@@ -21,32 +21,29 @@ CSVの処理はここで行う */
           <!-- → 検索ボックス -->
 
           <section class="result-list">
-            <div v-for="n in lectures" :key="n.lectureId">
+            <div
+              v-for="(n, i) in lectures"
+              :key="n.lectureId+i"
+              :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
+            >
               <input type="checkbox" :id="n.lectureId" :value="n.lectureId" v-model="n.checked" />
               <label :for="n.lectureId">
                 {{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
                 }}{{ n.period }}
               </label>
-              <hr />
             </div>
             <cbuForm v-if="createByUser"></cbuForm>
           </section>
           <!-- → 検索結果 -->
 
           <section class="others">
-            <p class="other-content">
+            <p>
               CSVファイルから追加
               <br />
               <small>*{{ moduleMessage }}</small>
             </p>
-            <input
-              class="other-content"
-              type="file"
-              name="file"
-              id="fileElem"
-              @change="onFileChange"
-            />
-            <!-- <p class="other-content" @click="createByUser=!createByUser">手動入力で授業を作成</p> -->
+            <input type="file" name="file" id="fileElem" @change="onFileChange" />
+            <p @click="custom()">手動入力で授業を作成</p>
           </section>
           <!-- → その他オプション -->
 
@@ -112,6 +109,10 @@ export default class Index extends Vue {
   }
   twins() {
     location.href = "https://twins.tsukuba.ac.jp";
+  }
+  custom() {
+    this.$router.push("/custom");
+    this.$store.commit("visible/chAdd", { display: false });
   }
   async search(input: string) {
     const id = await getLectureById(input, 2019);
@@ -270,14 +271,20 @@ h1 {
 }
 .others {
   position: absolute;
-  bottom: 8.5vh;
+  bottom: 7.5vh;
   border-top: 1px solid #adadad;
   width: 100%;
 }
-.other-content {
+.others p {
   font-size: 2vh;
   color: #adadad;
   margin-left: 1.5vh;
+  line-height: 100%;
+}
+.others input {
+  margin-left: auto;
+  margin-right: 0;
+  color: #adadad;
 }
 
 /* 検索フォーム */
@@ -327,14 +334,17 @@ h1 {
 /** 検索結果 */
 .result-list {
   position: absolute;
-  width: calc(100% - 3vh);
-  height: 25vh;
+  width: calc(100% - 3vh-1vw);
+  height: 26vh;
   top: 17.6vh;
   margin: 0 1.8vh;
-  padding: 0;
+  padding: 1vw 0.5vw;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
+}
+.result-list div {
+  padding: 2vw;
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//

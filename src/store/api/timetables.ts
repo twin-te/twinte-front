@@ -1,29 +1,29 @@
-import { Period } from '../../types'
-import { BASE_URL, axios } from './config'
-const url = BASE_URL + '/timetables'
+import { Period } from "../../types";
+import { BASE_URL, axios } from "./config";
+const url = BASE_URL + "/timetables";
 
 export enum Module {
-  SpringA = '春A',
-  SpringB = '春B',
-  SpringC = '春C',
-  FallA = '秋A',
-  FallB = '秋B',
-  FallC = '秋C',
-  SummerVacation = '夏季休業中',
-  SpringVacation = '春季休業中',
-  Annual = '通年',
-  Unknown = '不明',
+  SpringA = "春A",
+  SpringB = "春B",
+  SpringC = "春C",
+  FallA = "秋A",
+  FallB = "秋B",
+  FallC = "秋C",
+  SummerVacation = "夏季休業中",
+  SpringVacation = "春季休業中",
+  Annual = "通年",
+  Unknown = "不明"
 }
 
 export enum Day {
-  Sun = '日',
-  Mon = '月',
-  Tue = '火',
-  Wed = '水',
-  Thu = '木',
-  Fri = '金',
-  Sat = '土',
-  Unknown = '不明',
+  Sun = "日",
+  Mon = "月",
+  Tue = "火",
+  Wed = "水",
+  Thu = "木",
+  Fri = "金",
+  Sat = "土",
+  Unknown = "不明"
 }
 
 /**
@@ -31,11 +31,13 @@ export enum Day {
  */
 async function getToday() {
   try {
-    const { data } = await axios.get<Period[]>(`${url}/today`)
-    return data
+    const { data } = await axios.get<Period[]>(`${url}/today`);
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return []
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return [];
   }
 }
 
@@ -46,11 +48,13 @@ async function getToday() {
  */
 async function getTable(module: Module, year: number) {
   try {
-    const { data } = await axios.get<Period[]>(`${url}/${year}/${module}`)
-    return data
+    const { data } = await axios.get<Period[]>(`${url}/${year}/${module}`);
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return []
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return [];
   }
 }
 
@@ -60,11 +64,13 @@ async function getTable(module: Module, year: number) {
  */
 async function getTableAll(year: number) {
   try {
-    const { data } = await axios.get<Period[]>(`${url}/${year}`)
-    return data
+    const { data } = await axios.get<Period[]>(`${url}/${year}`);
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return []
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return [];
   }
 }
 
@@ -76,21 +82,23 @@ async function getTableAll(year: number) {
 async function postLecture(lectureID: string, year: number) {
   try {
     const { data } = await axios.post<string>(`${url}/${year}`, {
-      lectureID,
-    })
-    return data
+      lectureID
+    });
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return "error"
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return "error";
   }
 }
 
 /** 作成するときの任意の時間割情報 */
 interface CustomLecture {
-  lectureID: string
-  name: string
-  instructor: string
-  room: string
+  lectureID: string;
+  name: string;
+  instructor: string;
+  room: string;
 }
 
 /**
@@ -111,7 +119,7 @@ async function createLecture(
   year: number,
   module: Module,
   day: Day,
-  period: Period,
+  period: number,
   body: CustomLecture
 ) {
   try {
@@ -121,13 +129,15 @@ async function createLecture(
         lectureID: body.lectureID,
         name: body.name,
         instructor: body.instructor,
-        room: body.room,
+        room: body.room
       }
-    )
-    return data
+    );
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return null
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return null;
   }
 }
 
@@ -147,24 +157,31 @@ async function deleteLecture(
   try {
     const { data } = await axios.delete(
       `${url}/${year}/${module}/${day}/${period}`
-    )
-    return data
+    );
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return null
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return null;
   }
 }
 
 /** サーバー側の時間割のリセット WIP */
-async function reset(
-  year: number=2019
-) {
-  const moduleList = [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC]
-  const dayList = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
+async function reset(year: number = 2019) {
+  const moduleList = [
+    Module.SpringA,
+    Module.SpringB,
+    Module.SpringC,
+    Module.FallA,
+    Module.FallB,
+    Module.FallC
+  ];
+  const dayList = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
   for (let module = 0; module < moduleList.length; module++) {
-    for (let day = 0; day < dayList.length; day++) {  
+    for (let day = 0; day < dayList.length; day++) {
       for (let period = 0; period < 6; period++) {
-        await deleteLecture(year, moduleList[module], dayList[day], period)
+        await deleteLecture(year, moduleList[module], dayList[day], period);
       }
     }
   }
@@ -177,5 +194,5 @@ export {
   postLecture,
   createLecture,
   deleteLecture,
-  reset,
-}
+  reset
+};
