@@ -10,6 +10,7 @@
 import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A, Module } from "./type";
 import { getUserData, updateUserData } from "../api/userdata";
+import { YEAR } from "../api/config";
 // ______________________________________________________
 //
 export const state = (): S => ({
@@ -85,7 +86,7 @@ export const mutations: Mutations<S, M> = {
 
 export const actions: Actions<S, A, G, M> = {
   async setPeriod(ctx, { period }) {
-    let userData = await getUserData(period.lectureID, 2019);
+    let userData = await getUserData(period.lectureID, YEAR);
     if (!userData) {
       userData = {
         year: period.year,
@@ -102,7 +103,7 @@ export const actions: Actions<S, A, G, M> = {
 
   async updatePeriod(ctx, { userData }) {
     await updateUserData(userData);
-    console.log(await getUserData(userData.lectureID, 2019), userData);
+    console.log(await getUserData(userData.lectureID, YEAR), userData);
     ctx.commit("setUserData", { userData });
   }
 };

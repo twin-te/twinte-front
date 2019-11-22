@@ -1,5 +1,5 @@
 import { Period } from "../../types";
-import { BASE_URL, axios } from "./config";
+import { BASE_URL, axios, YEAR } from "./config";
 const url = BASE_URL + "/timetables";
 
 export enum Module {
@@ -168,7 +168,7 @@ async function deleteLecture(
 }
 
 /** サーバー側の時間割のリセット WIP */
-async function reset(year: number = 2019) {
+async function reset(year: number = YEAR) {
   const moduleList = [
     Module.SpringA,
     Module.SpringB,

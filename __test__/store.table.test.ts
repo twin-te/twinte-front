@@ -1,5 +1,16 @@
 import { mutations } from "../src/store/table";
 import { S, Module } from "../src/store/table/type";
+import { Period } from "~/src/types";
+export enum Day {
+  Sun = "日",
+  Mon = "月",
+  Tue = "火",
+  Wed = "水",
+  Thu = "木",
+  Fri = "金",
+  Sat = "土",
+  Unknown = "不明"
+}
 
 let state: S;
 
@@ -60,5 +71,21 @@ describe("setModule", () => {
   });
 });
 
-//TODO looking
+describe("クリックした授業情報を追加", () => {
+  const period: Period = {
+    period: 4,
+    day: Day.Thu,
+    module: Module.FallB,
+    room: "3A306",
+    year: 2019,
+    lectureID: "GB11404",
+    name: "電磁気学",
+    instructor: "安永 守利"
+  };
+  it("set period GB11404 into looking", () => {
+    mutations.setLooking(state, { period });
+    expect(state.looking).toBe(period);
+  });
+});
+
 //TODO UserData

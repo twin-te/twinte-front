@@ -42,6 +42,7 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import { createLecture } from "../store/api/timetables";
+import { YEAR } from "../store/api/config";
 
 export enum Module {
   SpringA = "春A",
@@ -96,7 +97,7 @@ export default class Index extends Vue {
       return;
     }
     await createLecture(
-      2019,
+      YEAR,
       this.form.module,
       this.form.day,
       this.form.period,

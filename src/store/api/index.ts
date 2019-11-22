@@ -11,6 +11,7 @@ import { S, G, M, A } from "./type";
 
 import { logout } from "./auth";
 import { deleteLecture, getTableAll, postLecture } from "./timetables";
+import { YEAR } from "./config";
 
 export const state = (): S => ({
   timeTables: [],
@@ -58,11 +59,11 @@ export const actions: Actions<S, A, G, M> = {
       // → すでにテーブルにあるものは除外する
 
       .forEach(async lectureId => {
-        await postLecture(lectureId, 2019);
+        await postLecture(lectureId, YEAR);
       });
     // → 時間割の登録
 
-    const periods = await getTableAll(2019);
+    const periods = await getTableAll(YEAR);
     console.log(periods);
 
     ctx.commit("CREATE_TABLE", { periods });
@@ -71,7 +72,7 @@ export const actions: Actions<S, A, G, M> = {
   },
 
   async deleteTable(ctx, { module, day, period, table }) {
-    await deleteLecture(2019, module, day, period);
+    await deleteLecture(YEAR, module, day, period);
     // サーバーから削除
 
     ctx.commit("DELETE_TABLE", { period: table });
@@ -84,7 +85,7 @@ export const actions: Actions<S, A, G, M> = {
   },
 
   async login(ctx) {
-    const periods = await getTableAll(2019);
+    const periods = await getTableAll(YEAR);
     ctx.commit("CREATE_TABLE", { periods });
     ctx.commit("LOGIN");
     localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));

@@ -1,4 +1,4 @@
-import { BASE_URL, axios } from "./config";
+import { BASE_URL, axios, YEAR } from "./config";
 const url = BASE_URL + "/userdatas";
 import { UserData } from "../../types/server";
 
@@ -7,7 +7,7 @@ import { UserData } from "../../types/server";
  * @param lectureId
  * @param year
  */
-async function getUserData(lectureId: string, year: number = 2019) {
+async function getUserData(lectureId: string, year: number = YEAR) {
   try {
     const { data } = await axios.get<UserData>(`${url}/${year}/${lectureId}`);
     return data;

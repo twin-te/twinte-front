@@ -6,6 +6,16 @@ import { Lecture as _Lecture } from "./parser";
 /**
  * 出欠などの個人データ構造
  */
+// export interface UserData {
+//   twinte_lecture_id?: string;
+//   user_lecture_id: string;
+//   attendance: number;
+//   absence: number;
+//   late: number;
+//   memo: string;
+//   lecture_name: string;
+//   instructor: string;
+// }
 export interface UserData {
   year: number;
   lectureID: string;
@@ -19,6 +29,14 @@ export interface UserData {
 /**
  * 授業データ構造
  */
+// export interface Period {
+//   year: number;
+//   module: Module;
+//   day: Day;
+//   period: number;
+//   room: string;
+//   user_lecture_id: string;
+// }
 export interface Period {
   year: number;
   module: Module;
@@ -35,22 +53,23 @@ export interface Period {
 /**
  * ログイン時のデータ構造
  */
-export interface User {
-  twitter: {
-    id: string;
-    displayName: string;
-    username?: string;
-    photos?: {
-      value: string;
-    }[];
-  };
+// export interface User {
+//   twitter: {
+//     id: string;
+//     displayName: string;
+//     username?: string;
+//     photos?: {
+//       value: string;
+//     }[];
+//   };
 
-  timetables: Period[];
-  userData: UserData[];
-}
+//   timetables: Period[];
+//   userData: UserData[];
+// }
 
 // https://github.com/twin-te/twinte-server/blob/working-clean/src/domain/entities/lecture.ts
 
 export interface Lecture extends _Lecture {
+  twinte_lecture_id: string;
   year: number;
 }
