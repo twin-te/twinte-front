@@ -4,26 +4,26 @@ const url = BASE_URL;
 type provider = "twitter" | "google";
 
 async function login(provider: provider = "twitter") {
-  location.href = `${url}/v1/auth/${provider}`;
-  // try {
-  //   const { data } = await axios.get(`${url}/v1/auth/${provider}`);
-  //   return data;
-  // } catch (error) {
-  //   const { status, statusText } = error.response;
-  //   console.log(`Error! HTTP Status: ${status} ${statusText}`);
-  //   return null;
-  // }
+  // location.href = `${url}/auth/${provider}`;
+  try {
+    const { data } = await axios.get(`${url}/v1/auth/${provider}`);
+    return data;
+  } catch (error) {
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    return null;
+  }
 }
 
 async function logout() {
-  // try {
-  //   const { data } = await axios.get(`${url}/logout`);
-  //   return data;
-  // } catch (error) {
-  //   const { status, statusText } = error.response;
-  //   console.log(`Error! HTTP Status: ${status} ${statusText}`);
-  //   return null;
-  // }
+  try {
+    const { data } = await axios.get(`${url}/auth/logout`);
+    return data;
+  } catch (error) {
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    return null;
+  }
 }
 
 /**
@@ -32,7 +32,7 @@ async function logout() {
  */
 async function isLogin(): Promise<boolean> {
   try {
-    await axios.get(`${url}/timetables`);
+    await axios.get(`${url}/users/me`);
     return true;
   } catch (error) {
     console.log(

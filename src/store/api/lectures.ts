@@ -1,4 +1,4 @@
-import { Period } from "../../types";
+import { OutputSearchData } from "../../types";
 
 import { BASE_URL, axios, YEAR } from "./config";
 const url = BASE_URL + "/lectures";
@@ -10,7 +10,7 @@ const url = BASE_URL + "/lectures";
  */
 async function searchLectures(q: string, year = YEAR) {
   try {
-    const { data } = await axios.get<Period[]>(`${url}/search`, {
+    const { data } = await axios.get<OutputSearchData>(`${url}/search`, {
       params: {
         q,
         year

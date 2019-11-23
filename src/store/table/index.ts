@@ -85,7 +85,7 @@ export const mutations: Mutations<S, M> = {
 
 export const actions: Actions<S, A, G, M> = {
   async setPeriod(ctx, { period }) {
-    const userData = await getUserData(period.lecture_code);
+    const userData = await getUserData(period.user_lecture_id);
     if (!userData) {
       return;
     }

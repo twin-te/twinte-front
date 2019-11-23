@@ -8,8 +8,8 @@
           <!-- 教科名 -->
           <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
           <h1>
-            <div class="sbj-name">{{ table.name }}</div>
-            <p class="sbj-number">科目番号 {{ table.lectureID }}</p>
+            <div class="sbj-name">{{ table.lecture_name }}</div>
+            <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
           </h1>
           <!-- 科目詳細 -->
           <h2>

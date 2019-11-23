@@ -9,4 +9,19 @@ import { Day, Module } from "./parser";
 type TimeTables = OutputPeriodData[];
 type Period = OutputPeriodData;
 
-export { Day, Module, TimeTables, Period };
+type OutputSearchData = {
+  twinte_lecture_id: string;
+  year: number;
+  lectureCode: string;
+  name: string;
+  details: {
+    id: number;
+    module: Module;
+    day: Day;
+    period: number;
+    room: string;
+  }[];
+  instructor: string;
+}[];
+
+export { Day, Module, TimeTables, Period, OutputSearchData };

@@ -43,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
+import { BASE_URL } from "../store/api/config";
 
 @Component({})
 export default class Index extends Vue {
@@ -78,7 +79,7 @@ export default class Index extends Vue {
   }
 
   login() {
-    location.href = "https://dev.api.twinte.net/login";
+    location.href = BASE_URL + "/auth/twitter";
   }
 
   logout() {

@@ -117,14 +117,16 @@ export default class Index extends Vue {
     const le = await searchLectures(input);
     if (le) {
       le.forEach(l => {
-        this.lectures.push({
-          lecture_code: l.lecture_code,
-          lecture_name: l.lecture_name,
-          module: l.module,
-          day: l.day,
-          period: l.period,
-          checked: false
-        });
+        if (l) {
+          this.lectures.push({
+            lecture_code: l.lectureCode,
+            lecture_name: l.name,
+            module: l.details[0].module,
+            day: l.details[0].day,
+            period: l.details[0].period,
+            checked: false
+          });
+        }
       });
     }
     this.input = "";

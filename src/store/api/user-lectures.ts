@@ -1,5 +1,5 @@
 import { BASE_URL, axios } from "./config";
-const url = BASE_URL + "/user_lectures";
+const url = BASE_URL + "/user-lectures";
 import { UserLectureEntity } from "../../types/server";
 
 /**

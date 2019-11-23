@@ -4,10 +4,10 @@
     <!-- → 授業が入っていない -->
 
     <div id="subject" :style="{
-        background: getColor(table.lectureID),
+        background: getColor(table.lecture_code),
       }" v-else>
-      <div class="sbj-lectureId">{{ table.lectureId }}</div>
-      <div class="sbj-name">{{ table.name }}</div>
+      <div class="sbj-lectureId">{{ table.lecture_code }}</div>
+      <div class="sbj-name">{{ table.lecture_name }}</div>
       <div class="sbj-room">{{ table.room }}</div>
     </div>
     <!-- → 授業が入っている -->

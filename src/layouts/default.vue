@@ -39,8 +39,13 @@ export default class Index extends Vue {
     const table = localStorage.getItem("table");
     if (table) {
       const periodDatas: TimeTables = JSON.parse(table);
-      this.$store.commit("API/SET_TABLE", { periodDatas });
+      console.log(periodDatas);
+
+      // this.$store.commit("API/SET_TABLE", { periodDatas });
+      // this.$store.commit("API/LOGIN");
+    } else {
     }
+    this.login();
     // → 時間割データ
 
     const module = localStorage.getItem("module");
@@ -48,8 +53,6 @@ export default class Index extends Vue {
       this.$store.commit("table/setModule", { module });
     }
     // → 前回見ていた学期
-
-    this.login();
   }
   async login() {
     if (await isLogin()) {
