@@ -1,11 +1,27 @@
-import './shims-vuex-impl'
-import './shims-vuex-type'
+import "./shims-vuex-impl";
+import "./shims-vuex-type";
 
-// twinte-parser, twinte-server
-import { Period, User, UserData, Lecture } from './server'
-import { Day, Module } from './parser'
+// twinte-parser
+import { OutputPeriodData } from "./server";
+import { Day, Module } from "./parser";
 
 /** 時間割 */
-type TimeTables = Period[]
+type TimeTables = OutputPeriodData[];
+type Period = OutputPeriodData;
 
-export { Period, User, UserData, Day, Module, TimeTables }
+type OutputSearchData = {
+  twinte_lecture_id: string;
+  year: number;
+  lectureCode: string;
+  name: string;
+  details: {
+    id: number;
+    module: Module;
+    day: Day;
+    period: number;
+    room: string;
+  }[];
+  instructor: string;
+}[];
+
+export { Day, Module, TimeTables, Period, OutputSearchData };

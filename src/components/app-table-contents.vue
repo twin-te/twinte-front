@@ -1,6 +1,12 @@
-/** * 時間割カード * * height 65vh x width 69vw * period: 時限, day: 曜日 *
-授業内容は ./ui-subject.vue を参照 */
 <template>
+  <!-- 
+   * 時間割カード
+   *
+   * height 65vh x width 69vw
+   * period: 時限, day: 曜日 
+   *
+   * 授業内容は ./ui-subject.vue を参照 
+  -->
   <transition :name="moveDirection === 'left' ? 'slide-l' : 'slide-r'">
     <content class="row" v-show="visible">
       <!-- 時限 -->

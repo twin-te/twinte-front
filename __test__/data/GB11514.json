@@ -1,0 +1,25 @@
+[
+  {
+    "twinte_lecture_id": "37019b49-c8dd-4a69-978f-d46ee04d463a",
+    "year": 2019,
+    "lectureCode": "GB11514",
+    "name": "シミュレーション物理",
+    "details": [
+      {
+        "id": 61802,
+        "module": "秋C",
+        "day": "木",
+        "period": 1,
+        "room": "3A403"
+      },
+      {
+        "id": 61803,
+        "module": "秋C",
+        "day": "木",
+        "period": 2,
+        "room": "3A403"
+      }
+    ],
+    "instructor": "狩野 均"
+  }
+]

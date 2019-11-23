@@ -21,9 +21,9 @@
             @click="chDetail(table[day-1][period-1])"
             v-else
             :style="{
-              background: getColor(table[day - 1][period - 1].lectureID)
+              background: getColor(table[day - 1][period - 1].lecture_code)
             }"
-          >{{ table[day - 1][period - 1].name }}</div>
+          >{{ table[day - 1][period - 1].lecture_name }}</div>
         </td>
       </tr>
     </tbody>
@@ -49,7 +49,7 @@ enum Day {
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
-  week = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
+  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
   get table() {
     const periods = this.$store.getters["api/table"];
@@ -74,8 +74,8 @@ export default class Index extends Vue {
           return (
             period.module === module && // module
             week.indexOf(period.day) === d && // day
-            period.period === p
-          ); // period
+            period.period === p // period
+          );
         });
         periodsArr.push(validPeriod ? validPeriod : null);
       }
@@ -83,39 +83,39 @@ export default class Index extends Vue {
     }
     return table;
   }
-  getColor(number: string): string {    
-    const char = number.split('')[0]
+  getColor(number: string): string {
+    const char = number.split("")[0];
     switch (char) {
-      case 'A':
-        return '#DEFFF9'
-      case 'B':
-        return '#DEFFF9'
-      case 'C':
-        return '#DEFFF9'
-      case 'E':
-        return '#DEFFF9'
-      case 'F':
-        return '#DEFFF9'
-      case 'G':
-        return '#DEFFF9'
-      case 'H':
-        return '#DEFFF9'
-      case 'W':
-        return '#DEFFF9'
-      case 'Y':
-        return '#DEFFF9'
-      case '1':
-        return '#FFEEF7'
-      case '2':
-        return '#F0EBFF'
-      case '3':
-        return '#FFFCEB'
+      case "A":
+        return "#DEFFF9";
+      case "B":
+        return "#DEFFF9";
+      case "C":
+        return "#DEFFF9";
+      case "E":
+        return "#DEFFF9";
+      case "F":
+        return "#DEFFF9";
+      case "G":
+        return "#DEFFF9";
+      case "H":
+        return "#DEFFF9";
+      case "W":
+        return "#DEFFF9";
+      case "Y":
+        return "#DEFFF9";
+      case "1":
+        return "#FFEEF7";
+      case "2":
+        return "#F0EBFF";
+      case "3":
+        return "#FFFCEB";
       default:
-        return ''
+        return "";
     }
   }
   chDetail(period: Period) {
-    this.$store.commit("table/setLooking", { period });
+    this.$store.dispatch("table/setPeriod", { period });
     this.$store.commit("visible/chDetail", { display: true });
   }
   chAdd() {

@@ -10,7 +10,9 @@
         @click="chDrawer()"
       >settings</span>
       <!-- Twin:te -->
-      <img src="~/assets/img/title-logo.png" id="title" class="my-2 title-logo" alt="Twin:te" />
+      <router-link to="/">
+        <img src="~/assets/img/title-logo.png" id="title" class="my-2 title-logo" alt="Twin:te" />
+      </router-link>
       <!-- + -->
       <span id="i_add" class="material-icons svg-button my-2 add-btn" @click="chAdd()">add</span>
     </nav>
