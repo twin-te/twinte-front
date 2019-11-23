@@ -1,11 +1,12 @@
 import "./shims-vuex-impl";
 import "./shims-vuex-type";
 
-// twinte-parser, twinte-server
-import { Period, UserData, Lecture } from "./server";
+// twinte-parser
+import { OutputPeriodData } from "./server";
 import { Day, Module } from "./parser";
 
 /** 時間割 */
-type TimeTables = Period[];
+type TimeTables = OutputPeriodData[];
+type Period = OutputPeriodData;
 
-export { Period, UserData, Day, Module, TimeTables };
+export { Day, Module, TimeTables, Period };

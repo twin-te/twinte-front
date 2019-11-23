@@ -23,16 +23,20 @@ CSVの処理はここで行う */
           <section class="result-list">
             <div
               v-for="(n, i) in lectures"
-              :key="n.lectureId+i"
+              :key="n.lecture_code+i"
               :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
             >
-              <input type="checkbox" :id="n.lectureId" :value="n.lectureId" v-model="n.checked" />
-              <label :for="n.lectureId">
-                {{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
+              <input
+                type="checkbox"
+                :id="n.lecture_code"
+                :value="n.lecture_code"
+                v-model="n.checked"
+              />
+              <label :for="n.lecture_code">
+                {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module }}{{ n.day
                 }}{{ n.period }}
               </label>
             </div>
-            <cbuForm v-if="createByUser"></cbuForm>
           </section>
           <!-- → 検索結果 -->
 
@@ -62,22 +66,18 @@ CSVの処理はここで行う */
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import { searchLectures, getLectureById } from "../store/api/lectures";
+import { searchLectures } from "../store/api/lectures";
 
 type miniLecture = {
-  lectureId: string;
-  name: string;
+  lecture_code: string;
+  lecture_name: string;
   module: string;
   day: string;
   period: number;
   checked: boolean;
 };
 
-@Component({
-  components: {
-    cbuForm: () => import("~/components/ui-form.vue")
-  }
-})
+@Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
@@ -88,7 +88,6 @@ export default class Index extends Vue {
   assertMessage: string =
     "科目追加を行いますか？現在表示されている時間割は上書きされます";
   isIOS = false;
-  createByUser = false;
 
   // computed___________________________________________________________________________________
   //
@@ -115,22 +114,12 @@ export default class Index extends Vue {
     this.$store.commit("visible/chAdd", { display: false });
   }
   async search(input: string) {
-    const id = await getLectureById(input, 2019);
-    const le = await searchLectures(input, 2019);
-    if (id) {
-      this.lectures.push({
-        lectureId: id.lectureID,
-        name: id.name,
-        module: id.details[0].module,
-        day: id.details[0].day,
-        period: id.details[0].period,
-        checked: false
-      });
-    } else if (le) {
+    const le = await searchLectures(input);
+    if (le) {
       le.forEach(l => {
         this.lectures.push({
-          lectureId: l.lectureID,
-          name: l.name,
+          lecture_code: l.lecture_code,
+          lecture_name: l.lecture_name,
           module: l.module,
           day: l.day,
           period: l.period,
@@ -168,15 +157,13 @@ export default class Index extends Vue {
     }, 1000);
   }
   async asyncNumber() {
-    const lectureIds = await Promise.all(
-      this.lectures.filter(l => l.checked).map(l => l.lectureId)
-    );
     if (!confirm(this.assertMessage)) {
       return;
     }
-    console.log(lectureIds);
-
-    await this.$store.dispatch("api/addTable", { lectureIds });
+    const lectureCodes = await Promise.all(
+      this.lectures.filter(l => l.checked).map(l => l.lecture_code)
+    );
+    await this.$store.dispatch("api/addTable", { lectureCodes });
     if (!confirm("完了 continue?")) {
       location.href = "/";
     }

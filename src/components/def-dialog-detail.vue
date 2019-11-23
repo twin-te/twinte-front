@@ -42,7 +42,7 @@
             </span>
           </h2>
           <!-- 入力の枠 -->
-          <textarea @input="updateMemo" class="memo" type="text" v-model="localMemo"></textarea>
+          <textarea class="memo" type="text" v-model="localMemo"></textarea>
           <section class="counters-wrapper">
             <div
               v-for="n in 3"
@@ -76,7 +76,8 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import { Period, UserData } from "../types";
+import { Period } from "../types";
+import { UserLectureEntity } from "../types/server";
 import { deleteLecture } from "../store/api/timetables";
 
 @Component({})
@@ -110,7 +111,7 @@ export default class Index extends Vue {
 
   syllabus() {
     if (this.table) {
-      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lectureID}/jpn/#course-title`;
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lecture_code}/jpn/#course-title`;
     }
   }
   attend() {
@@ -121,7 +122,7 @@ export default class Index extends Vue {
     if (!this.userData) {
       return;
     }
-    let { year, lectureID, memo, attendance, absence, late } = this.userData;
+    let { attendance, absence, late } = this.userData;
     switch (type) {
       case "出席":
         attendance + num > 0 ? (attendance += num) : 0;
@@ -133,15 +134,16 @@ export default class Index extends Vue {
         late + num > 0 ? (late += num) : 0;
         break;
     }
-    const userData: UserData = {
-      year,
-      lectureID,
-      memo,
+    const userData: UserLectureEntity = {
+      twinte_lecture_id: this.userData.twinte_lecture_id,
+      user_lecture_id: this.userData.user_lecture_id,
+      lecture_name: this.userData.lecture_name,
+      instructor: this.userData.instructor,
+      memo: this.userData.memo,
       attendance,
       absence,
       late
     };
-
     this.$store.dispatch("table/updatePeriod", { userData });
   }
 
@@ -151,7 +153,7 @@ export default class Index extends Vue {
     }
     if (this.table) {
       await deleteLecture(
-        2019,
+        this.table.year,
         this.table.module,
         this.table.day,
         this.table.period
@@ -169,43 +171,27 @@ export default class Index extends Vue {
     if (!this.userData) {
       return;
     }
-    let { year, lectureID, memo, attendance, absence, late } = this.userData;
-    memo = this.localMemo;
-    const userData: UserData = {
-      year,
-      lectureID,
-      memo,
-      attendance,
-      absence,
-      late
+    const userData: UserLectureEntity = {
+      twinte_lecture_id: this.userData.twinte_lecture_id,
+      user_lecture_id: this.userData.user_lecture_id,
+      lecture_name: this.userData.lecture_name,
+      instructor: this.userData.instructor,
+      memo: this.localMemo,
+      attendance: this.userData.attendance,
+      absence: this.userData.absence,
+      late: this.userData.late
     };
-
-    this.$store.dispatch("table/updatePeriod", { userData });
-  }
-
-  updateMemo() {
-    if (!this.userData) {
-      return;
-    }
-    let { year, lectureID, memo, attendance, absence, late } = this.userData;
-    memo = this.localMemo;
-    const userData: UserData = {
-      year,
-      lectureID,
-      memo,
-      attendance,
-      absence,
-      late
-    };
-
     this.$store.dispatch("table/updatePeriod", { userData });
   }
 
   fetchMemo() {
     setTimeout(() => {
-      if (this.userData && this.localLectureId !== this.userData.lectureID) {
+      if (
+        this.userData &&
+        this.localLectureId !== this.userData.user_lecture_id
+      ) {
         this.localMemo = this.userData.memo;
-        this.localLectureId = this.userData.lectureID;
+        this.localLectureId = this.userData.user_lecture_id;
       }
       this.fetchMemo();
     }, 1000);

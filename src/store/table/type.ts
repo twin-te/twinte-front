@@ -1,4 +1,5 @@
-import { Period, UserData } from "../../types";
+import { Period } from "../../types";
+import { UserLectureEntity } from "../../types/server";
 
 export enum Module {
   SpringA = "春A",
@@ -17,7 +18,7 @@ export interface S {
   moduleList: string[];
   module: string;
   looking: Period | null;
-  userData: UserData | null;
+  userData: UserLectureEntity | null;
 }
 
 export interface G {
@@ -42,7 +43,7 @@ export interface G {
    * 直前にクリックした授業の座標を保持する
    */
   looking: Period | null;
-  userData: UserData | null;
+  userData: UserLectureEntity | null;
 }
 export interface RG {
   "table/module": G["module"];
@@ -53,25 +54,20 @@ export interface RG {
   "table/userData": G["userData"];
 }
 export interface M {
-  /**
-   * @param module "SpringA"
-   */
   setModule: { module: string };
   /**
    * @description 前の学期を返す
-   * @param state なし
    */
   prevModule: void;
   /**
    * @description 次の学期を返す
-   * @param state なし
    */
   nextModule: void;
   /**
    * 直前にクリックした授業の内容を更新
    */
   setLooking: { period: Period };
-  setUserData: { userData: UserData };
+  setUserData: { userData: UserLectureEntity };
 }
 export interface RM {
   "table/setModule": M["setModule"];
@@ -83,7 +79,7 @@ export interface RM {
 
 export interface A {
   setPeriod: { period: Period };
-  updatePeriod: { userData: UserData };
+  updatePeriod: { userData: UserLectureEntity };
 }
 export interface RA {
   "table/setPeriod": A["setPeriod"];

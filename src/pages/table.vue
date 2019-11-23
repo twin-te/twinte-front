@@ -21,9 +21,9 @@
             @click="chDetail(table[day-1][period-1])"
             v-else
             :style="{
-              background: getColor(table[day - 1][period - 1].lectureID)
+              background: getColor(table[day - 1][period - 1].lecture_code)
             }"
-          >{{ table[day - 1][period - 1].name }}</div>
+          >{{ table[day - 1][period - 1].lecture_name }}</div>
         </td>
       </tr>
     </tbody>
@@ -49,7 +49,7 @@ enum Day {
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
-  week = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
+  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
   get table() {
     const periods = this.$store.getters["api/table"];
@@ -74,8 +74,8 @@ export default class Index extends Vue {
           return (
             period.module === module && // module
             week.indexOf(period.day) === d && // day
-            period.period === p
-          ); // period
+            period.period === p // period
+          );
         });
         periodsArr.push(validPeriod ? validPeriod : null);
       }

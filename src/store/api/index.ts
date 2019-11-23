@@ -10,7 +10,7 @@ import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A } from "./type";
 
 import { logout } from "./auth";
-import { deleteLecture, getTableAll, postLecture } from "./timetables";
+import { deleteLecture, postAllLectures, getTimeTables } from "./timetables";
 import { YEAR } from "./config";
 
 export const state = (): S => ({
@@ -28,13 +28,8 @@ export const getters: Getters<S, G> = {
 };
 
 export const mutations: Mutations<S, M> = {
-  CREATE_TABLE(state, payload) {
-    state.timeTables = [...state.timeTables, ...payload.periods];
-  },
-  DELETE_TABLE(state, payload) {
-    state.timeTables = state.timeTables.filter(
-      table => table !== payload.period
-    );
+  SET_TABLE(state, payload) {
+    state.timeTables = payload.periodDatas;
   },
   LOGIN(state) {
     state.isLogin = true;
@@ -46,47 +41,34 @@ export const mutations: Mutations<S, M> = {
 };
 
 export const actions: Actions<S, A, G, M> = {
-  async addTable(ctx, { lectureIds }) {
-    lectureIds
-      .filter(v => {
-        ctx.state.timeTables.forEach((table): false | void => {
-          if (table.lectureID === v) {
-            return false;
-          }
-        });
-        return true;
-      })
-      // → すでにテーブルにあるものは除外する
+  async addTable(ctx, { lectureCodes }) {
+    await postAllLectures(lectureCodes, YEAR);
+    // → サーバーへ時間割の登録
 
-      .forEach(async lectureId => {
-        await postLecture(lectureId, YEAR);
-      });
-    // → 時間割の登録
-
-    const periods = await getTableAll(YEAR);
-    console.log(periods);
-
-    ctx.commit("CREATE_TABLE", { periods });
-    localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));
-    // → ローカルに追加
+    await ctx.dispatch("fetch");
+    // → 時間割のフェッチ
   },
 
-  async deleteTable(ctx, { module, day, period, table }) {
+  async deleteTable(ctx, { module, day, period }) {
     await deleteLecture(YEAR, module, day, period);
-    // サーバーから削除
+    // → サーバーから削除
 
-    ctx.commit("DELETE_TABLE", { period: table });
-    localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));
-    // ローカルデータの削除
+    await ctx.dispatch("fetch");
+    // → 時間割のフェッチ
   },
 
-  async asyncCSV(ctx, payload) {
-    console.log("未実装", ctx, payload);
+  async fetch(ctx) {
+    const periodDatas = await getTimeTables(YEAR);
+    // → サーバーから時間割の取得
+
+    ctx.commit("SET_TABLE", { periodDatas });
+    localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));
+    // → ローカルデータへの追加
   },
 
   async login(ctx) {
-    const periods = await getTableAll(YEAR);
-    ctx.commit("CREATE_TABLE", { periods });
+    const periodDatas = await getTimeTables(YEAR);
+    ctx.commit("SET_TABLE", { periodDatas });
     ctx.commit("LOGIN");
     localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));
   },

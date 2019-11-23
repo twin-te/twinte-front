@@ -1,18 +1,14 @@
 <template>
-  <section @click="popUp(table[day][period])">
-    <div id="subject" v-if="!table[day][period]"></div>
+  <section @click="popUp(table)">
+    <div id="subject" v-if="!table"></div>
     <!-- → 授業が入っていない -->
 
-    <div
-      id="subject"
-      :style="{
-        background: getColor(table[day][period].lectureID),
-      }"
-      v-else
-    >
-      <div class="sbj-lectureId">{{ table[day][period].lectureId }}</div>
-      <div class="sbj-name">{{ table[day][period].name }}</div>
-      <div class="sbj-room">{{ table[day][period].room }}</div>
+    <div id="subject" :style="{
+        background: getColor(table.lectureID),
+      }" v-else>
+      <div class="sbj-lectureId">{{ table.lectureId }}</div>
+      <div class="sbj-name">{{ table.name }}</div>
+      <div class="sbj-room">{{ table.room }}</div>
     </div>
     <!-- → 授業が入っている -->
   </section>
@@ -21,7 +17,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import { TimeTables, Period } from "../types/index";
+import { Period } from "../types/index";
 
 enum Day {
   Sun = "日",
@@ -41,39 +37,26 @@ export default class Index extends Vue {
   @Prop() day!: number;
   @Prop() period!: number;
 
-  week = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
+  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
   get table() {
     const periods = this.$store.getters["api/table"];
-    return this.createTable(periods);
+    const module = this.module;
+    const week = this.week;
+    const day = this.day;
+    const period = this.period;
+
+    const validPeriod = periods.find(lecture => {
+      return (
+        lecture.module === module && // module
+        week.indexOf(lecture.day) === day && // day
+        lecture.period === period // period
+      );
+    });
+    return validPeriod;
   }
   get module() {
     return this.$store.getters["table/module"];
-  }
-  /**
-   * 時間割の作成
-   */
-
-  createTable(periods: TimeTables): (Period | null)[][] {
-    const table: (Period | null)[][] = [];
-    const module = this.module;
-    const week = this.week;
-
-    for (let d = 0; d < 5; d++) {
-      const periodsArr: (Period | null)[] = [];
-      for (let p = 1; p <= 6; p++) {
-        const validPeriod = periods.find(function(period) {
-          return (
-            period.module === module && // module
-            week.indexOf(period.day) === d && // day
-            period.period === p
-          ); // period
-        });
-        periodsArr.push(validPeriod ? validPeriod : null);
-      }
-      table.push(periodsArr);
-    }
-    return table;
   }
   chDetail(period: Period) {
     this.$store.dispatch("table/setPeriod", { period });

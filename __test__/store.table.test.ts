@@ -78,8 +78,9 @@ describe("クリックした授業情報を追加", () => {
     module: Module.FallB,
     room: "3A306",
     year: 2019,
-    lectureID: "GB11404",
-    name: "電磁気学",
+    lecture_code: "GB11404",
+    user_lecture_id: "63427819",
+    lecture_name: "電磁気学",
     instructor: "安永 守利"
   };
   it("set period GB11404 into looking", () => {

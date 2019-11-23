@@ -9,8 +9,7 @@
 
 import { Getters, Mutations, Actions } from "vuex";
 import { S, G, M, A, Module } from "./type";
-import { getUserData, updateUserData } from "../api/userdata";
-import { YEAR } from "../api/config";
+import { getUserData, updateUserData } from "../api/user-lectures";
 // ______________________________________________________
 //
 export const state = (): S => ({
@@ -33,6 +32,10 @@ export const getters: Getters<S, G> = {
     return state.module;
   },
 
+  moduleNum(state) {
+    return state.moduleList.indexOf(state.module);
+  },
+
   prevModule(state) {
     const num: number = state.moduleList.indexOf(state.module) - 1;
     return num === -1 ? Module.FallC : state.moduleList[num];
@@ -41,10 +44,6 @@ export const getters: Getters<S, G> = {
   nextModule(state) {
     const num: number = state.moduleList.indexOf(state.module) + 1;
     return num === 6 ? Module.SpringA : state.moduleList[num];
-  },
-
-  moduleNum(state) {
-    return state.moduleList.indexOf(state.module);
   },
 
   looking(state) {
@@ -86,16 +85,9 @@ export const mutations: Mutations<S, M> = {
 
 export const actions: Actions<S, A, G, M> = {
   async setPeriod(ctx, { period }) {
-    let userData = await getUserData(period.lectureID, YEAR);
+    const userData = await getUserData(period.lecture_code);
     if (!userData) {
-      userData = {
-        year: period.year,
-        lectureID: period.lectureID,
-        memo: "",
-        attendance: 0,
-        absence: 0,
-        late: 0
-      };
+      return;
     }
     ctx.commit("setLooking", { period });
     ctx.dispatch("updatePeriod", { userData });
@@ -103,7 +95,7 @@ export const actions: Actions<S, A, G, M> = {
 
   async updatePeriod(ctx, { userData }) {
     await updateUserData(userData);
-    console.log(await getUserData(userData.lectureID, YEAR), userData);
+    console.log(await getUserData(userData.user_lecture_id), userData);
     ctx.commit("setUserData", { userData });
   }
 };

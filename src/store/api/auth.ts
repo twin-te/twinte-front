@@ -1,26 +1,29 @@
-import { BASE_URL, axios } from './config'
-const url = BASE_URL
+import { BASE_URL, axios } from "./config";
+const url = BASE_URL;
 
-async function login() {
-  try {
-    const { data } = await axios.get(`${url}/login`)
-    return data
-  } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
-  }
+type provider = "twitter" | "google";
+
+async function login(provider: provider = "twitter") {
+  location.href = `${url}/v1/auth/${provider}`;
+  // try {
+  //   const { data } = await axios.get(`${url}/v1/auth/${provider}`);
+  //   return data;
+  // } catch (error) {
+  //   const { status, statusText } = error.response;
+  //   console.log(`Error! HTTP Status: ${status} ${statusText}`);
+  //   return null;
+  // }
 }
 
 async function logout() {
-  try {
-    const { data } = await axios.get(`${url}/logout`)
-    return data
-  } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
-  }
+  // try {
+  //   const { data } = await axios.get(`${url}/logout`);
+  //   return data;
+  // } catch (error) {
+  //   const { status, statusText } = error.response;
+  //   console.log(`Error! HTTP Status: ${status} ${statusText}`);
+  //   return null;
+  // }
 }
 
 /**
@@ -29,16 +32,14 @@ async function logout() {
  */
 async function isLogin(): Promise<boolean> {
   try {
-    await axios.get(`${url}/users/me`)
-    return true
+    await axios.get(`${url}/timetables`);
+    return true;
   } catch (error) {
-    const { status, statusText } = error.response
-    if (status === 401) {
-      return false
-    }
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return false
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return false;
   }
 }
 
-export { login, logout, isLogin }
+export { login, logout, isLogin };
