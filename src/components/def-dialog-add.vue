@@ -13,8 +13,8 @@ CSVの処理はここで行う */
             <span v-if="isIOS" class="twins-btn" @click="twins()">Twinsからインポート</span>
           </p>
 
-          <form class="search-form">
-            <input v-model="input" type="text" class="form" />
+          <form class="search-form" @submit.prevent>
+            <input v-model="input" type="text" class="form" @keyup.enter="search(input)" />
             <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
             <span v-else @click="search(input)" class="material-icons search-btn">search</span>
           </form>
