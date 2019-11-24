@@ -10,11 +10,11 @@
             close
           </div>
           <h1>
-            <div v-if="!editableLecture" class="sbj-name">{{ table.lecture_name }}</div>
-            <input v-else class="sbj-name" v-model="editableLecture.lecture_name">
-            
+            <div class="sbj-name">{{ table.lecture_name }}</div>
+
             <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
           </h1>
+
           <!-- 科目詳細 -->
           <h2>
             <span class="material-icons icon">info</span>科目詳細
@@ -26,26 +26,26 @@
           <section class="sbj-detail-wrapper">
             <p class="h3">
               担当教員
-              <span v-if="!editableLecture" class="sbj-detail">{{
-                table.instructor
-              }}</span>
-              <input v-else class="sbj-detail" v-model="editableLecture.instructor" />
+              <span class="sbj-detail">{{ table.instructor }}</span>
             </p>
             <p class="h3">
               開講時限
-              <span v-if="!editableLecture" class="sbj-detail"
+              <span class="sbj-detail"
                 >{{ table.module }} {{ table.day }}{{ table.Period }}</span
               >
-              <input v-else class="sbj-detail" v-model="editableLecture.module" />
             </p>
             <p class="h3">
               授業教室
               <span v-if="!editableLecture" class="sbj-detail">{{
                 table.room
               }}</span>
+
               <input v-else class="sbj-detail" v-model="editableLecture.room" />
+              <!-- → 教室変更 -->
+
             </p>
           </section>
+
           <!-- メモ -->
           <h2 class="h2-2">
             <span class="material-icons icon">create</span>メモ
@@ -54,7 +54,6 @@
               <span class="material-icons syllabus-chevron">chevron_right</span>
             </span>
           </h2>
-          <!-- 入力の枠 -->
           <textarea class="memo" type="text" v-model="localMemo"></textarea>
           <section class="counters-wrapper">
             <div
@@ -82,7 +81,7 @@
             <span class="material-icons delete-icon">delete</span>この科目を削除
           </p>
           <p @click="edit()" class="edit-btn">
-            <span class="material-icons delete-icon">edit</span>この科目を編集
+            <span class="material-icons delete-icon">edit</span>教室情報を編集
           </p>
         </article>
       </nav>
@@ -114,14 +113,9 @@ export default class Index extends Vue {
   editableLecture: Period | null = null;
 
   get atmnbCount() {
-    if (this.userData) {
-      return [
-        this.userData.attendance,
-        this.userData.absence,
-        this.userData.late
-      ];
-    }
-    return [0, 0, 0];
+    return this.userData
+      ? [this.userData.attendance, this.userData.absence, this.userData.late]
+      : [0, 0, 0];
   }
   get userData() {
     return this.$store.getters["table/userData"];
@@ -178,19 +172,19 @@ export default class Index extends Vue {
   }
 
   async deleteItem() {
-    if (!confirm("この時間割を削除しますか?")) {
-      return;
-    }
-    if (this.table) {
-      await deleteLecture(
-        this.table.year,
-        this.table.module,
-        this.table.day,
-        this.table.period
-      );
-    }
-    alert("finish this page will be reloaded");
+    if (!confirm("この時間割を削除しますか?") || !this.table) return;
+    // → 確認
+
+    await deleteLecture(
+      this.table.year,
+      this.table.module,
+      this.table.day,
+      this.table.period
+    );
+    // → 削除
+
     location.href = "/";
+    // → リロード
   }
 
   chDetail(): void {
@@ -216,9 +210,11 @@ export default class Index extends Vue {
 
     if (this.editableLecture) {
       await updateLecture(this.editableLecture);
-      location.href = "/";
     }
-    // → 教室などの変更
+    // → 教室の変更
+
+    location.href = "/";
+    // → 確実に反映されるようにリロード
   }
 
   fetchMemo() {
