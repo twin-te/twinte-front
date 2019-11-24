@@ -149,13 +149,13 @@ export default class Index extends Vue {
     let { attendance, absence, late } = this.userData;
     switch (type) {
       case "出席":
-        attendance + num > 0 ? (attendance += num) : 0;
+        attendance + num >= 0 ? (attendance += num) : 0;
         break;
       case "欠席":
-        absence + num > 0 ? (absence += num) : 0;
+        absence + num >= 0 ? (absence += num) : 0;
         break;
       case "遅刻":
-        late + num > 0 ? (late += num) : 0;
+        late + num >= 0 ? (late += num) : 0;
         break;
     }
     const userData: UserLectureEntity = {
