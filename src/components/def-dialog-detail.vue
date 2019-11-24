@@ -91,7 +91,6 @@ import * as Vuex from "vuex";
 import { Period } from "../types";
 import { UserLectureEntity } from "../types/server";
 import { deleteLecture, updateLecture } from "../store/api/timetables";
-import { login } from "../store/api/auth";
 import cloneDeep from "lodash/cloneDeep";
 import Swal from "sweetalert2";
 
@@ -180,8 +179,11 @@ export default class Index extends Vue {
         );
         // → 削除
 
-        login();
+        this.$store.dispatch("api/login");
         // → 更新
+
+        this.chDetail();
+        // → ダイアログを閉じる
       }
     });
   }
@@ -205,15 +207,21 @@ export default class Index extends Vue {
       late: this.userData.late
     };
     await this.$store.dispatch("table/updatePeriod", { userData });
-    // → 出欠などの変更
+    // → メモの変更
 
     if (this.editableLecture) {
       await updateLecture(this.editableLecture);
     }
     // → 教室の変更
 
-    location.href = "/";
-    // → 確実に反映されるようにリロード
+    this.$store.dispatch("api/login");
+    // → 反映
+
+    Swal.fire(
+      "完了",
+      "メモを保存しました",
+      "success"
+    );
   }
 
   fetchMemo() {

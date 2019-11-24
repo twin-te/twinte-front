@@ -6,7 +6,7 @@ type provider = "twitter" | "google";
 async function login(provider: provider = "twitter") {
   // location.href = `${url}/auth/${provider}`;
   try {
-    const { data } = await axios.get(`${url}/v1/auth/${provider}`);
+    const { data } = await axios.get(`${url}/auth/${provider}`);
     return data;
   } catch (error) {
     const { status, statusText } = error.response;

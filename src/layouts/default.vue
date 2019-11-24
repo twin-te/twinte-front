@@ -13,6 +13,7 @@ import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 // import { TimeTables } from "../types";
 import { isLogin } from "../store/api/auth";
+import Swal from "sweetalert2";
 
 @Component({
   components: {
@@ -56,6 +57,11 @@ export default class Index extends Vue {
     if (await isLogin()) {
       this.$store.dispatch("api/login");
     } else {
+      Swal.fire(
+        "ようこそTwin:teへ",
+        "時間割を追加するにはログインをする必要があります<br>⚙からログインを行って下さい",
+        "info"
+      )
     }
   }
 }
