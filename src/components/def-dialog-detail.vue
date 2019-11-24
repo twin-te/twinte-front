@@ -9,8 +9,10 @@
           <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
           <h1>
             <div class="sbj-name">{{ table.lecture_name }}</div>
+
             <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
           </h1>
+
           <!-- 科目詳細 -->
           <h2>
             <span class="material-icons icon">info</span>科目詳細
@@ -30,9 +32,17 @@
             </p>
             <p class="h3">
               授業教室
-              <span class="sbj-detail">{{ table.room }}</span>
+              <span v-if="!editableLecture" class="sbj-detail">
+                {{
+                table.room
+                }}
+              </span>
+
+              <input v-else class="sbj-detail" v-model="editableLecture.room" />
+              <!-- → 教室変更 -->
             </p>
           </section>
+
           <!-- メモ -->
           <h2 class="h2-2">
             <span class="material-icons icon">create</span>メモ
@@ -41,7 +51,6 @@
               <span class="material-icons syllabus-chevron">chevron_right</span>
             </span>
           </h2>
-          <!-- 入力の枠 -->
           <textarea class="memo" type="text" v-model="localMemo"></textarea>
           <section class="counters-wrapper">
             <div
@@ -62,6 +71,9 @@
           <p @click="deleteItem()" class="delete-btn">
             <span class="material-icons delete-icon">delete</span>この科目を削除
           </p>
+          <p @click="edit()" class="edit-btn">
+            <span class="material-icons delete-icon">edit</span>教室情報を編集
+          </p>
         </article>
       </nav>
     </transition>
@@ -78,7 +90,9 @@ import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { Period } from "../types";
 import { UserLectureEntity } from "../types/server";
-import { deleteLecture } from "../store/api/timetables";
+import { deleteLecture, updateLecture } from "../store/api/timetables";
+import cloneDeep from "lodash/cloneDeep";
+import Swal from "sweetalert2";
 
 @Component({})
 export default class Index extends Vue {
@@ -88,16 +102,12 @@ export default class Index extends Vue {
   moduleNum = this.$store.getters["table/moduleNum"];
   localMemo = "";
   localLectureId = "";
+  editableLecture: Period | null = null;
 
   get atmnbCount() {
-    if (this.userData) {
-      return [
-        this.userData.attendance,
-        this.userData.absence,
-        this.userData.late
-      ];
-    }
-    return [0, 0, 0];
+    return this.userData
+      ? [this.userData.attendance, this.userData.absence, this.userData.late]
+      : [0, 0, 0];
   }
   get userData() {
     return this.$store.getters["table/userData"];
@@ -117,7 +127,13 @@ export default class Index extends Vue {
   attend() {
     location.href = "https://atmnb.tsukuba.ac.jp";
   }
-
+  edit() {
+    if (this.editableLecture) {
+      this.editableLecture = null;
+    } else {
+      this.editableLecture = cloneDeep(this.table);
+    }
+  }
   counter(type: string, num: number) {
     if (!this.userData) {
       return;
@@ -125,13 +141,13 @@ export default class Index extends Vue {
     let { attendance, absence, late } = this.userData;
     switch (type) {
       case "出席":
-        attendance + num > 0 ? (attendance += num) : 0;
+        attendance + num >= 0 ? (attendance += num) : 0;
         break;
       case "欠席":
-        absence + num > 0 ? (absence += num) : 0;
+        absence + num >= 0 ? (absence += num) : 0;
         break;
       case "遅刻":
-        late + num > 0 ? (late += num) : 0;
+        late + num >= 0 ? (late += num) : 0;
         break;
     }
     const userData: UserLectureEntity = {
@@ -147,27 +163,36 @@ export default class Index extends Vue {
     this.$store.dispatch("table/updatePeriod", { userData });
   }
 
-  async deleteItem() {
-    if (!confirm("この時間割を削除しますか?")) {
-      return;
-    }
-    if (this.table) {
-      await deleteLecture(
-        this.table.year,
-        this.table.module,
-        this.table.day,
-        this.table.period
-      );
-    }
-    alert("finish this page will be reloaded");
-    location.href = "/";
+  deleteItem() {
+    Swal.fire({
+      title: "この時間割を削除しますか?",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(async result => {
+      if (result.value && this.table) {
+        await deleteLecture(
+          this.table.year,
+          this.table.module,
+          this.table.day,
+          this.table.period
+        );
+        // → 削除
+
+        this.$store.dispatch("api/login");
+        // → 更新
+
+        this.chDetail();
+        // → ダイアログを閉じる
+      }
+    });
   }
 
   chDetail(): void {
     this.$store.commit("visible/chDetail", { display: false });
   }
 
-  save() {
+  async save() {
     if (!this.userData) {
       return;
     }
@@ -181,7 +206,22 @@ export default class Index extends Vue {
       absence: this.userData.absence,
       late: this.userData.late
     };
-    this.$store.dispatch("table/updatePeriod", { userData });
+    await this.$store.dispatch("table/updatePeriod", { userData });
+    // → メモの変更
+
+    if (this.editableLecture) {
+      await updateLecture(this.editableLecture);
+    }
+    // → 教室の変更
+
+    this.$store.dispatch("api/login");
+    // → 反映
+
+    Swal.fire(
+      "完了",
+      "メモを保存しました",
+      "success"
+    );
   }
 
   fetchMemo() {
@@ -272,6 +312,15 @@ article {
   bottom: -1.7vh;
   font-size: 2vh;
   color: rgb(255, 98, 98);
+  margin: 0;
+  cursor: pointer;
+}
+.edit-btn {
+  position: absolute;
+  bottom: -1.7vh;
+  right: 0;
+  font-size: 2vh;
+  color: rgb(102, 120, 223);
   margin: 0;
   cursor: pointer;
 }

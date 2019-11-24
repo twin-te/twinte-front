@@ -81,44 +81,17 @@ async function postAllLectures(
   );
 }
 
-/** 作成するときの任意の時間割情報 */
-interface CustomLecture {
-  lectureID: string;
-  name: string;
-  instructor: string;
-  room: string;
-}
-
 /**
- * 講義の作成/更新
- * @param year
- * @param module
- * @param day
- * @param period
- * @param body
- * {
- *   lectureID: string
- *   name: string
- *   instructor: string
- *   room: string
- * }
+ * 講義を追加/更新
  */
-async function createLecture(
-  year: number,
-  module: Module,
-  day: Day,
-  period: number,
-  body: CustomLecture
-) {
-  alert("まだ追加できません");
+async function updateLecture(lecture: Period) {
   try {
+    const { year, module, day, period, user_lecture_id, room } = lecture;
     const { data } = await axios.put(
       `${url}/${year}/${module}/${day}/${period}`,
       {
-        lectureID: body.lectureID,
-        name: body.name,
-        instructor: body.instructor,
-        room: body.room
+        room,
+        user_lecture_id
       }
     );
     return data;
@@ -160,6 +133,6 @@ export {
   getTimeTables,
   postLecture,
   postAllLectures,
-  createLecture,
+  updateLecture,
   deleteLecture
 };

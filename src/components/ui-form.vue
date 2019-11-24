@@ -41,8 +41,6 @@
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
-import { createLecture } from "../store/api/timetables";
-import { YEAR } from "../store/api/config";
 
 export enum Module {
   SpringA = "春A",
@@ -96,18 +94,18 @@ export default class Index extends Vue {
     if (!confirm("追加しますか?")) {
       return;
     }
-    await createLecture(
-      YEAR,
-      this.form.module,
-      this.form.day,
-      this.form.period,
-      {
-        lectureID: this.form.lectureId,
-        name: this.form.name,
-        instructor: this.form.instructor,
-        room: this.form.room
-      }
-    );
+    // await createLecture(
+    //   YEAR,
+    //   this.form.module,
+    //   this.form.day,
+    //   this.form.period,
+    //   {
+    //     lectureID: this.form.lectureId,
+    //     name: this.form.name,
+    //     instructor: this.form.instructor,
+    //     room: this.form.room
+    //   }
+    // );
     alert("追加完了しました。時間割画面に遷移します");
     location.href = "/";
   }

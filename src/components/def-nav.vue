@@ -44,14 +44,15 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { BASE_URL } from "../store/api/config";
+import Swal from "sweetalert2";
 
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
   list = [
-    { icon: "home", name: "ホームへ戻る", link: "/" }
-    // , { icon: "help", name: "使い方", link: "/table" }
+    { icon: "home", name: "ホームへ戻る", link: "/" },
+    { icon: "help", name: "使い方", link: "https://www.twinte.net#howto" }
     // , { icon: "supervisor_account", name: "About", link: "/about" }
     // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
     // , { icon: "share", name: "時間割の共有", link: "/" }
@@ -79,13 +80,34 @@ export default class Index extends Vue {
   }
 
   login() {
-    location.href = BASE_URL + "/auth/twitter";
+    Swal.fire({
+      title: "どのアカウントでログインしますか?",
+      text:
+        'その他のアカウントでのログインをしたい方は"info@twinte.net"へご連絡ください',
+      showCancelButton: true,
+      confirmButtonText: "Twitter",
+      confirmButtonColor: "#3085d6",
+      cancelButtonText: "Google",
+      cancelButtonColor: "#3085d6"
+    }).then(result => {
+      location.href = `${BASE_URL}${
+        result.value ? "/auth/twitter" : "/auth/google"
+      }`;
+    });
   }
 
   logout() {
-    if (confirm("ログアウトしますか?")) {
-      this.$store.dispatch("api/logout");
-    }
+    Swal.fire({
+      title: "ログアウトしますか?",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(result => {
+      if (result.value) {
+        this.$store.dispatch("api/logout");
+        location.href = "/";
+      }
+    });
   }
 
   mounted() {

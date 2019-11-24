@@ -19,7 +19,7 @@ async function searchLectures(q: string, year = YEAR) {
     return data;
   } catch (error) {
     const { status, statusText } = error.response;
-    console.log(`${url}/search Error! HTTP Status: ${status} ${statusText}`);
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return null;
   }
 }

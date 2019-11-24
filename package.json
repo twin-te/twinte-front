@@ -38,7 +38,8 @@
     "normalize.css": "^8.0.1",
     "nuxt": "^2.10.2",
     "nuxt-property-decorator": "^2.3.0",
-    "ts-node": "^8.5.0"
+    "ts-node": "^8.5.0",
+    "vue-sweetalert2": "^2.1.5"
   },
   "jest": {
     "moduleFileExtensions": [
