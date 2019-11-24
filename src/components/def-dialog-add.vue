@@ -150,7 +150,6 @@ export default class Index extends Vue {
           .filter(csv => csv); // drop blank line
       }
     };
-    console.log(csvLectureList);
 
     reader.readAsText(fileData);
     setTimeout(() => {
