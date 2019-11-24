@@ -67,6 +67,7 @@ CSVの処理はここで行う */
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { searchLectures } from "../store/api/lectures";
+import { login } from "../store/api/auth";
 
 type miniLecture = {
   lecture_code: string;
@@ -136,7 +137,6 @@ export default class Index extends Vue {
 
     const fileData = e.target.files[0];
     if (fileData === null) {
-      alert("ファイルが入力されてません");
       return;
     }
     let csvLectureList: string[] = [];
@@ -148,9 +148,11 @@ export default class Index extends Vue {
           .map(csv => {
             return csv.replace(/["]/g, "");
           }) // drop "
-          .filter(csv => csv); // drop black line
+          .filter(csv => csv); // drop blank line
       }
     };
+    console.log(csvLectureList)
+    
     reader.readAsText(fileData);
     setTimeout(() => {
       csvLectureList.forEach(csv => {
@@ -166,10 +168,9 @@ export default class Index extends Vue {
       this.lectures.filter(l => l.checked).map(l => l.lecture_code)
     );
     await this.$store.dispatch("api/addTable", { lectureCodes });
-    if (!confirm("完了 continue?")) {
-      location.href = "/";
-    }
+    login();
     this.input = "";
+    location.href = "/";
   }
 
   mounted() {

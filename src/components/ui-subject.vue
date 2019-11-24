@@ -1,11 +1,15 @@
 <template>
-  <section @click="popUp(table)">
+  <section @click="popUp()">
     <div id="subject" v-if="!table"></div>
     <!-- → 授業が入っていない -->
 
-    <div id="subject" :style="{
-        background: getColor(table.lecture_code),
-      }" v-else>
+    <div
+      id="subject"
+      :style="{
+        background: getColor(table.lecture_code)
+      }"
+      v-else
+    >
       <div class="sbj-lectureId">{{ table.lecture_code }}</div>
       <div class="sbj-name">{{ table.lecture_name }}</div>
       <div class="sbj-room">{{ table.room }}</div>
@@ -44,7 +48,7 @@ export default class Index extends Vue {
     const module = this.module;
     const week = this.week;
     const day = this.day;
-    const period = this.period+1;
+    const period = this.period + 1;
 
     const validPeriod = periods.find(lecture => {
       return (
@@ -65,14 +69,12 @@ export default class Index extends Vue {
   chAdd() {
     this.$store.commit("visible/chAdd", { display: true });
   }
-  popUp(period: Period | null) {
-    setTimeout(() => {
-      if (period) {
-        this.chDetail(period);
-      } else {
-        this.chAdd();
-      }
-    }, 20);
+  popUp() {
+    if (this.table) {
+      this.chDetail(this.table);
+    } else {
+      this.chAdd();
+    }
   }
   /** 授業に応じたテーマ色を返す */
   getColor(number: string): string {

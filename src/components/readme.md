@@ -1,5 +1,9 @@
 # components
 
+- def-dialog-add: 時間割追加画面
+- def-dialog-detail: 詳細画面
+- ui-form: カスタム時間割作成フォーム
+
 ## 命名規則
 
 - app-{}: pages以下で使用
