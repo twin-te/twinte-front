@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import { TimeTables } from "../types";
+// import { TimeTables } from "../types";
 import { isLogin } from "../store/api/auth";
 
 @Component({
@@ -38,9 +38,7 @@ export default class Index extends Vue {
 
     const table = localStorage.getItem("table");
     if (table) {
-      const periodDatas: TimeTables = JSON.parse(table);
-      console.log(periodDatas);
-
+      // const periodDatas: TimeTables = JSON.parse(table);
       // this.$store.commit("API/SET_TABLE", { periodDatas });
       // this.$store.commit("API/LOGIN");
     } else {
@@ -57,9 +55,7 @@ export default class Index extends Vue {
   async login() {
     if (await isLogin()) {
       this.$store.dispatch("api/login");
-      console.log("logined");
     } else {
-      console.log("not logined");
     }
   }
 }

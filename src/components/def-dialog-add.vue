@@ -47,7 +47,7 @@ CSVの処理はここで行う */
               <small>*{{ moduleMessage }}</small>
             </p>
             <input type="file" name="file" id="fileElem" @change="onFileChange" />
-            <p @click="custom()">手動入力で授業を作成</p>
+            <!-- <p @click="custom()">手動入力で授業を作成</p> -->
           </section>
           <!-- → その他オプション -->
 

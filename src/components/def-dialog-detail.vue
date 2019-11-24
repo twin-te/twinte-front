@@ -6,9 +6,13 @@
       <nav class="main" v-show="dialog">
         <article v-if="table">
           <!-- 教科名 -->
-          <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
+          <div class="svg-button material-icons close-btn" @click="chDetail()">
+            close
+          </div>
           <h1>
-            <div class="sbj-name">{{ table.lecture_name }}</div>
+            <div v-if="!editableLecture" class="sbj-name">{{ table.lecture_name }}</div>
+            <input v-else class="sbj-name" v-model="editableLecture.lecture_name">
+            
             <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
           </h1>
           <!-- 科目詳細 -->
@@ -22,15 +26,24 @@
           <section class="sbj-detail-wrapper">
             <p class="h3">
               担当教員
-              <span class="sbj-detail">{{ table.instructor }}</span>
+              <span v-if="!editableLecture" class="sbj-detail">{{
+                table.instructor
+              }}</span>
+              <input v-else class="sbj-detail" v-model="editableLecture.instructor" />
             </p>
             <p class="h3">
               開講時限
-              <span class="sbj-detail">{{ table.module }} {{ table.day }}{{ table.Period }}</span>
+              <span v-if="!editableLecture" class="sbj-detail"
+                >{{ table.module }} {{ table.day }}{{ table.Period }}</span
+              >
+              <input v-else class="sbj-detail" v-model="editableLecture.module" />
             </p>
             <p class="h3">
               授業教室
-              <span class="sbj-detail">{{ table.room }}</span>
+              <span v-if="!editableLecture" class="sbj-detail">{{
+                table.room
+              }}</span>
+              <input v-else class="sbj-detail" v-model="editableLecture.room" />
             </p>
           </section>
           <!-- メモ -->
@@ -50,17 +63,26 @@
               :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
               style="width: 30%"
             >
-              <span class="counter-name">{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span>
+              <span class="counter-name"
+                >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
+              >
               <!-- <+|-> -->
               <div class="counter">
-                <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
-                <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
+                <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
+                  >+</span
+                >
+                <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
+                  >&#8211;</span
+                >
               </div>
             </div>
           </section>
           <div @click="save()" class="save-btn">変更を保存</div>
           <p @click="deleteItem()" class="delete-btn">
             <span class="material-icons delete-icon">delete</span>この科目を削除
+          </p>
+          <p @click="edit()" class="edit-btn">
+            <span class="material-icons delete-icon">edit</span>この科目を編集
           </p>
         </article>
       </nav>
@@ -78,7 +100,8 @@ import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { Period } from "../types";
 import { UserLectureEntity } from "../types/server";
-import { deleteLecture } from "../store/api/timetables";
+import { deleteLecture, updateLecture } from "../store/api/timetables";
+import cloneDeep from "lodash/cloneDeep";
 
 @Component({})
 export default class Index extends Vue {
@@ -88,6 +111,7 @@ export default class Index extends Vue {
   moduleNum = this.$store.getters["table/moduleNum"];
   localMemo = "";
   localLectureId = "";
+  editableLecture: Period | null = null;
 
   get atmnbCount() {
     if (this.userData) {
@@ -117,7 +141,13 @@ export default class Index extends Vue {
   attend() {
     location.href = "https://atmnb.tsukuba.ac.jp";
   }
-
+  edit() {
+    if (this.editableLecture) {
+      this.editableLecture = null;
+    } else {
+      this.editableLecture = cloneDeep(this.table);
+    }
+  }
   counter(type: string, num: number) {
     if (!this.userData) {
       return;
@@ -167,7 +197,7 @@ export default class Index extends Vue {
     this.$store.commit("visible/chDetail", { display: false });
   }
 
-  save() {
+  async save() {
     if (!this.userData) {
       return;
     }
@@ -181,7 +211,14 @@ export default class Index extends Vue {
       absence: this.userData.absence,
       late: this.userData.late
     };
-    this.$store.dispatch("table/updatePeriod", { userData });
+    await this.$store.dispatch("table/updatePeriod", { userData });
+    // → 出欠などの変更
+
+    if (this.editableLecture) {
+      await updateLecture(this.editableLecture);
+      location.href = "/";
+    }
+    // → 教室などの変更
   }
 
   fetchMemo() {
@@ -272,6 +309,15 @@ article {
   bottom: -1.7vh;
   font-size: 2vh;
   color: rgb(255, 98, 98);
+  margin: 0;
+  cursor: pointer;
+}
+.edit-btn {
+  position: absolute;
+  bottom: -1.7vh;
+  right: 0;
+  font-size: 2vh;
+  color: rgb(102, 120, 223);
   margin: 0;
   cursor: pointer;
 }

@@ -44,7 +44,7 @@ export default class Index extends Vue {
     const module = this.module;
     const week = this.week;
     const day = this.day;
-    const period = this.period;
+    const period = this.period+1;
 
     const validPeriod = periods.find(lecture => {
       return (

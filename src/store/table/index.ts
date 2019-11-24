@@ -95,7 +95,6 @@ export const actions: Actions<S, A, G, M> = {
 
   async updatePeriod(ctx, { userData }) {
     await updateUserData(userData);
-    console.log(await getUserData(userData.user_lecture_id), userData);
     ctx.commit("setUserData", { userData });
   }
 };
