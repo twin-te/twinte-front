@@ -6,9 +6,7 @@
       <nav class="main" v-show="dialog">
         <article v-if="table">
           <!-- 教科名 -->
-          <div class="svg-button material-icons close-btn" @click="chDetail()">
-            close
-          </div>
+          <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
           <h1>
             <div class="sbj-name">{{ table.lecture_name }}</div>
 
@@ -30,19 +28,18 @@
             </p>
             <p class="h3">
               開講時限
-              <span class="sbj-detail"
-                >{{ table.module }} {{ table.day }}{{ table.Period }}</span
-              >
+              <span class="sbj-detail">{{ table.module }} {{ table.day }}{{ table.Period }}</span>
             </p>
             <p class="h3">
               授業教室
-              <span v-if="!editableLecture" class="sbj-detail">{{
+              <span v-if="!editableLecture" class="sbj-detail">
+                {{
                 table.room
-              }}</span>
+                }}
+              </span>
 
               <input v-else class="sbj-detail" v-model="editableLecture.room" />
               <!-- → 教室変更 -->
-
             </p>
           </section>
 
@@ -62,17 +59,11 @@
               :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
               style="width: 30%"
             >
-              <span class="counter-name"
-                >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
-              >
+              <span class="counter-name">{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span>
               <!-- <+|-> -->
               <div class="counter">
-                <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
-                  >+</span
-                >
-                <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
-                  >&#8211;</span
-                >
+                <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
+                <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
               </div>
             </div>
           </section>
@@ -100,7 +91,9 @@ import * as Vuex from "vuex";
 import { Period } from "../types";
 import { UserLectureEntity } from "../types/server";
 import { deleteLecture, updateLecture } from "../store/api/timetables";
+import { login } from "../store/api/auth";
 import cloneDeep from "lodash/cloneDeep";
+import Swal from "sweetalert2";
 
 @Component({})
 export default class Index extends Vue {
@@ -171,20 +164,26 @@ export default class Index extends Vue {
     this.$store.dispatch("table/updatePeriod", { userData });
   }
 
-  async deleteItem() {
-    if (!confirm("この時間割を削除しますか?") || !this.table) return;
-    // → 確認
+  deleteItem() {
+    Swal.fire({
+      title: "この時間割を削除しますか?",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(async result => {
+      if (result.value && this.table) {
+        await deleteLecture(
+          this.table.year,
+          this.table.module,
+          this.table.day,
+          this.table.period
+        );
+        // → 削除
 
-    await deleteLecture(
-      this.table.year,
-      this.table.module,
-      this.table.day,
-      this.table.period
-    );
-    // → 削除
-
-    location.href = "/";
-    // → リロード
+        login();
+        // → 更新
+      }
+    });
   }
 
   chDetail(): void {

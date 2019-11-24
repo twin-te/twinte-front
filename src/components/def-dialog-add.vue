@@ -68,6 +68,7 @@ import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { searchLectures } from "../store/api/lectures";
 import { login } from "../store/api/auth";
+import Swal from "sweetalert2";
 
 type miniLecture = {
   lecture_code: string;
@@ -86,8 +87,6 @@ export default class Index extends Vue {
   //
   input: string = "";
   lectures: miniLecture[] = [];
-  assertMessage: string =
-    "科目追加を行いますか？現在表示されている時間割は上書きされます";
   isIOS = false;
 
   // computed___________________________________________________________________________________
@@ -117,9 +116,9 @@ export default class Index extends Vue {
   async search(input: string) {
     const le = await searchLectures(input);
     if (le) {
-      le.forEach(l => {
+      le.forEach(async l => {
         if (l) {
-          this.lectures.push({
+          await this.lectures.push({
             lecture_code: l.lectureCode,
             lecture_name: l.name,
             module: l.details[0].module,
@@ -151,8 +150,8 @@ export default class Index extends Vue {
           .filter(csv => csv); // drop blank line
       }
     };
-    console.log(csvLectureList)
-    
+    console.log(csvLectureList);
+
     reader.readAsText(fileData);
     setTimeout(() => {
       csvLectureList.forEach(csv => {
@@ -161,16 +160,30 @@ export default class Index extends Vue {
     }, 1000);
   }
   async asyncNumber() {
-    if (!confirm(this.assertMessage)) {
+    if (!this.$store.getters["api/isLogin"]) {
+      Swal.fire(
+        "まだログインしていません",
+        "歯車⚙からログインしてからお試し下さい",
+        "error"
+      );
       return;
     }
-    const lectureCodes = await Promise.all(
-      this.lectures.filter(l => l.checked).map(l => l.lecture_code)
-    );
-    await this.$store.dispatch("api/addTable", { lectureCodes });
-    login();
-    this.input = "";
-    location.href = "/";
+    Swal.fire({
+      title: "科目追加を行いますか？",
+      text: "現在表示されている時間割は上書きされます",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(async result => {
+      if (result.value) {
+        const lectureCodes = await Promise.all(
+          this.lectures.filter(l => l.checked).map(l => l.lecture_code)
+        );
+        await this.$store.dispatch("api/addTable", { lectureCodes });
+        login();
+        this.input = "";
+      }
+    });
   }
 
   mounted() {
