@@ -1,133 +1,105 @@
-import { Period } from '../../types'
-import { BASE_URL, axios } from './config'
-const url = BASE_URL + '/timetables'
+import { Period } from "../../types";
+import { BASE_URL, axios, YEAR } from "./config";
+const url = BASE_URL + "/timetables";
+import union from "lodash/union";
 
 export enum Module {
-  SpringA = '春A',
-  SpringB = '春B',
-  SpringC = '春C',
-  FallA = '秋A',
-  FallB = '秋B',
-  FallC = '秋C',
-  SummerVacation = '夏季休業中',
-  SpringVacation = '春季休業中',
-  Annual = '通年',
-  Unknown = '不明',
+  SpringA = "春A",
+  SpringB = "春B",
+  SpringC = "春C",
+  FallA = "秋A",
+  FallB = "秋B",
+  FallC = "秋C",
+  SummerVacation = "夏季休業中",
+  SpringVacation = "春季休業中",
+  Annual = "通年",
+  Unknown = "不明"
 }
-
 export enum Day {
-  Sun = '日',
-  Mon = '月',
-  Tue = '火',
-  Wed = '水',
-  Thu = '木',
-  Fri = '金',
-  Sat = '土',
-  Unknown = '不明',
+  Sun = "日",
+  Mon = "月",
+  Tue = "火",
+  Wed = "水",
+  Thu = "木",
+  Fri = "金",
+  Sat = "土",
+  Unknown = "不明"
 }
 
 /**
- * 今日の時間割を取得
- */
-async function getToday() {
-  try {
-    const { data } = await axios.get<Period[]>(`${url}/today`)
-    return data
-  } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return []
-  }
-}
-
-/**
- * 特定の学期の時間割取得
- * @param module
+ * 時間割取得
  * @param year
  */
-async function getTable(module: Module, year: number) {
+async function getTimeTables(year = YEAR) {
   try {
-    const { data } = await axios.get<Period[]>(`${url}/${year}/${module}`)
-    return data
+    const { data } = await axios.get<Period[]>(`${url}`, {
+      params: {
+        year
+      }
+    });
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return []
-  }
-}
-
-/**
- * 全学期の時間割取得
- * @param year
- */
-async function getTableAll(year: number) {
-  try {
-    const { data } = await axios.get<Period[]>(`${url}/${year}`)
-    return data
-  } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return []
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return [];
   }
 }
 
 /**
  * 講義を時間割に登録
- * @param lectureID
+ * @param lectureCode
  * @param year
  */
-async function postLecture(lectureID: string, year: number) {
+async function postLecture(lectureCode: string, year = YEAR) {
   try {
-    const { data } = await axios.post<string>(`${url}/${year}`, {
-      lectureID,
-    })
-    return data
+    const { data } = await axios.post<any>(`${url}`, {
+      year,
+      lectureCode
+    });
+    return data; // 利用する予定はない
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return "error"
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return null;
   }
 }
 
-/** 作成するときの任意の時間割情報 */
-interface CustomLecture {
-  lectureID: string
-  name: string
-  instructor: string
-  room: string
+/**
+ * @param lectureCodes 授業番号の配列
+ * @returns 授業詳細配列
+ */
+async function postAllLectures(
+  lectureCodes: string[],
+  year = YEAR
+): Promise<void> {
+  await Promise.all(
+    union(lectureCodes).map(async lectureCode => {
+      return await postLecture(lectureCode, year);
+    })
+  );
 }
 
 /**
- * 講義の作成/更新
- * @param year
- * @param module
- * @param day
- * @param period
- * @param body
- * {
- *   lectureID: string
- *   name: string
- *   instructor: string
- *   room: string
- * }
+ * 講義を追加/更新
  */
-async function createLecture(
-  year: number,
-  module: Module,
-  day: Day,
-  period: Period,
-  body: CustomLecture
-) {
+async function updateLecture(lecture: Period) {
   try {
+    const { year, module, day, period, user_lecture_id, room } = lecture;
     const { data } = await axios.put(
       `${url}/${year}/${module}/${day}/${period}`,
       {
-        lectureID: body.lectureID,
-        name: body.name,
-        instructor: body.instructor,
-        room: body.room,
+        room,
+        user_lecture_id
       }
-    )
-    return data
+    );
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return null
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return null;
   }
 }
 
@@ -140,42 +112,27 @@ async function createLecture(
  */
 async function deleteLecture(
   year: number,
-  module: Module,
-  day: Day,
+  module: Module | string,
+  day: Day | string,
   period: number
 ) {
   try {
     const { data } = await axios.delete(
       `${url}/${year}/${module}/${day}/${period}`
-    )
-    return data
+    );
+    return data;
   } catch (error) {
-    console.log(`Error! HTTP Status: ${error.response.status} ${error.response.statusText}`)
-    return null
-  }
-}
-
-/** サーバー側の時間割のリセット WIP */
-async function reset(
-  year: number=2019
-) {
-  const moduleList = [Module.SpringA, Module.SpringB, Module.SpringC, Module.FallA, Module.FallB, Module.FallC]
-  const dayList = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
-  for (let module = 0; module < moduleList.length; module++) {
-    for (let day = 0; day < dayList.length; day++) {  
-      for (let period = 0; period < 6; period++) {
-        await deleteLecture(year, moduleList[module], dayList[day], period)
-      }
-    }
+    console.log(
+      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
+    );
+    return null;
   }
 }
 
 export {
-  getToday,
-  getTable,
-  getTableAll,
+  getTimeTables,
   postLecture,
-  createLecture,
-  deleteLecture,
-  reset,
-}
+  postAllLectures,
+  updateLecture,
+  deleteLecture
+};

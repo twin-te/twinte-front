@@ -1,112 +1,81 @@
 /**
  * API通信を伴う状態処理
- * 
+ *
  * - 時間割はPeriod配列ですべてのモジュールをまとめて保持する
  * - 任意のコンポネントで時間割は作成される
  * - isLoginはページ初回に毎回確認が行われる
  */
 
-import { Getters, Mutations, Actions } from 'vuex'
-import { S, G, M, A } from './type'
+import { Getters, Mutations, Actions } from "vuex";
+import { S, G, M, A } from "./type";
 
-import { logout } from './auth'
-import {
-  deleteLecture,
-  getTableAll,
-  postLecture,
-} from './timetables'
+import { logout } from "./auth";
+import { deleteLecture, postAllLectures, getTimeTables } from "./timetables";
+import { YEAR } from "./config";
 
 export const state = (): S => ({
   timeTables: [],
-  isLogin: false,
-})
+  isLogin: false
+});
 
 export const getters: Getters<S, G> = {
   table(state) {
-    return state.timeTables
+    return state.timeTables;
   },
   isLogin(state) {
-    return state.isLogin
-  },
-}
+    return state.isLogin;
+  }
+};
 
 export const mutations: Mutations<S, M> = {
-  CREATE_TABLE(state, payload) {
-    state.timeTables = [...state.timeTables, ...payload.periods]
-  },
-  DELETE_TABLE(state, payload) {
-    state.timeTables = state.timeTables
-      .filter(table => table !== payload.period)
+  SET_TABLE(state, payload) {
+    state.timeTables = payload.periodDatas;
   },
   LOGIN(state) {
-    state.isLogin = true
+    state.isLogin = true;
   },
   LOGOUT(state) {
-    state.isLogin = false
-    state.timeTables = []
-  },
-}
+    state.isLogin = false;
+    state.timeTables = [];
+  }
+};
 
 export const actions: Actions<S, A, G, M> = {
+  async addTable(ctx, { lectureCodes }) {
+    await postAllLectures(lectureCodes, YEAR);
+    // → サーバーへ時間割の登録
 
-  async addTable(ctx, { lectureIds }) {
-
-    lectureIds
-      .filter(v => {
-        ctx.state.timeTables.forEach((table): (false | void) => {
-          if (table.lectureID === v) {
-            return false
-          }
-        })
-        return true
-      })
-      // → すでにテーブルにあるものは除外する
-
-      .forEach(async lectureId => {        
-        await postLecture(lectureId, 2019)
-      })
-      // → 時間割の登録
-
-    const periods = await getTableAll(2019)
-    console.log(periods)
-    
-    ctx.commit('CREATE_TABLE', { periods })
-    localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
-    // → ローカルに追加
-
+    await ctx.dispatch("fetch");
+    // → 時間割のフェッチ
   },
 
+  async deleteTable(ctx, { module, day, period }) {
+    await deleteLecture(YEAR, module, day, period);
+    // → サーバーから削除
 
-  async deleteTable(ctx, { module, day, period, table }) {
-
-    await deleteLecture(2019, module, day, period)
-    // サーバーから削除
-
-    ctx.commit('DELETE_TABLE', { period: table })
-    localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
-    // ローカルデータの削除
-
+    await ctx.dispatch("fetch");
+    // → 時間割のフェッチ
   },
 
+  async fetch(ctx) {
+    const periodDatas = await getTimeTables(YEAR);
+    // → サーバーから時間割の取得
 
-  async asyncCSV(ctx, payload) {
-    console.log("未実装", ctx, payload)
+    ctx.commit("SET_TABLE", { periodDatas });
+    localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));
+    // → ローカルデータへの追加
   },
-
 
   async login(ctx) {
-    const periods = await getTableAll(2019)
-    ctx.commit('CREATE_TABLE', { periods })
-    ctx.commit('LOGIN')
-    localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
+    const periodDatas = await getTimeTables(YEAR);
+    ctx.commit("SET_TABLE", { periodDatas });
+    ctx.commit("LOGIN");
+    localStorage.setItem("table", JSON.stringify(ctx.state.timeTables));
   },
-
 
   async logout(ctx) {
-    logout()
-    ctx.commit('LOGOUT')
-    localStorage.removeItem('table')
-  },
-
-  
-}
+    logout();
+    ctx.commit("LOGOUT");
+    localStorage.removeItem("table");
+  }
+};

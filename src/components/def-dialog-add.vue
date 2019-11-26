@@ -8,41 +8,46 @@ CSVの処理はここで行う */
         <article>
           <div class="svg-button material-icons close-btn" @click="chAdd()">close</div>
           <h1>授業の追加</h1>
-          <p class="content">科目名・授業番号で検索</p>
+          <p class="content">
+            科目名・授業番号で検索
+            <span v-if="isIOS" class="twins-btn" @click="twins()">Twinsからインポート</span>
+          </p>
 
-          <form class="search-form">
-            <input v-model="input" type="text" class="form" />
+          <form class="search-form" @submit.prevent>
+            <input v-model="input" type="text" class="form" @keyup.enter="search(input)" />
             <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
             <span v-else @click="search(input)" class="material-icons search-btn">search</span>
           </form>
           <!-- → 検索ボックス -->
 
           <section class="result-list">
-            <div v-for="n in lectures" :key="n.lectureId">
-              <input type="checkbox" :id="n.lectureId" :value="n.lectureId" v-model="n.checked" />
-              <label :for="n.lectureId">
-                {{ n.lectureId }} - {{ n.name }} - {{ n.module }}{{ n.day
+            <div
+              v-for="(n, i) in lectures"
+              :key="n.lecture_code+i"
+              :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
+            >
+              <input
+                type="checkbox"
+                :id="n.lecture_code"
+                :value="n.lecture_code"
+                v-model="n.checked"
+              />
+              <label :for="n.lecture_code">
+                {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module }}{{ n.day
                 }}{{ n.period }}
               </label>
-              <hr />
             </div>
           </section>
           <!-- → 検索結果 -->
 
           <section class="others">
-            <p class="other-content">
+            <p>
               CSVファイルから追加
               <br />
               <small>*{{ moduleMessage }}</small>
             </p>
-            <input
-              class="other-content"
-              type="file"
-              name="file"
-              id="fileElem"
-              @change="onFileChange"
-            />
-            <!-- <p class="other-content">手動入力で授業を作成</p> -->
+            <input type="file" name="file" id="fileElem" @change="onFileChange" />
+            <!-- <p @click="custom()">手動入力で授業を作成</p> -->
           </section>
           <!-- → その他オプション -->
 
@@ -61,20 +66,20 @@ CSVの処理はここで行う */
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-import { searchLectures, getLectureById } from "../store/api/lectures";
+import { searchLectures } from "../store/api/lectures";
+import { login } from "../store/api/auth";
+import Swal from "sweetalert2";
 
 type miniLecture = {
-  lectureId: string;
-  name: string;
+  lecture_code: string;
+  lecture_name: string;
   module: string;
   day: string;
   period: number;
   checked: boolean;
 };
 
-@Component({
-  components: {}
-})
+@Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
@@ -82,8 +87,7 @@ export default class Index extends Vue {
   //
   input: string = "";
   lectures: miniLecture[] = [];
-  assertMessage: string =
-    "科目追加を行いますか？現在表示されている時間割は上書きされます";
+  isIOS = false;
 
   // computed___________________________________________________________________________________
   //
@@ -102,28 +106,27 @@ export default class Index extends Vue {
   chAdd() {
     this.$store.commit("visible/chAdd", { display: false });
   }
+  twins() {
+    location.href = "https://twins.tsukuba.ac.jp";
+  }
+  custom() {
+    this.$router.push("/custom");
+    this.$store.commit("visible/chAdd", { display: false });
+  }
   async search(input: string) {
-    const id = await getLectureById(input, 2019);
-    const le = await searchLectures(input, 2019);
-    if (id) {
-      this.lectures.push({
-        lectureId: id.lectureID,
-        name: id.name,
-        module: id.details[0].module,
-        day: id.details[0].day,
-        period: id.details[0].period,
-        checked: false
-      });
-    } else if (le) {
-      le.forEach(l => {
-        this.lectures.push({
-          lectureId: l.lectureID,
-          name: l.name,
-          module: l.module,
-          day: l.day,
-          period: l.period,
-          checked: false
-        });
+    const le = await searchLectures(input);
+    if (le) {
+      le.forEach(async l => {
+        if (l) {
+          await this.lectures.push({
+            lecture_code: l.lectureCode,
+            lecture_name: l.name,
+            module: l.details[0].module,
+            day: l.details[0].day,
+            period: l.details[0].period,
+            checked: false
+          });
+        }
       });
     }
     this.input = "";
@@ -133,7 +136,6 @@ export default class Index extends Vue {
 
     const fileData = e.target.files[0];
     if (fileData === null) {
-      alert("ファイルが入力されてません");
       return;
     }
     let csvLectureList: string[] = [];
@@ -145,9 +147,10 @@ export default class Index extends Vue {
           .map(csv => {
             return csv.replace(/["]/g, "");
           }) // drop "
-          .filter(csv => csv); // drop black line
+          .filter(csv => csv); // drop blank line
       }
     };
+
     reader.readAsText(fileData);
     setTimeout(() => {
       csvLectureList.forEach(csv => {
@@ -156,19 +159,34 @@ export default class Index extends Vue {
     }, 1000);
   }
   async asyncNumber() {
-    const lectureIds = await Promise.all(
-      this.lectures.filter(l => l.checked).map(l => l.lectureId)
-    );
-    if (!confirm(this.assertMessage)) {
+    if (!this.$store.getters["api/isLogin"]) {
+      Swal.fire(
+        "まだログインしていません",
+        "歯車⚙からログインしてからお試し下さい",
+        "error"
+      );
       return;
     }
-    console.log(lectureIds);
+    Swal.fire({
+      title: "科目追加を行いますか？",
+      text: "現在表示されている時間割は上書きされます",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(async result => {
+      if (result.value) {
+        const lectureCodes = await Promise.all(
+          this.lectures.filter(l => l.checked).map(l => l.lecture_code)
+        );
+        await this.$store.dispatch("api/addTable", { lectureCodes });
+        login();
+        this.input = "";
+      }
+    });
+  }
 
-    await this.$store.dispatch("api/addTable", { lectureIds });
-    if (!confirm("完了 continue?")) {
-      location.href = "/";
-    }
-    this.input = "";
+  mounted() {
+    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
   }
 }
 </script>
@@ -255,14 +273,20 @@ h1 {
 }
 .others {
   position: absolute;
-  bottom: 8.5vh;
+  bottom: 7.5vh;
   border-top: 1px solid #adadad;
   width: 100%;
 }
-.other-content {
+.others p {
   font-size: 2vh;
   color: #adadad;
   margin-left: 1.5vh;
+  line-height: 100%;
+}
+.others input {
+  margin-left: auto;
+  margin-right: 0;
+  color: #adadad;
 }
 
 /* 検索フォーム */
@@ -312,14 +336,17 @@ h1 {
 /** 検索結果 */
 .result-list {
   position: absolute;
-  width: calc(100% - 3vh);
-  height: 30vh;
+  width: calc(100% - 3vh-1vw);
+  height: 26vh;
   top: 17.6vh;
   margin: 0 1.8vh;
-  padding: 0;
+  padding: 1vw 0.5vw;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
+}
+.result-list div {
+  padding: 2vw;
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
@@ -331,5 +358,10 @@ h1 {
   top: 0px;
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
+}
+.twins-btn {
+  font-size: 1.9vh;
+  font-weight: 400;
+  color: #8c6cff;
 }
 </style>

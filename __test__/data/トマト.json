@@ -1,0 +1,76 @@
+[
+  {
+    "twinte_lecture_id": "679b6a14-fa6a-43ad-ac4a-97975861e80f",
+    "year": 2019,
+    "lectureCode": "GB21601",
+    "name": "オートマトンと形式言語",
+    "details": [
+      {
+        "id": 61924,
+        "module": "秋A",
+        "day": "木",
+        "period": 5,
+        "room": "3A202"
+      },
+      {
+        "id": 61925,
+        "module": "秋A",
+        "day": "木",
+        "period": 6,
+        "room": "3A202"
+      },
+      {
+        "id": 61926,
+        "module": "秋B",
+        "day": "木",
+        "period": 5,
+        "room": "3A202"
+      },
+      {
+        "id": 61927,
+        "module": "秋B",
+        "day": "木",
+        "period": 6,
+        "room": "3A202"
+      }
+    ],
+    "instructor": "亀山 幸義"
+  },
+  {
+    "twinte_lecture_id": "ad8e8956-82b8-41c6-951c-027cf3fbea5a",
+    "year": 2019,
+    "lectureCode": "GC50201",
+    "name": "オートマトンと形式言語",
+    "details": [
+      {
+        "id": 62308,
+        "module": "秋A",
+        "day": "木",
+        "period": 5,
+        "room": "3A202"
+      },
+      {
+        "id": 62309,
+        "module": "秋A",
+        "day": "木",
+        "period": 6,
+        "room": "3A202"
+      },
+      {
+        "id": 62310,
+        "module": "秋B",
+        "day": "木",
+        "period": 5,
+        "room": "3A202"
+      },
+      {
+        "id": 62311,
+        "module": "秋B",
+        "day": "木",
+        "period": 6,
+        "room": "3A202"
+      }
+    ],
+    "instructor": "亀山 幸義"
+  }
+]

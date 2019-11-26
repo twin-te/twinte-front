@@ -11,8 +11,9 @@
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
-
+// import { TimeTables } from "../types";
 import { isLogin } from "../store/api/auth";
+import Swal from "sweetalert2";
 
 @Component({
   components: {
@@ -25,7 +26,6 @@ import { isLogin } from "../store/api/auth";
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
   mounted() {
-
     /**
      * ローカルデータの読み込み
      *
@@ -39,9 +39,12 @@ export default class Index extends Vue {
 
     const table = localStorage.getItem("table");
     if (table) {
-      const periods = JSON.parse(table);
-      this.$store.commit('API/CREATE_TABLE', { periods });
+      // const periodDatas: TimeTables = JSON.parse(table);
+      // this.$store.commit("API/SET_TABLE", { periodDatas });
+      // this.$store.commit("API/LOGIN");
+    } else {
     }
+    this.login();
     // → 時間割データ
 
     const module = localStorage.getItem("module");
@@ -49,15 +52,16 @@ export default class Index extends Vue {
       this.$store.commit("table/setModule", { module });
     }
     // → 前回見ていた学期
-
-    this.login();
   }
   async login() {
     if (await isLogin()) {
-      this.$store.dispatch('api/login')
-      console.log('logined')
+      this.$store.dispatch("api/login");
     } else {
-      console.log('not logined')
+      Swal.fire(
+        "ようこそTwin:teへ",
+        "時間割を追加するにはログインをする必要があります<br>⚙からログインを行って下さい",
+        "info"
+      )
     }
   }
 }

@@ -8,17 +8,18 @@
           <!-- 教科名 -->
           <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
           <h1>
-            <div class="sbj-name">{{ table.name }}</div>
-            <p class="sbj-number">科目番号 {{ table.lectureID }}</p>
+            <div class="sbj-name">{{ table.lecture_name }}</div>
+
+            <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
           </h1>
+
           <!-- 科目詳細 -->
           <h2>
             <span class="material-icons icon">info</span>科目詳細
-            <!-- <span class="syllabus-btn"
-              >シラバス<span class="material-icons syllabus-chevron"
-                >chevron_right</span
-              ></span
-            >-->
+            <span class="syllabus-btn" @click="syllabus()">
+              シラバス
+              <span class="material-icons syllabus-chevron">chevron_right</span>
+            </span>
           </h2>
           <section class="sbj-detail-wrapper">
             <p class="h3">
@@ -27,19 +28,30 @@
             </p>
             <p class="h3">
               開講時限
-              <span class="sbj-detail">{{ table.mofule }} {{ table.day }}{{ table.Period }}</span>
+              <span class="sbj-detail">{{ table.module }} {{ table.day }}{{ table.Period }}</span>
             </p>
             <p class="h3">
               授業教室
-              <span class="sbj-detail">{{ table.room }}</span>
+              <span v-if="!editableLecture" class="sbj-detail">
+                {{
+                table.room
+                }}
+              </span>
+
+              <input v-else class="sbj-detail" v-model="editableLecture.room" />
+              <!-- → 教室変更 -->
             </p>
           </section>
+
           <!-- メモ -->
           <h2 class="h2-2">
             <span class="material-icons icon">create</span>メモ
+            <span class="syllabus-btn" @click="attend()">
+              出席
+              <span class="material-icons syllabus-chevron">chevron_right</span>
+            </span>
           </h2>
-          <!-- 入力の枠 -->
-          <textarea @input="updateData" class="memo" type="text" v-model="memo"></textarea>
+          <textarea class="memo" type="text" v-model="localMemo"></textarea>
           <section class="counters-wrapper">
             <div
               v-for="n in 3"
@@ -55,9 +67,12 @@
               </div>
             </div>
           </section>
-          <div class="save-btn">変更を保存</div>
+          <div @click="save()" class="save-btn">変更を保存</div>
           <p @click="deleteItem()" class="delete-btn">
             <span class="material-icons delete-icon">delete</span>この科目を削除
+          </p>
+          <p @click="edit()" class="edit-btn">
+            <span class="material-icons delete-icon">edit</span>教室情報を編集
           </p>
         </article>
       </nav>
@@ -74,9 +89,10 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { Period } from "../types";
-import { UserData } from "../types/server";
-import { getUserData, updateUserData } from "../store/api/userdata";
-import { deleteLecture } from "../store/api/timetables";
+import { UserLectureEntity } from "../types/server";
+import { deleteLecture, updateLecture } from "../store/api/timetables";
+import cloneDeep from "lodash/cloneDeep";
+import Swal from "sweetalert2";
 
 @Component({})
 export default class Index extends Vue {
@@ -84,37 +100,17 @@ export default class Index extends Vue {
 
   atmnb = ["出席", "欠席", "遅刻"];
   moduleNum = this.$store.getters["table/moduleNum"];
-  memo = "";
-
-  userData: UserData | null = null;
-
-  mounted() {
-    this.$nextTick(async () => {
-      this.update();
-    });
-  }
-
-  async update() {
-    if (this.table) {
-      this.userData = await getUserData(this.table.lectureID, this.table.year);
-      if (this.userData) {
-        this.memo = this.userData.memo;
-      }
-    } else {
-      setTimeout(this.update, 10000);
-    }
-  }
+  localMemo = "";
+  localLectureId = "";
+  editableLecture: Period | null = null;
 
   get atmnbCount() {
-    if (this.userData) {
-      return [
-        this.userData.attendance,
-        this.userData.absence,
-        this.userData.late
-      ];
-    } else {
-      return [0, 0, 0];
-    }
+    return this.userData
+      ? [this.userData.attendance, this.userData.absence, this.userData.late]
+      : [0, 0, 0];
+  }
+  get userData() {
+    return this.$store.getters["table/userData"];
   }
   get table(): Period | null {
     return this.$store.getters["table/looking"];
@@ -125,52 +121,126 @@ export default class Index extends Vue {
 
   syllabus() {
     if (this.table) {
-      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lectureID}/jpn/#course-title`;
+      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lecture_code}/jpn/#course-title`;
     }
   }
-
-  counter(type: "出席" | "欠席" | "遅刻", num: number) {
+  attend() {
+    location.href = "https://atmnb.tsukuba.ac.jp";
+  }
+  edit() {
+    if (this.editableLecture) {
+      this.editableLecture = null;
+    } else {
+      this.editableLecture = cloneDeep(this.table);
+    }
+  }
+  counter(type: string, num: number) {
     if (!this.userData) {
-      console.log("エラー");
       return;
     }
+    let { attendance, absence, late } = this.userData;
     switch (type) {
       case "出席":
-        this.userData.attendance + num;
+        attendance + num >= 0 ? (attendance += num) : 0;
         break;
       case "欠席":
-        this.userData.absence + num;
+        absence + num >= 0 ? (absence += num) : 0;
         break;
       case "遅刻":
-        this.userData.late + num;
+        late + num >= 0 ? (late += num) : 0;
         break;
     }
+    const userData: UserLectureEntity = {
+      twinte_lecture_id: this.userData.twinte_lecture_id,
+      user_lecture_id: this.userData.user_lecture_id,
+      lecture_name: this.userData.lecture_name,
+      instructor: this.userData.instructor,
+      memo: this.userData.memo,
+      attendance,
+      absence,
+      late
+    };
+    this.$store.dispatch("table/updatePeriod", { userData });
   }
 
-  async deleteItem() {
-    if (!confirm("この時間割を削除しますか?")) {
-      return;
-    }
-    if (this.table) {
-      await deleteLecture(
-        2019,
-        this.table.module,
-        this.table.day,
-        this.table.period
-      );
-    }
-    alert("finish this page will be reloaded");
-    location.href = "/";
+  deleteItem() {
+    Swal.fire({
+      title: "この時間割を削除しますか?",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(async result => {
+      if (result.value && this.table) {
+        await deleteLecture(
+          this.table.year,
+          this.table.module,
+          this.table.day,
+          this.table.period
+        );
+        // → 削除
+
+        this.$store.dispatch("api/login");
+        // → 更新
+
+        this.chDetail();
+        // → ダイアログを閉じる
+      }
+    });
   }
 
   chDetail(): void {
     this.$store.commit("visible/chDetail", { display: false });
   }
 
-  updateData() {
-    if (this.userData) {
-      updateUserData(this.userData);
+  async save() {
+    if (!this.userData) {
+      return;
     }
+    const userData: UserLectureEntity = {
+      twinte_lecture_id: this.userData.twinte_lecture_id,
+      user_lecture_id: this.userData.user_lecture_id,
+      lecture_name: this.userData.lecture_name,
+      instructor: this.userData.instructor,
+      memo: this.localMemo,
+      attendance: this.userData.attendance,
+      absence: this.userData.absence,
+      late: this.userData.late
+    };
+    await this.$store.dispatch("table/updatePeriod", { userData });
+    // → メモの変更
+
+    if (this.editableLecture) {
+      await updateLecture(this.editableLecture);
+    }
+    // → 教室の変更
+
+    this.$store.dispatch("api/login");
+    // → 反映
+
+    Swal.fire(
+      "完了",
+      "メモを保存しました",
+      "success"
+    );
+  }
+
+  fetchMemo() {
+    setTimeout(() => {
+      if (
+        this.userData &&
+        this.localLectureId !== this.userData.user_lecture_id
+      ) {
+        this.localMemo = this.userData.memo;
+        this.localLectureId = this.userData.user_lecture_id;
+      }
+      this.fetchMemo();
+    }, 1000);
+  }
+
+  mounted() {
+    this.$nextTick(() => {
+      this.fetchMemo();
+    });
   }
 }
 </script>
@@ -242,6 +312,15 @@ article {
   bottom: -1.7vh;
   font-size: 2vh;
   color: rgb(255, 98, 98);
+  margin: 0;
+  cursor: pointer;
+}
+.edit-btn {
+  position: absolute;
+  bottom: -1.7vh;
+  right: 0;
+  font-size: 2vh;
+  color: rgb(102, 120, 223);
   margin: 0;
   cursor: pointer;
 }

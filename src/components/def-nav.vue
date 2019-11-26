@@ -1,43 +1,63 @@
-/** -> "../layouts/default.vue" */
 <template>
+  <!--
+  //
+  // ナビゲーションバー
+  //
+  // 歯車を押したら出現するバー
+  // list変数で、様々なコンテンツを追加できます
+  // list[].linkは相対urlも絶対urlも対応
+  //
+  -->
   <!-- 左側に出現するサイドバー -->
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
-        
         <h1 class="settings">設定</h1>
-        <div class="material-icons svg-button close-btn" @click="chDrawer()">
-          close
-        </div>
-        
+        <div class="material-icons svg-button close-btn" @click="chDrawer()">close</div>
+
         <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
         <div class="login-btn" @click="login()" v-else>ログイン</div>
 
         <section class="menu-contents-wrap">
-          <div class="menu-content" v-for="l in list" :key="l.id" :id="l.icon" @click="$router.push(l.link)">
+          <div
+            class="menu-content"
+            v-for="l in list"
+            :key="l.id"
+            :id="l.icon"
+            @click="goto(l.link)"
+          >
             <span class="material-icons menu-icon">{{ l.icon }}</span>
             <p>{{ l.name }}</p>
             <span class="material-icons menu-allow">chevron_right</span>
           </div>
         </section>
-      
       </nav>
     </transition>
 
     <transition name="fade">
       <nav class="back" @click="chDrawer()" v-if="drawer"></nav>
     </transition>
-    
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
+import { BASE_URL } from "../store/api/config";
+import Swal from "sweetalert2";
 
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
+
+  list = [
+    { icon: "home", name: "ホームへ戻る", link: "/" },
+    { icon: "help", name: "使い方", link: "https://www.twinte.net#howto" }
+    // , { icon: "supervisor_account", name: "About", link: "/about" }
+    // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
+    // , { icon: "share", name: "時間割の共有", link: "/" }
+    // , { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
+  ];
 
   get drawer(): boolean {
     return this.$store.getters["visible/drawer"];
@@ -51,22 +71,55 @@ export default class Index extends Vue {
     this.$store.commit("visible/chDrawer", { display: false });
   }
 
+  goto(link: string) {
+    if (link.startsWith("https://")) {
+      location.href = link;
+    } else {
+      this.$router.push(link);
+    }
+  }
+
   login() {
-    location.href = 'https://dev.api.twinte.net/login'
+    Swal.fire({
+      title: "どのアカウントでログインしますか?",
+      text:
+        'その他のアカウントでのログインをしたい方は"info@twinte.net"へご連絡ください',
+      showCancelButton: true,
+      confirmButtonText: "Twitter",
+      confirmButtonColor: "#3085d6",
+      cancelButtonText: "Google",
+      cancelButtonColor: "#3085d6"
+    }).then(result => {
+      location.href = `${BASE_URL}${
+        result.value ? "/auth/twitter" : "/auth/google"
+      }`;
+    });
   }
 
   logout() {
-    this.$store.dispatch("api/logout");
+    Swal.fire({
+      title: "ログアウトしますか?",
+      showCancelButton: true,
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(result => {
+      if (result.value) {
+        this.$store.dispatch("api/logout");
+        location.href = "/";
+      }
+    });
   }
 
-  list: any = [
-    { icon: "home", name: "ホームへ戻る", link: "/" },
-    { icon: "help", name: "使い方", link: "/table" },
-    { icon: "supervisor_account", name: "About", link: "/about" },
-    { icon: "view_quilt", name: "表示設定", link: "/settings" },
-    { icon: "share", name: "時間割の共有", link: "/" },
-    { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
-  ];
+  mounted() {
+    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+    if (isIOS) {
+      this.list.push({
+        icon: "vertical_align_bottom",
+        name: "Twinsからインポート",
+        link: "https://twins.tsukuba.ac.jp"
+      });
+    }
+  }
 }
 </script>
 
