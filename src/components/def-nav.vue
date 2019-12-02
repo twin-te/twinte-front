@@ -111,8 +111,8 @@ export default class Index extends Vue {
   }
 
   mounted() {
-    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    if (isIOS) {
+    const isMobile = /iP(hone|(o|a)d)/.test(navigator.userAgent) || /TwinteAppforAndroid/.test(navigator.userAgent);
+    if (isMobile) {
       this.list.push({
         icon: "vertical_align_bottom",
         name: "Twinsからインポート",

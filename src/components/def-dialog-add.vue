@@ -10,7 +10,7 @@ CSVの処理はここで行う */
           <h1>授業の追加</h1>
           <p class="content">
             科目名・授業番号で検索
-            <span v-if="isIOS" class="twins-btn" @click="twins()">Twinsからインポート</span>
+            <span v-if="isMobile" class="twins-btn" @click="twins()">Twinsからインポート</span>
           </p>
 
           <form class="search-form" @submit.prevent>
@@ -87,7 +87,7 @@ export default class Index extends Vue {
   //
   input: string = "";
   lectures: miniLecture[] = [];
-  isIOS = false;
+  isMobile = false;
 
   // computed___________________________________________________________________________________
   //
@@ -186,7 +186,7 @@ export default class Index extends Vue {
   }
 
   mounted() {
-    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+    this.isMobile = /iP(hone|(o|a)d)/.test(navigator.userAgent) || /TwinteAppforAndroid/.test(navigator.userAgent);
   }
 }
 </script>
