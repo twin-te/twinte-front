@@ -107,7 +107,7 @@ export default class Index extends Vue {
     this.$store.commit("visible/chAdd", { display: false });
   }
   twins() {
-    location.href = "https://twins.tsukuba.ac.jp";
+    location.href = "https://twins.tsukuba.ac.jp/campusweb/campussmart.do?action=rfw&_flowId=RSW0001000-flow&page=main&tabId=rs&wfId=RSW0001000-flow";
   }
   custom() {
     this.$router.push("/custom");

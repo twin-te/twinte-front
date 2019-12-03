@@ -116,7 +116,7 @@ export default class Index extends Vue {
       this.list.push({
         icon: "vertical_align_bottom",
         name: "Twinsからインポート",
-        link: "https://twins.tsukuba.ac.jp"
+        link: "https://twins.tsukuba.ac.jp/campusweb/campussmart.do?action=rfw&_flowId=RSW0001000-flow&page=main&tabId=rs&wfId=RSW0001000-flow"
       });
     }
   }
