@@ -149,51 +149,46 @@ export default class Index extends Vue {
       )
       return
     }
+
     le.forEach(async (l) => {
-      if (l) {
-        await this.lectures.push({
-          lecture_code: l.lectureCode,
-          lecture_name: l.name,
-          module: l.details[0].module,
-          day: l.details[0].day,
-          period: l.details[0].period,
-          checked: false,
-        })
-      }
+      await this.lectures.push({
+        lecture_code: l.lectureCode,
+        lecture_name: l.name,
+        module: l.details[0].module,
+        day: l.details[0].day,
+        period: l.details[0].period,
+        checked: false,
+      })
     })
+
     this.input = ''
   }
   async onFileChange(e: any) {
     e.preventDefault()
 
-    Swal.fire(
-      '注意',
-      'うまく動作しない場合がございます。その場合は検索かTwinsからの追加をお試し下さい',
-      'warning'
-    )
-
     const fileData = e.target.files[0]
     if (fileData === null) {
       return
     }
-    let csvLectureList: string[] = []
+
+    const search = (csv: string) => this.search(csv)
     const reader = new FileReader()
     reader.onload = async () => {
       if (typeof reader.result !== 'string') return
-      csvLectureList = await Promise.all(
+      const csvLectureList = await Promise.all(
         reader.result
-          .split('\n')
+          .split('\r\n')
           .filter((csv) => csv) // drop blank line
           .map((csv) => csv.replace(/["]/g, '')) // drop "
       )
+      await csvLectureList.forEach((csv) => {
+        search(csv)
+      })
     }
 
     await reader.readAsText(fileData)
-
-    await csvLectureList.forEach((csv) => {
-      this.search(csv)
-    })
   }
+
   async asyncNumber() {
     if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
@@ -203,6 +198,7 @@ export default class Index extends Vue {
       )
       return
     }
+
     Swal.fire({
       title: '科目追加を行いますか？',
       text: '現在表示されている時間割は上書きされます',
@@ -213,9 +209,11 @@ export default class Index extends Vue {
       if (!result.value) {
         return
       }
+
       const lectureCodes = await Promise.all(
         this.lectures.filter((l) => l.checked).map((l) => l.lecture_code)
       )
+
       if (lectureCodes.length === 0) {
         Swal.fire(
           '追加するデータがありません',
@@ -224,10 +222,17 @@ export default class Index extends Vue {
         )
         return
       }
+
       await this.$store.dispatch('api/addTable', { lectureCodes })
+      // → 追加
+
       login()
-      this.chAdd()
+      // → 更新
+
       Swal.fire('追加完了', '時間割を更新しました', 'success')
+
+      this.chAdd()
+      // → ダイアログを閉じる
     })
   }
 
