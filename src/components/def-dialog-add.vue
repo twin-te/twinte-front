@@ -141,7 +141,6 @@ export default class Index extends Vue {
   }
   async search(input: string) {
     const le = await searchLectures(input)
-    console.log(le)
     if (!le || le.length === 0) {
       Swal.fire(
         '見つかりません',
