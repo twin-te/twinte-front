@@ -54,7 +54,7 @@ export default class Index extends Vue {
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
-    { icon: 'help', name: '使い方', link: 'https://www.twinte.net#howto' },
+    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' },
     // , { icon: "supervisor_account", name: "About", link: "/about" }
     // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
     // , { icon: "share", name: "時間割の共有", link: "/" }
@@ -85,7 +85,7 @@ export default class Index extends Vue {
     Swal.fire({
       title: 'どのアカウントでログインしますか?',
       html:
-        'ログインしたものは以下の<a href="https://example.com">利用規約</a>に同意したものとみなします。その他のアカウントでのログインをしたい方は"info@twinte.net"へご連絡ください',
+        'Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。<br>ログインをした場合、<a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。',
       showCancelButton: true,
       confirmButtonText: 'Twitter',
       confirmButtonColor: '#3085d6',
