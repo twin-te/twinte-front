@@ -13,8 +13,8 @@
           <h1>授業の追加</h1>
           <p class="content">
             科目名・授業番号で検索
-            <span v-if="isMobile" class="twins-btn" @click="twins()"
-              >Twinsからインポート</span
+            <p v-if="isMobile" class="twins-btn" @click="twins()"
+              >Twinsからインポート</p
             >
           </p>
 
@@ -257,14 +257,9 @@ export default class Index extends Vue {
   width: 92vw;
   height: 80vh;
   background: #fff;
-  box-shadow: 1vmine;
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   border-radius: 1vh;
   z-index: 6;
-}
-@media screen and (min-width: 1300px) {
-  .main {
-    max-width: 1000px;
-  }
 }
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
@@ -355,7 +350,6 @@ h1 {
 .form {
   height: 100%;
   width: 100%;
-  max-width: 1000px;
   background-color: #fff;
   border: 0.2vh solid #adadad;
   color: #4a5568;
