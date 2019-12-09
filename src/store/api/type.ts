@@ -1,4 +1,5 @@
 import { TimeTables, Module, Day } from "../../types/index";
+import { UserLectureEntity } from "~/src/types/server";
 
 export interface S {
   timeTables: TimeTables;
@@ -28,7 +29,7 @@ export interface RM {
 
 export interface A {
   addTable: { lectureCodes: string[] };
-  deleteTable: { module: Module; day: Day; period: number };
+  deleteTable: { module: Module; day: Day; period: number; UserLecture: UserLectureEntity };
   fetch: null;
 
   login: null;

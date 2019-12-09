@@ -12,6 +12,7 @@ import { S, G, M, A } from "./type";
 import { logout } from "./auth";
 import { deleteLecture, postAllLectures, getTimeTables } from "./timetables";
 import { YEAR } from "./config";
+import { deleteUserData } from "./user-lectures";
 
 export const state = (): S => ({
   timeTables: [],
@@ -49,8 +50,9 @@ export const actions: Actions<S, A, G, M> = {
     // → 時間割のフェッチ
   },
 
-  async deleteTable(ctx, { module, day, period }) {
+  async deleteTable(ctx, { module, day, period, UserLecture }) {
     await deleteLecture(YEAR, module, day, period);
+    await deleteUserData(UserLecture);
     // → サーバーから削除
 
     await ctx.dispatch("fetch");
