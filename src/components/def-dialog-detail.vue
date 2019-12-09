@@ -31,7 +31,7 @@
             <p class="h3">
               開講時限
               <span class="sbj-detail"
-                >{{ table.module }} {{ table.day }}{{ table.Period }}</span
+                >{{ table.module }} {{ table.day }}{{ table.period }}</span
               >
             </p>
             <p class="h3">
@@ -266,11 +266,6 @@ export default class Index extends Vue {
   border-radius: 1vh;
   z-index: 6;
 }
-@media screen and (min-width: 1300px) {
-  .main {
-    max-width: 1000px;
-  }
-}
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
@@ -297,7 +292,6 @@ article {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 550px;
   font-size: 2.3vh;
   height: 6vh;
   line-height: 6vh;
