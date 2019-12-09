@@ -1,7 +1,8 @@
-/** * 時間割追加画面 *
-ボタン、フォーム、CSVファイル追加辺りは別コンポネントに分けたい * TODO
-CSVの処理はここで行う */
 <template>
+  <!--
+    時間割追加画面
+    ボタン、フォーム、CSVファイル追加辺りは別コンポネントに分けたい
+  -->
   <section class="contents">
     <transition name="bound">
       <nav class="main" v-show="add">
@@ -231,6 +232,7 @@ export default class Index extends Vue {
 
       Swal.fire('追加完了', '時間割を更新しました', 'success')
 
+      this.lectures = []
       this.chAdd()
       // → ダイアログを閉じる
     })
@@ -389,8 +391,8 @@ h1 {
 /** 検索結果 */
 .result-list {
   position: absolute;
-  width: calc(100% - 3vh-1vw);
-  height: 26vh;
+  width: calc(100% - 3vh - 1vw);
+  height: 30vh;
   top: 17.6vh;
   margin: 0 1.8vh;
   padding: 1vw 0.5vw;
@@ -413,7 +415,8 @@ h1 {
   z-index: 5;
 }
 .twins-btn {
-  font-size: 1.9vh;
+  font-size: 1.7vh;
+  line-height: 1.9vh;
   font-weight: 400;
   color: #8c6cff;
 }
