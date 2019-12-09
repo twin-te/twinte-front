@@ -59,7 +59,7 @@ export default class Index extends Vue {
     } else {
       Swal.fire(
         "ようこそTwin:teへ",
-        "時間割を追加するにはログインをする必要があります<br>⚙からログインを行って下さい",
+        "Twin:teを利用するにはログインが必要です。<br>⚙からログインして下さい。",
         "info"
       )
     }
