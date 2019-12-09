@@ -101,6 +101,7 @@ import { UserLectureEntity } from '../types/server'
 import { deleteLecture, updateLecture } from '../store/api/timetables'
 import cloneDeep from 'lodash/cloneDeep'
 import Swal from 'sweetalert2'
+import { deleteUserData } from '../store/api/user-lectures'
 
 @Component({})
 export default class Index extends Vue {
@@ -178,13 +179,14 @@ export default class Index extends Vue {
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
     }).then(async (result) => {
-      if (result.value && this.table) {
+      if (result.value && this.table && this.userData) {
         await deleteLecture(
           this.table.year,
           this.table.module,
           this.table.day,
           this.table.period
         )
+        await deleteUserData(this.userData)
         // → 削除
 
         this.$store.dispatch('api/login')
