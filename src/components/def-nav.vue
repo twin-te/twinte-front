@@ -82,22 +82,23 @@ export default class Index extends Vue {
   }
 
   login() {
+    const inputOptions = {
+      '/auth/twitter': 'Twitter',
+      '/auth/google': 'Google',
+      '/auth/apple': 'Apple',
+    }
     Swal.fire({
       title: 'どのアカウントでログインしますか?',
       html:
         'Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。<br>ログインをした場合、<a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。',
-      showCancelButton: true,
-      confirmButtonText: 'Twitter',
+      input: 'radio',
+      inputOptions: inputOptions,
+      confirmButtonText: 'ログイン',
       confirmButtonColor: '#3085d6',
-      cancelButtonText: 'Google',
-      cancelButtonColor: '#3085d6',
     }).then((result) => {
-      console.log(result.value)
-
-      location.href = `${BASE_URL}${
-        result.value ? '/auth/twitter' : '/auth/google'
-      }`
-      // ダイアログの外を押してもgoogleに飛ぶのは既知のバグ
+      if (result.value) {
+        location.href = `${BASE_URL}${result.value}`
+      }
     })
   }
 
