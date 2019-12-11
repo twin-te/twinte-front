@@ -13,8 +13,8 @@
           <h1>授業の追加</h1>
           <p class="content">
             科目名・授業番号で検索
-            <span v-if="isMobile" class="twins-btn" @click="twins()"
-              >Twinsからインポート</span
+            <p v-if="isMobile" class="twins-btn" @click="twins()"
+              >Twinsからインポート</p
             >
           </p>
 
@@ -92,157 +92,157 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
-import { searchLectures } from '../store/api/lectures'
-import { login } from '../store/api/auth'
-import Swal from 'sweetalert2'
+import { Component, Vue } from "nuxt-property-decorator";
+import * as Vuex from "vuex";
+import { searchLectures } from "../store/api/lectures";
+import { login } from "../store/api/auth";
+import Swal from "sweetalert2";
 
 type miniLecture = {
-  lecture_code: string
-  lecture_name: string
-  module: string
-  day: string
-  period: number
-  checked: boolean
-}
+  lecture_code: string;
+  lecture_name: string;
+  module: string;
+  day: string;
+  period: number;
+  checked: boolean;
+};
 
 @Component({})
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
   // data___________________________________________________________________________________
   //
-  input: string = ''
-  lectures: miniLecture[] = []
-  isMobile = false
+  input: string = "";
+  lectures: miniLecture[] = [];
+  isMobile = false;
 
   // computed___________________________________________________________________________________
   //
   get moduleMessage(): string {
-    return `${this.$store.getters['table/module']}のCSVファイルを入力してください`
+    return `${this.$store.getters["table/module"]}のCSVファイルを入力してください`;
   }
   get add(): boolean {
-    return this.$store.getters['visible/add']
+    return this.$store.getters["visible/add"];
   }
   get moduleNum(): number {
-    return this.$store.getters['table/moduleNum']
+    return this.$store.getters["table/moduleNum"];
   }
 
   // method___________________________________________________________________________________
   //
   chAdd() {
-    this.$store.commit('visible/chAdd', { display: false })
+    this.$store.commit("visible/chAdd", { display: false });
   }
   twins() {
-    location.href = 'https://twins.tsukuba.ac.jp'
+    location.href = "https://twins.tsukuba.ac.jp";
   }
   custom() {
-    this.$router.push('/custom')
-    this.$store.commit('visible/chAdd', { display: false })
+    this.$router.push("/custom");
+    this.$store.commit("visible/chAdd", { display: false });
   }
   async search(input: string) {
-    const le = await searchLectures(input)
+    const le = await searchLectures(input);
     if (!le || le.length === 0) {
       Swal.fire(
-        '見つかりません',
-        '検索しましたが何も見つかりませんでした',
-        'error'
-      )
-      return
+        "見つかりません",
+        "検索しましたが何も見つかりませんでした",
+        "error"
+      );
+      return;
     }
 
-    le.forEach(async (l) => {
+    le.forEach(async l => {
       await this.lectures.push({
         lecture_code: l.lectureCode,
         lecture_name: l.name,
         module: l.details[0].module,
         day: l.details[0].day,
         period: l.details[0].period,
-        checked: false,
-      })
-    })
+        checked: false
+      });
+    });
 
-    this.input = ''
+    this.input = "";
   }
   async onFileChange(e: any) {
-    e.preventDefault()
+    e.preventDefault();
 
-    const fileData = e.target.files[0]
+    const fileData = e.target.files[0];
     if (fileData === null) {
-      return
+      return;
     }
 
-    const search = (csv: string) => this.search(csv)
-    const reader = new FileReader()
+    const search = (csv: string) => this.search(csv);
+    const reader = new FileReader();
     reader.onload = async () => {
-      if (typeof reader.result !== 'string') return
+      if (typeof reader.result !== "string") return;
       const csvLectureList = await Promise.all(
         reader.result
-          .split('\r\n')
-          .filter((csv) => csv) // drop blank line
-          .map((csv) => csv.replace(/["]/g, '')) // drop "
-      )
-      await csvLectureList.forEach((csv) => {
-        search(csv)
-      })
-    }
+          .split("\r\n")
+          .filter(csv => csv) // drop blank line
+          .map(csv => csv.replace(/["]/g, "")) // drop "
+      );
+      await csvLectureList.forEach(csv => {
+        search(csv);
+      });
+    };
 
-    await reader.readAsText(fileData)
+    await reader.readAsText(fileData);
   }
 
   async asyncNumber() {
-    if (!this.$store.getters['api/isLogin']) {
+    if (!this.$store.getters["api/isLogin"]) {
       Swal.fire(
-        'まだログインしていません',
-        '歯車⚙からログインして下さい',
-        'error'
-      )
-      return
+        "まだログインしていません",
+        "歯車⚙からログインして下さい",
+        "error"
+      );
+      return;
     }
 
     Swal.fire({
-      title: '科目追加を行いますか？',
-      text: '現在表示されている時間割は上書きされます',
+      title: "科目追加を行いますか？",
+      text: "現在表示されている時間割は上書きされます",
       showCancelButton: true,
-      confirmButtonText: 'はい',
-      cancelButtonText: 'いいえ',
-    }).then(async (result) => {
+      confirmButtonText: "はい",
+      cancelButtonText: "いいえ"
+    }).then(async result => {
       if (!result.value) {
-        return
+        return;
       }
 
       const lectureCodes = await Promise.all(
-        this.lectures.filter((l) => l.checked).map((l) => l.lecture_code)
-      )
+        this.lectures.filter(l => l.checked).map(l => l.lecture_code)
+      );
 
       if (lectureCodes.length === 0) {
         Swal.fire(
-          '追加するデータがありません',
-          '検索を行い、追加する授業にチェックマークをつけて下さい',
-          'warning'
-        )
-        return
+          "追加するデータがありません",
+          "検索を行い、追加する授業にチェックマークをつけて下さい",
+          "warning"
+        );
+        return;
       }
 
-      await this.$store.dispatch('api/addTable', { lectureCodes })
+      await this.$store.dispatch("api/addTable", { lectureCodes });
       // → 追加
 
-      login()
+      login();
       // → 更新
 
-      Swal.fire('追加完了', '時間割を更新しました', 'success')
+      Swal.fire("追加完了", "時間割を更新しました", "success");
 
-      this.lectures = []
-      this.chAdd()
+      this.lectures = [];
+      this.chAdd();
       // → ダイアログを閉じる
-    })
+    });
   }
 
   mounted() {
     this.isMobile =
       /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-      /TwinteAppforAndroid/.test(navigator.userAgent)
+      /TwinteAppforAndroid/.test(navigator.userAgent);
   }
 }
 </script>
@@ -255,23 +255,17 @@ export default class Index extends Vue {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   width: 92vw;
-  max-width: 700px;
   height: 80vh;
   background: #fff;
-  box-shadow: 1vmine;
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   border-radius: 1vh;
   z-index: 6;
-}
-@media screen and (min-width: 1300px) {
-  .main {
-    max-width: 1000px;
-  }
 }
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
-  margin: 5vh;
+  margin: 4vmax;
   height: calc(80vh - 10vh);
 }
 
@@ -291,7 +285,6 @@ article {
   transform: translateX(-50%);
   margin-top: auto;
   width: 100%;
-  max-width: 550px;
   font-size: 2.3vh;
   height: 6vh;
   line-height: 6vh;
@@ -322,10 +315,10 @@ h1 {
 }
 .content {
   position: absolute;
-  top: 5.9vh;
+  top: 4.5vh;
   font-size: 2vh;
   color: #555;
-  margin-left: 1.5vh;
+  margin-left: 0.5vh;
 }
 .others {
   position: absolute;
@@ -336,38 +329,39 @@ h1 {
 .others p {
   font-size: 2vh;
   color: #adadad;
-  margin-left: 1.5vh;
+  margin-left: 0.5vh;
   line-height: 100%;
 }
 .others input {
   margin-left: auto;
   margin-right: 0;
   color: #adadad;
+  font-size: 1.8vh;
 }
 
 /* 検索フォーム */
 .search-form {
   position: absolute;
-  width: calc(100% - 3vh);
+  width: 98%;
   height: 4.5vh;
-  top: 11.6vh;
-  margin: 0 1.5vh;
+  top: 12vh;
+  margin: 0;
 }
 .form {
   height: 100%;
-  width: 98%;
-  max-width: 1000px;
+  width: 100%;
   background-color: #fff;
-  border: 1px solid #adadad;
+  border: 0.2vh solid #adadad;
   color: #4a5568;
   border-radius: 3vh;
   position: relative;
-  padding-left: 2%;
+  padding-left: 4%;
+  font-size: 2vh;
 }
 .search-btn {
   position: absolute;
   top: 0;
-  right: -0.6vh;
+  right: -5%;
   height: 5vh;
   width: 5vh;
   border-radius: 50% 50%;
@@ -392,14 +386,16 @@ h1 {
 /** 検索結果 */
 .result-list {
   position: absolute;
-  width: calc(100% - 3vh - 1vw);
-  height: 30vh;
-  top: 17.6vh;
-  margin: 0 1.8vh;
+  width: 100%;
+  height: 30.5vh;
+  top: 17.9vh;
+  margin: 0;
   padding: 1vw 0.5vw;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
+  font-size: 2vh;
+  line-height: 150%;
 }
 .result-list div {
   padding: 2vw;
@@ -416,8 +412,10 @@ h1 {
   z-index: 5;
 }
 .twins-btn {
-  font-size: 1.7vh;
-  line-height: 1.9vh;
+  position: absolute;
+  top: 7.1vh;
+  margin-left: 0.5vh;
+  font-size: 1.8vh;
   font-weight: 400;
   color: #8c6cff;
 }
