@@ -69,6 +69,7 @@
             <input
               type="file"
               name="file"
+              accept="text/csv,.csv"
               id="fileElem"
               @change="onFileChange"
             />
