@@ -45,7 +45,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { BASE_URL } from '../store/api/config'
 import Swal from 'sweetalert2'
 
 @Component({})
@@ -78,28 +77,13 @@ export default class Index extends Vue {
       location.href = link
     } else {
       this.$router.push(link)
+      this.chDrawer()
     }
   }
 
   login() {
-    const inputOptions = {
-      '/auth/twitter': 'Twitter',
-      '/auth/google': 'Google',
-      '/auth/apple': 'Apple',
-    }
-    Swal.fire({
-      title: 'どのアカウントでログインしますか?',
-      html:
-        'Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。<br>ログインをした場合、<a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。',
-      input: 'radio',
-      inputOptions: inputOptions,
-      confirmButtonText: 'ログイン',
-      confirmButtonColor: '#3085d6',
-    }).then((result) => {
-      if (result.value) {
-        location.href = `${BASE_URL}${result.value}`
-      }
-    })
+    this.$router.push("login")
+    this.chDrawer()
   }
 
   logout() {
