@@ -342,13 +342,15 @@ h1 {
 /* 検索フォーム */
 .search-form {
   position: absolute;
-  width: 98%;
+  width: 96%;
   height: 4.5vh;
   top: 12vh;
   margin: 0;
+  padding: 0;
 }
 .form {
-  height: 100%;
+  position: relative;
+  height: 4.5vh;
   width: 100%;
   background-color: #fff;
   border: 0.2vh solid #adadad;
@@ -356,14 +358,18 @@ h1 {
   border-radius: 3vh;
   position: relative;
   padding-left: 4%;
+  margin: 0;
+  padding: 0;
   font-size: 2vh;
 }
 .search-btn {
   position: absolute;
   top: 0;
-  right: -5%;
-  height: 5vh;
-  width: 5vh;
+  right: -0.4vh;
+  margin: 0;
+  padding: 0;
+  height: 4.8vh;
+  width: 4.8vh;
   border-radius: 50% 50%;
   background-color: #00c0c0;
   color: #fff;
