@@ -45,7 +45,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { BASE_URL } from '../store/api/config'
 import Swal from 'sweetalert2'
 
 @Component({})
@@ -78,10 +77,12 @@ export default class Index extends Vue {
       location.href = link
     } else {
       this.$router.push(link)
+      this.chDrawer()
     }
   }
 
   login() {
+<<<<<<< HEAD
     const inputOptions = {
       '/auth/twitter': 'Twitter',
       '/auth/google': 'Google',
@@ -100,6 +101,10 @@ export default class Index extends Vue {
         location.href = `${BASE_URL}${result.value}`
       }
     })
+=======
+    this.$router.push("login")
+    this.chDrawer()
+>>>>>>> 44cd543416b43bea81ffd1078ca52dc7b2a07b32
   }
 
   logout() {
