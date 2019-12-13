@@ -342,7 +342,6 @@ h1 {
 /* 検索フォーム */
 .search-form {
   position: absolute;
-<<<<<<< HEAD
   width: 98%;
   height: 4.5vh;
   top: 12vh;
@@ -350,17 +349,6 @@ h1 {
 }
 .form {
   height: 100%;
-=======
-  width: 96%;
-  height: 4.5vh;
-  top: 12vh;
-  margin: 0;
-  padding: 0;
-}
-.form {
-  position: relative;
-  height: 4.5vh;
->>>>>>> 44cd543416b43bea81ffd1078ca52dc7b2a07b32
   width: 100%;
   background-color: #fff;
   border: 0.2vh solid #adadad;
@@ -368,27 +356,18 @@ h1 {
   border-radius: 3vh;
   position: relative;
   padding-left: 4%;
-<<<<<<< HEAD
-=======
   margin: 0;
   padding: 0;
->>>>>>> 44cd543416b43bea81ffd1078ca52dc7b2a07b32
   font-size: 2vh;
 }
 .search-btn {
   position: absolute;
   top: 0;
-<<<<<<< HEAD
-  right: -5%;
-  height: 5vh;
-  width: 5vh;
-=======
   right: -0.4vh;
   margin: 0;
   padding: 0;
   height: 4.8vh;
   width: 4.8vh;
->>>>>>> 44cd543416b43bea81ffd1078ca52dc7b2a07b32
   border-radius: 50% 50%;
   background-color: #00c0c0;
   color: #fff;

@@ -46,6 +46,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
+import { BASE_URL } from '../store/api/config'
 
 @Component({})
 export default class Index extends Vue {
@@ -82,29 +83,42 @@ export default class Index extends Vue {
   }
 
   login() {
-<<<<<<< HEAD
-    const inputOptions = {
-      '/auth/twitter': 'Twitter',
-      '/auth/google': 'Google',
-      '/auth/apple': 'Apple',
-    }
     Swal.fire({
       title: 'どのアカウントでログインしますか?',
-      html:
-        'Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。<br>ログインをした場合、<a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。',
-      input: 'radio',
-      inputOptions: inputOptions,
-      confirmButtonText: 'ログイン',
-      confirmButtonColor: '#3085d6',
-    }).then((result) => {
-      if (result.value) {
-        location.href = `${BASE_URL}${result.value}`
-      }
+      html: `
+      <p>
+        Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。
+        <br />ログインをした場合、
+        <a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。
+      </p>
+      <a href="${BASE_URL}/auth/google">
+        <img
+          width="200"
+          src="/authimg/google/btn_google_signin_light_normal_web@2x.png"
+          alt="sign in with google"
+        />
+      </a>
+      <br />
+      <a href="${BASE_URL}/auth/apple">
+        <img
+          width="200"
+          src="/authimg/apple/botan.png"
+          alt="りんご"
+        />
+      </a>
+      <br />
+      <a href="${BASE_URL}/auth/twitter">
+        <img
+          width="200"
+          src="/authimg/twitter/sign-in-with-twitter-gray.png"
+          alt="とり"
+        />
+      </a>
+      `,
+      showConfirmButton: false,
+      showCancelButton: true,
+      cancelButtonText: '閉じる',
     })
-=======
-    this.$router.push("login")
-    this.chDrawer()
->>>>>>> 44cd543416b43bea81ffd1078ca52dc7b2a07b32
   }
 
   logout() {
