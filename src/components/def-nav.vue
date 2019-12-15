@@ -91,29 +91,33 @@ export default class Index extends Vue {
         <br />ログインをした場合、
         <a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。
       </p>
-      <a href="${BASE_URL}/auth/google">
-        <img
-          width="200"
-          src="/authimg/google/btn_google_signin_light_normal_web@2x.png"
-          alt="sign in with google"
-        />
-      </a>
-      <br />
-      <a href="${BASE_URL}/auth/apple">
-        <img
-          width="200"
-          src="/authimg/apple/botan.png"
-          alt="りんご"
-        />
-      </a>
-      <br />
-      <a href="${BASE_URL}/auth/twitter">
-        <img
-          width="200"
-          src="/authimg/twitter/sign-in-with-twitter-gray.png"
-          alt="とり"
-        />
-      </a>
+      <p>
+        <a href="${BASE_URL}/auth/google">
+          <img
+            width="250"
+            src="/authimg/btn_google_signin_light_normal_web@2x.png"
+            alt="sign in with google"
+          />
+        </a>
+      </p>
+      <p>
+        <a href="${BASE_URL}/auth/apple">
+          <img
+            width="250"
+            src="/authimg/SignInWithApple.png"
+            alt="SignInWithApple"
+          />
+        </a>
+      </p>
+      <p>
+        <a href="${BASE_URL}/auth/twitter">
+          <img
+            width="250"
+            src="/authimg/twitter/sign-in-with-twitter-gray.png"
+            alt="ign-in-with-twitter"
+          />
+        </a>
+      </p>
       `,
       showConfirmButton: false,
       showCancelButton: true,
