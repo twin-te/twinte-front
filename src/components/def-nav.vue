@@ -82,7 +82,7 @@ export default class Index extends Vue {
     }
   }
 
-  login() {
+  async login() {
     Swal.fire({
       title: 'どのアカウントでログインしますか?',
       html: `
@@ -113,7 +113,7 @@ export default class Index extends Vue {
         <a href="${BASE_URL}/auth/twitter">
           <img
             width="250"
-            src="/authimg/twitter/sign-in-with-twitter-gray.png"
+            src="/authimg/sign-in-with-twitter-gray.png"
             alt="ign-in-with-twitter"
           />
         </a>
