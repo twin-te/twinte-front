@@ -95,7 +95,6 @@
 import { Component, Vue } from "nuxt-property-decorator";
 import * as Vuex from "vuex";
 import { searchLectures } from "../store/api/lectures";
-import { login } from "../store/api/auth";
 import Swal from "sweetalert2";
 
 type miniLecture = {
@@ -227,9 +226,6 @@ export default class Index extends Vue {
 
       await this.$store.dispatch("api/addTable", { lectureCodes });
       // → 追加
-
-      login();
-      // → 更新
 
       Swal.fire("追加完了", "時間割を更新しました", "success");
 
