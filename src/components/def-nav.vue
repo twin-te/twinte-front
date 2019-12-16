@@ -104,7 +104,7 @@ export default class Index extends Vue {
         <a href="${BASE_URL}/auth/apple">
           <img
             width="250"
-            src="/authimg/SignInWithApple.png"
+            src="/authimg/sign-in-with-apple.png"
             alt="SignInWithApple"
           />
         </a>
