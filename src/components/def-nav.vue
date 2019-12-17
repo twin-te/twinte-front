@@ -147,9 +147,9 @@ export default class Index extends Vue {
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.value) {
-        this.$store.dispatch('api/logout')
+        await this.$store.dispatch('api/logout')
         localStorage.removeItem('login')
         location.href = '/'
       }
