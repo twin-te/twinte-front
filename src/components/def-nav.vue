@@ -91,6 +91,41 @@ export default class Index extends Vue {
             window.android.openSettings()
           }
           break
+        case 'func:twins':
+          Swal.mixin({
+            confirmButtonText: '次へ &rarr;',
+            showCancelButton: true,
+            progressSteps: ['1', '2', '3'],
+          })
+            .queue([
+              {
+                title: 'Twinsにインポート',
+                text:
+                  'メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。',
+                imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
+                imageHeight: 300,
+              },
+              {
+                title: 'Twinsにインポート',
+                text:
+                  '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
+                imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
+                imageHeight: 300,
+              },
+              {
+                title: 'Twinsにインポート',
+                text:
+                  '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
+                imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
+                imageHeight: 300,
+              },
+            ])
+            .then((result) => {
+              if (result.value) {
+                location.href = 'https://twins.tsukuba.ac.jp'
+              }
+            })
+          break
       }
     } else {
       this.$router.push(link)
@@ -163,7 +198,7 @@ export default class Index extends Vue {
       this.list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
-        link: 'https://twins.tsukuba.ac.jp',
+        link: 'func:twins',
       })
     }
     if (window.android) {
