@@ -37,14 +37,23 @@ export default class Index extends Vue {
      *
      */
 
+    const loginState = await isLogin()
+    if (loginState) {
+      this.$store.dispatch('api/login')
+    } else {
+      Swal.fire(
+        'ようこそTwin:teへ',
+        'Twin:teを利用するにはログインが必要です。<br>⚙からログインして下さい。',
+        'info'
+      )
+    }
+
     const table = localStorage.getItem('table')
     if (table) {
       // const periodDatas: TimeTables = JSON.parse(table);
       // this.$store.commit("API/SET_TABLE", { periodDatas });
       // this.$store.commit("API/LOGIN");
-    } else {
     }
-    this.login()
     // → 時間割データ
 
     const module = localStorage.getItem('module')
@@ -54,9 +63,7 @@ export default class Index extends Vue {
     // → 前回見ていた学期
 
     const loginFlag = localStorage.getItem('login')
-    console.log(loginFlag)
-
-    if (!loginFlag && (await isLogin())) {
+    if (!loginFlag && loginState) {
       Swal.fire(
         'ログインできました',
         'ようこそTwin:teへ！➕ボタンをタップして時間割を登録してみましょう！',
@@ -65,17 +72,6 @@ export default class Index extends Vue {
       localStorage.setItem('login', 'true')
     }
     // → はじめてログインしたときのみ
-  }
-  async login() {
-    if (await isLogin()) {
-      this.$store.dispatch('api/login')
-    } else {
-      Swal.fire(
-        'ようこそTwin:teへ',
-        'Twin:teを利用するにはログインが必要です。<br>⚙からログインして下さい。',
-        'info'
-      )
-    }
   }
 }
 </script>

@@ -150,8 +150,7 @@ export default class Index extends Vue {
     }).then(async (result) => {
       if (result.value) {
         await this.$store.dispatch('api/logout')
-        localStorage.removeItem('login')
-        location.href = '/'
+        location.href = `${BASE_URL}/auth/logout`
       }
     })
   }

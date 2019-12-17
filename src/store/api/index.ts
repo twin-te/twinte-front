@@ -9,7 +9,6 @@
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
 
-import { logout } from './auth'
 import { deleteLecture, postAllLectures, getTimeTables } from './timetables'
 import { YEAR } from './config'
 import { deleteUserData } from './user-lectures'
@@ -75,9 +74,9 @@ export const actions: Actions<S, A, G, M> = {
     localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
   },
 
-  async logout(ctx) {
-    await logout()
+  logout(ctx) {
     ctx.commit('LOGOUT')
     localStorage.removeItem('table')
+    localStorage.removeItem('login')
   },
 }

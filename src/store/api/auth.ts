@@ -1,17 +1,6 @@
 import { BASE_URL, axios } from './config'
 const url = BASE_URL
 
-async function logout() {
-  try {
-    const { data } = await axios.get(`${url}/auth/logout`)
-    return data
-  } catch (error) {
-    const { status, statusText } = error.response
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
-  }
-}
-
 /**
  * ログインされているかの判定 true : false
  * ネートワークエラーもfalse
@@ -30,4 +19,4 @@ async function isLogin(): Promise<boolean> {
   }
 }
 
-export { logout, isLogin }
+export { isLogin }
