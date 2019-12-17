@@ -23,8 +23,8 @@
         <section class="menu-contents-wrap">
           <div
             class="menu-content"
-            v-for="l in list"
-            :key="l.id"
+            v-for="(l, id) in list"
+            :key="id"
             :id="l.icon"
             @click="goto(l.link)"
           >
@@ -47,6 +47,14 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 import { BASE_URL } from '../store/api/config'
+
+declare global {
+  interface Window {
+    android?: {
+      openSettings: () => void
+    }
+  }
+}
 
 @Component({})
 export default class Index extends Vue {
@@ -76,6 +84,14 @@ export default class Index extends Vue {
   goto(link: string) {
     if (link.startsWith('https://')) {
       location.href = link
+    } else if (link.startsWith('func:')) {
+      switch (link) {
+        case 'func:android':
+          if (window.android) {
+            window.android.openSettings()
+          }
+          break
+      }
     } else {
       this.$router.push(link)
       this.chDrawer()
@@ -149,6 +165,13 @@ export default class Index extends Vue {
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
         link: 'https://twins.tsukuba.ac.jp',
+      })
+    }
+    if (window.android) {
+      this.list.push({
+        icon: 'settings',
+        name: 'Androidアプリの設定',
+        link: 'func:android',
       })
     }
   }
