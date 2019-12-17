@@ -134,6 +134,7 @@ export default class Index extends Vue {
     }).then((result) => {
       if (result.value) {
         this.$store.dispatch('api/logout')
+        localStorage.removeItem('login')
         location.href = '/'
       }
     })
