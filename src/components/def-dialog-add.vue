@@ -363,7 +363,7 @@ h1 {
   margin: 0;
   padding: 0;
   padding-left: 3%;
-  font-size: 2vh;
+  font-size: 16px;
 }
 .search-btn {
   position: absolute;
