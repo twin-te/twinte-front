@@ -23,8 +23,8 @@
         <section class="menu-contents-wrap">
           <div
             class="menu-content"
-            v-for="l in list"
-            :key="l.id"
+            v-for="(l, id) in list"
+            :key="id"
             :id="l.icon"
             @click="goto(l.link)"
           >
@@ -45,8 +45,16 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { BASE_URL } from '../store/api/config'
 import Swal from 'sweetalert2'
+import { BASE_URL } from '../store/api/config'
+
+declare global {
+  interface Window {
+    android?: {
+      openSettings: () => void
+    }
+  }
+}
 
 @Component({})
 export default class Index extends Vue {
@@ -54,7 +62,7 @@ export default class Index extends Vue {
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
-    { icon: 'help', name: '使い方', link: 'https://www.twinte.net#howto' },
+    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' },
     // , { icon: "supervisor_account", name: "About", link: "/about" }
     // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
     // , { icon: "share", name: "時間割の共有", link: "/" }
@@ -76,28 +84,95 @@ export default class Index extends Vue {
   goto(link: string) {
     if (link.startsWith('https://')) {
       location.href = link
+    } else if (link.startsWith('func:')) {
+      switch (link) {
+        case 'func:android':
+          if (window.android) {
+            window.android.openSettings()
+          }
+          break
+        case 'func:twins':
+          Swal.mixin({
+            confirmButtonText: '次へ &rarr;',
+            showCancelButton: true,
+            progressSteps: ['1', '2', '3'],
+          })
+            .queue([
+              {
+                title: 'Twinsからインポート',
+                text:
+                  'Twinsにログインします。',
+                imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
+                imageHeight: 300,
+              },
+              {
+                title: 'Twinsからインポート',
+                text:
+                  '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
+                imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
+                imageHeight: 300,
+              },
+              {
+                title: 'Twinsからインポート',
+                text:
+                  '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
+                imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
+                imageHeight: 300,
+              },
+            ])
+            .then((result) => {
+              if (result.value) {
+                location.href = 'https://twins.tsukuba.ac.jp'
+              }
+            })
+          break
+      }
     } else {
       this.$router.push(link)
+      this.chDrawer()
     }
   }
 
-  login() {
+  async login() {
     Swal.fire({
       title: 'どのアカウントでログインしますか?',
-      html:
-        'ログインしたものは以下の<a href="https://example.com">利用規約</a>に同意したものとみなします。その他のアカウントでのログインをしたい方は"info@twinte.net"へご連絡ください',
+      html: `
+      <p>
+        Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。
+        <br />ログインをした場合、
+        <a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。
+      </p>
+      <p>
+        <a href="${BASE_URL}/auth/google">
+          <img
+            width="250"
+            src="/authimg/btn_google_signin_light_normal_web@2x.png"
+            alt="sign in with google"
+          />
+        </a>
+      </p>
+      <p>
+        <a href="${BASE_URL}/auth/apple">
+          <img
+            width="250"
+            src="/authimg/sign-in-with-apple.png"
+            alt="SignInWithApple"
+          />
+        </a>
+      </p>
+      <p>
+        <a href="${BASE_URL}/auth/twitter">
+          <img
+            width="250"
+            src="/authimg/sign-in-with-twitter-gray.png"
+            alt="ign-in-with-twitter"
+          />
+        </a>
+      </p>
+      `,
+      showConfirmButton: false,
       showCancelButton: true,
-      confirmButtonText: 'Twitter',
-      confirmButtonColor: '#3085d6',
-      cancelButtonText: 'Google',
-      cancelButtonColor: '#3085d6',
-    }).then((result) => {
-      console.log(result.value)
-
-      location.href = `${BASE_URL}${
-        result.value ? '/auth/twitter' : '/auth/google'
-      }`
-      // ダイアログの外を押してもgoogleに飛ぶのは既知のバグ
+      cancelButtonText: '閉じる',
     })
   }
 
@@ -107,10 +182,10 @@ export default class Index extends Vue {
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.value) {
-        this.$store.dispatch('api/logout')
-        location.href = '/'
+        await this.$store.dispatch('api/logout')
+        location.href = `${BASE_URL}/auth/logout`
       }
     })
   }
@@ -123,7 +198,14 @@ export default class Index extends Vue {
       this.list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
-        link: 'https://twins.tsukuba.ac.jp',
+        link: 'func:twins',
+      })
+    }
+    if (window.android) {
+      this.list.push({
+        icon: 'settings',
+        name: 'Androidアプリの設定',
+        link: 'func:android',
       })
     }
   }

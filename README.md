@@ -1,12 +1,20 @@
-<div style="background: #00c0c0; padding: 20px" align="center">
+<div style="padding: 20px" align="center">
 
 <p>
-    <img src="./src/assets/img/title-logo.png" width="300">
-    </a>
+    <img src="./src/assets/img/Twintelogo-color.png" width="300">
 </p>
 <p>
+    <a href="https://twitter.com/intent/followscreen_name=te_twin">
+    <img src="https://flat.badgen.net/twitter/follow/te_twin?icon=twitter&label=%40te_twin" alt="Official Twitter Handle" />
+    </a>
     <a href="https://github.com/prettier/prettier">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/microsoft/TypeScript">
+    <img src="https://flat.badgen.net/badge/icon/typescript?icon=typescript&label" alt="typescript" />
+    </a>
+    <a href="https://github.com/twin-te/twinte-front/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22">
+    <img alt="good first issue" src="https://img.shields.io/github/issues/twin-te/twinte-front/good%20first%20issue.svg?style=flat-square">
     </a>
 </p>
 
@@ -14,13 +22,27 @@
 
 # twin:te-front
 
-twinte のフロントエンドです。WIP。
+時間割アプリ
+Twin:te - https://app.twinte.net のフロントエンドです。
 
-![shintyoku](img/shintyoku.png)
+- 公式サイト - https://www.twinte.net
+- AppStore -
+- PlayStore -
+
+## feature
+
+- SSO(シングルサインオン)によるクロスプラットフォームでの時間割の共有
+- シンプルな時間割追加 UX と kdb と連携した時間割の自動生成
+- 他の時間割アプリと比較して軽量(Web 版は 2Mb 以下)
 
 ## Development
 
-リポジトリをクローンして依存ライブラリをインストールします。
+- 📥 Pull requests and 🌟 Stars are always welcome.
+- このプロジェクトは OSS のため、コントリビュートを歓迎しております。
+- TypeScript と Vuejs のいづれかの基礎知識(HTML, SASS など)があればコントリビュート可能です。
+- ![https://github.com/twin-te/twinte-front/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22](https://img.shields.io/github/issues/twin-te/twinte-front/good%20first%20issue.svg?style=flat-square) のタグがついているものは比較的新規者でも扱いやすい issue になっています。
+
+まずはリポジトリをクローンして依存ライブラリをインストールします。
 
 ```
 $ git clone git@github.com:twin-te/twinte-front.git
@@ -46,6 +68,12 @@ $ yarn build
 $ yarn start
 ```
 
+静的ファイルを出力します。出力先は`./dist`です
+
+```
+$yarn generate
+```
+
 リントします。`@typescript-eslint/parser`を使っているのでちょっと遅いです。fix までするときは`:fix`をつけます。
 
 ```
@@ -60,47 +88,13 @@ $ yarn lint:fix
 $ yarn format
 ```
 
-## name
+### API ドキュメントの確認
 
-toolbar: 上部のバー
-![](img/layout.png)
+- Twitter アカウント [@te_twin](https://twitter.com/te_twin)
+- email info@twinte.net
 
-navigation: サイド（左）のバー
-![](img/nav.vue.png)
+へご連絡して下さい。
 
-dialog: ポップアップ画面
-![](img/dialog.vue.png)
-
-ripple: タップしたときのエフェクト
-
-## file structure
-
-[layouts/default.vue](src/layouts/default.vue): toolbar, navigation, dialog の基本構造
-![](img/layout.png)
-
-[pages/index.vue](src/pages/index.vue): 時間割画面
-![](img/index.vue.png)
-
-[components/def-](src/components): default.vue で用いるコンポネントをまとめたもの
-
-[components/app-](src/components) : pages 内で用いるコンポネントをまとめたもの
-
-[components/app-day.vue](src/components/app-day.vue): 時間割の右上に表示するカレンダー
-
-[components/def-dialog-add.vue](src/components/def-dialog-add.vue): 科目追加画面
-![](img/add.vue.png)
-
-[components/app-table-contents.vue](src/components/app-table-contents.vue): 時間割本体。semester を引数にとって表示するデータを変えている。
-
-[components/ui-](src/components) : components 内で用いるコンポネントをまとめたもの
-
-[components/ui/ripple.vue](src/components/ui-ripple.vue) : これで囲うと ripple になる（非推奨）
-
-## 次やること
-
-- 設定画面作成
-- 科目追加機能実装
-- バックエンドとのやりとり
-- ログイン機能実装
+または[バックエンド](https://github.com/twin-te/twinte-server)のコードをごらんください。
 
 ![build with Nuxt](https://ja.nuxtjs.org/logos/built-with-nuxt.svg)
