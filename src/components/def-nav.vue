@@ -99,21 +99,21 @@ export default class Index extends Vue {
           })
             .queue([
               {
-                title: 'Twinsにインポート',
+                title: 'Twinsからインポート',
                 text:
-                  'メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。',
+                  'Twinsにログインします。',
                 imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
                 imageHeight: 300,
               },
               {
-                title: 'Twinsにインポート',
+                title: 'Twinsからインポート',
                 text:
                   '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
                 imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
                 imageHeight: 300,
               },
               {
-                title: 'Twinsにインポート',
+                title: 'Twinsからインポート',
                 text:
                   '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
                 imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
