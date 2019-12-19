@@ -7,36 +7,15 @@
     <transition name="bound">
       <nav class="main" v-show="add">
         <article>
-          <div class="svg-button material-icons close-btn" @click="chAdd()">
-            close
-          </div>
+          <div class="svg-button material-icons close-btn" @click="chAdd()">close</div>
           <h1>授業の追加</h1>
-          <p class="content">
-            科目名・授業番号で検索
-            <p v-if="isMobile" class="twins-btn" @click="twins()"
-              >Twinsからインポート</p
-            >
-          </p>
+          <p class="content">科目名・授業番号で検索</p>
+          <p v-if="isMobile" class="twins-btn" @click="twins()">Twinsからインポート</p>
 
           <form class="search-form" @submit.prevent>
-            <input
-              v-model="input"
-              type="text"
-              class="form"
-              @keyup.enter="search(input)"
-            />
-            <span
-              v-if="input === ''"
-              @click="lectures = []"
-              class="material-icons search-btn"
-              >close</span
-            >
-            <span
-              v-else
-              @click="search(input)"
-              class="material-icons search-btn"
-              >search</span
-            >
+            <input v-model="input" type="text" class="form" @keyup.enter="search(input)" />
+            <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
+            <span v-else @click="search(input)" class="material-icons search-btn">search</span>
           </form>
           <!-- → 検索ボックス -->
 
@@ -69,7 +48,7 @@
             <input
               type="file"
               name="file"
-              accept="text/csv,.csv"
+              accept="text/csv, .csv"
               id="fileElem"
               @change="onFileChange"
             />
@@ -77,9 +56,7 @@
           </section>
           <!-- → その他オプション -->
 
-          <section class="register-btn" @click="asyncNumber()">
-            時間割に追加
-          </section>
+          <section class="register-btn" @click="asyncNumber()">時間割に追加</section>
         </article>
       </nav>
     </transition>
@@ -135,38 +112,38 @@ export default class Index extends Vue {
   }
   twins() {
     Swal.mixin({
-      confirmButtonText: '次へ &rarr;',
+      confirmButtonText: "次へ &rarr;",
       showCancelButton: true,
-      progressSteps: ['1', '2', '3'],
+      progressSteps: ["1", "2", "3"]
     })
-    .queue([
-      {
-        title: 'Twinsからインポート',
-        text:
-          'メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。',
-        imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
-        imageHeight: 300,
-      },
-      {
-        title: 'Twinsからインポート',
-        text:
-          '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
-        imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
-        imageHeight: 300,
-      },
-      {
-        title: 'Twinsからインポート',
-        text:
-          '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
-        imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
-        imageHeight: 300,
-      },
-    ])
-    .then((result) => {
-      if (result.value) {
-        location.href = 'https://twins.tsukuba.ac.jp'
-      }
-    })
+      .queue([
+        {
+          title: "Twinsからインポート",
+          text:
+            "メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。",
+          imageUrl: "https://www.twinte.net/_nuxt/img/214cb57.jpg",
+          imageHeight: 300
+        },
+        {
+          title: "Twinsからインポート",
+          text:
+            "履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。",
+          imageUrl: "https://www.twinte.net/_nuxt/img/834f6e7.jpg",
+          imageHeight: 300
+        },
+        {
+          title: "Twinsからインポート",
+          text:
+            "「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。",
+          imageUrl: "https://www.twinte.net/_nuxt/img/f9666f5.jpg",
+          imageHeight: 300
+        }
+      ])
+      .then(result => {
+        if (result.value) {
+          location.href = "https://twins.tsukuba.ac.jp";
+        }
+      });
   }
   custom() {
     this.$router.push("/custom");
@@ -377,15 +354,15 @@ h1 {
 }
 .form {
   height: 100%;
-  width: 100%;
+  width: 97%;
   background-color: #fff;
   border: 0.2vh solid #adadad;
   color: #4a5568;
   border-radius: 3vh;
   position: relative;
-  padding-left: 4%;
   margin: 0;
   padding: 0;
+  padding-left: 3%;
   font-size: 2vh;
 }
 .search-btn {
@@ -445,7 +422,7 @@ h1 {
 }
 .twins-btn {
   position: absolute;
-  top: 7.1vh;
+  top: 7.4vh;
   margin-left: 0.5vh;
   font-size: 1.8vh;
   font-weight: 400;
