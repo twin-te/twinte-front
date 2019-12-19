@@ -377,15 +377,15 @@ h1 {
 }
 .form {
   height: 100%;
-  width: 100%;
+  width: 97%;
   background-color: #fff;
   border: 0.2vh solid #adadad;
   color: #4a5568;
   border-radius: 3vh;
   position: relative;
-  padding-left: 4%;
   margin: 0;
   padding: 0;
+  padding-left:3%;
   font-size: 2vh;
 }
 .search-btn {
