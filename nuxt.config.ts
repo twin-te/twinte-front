@@ -1,7 +1,7 @@
 import { Configuration } from '@nuxt/types'
 const baseName = process.env.BASE_NAME || 'Twin:te'
 const baseDesc =
-  process.env.BASE_DISC || '筑波大学専門の時間割アプリケーションです'
+  process.env.BASE_DISC || '筑波大学専用の時間割アプリケーションです'
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
 const baseDir = process.env.BASE_DIR || '/'
 
