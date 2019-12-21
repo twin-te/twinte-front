@@ -24,16 +24,17 @@
 
 時間割アプリ
 Twin:te - https://app.twinte.net のフロントエンドです。
+バックエンドは[こちら](https://github.com/twin-te/twinte-server)
 
 - 公式サイト - https://www.twinte.net
-- AppStore -
-- PlayStore -
+- AppStore - https://apps.apple.com/us/app/twin-te/id1489274755?l=ja&ls=1
+- PlayStore - https://play.google.com/store/apps/details?id=net.twinte.android
 
 ## feature
 
 - SSO(シングルサインオン)によるクロスプラットフォームでの時間割の共有
 - シンプルな時間割追加 UX と kdb と連携した時間割の自動生成
-- 他の時間割アプリと比較して軽量(Web 版は 2Mb 以下)
+- 他の時間割アプリと比較して軽量(Web 版は 2Mb 以下 スマホも 4Mb 以下)
 
 ## Development
 
@@ -74,14 +75,6 @@ $ yarn start
 $yarn generate
 ```
 
-リントします。`@typescript-eslint/parser`を使っているのでちょっと遅いです。fix までするときは`:fix`をつけます。
-
-```
-$ yarn lint
-or
-$ yarn lint:fix
-```
-
 フォーマットをします。Prettier の標準ルールに準拠しています。
 
 ```
@@ -98,3 +91,7 @@ $ yarn format
 または[バックエンド](https://github.com/twin-te/twinte-server)のコードをごらんください。
 
 ![build with Nuxt](https://ja.nuxtjs.org/logos/built-with-nuxt.svg)
+
+```
+
+```
