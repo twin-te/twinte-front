@@ -46,8 +46,12 @@ const nuxtConfig: Configuration = {
         property: 'og:image',
         content: `${baseUrl}/icon.png`,
       },
-      { name: 'twitter:card', content: baseDesc },
-      { name: 'twitter:site', content: '@te_twin' },
+      {
+        hid: 'twitter:card',
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@te_twin' },
     ],
   },
   loadingIndicator: {
