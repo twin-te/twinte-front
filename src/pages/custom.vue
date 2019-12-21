@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component({
   components: {
-    cbuForm: () => import("~/components/ui-form.vue"),
-    TButton: () => import("~/components/global/button.vue")
+    cbuForm: () => import('~/components/ui-form.vue'),
+    TButton: () => import('~/components/global/button.vue')
   }
 })
 export default class Index extends Vue {}

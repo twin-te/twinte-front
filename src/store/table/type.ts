@@ -1,17 +1,17 @@
-import { Period } from "../../types";
-import { UserLectureEntity } from "../../types/server";
+import { Period } from '../../types';
+import { UserLectureEntity } from '../../types/server';
 
 export enum Module {
-  SpringA = "春A",
-  SpringB = "春B",
-  SpringC = "春C",
-  FallA = "秋A",
-  FallB = "秋B",
-  FallC = "秋C",
-  SummerVacation = "夏季休業中",
-  SpringVacation = "春季休業中",
-  Annual = "通年",
-  Unknown = "不明"
+  SpringA = '春A',
+  SpringB = '春B',
+  SpringC = '春C',
+  FallA = '秋A',
+  FallB = '秋B',
+  FallC = '秋C',
+  SummerVacation = '夏季休業中',
+  SpringVacation = '春季休業中',
+  Annual = '通年',
+  Unknown = '不明'
 }
 
 export interface S {
@@ -46,12 +46,12 @@ export interface G {
   userData: UserLectureEntity | null;
 }
 export interface RG {
-  "table/module": G["module"];
-  "table/prevModule": G["prevModule"];
-  "table/nextModule": G["prevModule"];
-  "table/moduleNum": G["moduleNum"];
-  "table/looking": G["looking"];
-  "table/userData": G["userData"];
+  'table/module': G['module'];
+  'table/prevModule': G['prevModule'];
+  'table/nextModule': G['prevModule'];
+  'table/moduleNum': G['moduleNum'];
+  'table/looking': G['looking'];
+  'table/userData': G['userData'];
 }
 export interface M {
   setModule: { module: string };
@@ -70,11 +70,11 @@ export interface M {
   setUserData: { userData: UserLectureEntity };
 }
 export interface RM {
-  "table/setModule": M["setModule"];
-  "table/prevModule": M["prevModule"];
-  "table/nextModule": M["nextModule"];
-  "table/setLooking": M["setLooking"];
-  "table/setUserData": M["setUserData"];
+  'table/setModule': M['setModule'];
+  'table/prevModule': M['prevModule'];
+  'table/nextModule': M['nextModule'];
+  'table/setLooking': M['setLooking'];
+  'table/setUserData': M['setUserData'];
 }
 
 export interface A {
@@ -82,6 +82,6 @@ export interface A {
   updatePeriod: { userData: UserLectureEntity };
 }
 export interface RA {
-  "table/setPeriod": A["setPeriod"];
-  "table/updatePeriod": A["updatePeriod"];
+  'table/setPeriod': A['setPeriod'];
+  'table/updatePeriod': A['updatePeriod'];
 }

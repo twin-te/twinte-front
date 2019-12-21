@@ -43,93 +43,92 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
-import Swal from 'sweetalert2'
-import { BASE_URL } from '../store/api/config'
+import { Component, Vue } from 'nuxt-property-decorator';
+import * as Vuex from 'vuex';
+import Swal from 'sweetalert2';
+import { BASE_URL } from '../store/api/config';
 
 declare global {
   interface Window {
     android?: {
-      openSettings: () => void
-    }
+      openSettings: () => void;
+    };
   }
 }
 
 @Component({})
 export default class Index extends Vue {
-  $store!: Vuex.ExStore
+  $store!: Vuex.ExStore;
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
-    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' },
+    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' }
     // , { icon: "supervisor_account", name: "About", link: "/about" }
     // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
     // , { icon: "share", name: "時間割の共有", link: "/" }
     // , { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
-  ]
+  ];
 
   get drawer(): boolean {
-    return this.$store.getters['visible/drawer']
+    return this.$store.getters['visible/drawer'];
   }
 
   get isLogin(): boolean {
-    return this.$store.getters['api/isLogin']
+    return this.$store.getters['api/isLogin'];
   }
 
   chDrawer() {
-    this.$store.commit('visible/chDrawer', { display: false })
+    this.$store.commit('visible/chDrawer', { display: false });
   }
 
   goto(link: string) {
     if (link.startsWith('https://')) {
-      location.href = link
+      location.href = link;
     } else if (link.startsWith('func:')) {
       switch (link) {
         case 'func:android':
           if (window.android) {
-            window.android.openSettings()
+            window.android.openSettings();
           }
-          break
+          break;
         case 'func:twins':
           Swal.mixin({
             confirmButtonText: '次へ &rarr;',
             showCancelButton: true,
-            progressSteps: ['1', '2', '3'],
+            progressSteps: ['1', '2', '3']
           })
             .queue([
               {
                 title: 'Twinsからインポート',
-                text:
-                  'Twinsにログインします。',
+                text: 'Twinsにログインします。',
                 imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
-                imageHeight: 300,
+                imageHeight: 300
               },
               {
                 title: 'Twinsからインポート',
                 text:
                   '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
                 imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
-                imageHeight: 300,
+                imageHeight: 300
               },
               {
                 title: 'Twinsからインポート',
                 text:
                   '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
                 imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
-                imageHeight: 300,
-              },
-            ])
-            .then((result) => {
-              if (result.value) {
-                location.href = 'https://twins.tsukuba.ac.jp'
+                imageHeight: 300
               }
-            })
-          break
+            ])
+            .then(result => {
+              if (result.value) {
+                location.href = 'https://twins.tsukuba.ac.jp';
+              }
+            });
+          break;
       }
     } else {
-      this.$router.push(link)
-      this.chDrawer()
+      this.$router.push(link);
+      this.chDrawer();
     }
   }
 
@@ -172,8 +171,8 @@ export default class Index extends Vue {
       `,
       showConfirmButton: false,
       showCancelButton: true,
-      cancelButtonText: '閉じる',
-    })
+      cancelButtonText: '閉じる'
+    });
   }
 
   logout() {
@@ -181,32 +180,32 @@ export default class Index extends Vue {
       title: 'ログアウトしますか?',
       showCancelButton: true,
       confirmButtonText: 'はい',
-      cancelButtonText: 'いいえ',
-    }).then(async (result) => {
+      cancelButtonText: 'いいえ'
+    }).then(async result => {
       if (result.value) {
-        await this.$store.dispatch('api/logout')
-        location.href = `${BASE_URL}/auth/logout`
+        await this.$store.dispatch('api/logout');
+        location.href = `${BASE_URL}/auth/logout`;
       }
-    })
+    });
   }
 
   mounted() {
     const isMobile =
       /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-      /TwinteAppforAndroid/.test(navigator.userAgent)
+      /TwinteAppforAndroid/.test(navigator.userAgent);
     if (isMobile) {
       this.list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
-        link: 'func:twins',
-      })
+        link: 'func:twins'
+      });
     }
     if (window.android) {
       this.list.push({
         icon: 'settings',
         name: 'Androidアプリの設定',
-        link: 'func:android',
-      })
+        link: 'func:android'
+      });
     }
   }
 }

@@ -1,6 +1,6 @@
-import "vuex";
+import 'vuex';
 
-declare module "vuex" {
+declare module 'vuex' {
   // ______________________________________________________
   //
   type Getters<S, G> = {

@@ -1,9 +1,9 @@
-import { Configuration } from '@nuxt/types'
-const baseName = process.env.BASE_NAME || 'Twin:te'
+import { Configuration } from '@nuxt/types';
+const baseName = process.env.BASE_NAME || 'Twin:te';
 const baseDesc =
-  process.env.BASE_DISC || '筑波大学専用の時間割アプリケーションです'
-const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
-const baseDir = process.env.BASE_DIR || '/'
+  process.env.BASE_DISC || '筑波大学専用の時間割アプリケーションです';
+const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+const baseDir = process.env.BASE_DIR || '/';
 
 const nuxtConfig: Configuration = {
   buildModules: ['@nuxt/typescript-build'],
@@ -12,19 +12,19 @@ const nuxtConfig: Configuration = {
   env: {
     baseName,
     baseDesc,
-    baseUrl,
+    baseUrl
   },
   router: {
-    base: baseDir,
+    base: baseDir
   },
   server: {
     port: process.env.PORT || 5000,
-    host: 'localhost',
+    host: 'localhost'
   },
   head: {
     htmlAttrs: {
       lang: 'ja',
-      prefix: 'og: http://ogp.me/ns#',
+      prefix: 'og: http://ogp.me/ns#'
     },
     title: baseName,
     meta: [
@@ -38,31 +38,31 @@ const nuxtConfig: Configuration = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://www.twinte.net/ogp.png',
+        content: 'https://www.twinte.net/ogp.png'
       },
       { hid: 'og:description', property: 'og:description', content: baseDesc },
       {
         hid: 'og:image',
         property: 'og:image',
-        content: `${baseUrl}/icon.png`,
+        content: `${baseUrl}/icon.png`
       },
       {
         hid: 'twitter:card',
         name: 'twitter:card',
-        content: 'summary_large_image',
+        content: 'summary_large_image'
       },
-      { hid: 'twitter:site', name: 'twitter:site', content: '@te_twin' },
-    ],
+      { hid: 'twitter:site', name: 'twitter:site', content: '@te_twin' }
+    ]
   },
   loadingIndicator: {
     name: 'wandering-cubes',
     color: 'teal',
     color2: 'white',
-    background: 'gray',
+    background: 'gray'
   },
   loading: {
     color: 'teal',
-    height: '5px',
+    height: '5px'
   },
   css: ['@/assets/css/main.scss'],
   modules: ['@nuxtjs/pwa'],
@@ -72,7 +72,7 @@ const nuxtConfig: Configuration = {
     runtimeCaching: [
       {
         urlPattern: '^https://fonts.(?:googleapis|gstatic).com/(.*)',
-        handler: 'cacheFirst',
+        handler: 'cacheFirst'
       },
       {
         urlPattern: baseDir + 'lib/.*',
@@ -81,27 +81,27 @@ const nuxtConfig: Configuration = {
           cacheName: 'image-cache',
           cacheExpiration: {
             maxEntries: 20,
-            maxAgeSeconds: 24 * 60 * 60 * 30,
-          },
-        },
-      },
-    ],
+            maxAgeSeconds: 24 * 60 * 60 * 30
+          }
+        }
+      }
+    ]
   },
   build: {
-    analyze: false,
+    analyze: false
   },
   meta: {
     mobileAppIOS: true,
     appleStatusBarStyle: false,
     lang: 'ja',
-    nativeUI: true,
+    nativeUI: true
   },
   manifest: {
     name: 'Twin:te',
     short_name: 'Twin:te',
     lang: 'ja',
     start_url: '/',
-    display: 'standalone',
+    display: 'standalone'
   },
   features: {
     store: true,
@@ -117,8 +117,8 @@ const nuxtConfig: Configuration = {
     clientPrefetch: true,
     clientUseUrl: true,
     componentAliases: true,
-    componentClientOnly: true,
-  },
-}
+    componentClientOnly: true
+  }
+};
 
-module.exports = nuxtConfig
+module.exports = nuxtConfig;

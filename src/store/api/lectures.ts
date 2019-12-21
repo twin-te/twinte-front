@@ -1,7 +1,7 @@
-import { OutputSearchData } from "../../types";
+import { OutputSearchData } from '../../types';
 
-import { BASE_URL, axios, YEAR } from "./config";
-const url = BASE_URL + "/lectures";
+import { BASE_URL, axios, YEAR } from './config';
+const url = BASE_URL + '/lectures';
 
 /**
  * 授業名、科目番号等から該当する授業を返す

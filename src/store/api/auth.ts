@@ -1,5 +1,5 @@
-import { BASE_URL, axios } from './config'
-const url = BASE_URL
+import { BASE_URL, axios } from './config';
+const url = BASE_URL;
 
 /**
  * ログインされているかの判定 true : false
@@ -7,16 +7,16 @@ const url = BASE_URL
  */
 async function isLogin(): Promise<boolean> {
   try {
-    await axios.get(`${url}/users/me`)
-    return true
+    await axios.get(`${url}/users/me`);
+    return true;
   } catch (error) {
     if (error.response && error.response.status && error.response.statusText) {
       console.error(
         `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
-      )
+      );
     }
-    return false
+    return false;
   }
 }
 
-export { isLogin }
+export { isLogin };

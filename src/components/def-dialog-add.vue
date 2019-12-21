@@ -7,15 +7,34 @@
     <transition name="bound">
       <nav class="main" v-show="add">
         <article>
-          <div class="svg-button material-icons close-btn" @click="chAdd()">close</div>
+          <div class="svg-button material-icons close-btn" @click="chAdd()">
+            close
+          </div>
           <h1>授業の追加</h1>
           <p class="content">科目名・授業番号で検索</p>
-          <p v-if="isMobile" class="twins-btn" @click="twins()">Twinsからインポート</p>
+          <p v-if="isMobile" class="twins-btn" @click="twins()">
+            Twinsからインポート
+          </p>
 
           <form class="search-form" @submit.prevent>
-            <input v-model="input" type="text" class="form" @keyup.enter="search(input)" />
-            <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
-            <span v-else @click="search(input)" class="material-icons search-btn">search</span>
+            <input
+              v-model="input"
+              type="text"
+              class="form"
+              @keyup.enter="search(input)"
+            />
+            <span
+              v-if="input === ''"
+              @click="lectures = []"
+              class="material-icons search-btn"
+              >close</span
+            >
+            <span
+              v-else
+              @click="search(input)"
+              class="material-icons search-btn"
+              >search</span
+            >
           </form>
           <!-- → 検索ボックス -->
 
@@ -56,7 +75,9 @@
           </section>
           <!-- → その他オプション -->
 
-          <section class="register-btn" @click="asyncNumber()">時間割に追加</section>
+          <section class="register-btn" @click="asyncNumber()">
+            時間割に追加
+          </section>
         </article>
       </nav>
     </transition>
@@ -69,10 +90,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
-import { searchLectures } from "../store/api/lectures";
-import Swal from "sweetalert2";
+import { Component, Vue } from 'nuxt-property-decorator';
+import * as Vuex from 'vuex';
+import { searchLectures } from '../store/api/lectures';
+import Swal from 'sweetalert2';
 
 type miniLecture = {
   lecture_code: string;
@@ -89,73 +110,73 @@ export default class Index extends Vue {
 
   // data___________________________________________________________________________________
   //
-  input: string = "";
+  input: string = '';
   lectures: miniLecture[] = [];
   isMobile = false;
 
   // computed___________________________________________________________________________________
   //
   get moduleMessage(): string {
-    return `${this.$store.getters["table/module"]}のCSVファイルを入力してください`;
+    return `${this.$store.getters['table/module']}のCSVファイルを入力してください`;
   }
   get add(): boolean {
-    return this.$store.getters["visible/add"];
+    return this.$store.getters['visible/add'];
   }
   get moduleNum(): number {
-    return this.$store.getters["table/moduleNum"];
+    return this.$store.getters['table/moduleNum'];
   }
 
   // method___________________________________________________________________________________
   //
   chAdd() {
-    this.$store.commit("visible/chAdd", { display: false });
+    this.$store.commit('visible/chAdd', { display: false });
   }
   twins() {
     Swal.mixin({
-      confirmButtonText: "次へ &rarr;",
+      confirmButtonText: '次へ &rarr;',
       showCancelButton: true,
-      progressSteps: ["1", "2", "3"]
+      progressSteps: ['1', '2', '3']
     })
       .queue([
         {
-          title: "Twinsからインポート",
+          title: 'Twinsからインポート',
           text:
-            "メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。",
-          imageUrl: "https://www.twinte.net/_nuxt/img/214cb57.jpg",
+            'メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。',
+          imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
           imageHeight: 300
         },
         {
-          title: "Twinsからインポート",
+          title: 'Twinsからインポート',
           text:
-            "履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。",
-          imageUrl: "https://www.twinte.net/_nuxt/img/834f6e7.jpg",
+            '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
+          imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
           imageHeight: 300
         },
         {
-          title: "Twinsからインポート",
+          title: 'Twinsからインポート',
           text:
-            "「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。",
-          imageUrl: "https://www.twinte.net/_nuxt/img/f9666f5.jpg",
+            '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
+          imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
           imageHeight: 300
         }
       ])
       .then(result => {
         if (result.value) {
-          location.href = "https://twins.tsukuba.ac.jp";
+          location.href = 'https://twins.tsukuba.ac.jp';
         }
       });
   }
   custom() {
-    this.$router.push("/custom");
-    this.$store.commit("visible/chAdd", { display: false });
+    this.$router.push('/custom');
+    this.$store.commit('visible/chAdd', { display: false });
   }
   async search(input: string) {
     const le = await searchLectures(input);
     if (!le || le.length === 0) {
       Swal.fire(
-        "見つかりません",
-        "検索しましたが何も見つかりませんでした",
-        "error"
+        '見つかりません',
+        '検索しましたが何も見つかりませんでした',
+        'error'
       );
       return;
     }
@@ -171,7 +192,7 @@ export default class Index extends Vue {
       });
     });
 
-    this.input = "";
+    this.input = '';
   }
   async onFileChange(e: any) {
     e.preventDefault();
@@ -184,12 +205,12 @@ export default class Index extends Vue {
     const search = (csv: string) => this.search(csv);
     const reader = new FileReader();
     reader.onload = async () => {
-      if (typeof reader.result !== "string") return;
+      if (typeof reader.result !== 'string') return;
       const csvLectureList = await Promise.all(
         reader.result
-          .split("\r\n")
+          .split('\r\n')
           .filter(csv => csv) // drop blank line
-          .map(csv => csv.replace(/["]/g, "")) // drop "
+          .map(csv => csv.replace(/["]/g, '')) // drop "
       );
       await csvLectureList.forEach(csv => {
         search(csv);
@@ -200,21 +221,21 @@ export default class Index extends Vue {
   }
 
   async asyncNumber() {
-    if (!this.$store.getters["api/isLogin"]) {
+    if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
-        "まだログインしていません",
-        "歯車⚙からログインして下さい",
-        "error"
+        'まだログインしていません',
+        '歯車⚙からログインして下さい',
+        'error'
       );
       return;
     }
 
     Swal.fire({
-      title: "科目追加を行いますか？",
-      text: "現在表示されている時間割は上書きされます",
+      title: '科目追加を行いますか？',
+      text: '現在表示されている時間割は上書きされます',
       showCancelButton: true,
-      confirmButtonText: "はい",
-      cancelButtonText: "いいえ"
+      confirmButtonText: 'はい',
+      cancelButtonText: 'いいえ'
     }).then(async result => {
       if (!result.value) {
         return;
@@ -226,17 +247,17 @@ export default class Index extends Vue {
 
       if (lectureCodes.length === 0) {
         Swal.fire(
-          "追加するデータがありません",
-          "検索を行い、追加する授業にチェックマークをつけて下さい",
-          "warning"
+          '追加するデータがありません',
+          '検索を行い、追加する授業にチェックマークをつけて下さい',
+          'warning'
         );
         return;
       }
 
-      await this.$store.dispatch("api/addTable", { lectureCodes });
+      await this.$store.dispatch('api/addTable', { lectureCodes });
       // → 追加
 
-      Swal.fire("追加完了", "時間割を更新しました", "success");
+      Swal.fire('追加完了', '時間割を更新しました', 'success');
 
       this.lectures = [];
       this.chAdd();

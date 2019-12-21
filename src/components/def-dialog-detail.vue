@@ -94,23 +94,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
-import { Period } from "../types";
-import { UserLectureEntity } from "../types/server";
-import { deleteLecture, updateLecture } from "../store/api/timetables";
-import cloneDeep from "lodash/cloneDeep";
-import Swal from "sweetalert2";
-import { deleteUserData } from "../store/api/user-lectures";
+import { Component, Vue } from 'nuxt-property-decorator';
+import * as Vuex from 'vuex';
+import { Period } from '../types';
+import { UserLectureEntity } from '../types/server';
+import { deleteLecture, updateLecture } from '../store/api/timetables';
+import cloneDeep from 'lodash/cloneDeep';
+import Swal from 'sweetalert2';
+import { deleteUserData } from '../store/api/user-lectures';
 
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
-  atmnb = ["出席", "欠席", "遅刻"];
-  moduleNum = this.$store.getters["table/moduleNum"];
-  localMemo = "";
-  localLectureId = "";
+  atmnb = ['出席', '欠席', '遅刻'];
+  moduleNum = this.$store.getters['table/moduleNum'];
+  localMemo = '';
+  localLectureId = '';
   editableLecture: Period | null = null;
 
   get atmnbCount() {
@@ -119,13 +119,13 @@ export default class Index extends Vue {
       : [0, 0, 0];
   }
   get userData() {
-    return this.$store.getters["table/userData"];
+    return this.$store.getters['table/userData'];
   }
   get table(): Period | null {
-    return this.$store.getters["table/looking"];
+    return this.$store.getters['table/looking'];
   }
   get dialog(): boolean {
-    return this.$store.getters["visible/detail"];
+    return this.$store.getters['visible/detail'];
   }
 
   syllabus() {
@@ -134,7 +134,7 @@ export default class Index extends Vue {
     }
   }
   attend() {
-    location.href = "https://atmnb.tsukuba.ac.jp";
+    location.href = 'https://atmnb.tsukuba.ac.jp';
   }
   edit() {
     if (this.editableLecture) {
@@ -149,13 +149,13 @@ export default class Index extends Vue {
     }
     let { attendance, absence, late } = this.userData;
     switch (type) {
-      case "出席":
+      case '出席':
         attendance + num >= 0 ? (attendance += num) : 0;
         break;
-      case "欠席":
+      case '欠席':
         absence + num >= 0 ? (absence += num) : 0;
         break;
-      case "遅刻":
+      case '遅刻':
         late + num >= 0 ? (late += num) : 0;
         break;
     }
@@ -169,15 +169,15 @@ export default class Index extends Vue {
       absence,
       late
     };
-    this.$store.dispatch("table/updatePeriod", { userData });
+    this.$store.dispatch('table/updatePeriod', { userData });
   }
 
   deleteItem() {
     Swal.fire({
-      title: "この時間割を削除しますか?",
+      title: 'この時間割を削除しますか?',
       showCancelButton: true,
-      confirmButtonText: "はい",
-      cancelButtonText: "いいえ"
+      confirmButtonText: 'はい',
+      cancelButtonText: 'いいえ'
     }).then(async result => {
       if (result.value && this.table && this.userData) {
         await deleteLecture(
@@ -189,7 +189,7 @@ export default class Index extends Vue {
         await deleteUserData(this.userData);
         // → 削除
 
-        this.$store.dispatch("api/login");
+        this.$store.dispatch('api/login');
         // → 更新
 
         this.chDetail();
@@ -199,7 +199,7 @@ export default class Index extends Vue {
   }
 
   chDetail(): void {
-    this.$store.commit("visible/chDetail", { display: false });
+    this.$store.commit('visible/chDetail', { display: false });
   }
 
   async save() {
@@ -216,7 +216,7 @@ export default class Index extends Vue {
       absence: this.userData.absence,
       late: this.userData.late
     };
-    await this.$store.dispatch("table/updatePeriod", { userData });
+    await this.$store.dispatch('table/updatePeriod', { userData });
     // → メモの変更
 
     if (this.editableLecture) {
@@ -224,10 +224,10 @@ export default class Index extends Vue {
     }
     // → 教室の変更
 
-    this.$store.dispatch("api/login");
+    this.$store.dispatch('api/login');
     // → 反映
 
-    Swal.fire("完了", "メモを保存しました", "success");
+    Swal.fire('完了', 'メモを保存しました', 'success');
   }
 
   fetchMemo() {

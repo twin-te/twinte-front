@@ -21,23 +21,23 @@ prevModule、nextModule は アニメーションの関係上いろんな処理�
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
+import { Component, Vue } from 'nuxt-property-decorator';
+import * as Vuex from 'vuex';
 
 enum Day {
-  Sun = "日",
-  Mon = "月",
-  Tue = "火",
-  Wed = "水",
-  Thu = "木",
-  Fri = "金",
-  Sat = "土",
-  Unknown = "不明"
+  Sun = '日',
+  Mon = '月',
+  Tue = '火',
+  Wed = '水',
+  Thu = '木',
+  Fri = '金',
+  Sat = '土',
+  Unknown = '不明'
 }
 
 @Component({
   components: {
-    Day: () => import("~/components/ui-day.vue")
+    Day: () => import('~/components/ui-day.vue')
   }
 })
 export default class Index extends Vue {
@@ -46,23 +46,23 @@ export default class Index extends Vue {
   week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
   prevModule() {
-    this.$store.commit("visible/chTable", { display: false, move: "left" });
+    this.$store.commit('visible/chTable', { display: false, move: 'left' });
     setTimeout(() => {
-      this.$store.commit("table/prevModule");
-      this.$store.commit("visible/chTable", { display: true, move: "left" });
+      this.$store.commit('table/prevModule');
+      this.$store.commit('visible/chTable', { display: true, move: 'left' });
     }, 250);
   }
 
   nextModule() {
-    this.$store.commit("visible/chTable", { display: false, move: "right" });
+    this.$store.commit('visible/chTable', { display: false, move: 'right' });
     setTimeout(() => {
-      this.$store.commit("table/nextModule");
-      this.$store.commit("visible/chTable", { display: true, move: "right" });
+      this.$store.commit('table/nextModule');
+      this.$store.commit('visible/chTable', { display: true, move: 'right' });
     }, 250);
   }
 
   get module(): string {
-    return this.$store.getters["table/module"];
+    return this.$store.getters['table/module'];
   }
 }
 </script>
