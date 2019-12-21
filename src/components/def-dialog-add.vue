@@ -196,6 +196,7 @@ export default class Index extends Vue {
   }
   async onFileChange(e: any) {
     e.preventDefault();
+    this.lectures = [];
 
     const fileData = e.target.files[0];
     if (fileData === null) {
@@ -215,6 +216,12 @@ export default class Index extends Vue {
       await csvLectureList.forEach(csv => {
         search(csv);
       });
+
+      this.lectures.map(lecture => {
+        lecture.checked = true;
+        return lecture;
+      });
+      // → すべてチェックした状態に切り替える
     };
 
     await reader.readAsText(fileData);
