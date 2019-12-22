@@ -66,8 +66,8 @@ export interface M {
   /**
    * 直前にクリックした授業の内容を更新
    */
-  setLooking: { period: Period };
-  setUserData: { userData: UserLectureEntity };
+  setLooking: { period: Period | null };
+  setUserData: { userData: UserLectureEntity | null };
 }
 export interface RM {
   'table/setModule': M['setModule'];

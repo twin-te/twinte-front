@@ -200,6 +200,9 @@ export default class Index extends Vue {
 
   chDetail(): void {
     this.$store.commit('visible/chDetail', { display: false });
+    this.localMemo = '';
+    this.$store.commit('table/setUserData', { userData: null });
+    this.$store.commit('table/setLooking', { period: null });
   }
 
   async save() {
