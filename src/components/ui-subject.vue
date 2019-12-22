@@ -52,7 +52,7 @@ export default class Index extends Vue {
 
     const validPeriod = periods.find(lecture => {
       return (
-        lecture.module === module && // module
+        (lecture.module === module || lecture.module === '通年') && // module
         week.indexOf(lecture.day) === day && // day
         lecture.period === period // period
       );
