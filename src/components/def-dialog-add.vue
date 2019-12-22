@@ -193,6 +193,7 @@ export default class Index extends Vue {
     });
 
     this.input = '';
+    (document.activeElement as HTMLElement).blur();
   }
   async onFileChange(e: any) {
     e.preventDefault();
