@@ -170,7 +170,7 @@ export default class Index extends Vue {
     this.$router.push('/custom');
     this.$store.commit('visible/chAdd', { display: false });
   }
-  async search(input: string) {
+  async search(input: string, type: 'csv' | 'input' = 'input') {
     const le = await searchLectures(input);
     if (!le || le.length === 0) {
       Swal.fire(
@@ -188,7 +188,7 @@ export default class Index extends Vue {
         module: l.details[0].module,
         day: l.details[0].day,
         period: l.details[0].period,
-        checked: false
+        checked: type === 'csv'
       });
     });
 
@@ -196,16 +196,14 @@ export default class Index extends Vue {
   }
   async onFileChange(e: any) {
     e.preventDefault();
-    this.lectures = [];
+    const search = async (csv: string) => await this.search(csv, 'csv');
 
-    const fileData = e.target.files[0];
-    if (fileData === null) {
-      return;
-    }
+    const fileData: Blob = e.target.files[0];
 
-    const search = (csv: string) => this.search(csv);
     const reader = new FileReader();
     reader.onload = async () => {
+      console.log('load');
+
       if (typeof reader.result !== 'string') return;
       const csvLectureList = await Promise.all(
         reader.result
@@ -213,20 +211,13 @@ export default class Index extends Vue {
           .filter(csv => csv) // drop blank line
           .map(csv => csv.replace(/["]/g, '')) // drop "
       );
-      await csvLectureList.forEach(csv => {
-        search(csv);
+      await csvLectureList.forEach(async csv => {
+        console.log('search');
+        await search(csv);
       });
-
-      this.lectures.map(lecture => {
-        lecture.checked = true;
-        return lecture;
-      });
-      // → すべてチェックした状態に切り替える
     };
-
     await reader.readAsText(fileData);
   }
-
   async asyncNumber() {
     if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
