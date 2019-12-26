@@ -73,38 +73,35 @@ $week-width: calc(
 );
 .s4 {
   display: block;
-  height: 7vh;
-  width: 9vh;
+  width: 15vw;
   font-size: 4.6vh;
   text-align: center;
 }
 #module {
-  position: absolute;
+  position: relative;
   display: flex;
+  justify-content: space-between;
   font-family: Noto Sans JP;
+  color: #9a9a9a;
   font-style: normal;
   font-weight: 500;
   font-size: 2.2vh;
   line-height: 4.6vh;
   width: 45vw;
-  color: #9a9a9a;
-  justify-content: space-between;
-  top: 8.5vh;
+  top: 0.5vh;
   left: 50%;
   transform: translateX(-50%);
 }
 #week {
-  position: absolute;
+  position: relative;
   display: flex;
   width: 87vw;
-  height: 3vh;
-  line-height: 3vh;
+  height: 2.5vh;
   font-family: Noto Sans JP;
   font-style: normal;
   font-weight: 500;
   font-size: 2vh;
   color: #9a9a9a;
-  top: 12.5vh;
 }
 .week-wrapper {
   position: absolute;
@@ -112,6 +109,6 @@ $week-width: calc(
   width: $week-width;
   justify-content: space-around;
   left: calc(13vw + 4vw);
-  top: 0.2vh;
+  top: 0.6vh;
 }
 </style>

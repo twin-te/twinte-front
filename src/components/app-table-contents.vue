@@ -74,7 +74,6 @@ content {
   padding: 2vmin 2vw;
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.226);
   border-radius: 10px;
-  top: 7vh;
 }
 
 //+++++++++++++++++++// 以下時間割の内容（中身） //++++++++++++++++++//
