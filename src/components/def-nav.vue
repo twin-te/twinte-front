@@ -259,7 +259,6 @@ export default class Index extends Vue {
   color: #ffffff;
   border-radius: 1vh;
   font-size: 2.5vh;
-  cursor: pointer;
   &:active {
     transition: all 0.15s;
     transform: scale(1.05);

@@ -54,7 +54,6 @@ export default class Index extends Vue {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
   &:active {
     transform: translateY(-50%) scale(1.1);
   }
@@ -76,7 +75,6 @@ export default class Index extends Vue {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
   &:active {
     transform: translateY(-50%) scale(1.1);
   }

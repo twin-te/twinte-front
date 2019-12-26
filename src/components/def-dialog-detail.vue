@@ -285,7 +285,6 @@ article {
   right: -2.1vh;
   font-size: 4vh;
   color: #717171;
-  cursor: pointer;
 }
 .save-btn {
   position: absolute;
@@ -300,7 +299,6 @@ article {
   bottom: 3.1vh;
   color: #fff;
   text-align: center;
-  cursor: pointer;
   &:active {
     transition: all 0.2s;
     transform: translateX(-50%) scale(1.05);
@@ -313,7 +311,6 @@ article {
   font-size: 2vh;
   color: rgb(255, 98, 98);
   margin: 0;
-  cursor: pointer;
 }
 .edit-btn {
   position: absolute;
@@ -322,7 +319,6 @@ article {
   font-size: 2vh;
   color: rgb(102, 120, 223);
   margin: 0;
-  cursor: pointer;
 }
 .icon {
   font-size: 2.7vh;
