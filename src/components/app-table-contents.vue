@@ -70,7 +70,7 @@ $width: calc((100vw - 8vw - 11vw - 12vw) / 5);
 //++++++++++++++++++++++++// 時間割表の枠 //++++++++++++++++++++++++//
 content {
   position: relative;
-  margin: 0 2vw;
+  margin: 2vmin 2vw;
   padding: 2vmin 2vw;
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.226);
   border-radius: 10px;
