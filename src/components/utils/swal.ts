@@ -5,7 +5,7 @@ const twinsToTwinteAlert = () => {
   Swal.mixin({
     confirmButtonText: '次へ &rarr;',
     showCancelButton: true,
-    progressSteps: ['1', '2', '3']
+    progressSteps: ['1', '2', '3', '4']
   })
     .queue([
       {
@@ -28,6 +28,12 @@ const twinsToTwinteAlert = () => {
           '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
         imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
         imageHeight: 300
+      },
+      {
+        title: '注意',
+        html:
+          'この機能は自己責任での利用となっております。この機能を利用して起きた損害等は一切Twin:teは責任を負いません。詳細は<a href="https://www.twinte.net/terms">利用規約</a>をご覧ください。',
+        type: 'warning'
       }
     ])
     .then(result => {
