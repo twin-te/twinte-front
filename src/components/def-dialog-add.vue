@@ -267,7 +267,6 @@ article {
 .close-btn {
   position: absolute;
   top: -1.5vh;
-  cursor: pointer;
   right: -1.5vh;
   font-size: 4vh;
   transition: all 0.15s;

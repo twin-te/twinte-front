@@ -27,7 +27,6 @@ export default class Index extends Vue {
   border-radius: 1vh;
   color: #fff;
   text-align: center;
-  cursor: pointer;
   &:active {
     transition: all 0.2s;
     transform: translateX(-50%) scale(1.05);
