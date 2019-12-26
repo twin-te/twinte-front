@@ -71,6 +71,9 @@ export default class Index extends Vue {
 $week-width: calc(
   100vw - 8vw /*contentのmargin+padding*/ - 13vw /*timeのwidth+padding*/
 );
+section {
+  position: relative;
+}
 .s4 {
   display: block;
   height: 7vh;
@@ -89,7 +92,6 @@ $week-width: calc(
   width: 45vw;
   color: #9a9a9a;
   justify-content: space-between;
-  top: 8.5vh;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -104,7 +106,7 @@ $week-width: calc(
   font-weight: 500;
   font-size: 2vh;
   color: #9a9a9a;
-  top: 12.5vh;
+  top: 3.0vh;
 }
 .week-wrapper {
   position: absolute;

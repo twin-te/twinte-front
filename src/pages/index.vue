@@ -17,4 +17,8 @@ import { Component, Vue } from "nuxt-property-decorator";
 export default class Index extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+section {
+  margin: 2vmin 0;
+}
+</style>
