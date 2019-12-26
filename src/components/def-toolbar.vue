@@ -8,30 +8,41 @@
         id="i_settings"
         class="material-icons svg-button setting-btn"
         @click="chDrawer()"
-      >settings</span>
+        >settings</span
+      >
       <!-- Twin:te -->
       <router-link to="/">
-        <img src="~/assets/img/title-logo.png" id="title" class="my-2 title-logo" alt="Twin:te" />
+        <img
+          src="~/assets/img/title-logo.png"
+          id="title"
+          class="my-2 title-logo"
+          alt="Twin:te"
+        />
       </router-link>
       <!-- + -->
-      <span id="i_add" class="material-icons svg-button my-2 add-btn" @click="chAdd()">add</span>
+      <span
+        id="i_add"
+        class="material-icons svg-button my-2 add-btn"
+        @click="chAdd()"
+        >add</span
+      >
     </nav>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
-import * as Vuex from "vuex";
+import { Component, Vue } from 'nuxt-property-decorator';
+import * as Vuex from 'vuex';
 
 @Component
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
   chDrawer() {
-    this.$store.commit("visible/chDrawer", { display: true });
+    this.$store.commit('visible/chDrawer', { display: true });
   }
   chAdd() {
-    this.$store.commit("visible/chAdd", { display: true });
+    this.$store.commit('visible/chAdd', { display: true });
   }
 }
 </script>

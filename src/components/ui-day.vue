@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Vue } from 'nuxt-property-decorator';
 
 type Today = { month: number | null; day: number | null; week: string | null };
 
@@ -25,7 +25,7 @@ export default class Index extends Vue {
 
   mounted() {
     const date = new Date();
-    const weeks = ["日", "月", "火", "水", "木", "金", "土"];
+    const weeks = ['日', '月', '火', '水', '木', '金', '土'];
     this.today = {
       month: date.getMonth() + 1,
       day: date.getDate(),

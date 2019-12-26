@@ -1,9 +1,9 @@
-import "vuex";
-import * as Visible from "../store/visible/type";
-import * as Table from "../store/table/type";
-import * as Api from "../store/api/type";
+import 'vuex';
+import * as Visible from '../store/visible/type';
+import * as Table from '../store/table/type';
+import * as Api from '../store/api/type';
 
-declare module "vuex" {
+declare module 'vuex' {
   type RootState = {
     Visible: Visible.S;
     Table: Table.S;

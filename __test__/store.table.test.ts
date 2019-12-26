@@ -1,15 +1,15 @@
-import { mutations } from "../src/store/table";
-import { S, Module } from "../src/store/table/type";
-import { Period } from "~/src/types";
+import { mutations } from '../src/store/table';
+import { S, Module } from '../src/store/table/type';
+import { Period } from '~/src/types';
 export enum Day {
-  Sun = "日",
-  Mon = "月",
-  Tue = "火",
-  Wed = "水",
-  Thu = "木",
-  Fri = "金",
-  Sat = "土",
-  Unknown = "不明"
+  Sun = '日',
+  Mon = '月',
+  Tue = '火',
+  Wed = '水',
+  Thu = '木',
+  Fri = '金',
+  Sat = '土',
+  Unknown = '不明'
 }
 
 let state: S;
@@ -30,8 +30,8 @@ beforeEach(() => {
   };
 });
 
-describe("nextModule", () => {
-  it("SpringA -> SpringA : loop", () => {
+describe('nextModule', () => {
+  it('SpringA -> SpringA : loop', () => {
     mutations.nextModule(state);
     expect(state.module).toBe(Module.SpringB);
     mutations.nextModule(state);
@@ -47,8 +47,8 @@ describe("nextModule", () => {
   });
 });
 
-describe("prevModule", () => {
-  it("SpringA -> SpringA : loop", () => {
+describe('prevModule', () => {
+  it('SpringA -> SpringA : loop', () => {
     mutations.prevModule(state);
     expect(state.module).toBe(Module.FallC);
     mutations.prevModule(state);
@@ -64,26 +64,26 @@ describe("prevModule", () => {
   });
 });
 
-describe("setModule", () => {
-  it("set module to SpringC", () => {
+describe('setModule', () => {
+  it('set module to SpringC', () => {
     mutations.setModule(state, { module: Module.SpringC });
     expect(state.module).toBe(Module.SpringC);
   });
 });
 
-describe("クリックした授業情報を追加", () => {
+describe('クリックした授業情報を追加', () => {
   const period: Period = {
     period: 4,
     day: Day.Thu,
     module: Module.FallB,
-    room: "3A306",
+    room: '3A306',
     year: 2019,
-    lecture_code: "GB11404",
-    user_lecture_id: "63427819",
-    lecture_name: "電磁気学",
-    instructor: "安永 守利"
+    lecture_code: 'GB11404',
+    user_lecture_id: '63427819',
+    lecture_name: '電磁気学',
+    instructor: '安永 守利'
   };
-  it("set period GB11404 into looking", () => {
+  it('set period GB11404 into looking', () => {
     mutations.setLooking(state, { period });
     expect(state.looking).toBe(period);
   });
