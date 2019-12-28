@@ -130,7 +130,21 @@ export default class Index extends Vue {
 
   syllabus() {
     if (this.table) {
-      location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lecture_code}/jpn/#course-title`;
+      switch (
+        this.table.lecture_code
+          .split('')
+          .splice(0, 2)
+          .join('')
+      ) {
+        case 'GB':
+          window.open(
+            `http://www.coins.tsukuba.ac.jp/syllabus/${this.table.lecture_code}.html`
+          );
+        default:
+          window.open(
+            `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lecture_code}/jpn/#course-title`
+          );
+      }
     }
   }
   attend() {
