@@ -137,13 +137,9 @@ export default class Index extends Vue {
           .join('')
       ) {
         case 'GB':
-          window.open(
-            `http://www.coins.tsukuba.ac.jp/syllabus/${this.table.lecture_code}.html`
-          );
+          location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table.lecture_code}.html`;
         default:
-          window.open(
-            `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lecture_code}/jpn/#course-title`
-          );
+          location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table.lecture_code}/jpn/#course-title`;
       }
     }
   }
