@@ -88,9 +88,7 @@ export default class Index extends Vue {
     } else if (link.startsWith('func:')) {
       switch (link) {
         case 'func:android':
-          if (window.android) {
-            window.android.openSettings();
-          }
+          window.android?.openSettings();
           break;
         case 'func:twins':
           twinsToTwinteAlert();

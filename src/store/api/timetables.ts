@@ -39,9 +39,8 @@ async function getTimeTables(year = YEAR) {
     });
     return data;
   } catch (error) {
-    console.log(
-      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
-    );
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return [];
   }
 }
@@ -59,9 +58,8 @@ async function postLecture(lectureCode: string, year = YEAR) {
     });
     return data; // 利用する予定はない
   } catch (error) {
-    console.log(
-      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
-    );
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return null;
   }
 }
@@ -96,9 +94,8 @@ async function updateLecture(lecture: Period) {
     );
     return data;
   } catch (error) {
-    console.log(
-      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
-    );
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return null;
   }
 }

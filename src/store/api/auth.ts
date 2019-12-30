@@ -10,11 +10,8 @@ async function isLogin(): Promise<boolean> {
     await axios.get(`${url}/users/me`);
     return true;
   } catch (error) {
-    if (error.response && error.response.status && error.response.statusText) {
-      console.error(
-        `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
-      );
-    }
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return false;
   }
 }
