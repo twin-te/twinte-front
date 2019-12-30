@@ -85,24 +85,6 @@ export default class Index extends Vue {
 
     const char = number.split('')[0];
     switch (char) {
-      case 'A':
-        return '#DEFFF9';
-      case 'B':
-        return '#DEFFF9';
-      case 'C':
-        return '#DEFFF9';
-      case 'E':
-        return '#DEFFF9';
-      case 'F':
-        return '#DEFFF9';
-      case 'G':
-        return '#DEFFF9';
-      case 'H':
-        return '#DEFFF9';
-      case 'W':
-        return '#DEFFF9';
-      case 'Y':
-        return '#DEFFF9';
       case '1':
         return '#FFEEF7';
       case '2':
@@ -110,7 +92,7 @@ export default class Index extends Vue {
       case '3':
         return '#FFFCEB';
       default:
-        return '';
+        return '#DEFFF9';
     }
   }
 }
