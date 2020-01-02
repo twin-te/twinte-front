@@ -72,6 +72,13 @@ export default class Index extends Vue {
       localStorage.setItem('login', 'true');
     }
     // → はじめてログインしたときのみ
+
+    const query: any = this.$route.query;
+    if (query?.user_lecture_id) {
+      this.$store.dispatch('table/setPeriod', { period: query });
+      this.$store.commit('visible/chDetail', { display: true });
+    }
+    // → lectureパラメータがあればそのダイアログを表示
   }
 }
 </script>
