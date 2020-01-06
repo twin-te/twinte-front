@@ -10,9 +10,7 @@
             close
           </div>
           <h1>
-            <div v-if="!editableLecture" class="sbj-name">
-              {{ table.lecture_name }}
-            </div>
+            <div class="sbj-name">{{ table.lecture_name }}</div>
 
             <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
           </h1>
