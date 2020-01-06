@@ -76,7 +76,7 @@ export default class Index extends Vue {
     const query: any = this.$route.query;
     if (query) {
       const validPeriod = this.$store.getters['api/table'].find(lecture => {
-        return lecture.lecture_name === query.lecture_name;
+        return lecture.user_lecture_id === query.user_lecture_id;
       });
       if (validPeriod) {
         await this.$store.dispatch('table/setPeriod', { period: validPeriod });
