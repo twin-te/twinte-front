@@ -41,11 +41,9 @@ async function updateUserData(UserLecture: UserLectureEntity) {
  * 指定した講義のユーザーデータを削除
  * @param user_lecture_id
  */
-async function deleteUserData(UserLecture: UserLectureEntity) {
+async function deleteUserData(user_lecture_id: string) {
   try {
-    await axios.delete<UserLectureEntity>(
-      `${url}/${UserLecture.user_lecture_id}`
-    );
+    await axios.delete<UserLectureEntity>(`${url}/${user_lecture_id}`);
   } catch (error) {
     const { status, statusText } = error.response;
     console.log(`Error! HTTP Status: ${status} ${statusText}`);

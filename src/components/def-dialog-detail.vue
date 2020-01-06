@@ -98,10 +98,9 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import * as Vuex from 'vuex';
 import { Period } from '../types';
 import { UserLectureEntity } from '../types/server';
-import { deleteLecture, updateLecture } from '../store/api/timetables';
+import { updateLecture } from '../store/api/timetables';
 import cloneDeep from 'lodash/cloneDeep';
 import Swal from 'sweetalert2';
-import { deleteUserData } from '../store/api/user-lectures';
 
 @Component({})
 export default class Index extends Vue {
@@ -190,17 +189,10 @@ export default class Index extends Vue {
       cancelButtonText: 'いいえ'
     }).then(async result => {
       if (result.value && this.table && this.userData) {
-        await deleteLecture(
-          this.table.year,
-          this.table.module,
-          this.table.day,
-          this.table.period
-        );
-        await deleteUserData(this.userData);
-        // → 削除
-
-        this.$store.dispatch('api/login');
-        // → 更新
+        await this.$store.dispatch('api/deleteTable', {
+          table: this.table,
+          UserLecture: this.userData
+        });
 
         this.chDetail();
         // → ダイアログを閉じる

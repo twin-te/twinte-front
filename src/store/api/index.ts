@@ -49,9 +49,9 @@ export const actions: Actions<S, A, G, M> = {
     // → 時間割のフェッチ
   },
 
-  async deleteTable(ctx, { module, day, period, UserLecture }) {
-    await deleteLecture(YEAR, module, day, period);
-    await deleteUserData(UserLecture);
+  async deleteTable(ctx, { table, UserLecture }) {
+    await deleteLecture(YEAR, table.module, table.day, table.period);
+    await deleteUserData(UserLecture.user_lecture_id);
     // → サーバーから削除
 
     await ctx.dispatch('fetch');
