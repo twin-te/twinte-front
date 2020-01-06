@@ -242,6 +242,7 @@ export default class Index extends Vue {
     // → 反映
 
     this.editableLecture = null; // 編集モードをオフに
+    this.chDetail(); // 閉じさせる
     Swal.fire('完了', 'メモを保存しました', 'success');
   }
 
