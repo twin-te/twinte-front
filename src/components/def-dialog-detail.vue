@@ -209,8 +209,9 @@ export default class Index extends Vue {
   }
 
   chDetail(): void {
-    this.$store.commit('visible/chDetail', { display: false });
     this.localMemo = '';
+    this.editableLecture = null;
+    this.$store.commit('visible/chDetail', { display: false });
     this.$store.commit('table/setUserData', { userData: null });
     this.$store.commit('table/setLooking', { period: null });
   }
@@ -240,6 +241,8 @@ export default class Index extends Vue {
     this.$store.dispatch('api/login');
     // → 反映
 
+    this.editableLecture = null; // 編集モードをオフに
+    this.chDetail(); // 閉じさせる
     Swal.fire('完了', 'メモを保存しました', 'success');
   }
 
