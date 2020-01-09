@@ -39,7 +39,7 @@ export default class Index extends Vue {
 
     const loginState = await isLogin();
     if (loginState) {
-      this.$store.dispatch('api/login');
+      await this.$store.dispatch('api/login');
     } else {
       Swal.fire(
         'ようこそTwin:teへ',
@@ -72,6 +72,18 @@ export default class Index extends Vue {
       localStorage.setItem('login', 'true');
     }
     // → はじめてログインしたときのみ
+
+    const query: any = this.$route.query;
+    if (query) {
+      const validPeriod = this.$store.getters['api/table'].find(lecture => {
+        return lecture.user_lecture_id === query.user_lecture_id;
+      });
+      if (validPeriod) {
+        await this.$store.dispatch('table/setPeriod', { period: validPeriod });
+        this.$store.commit('visible/chDetail', { display: true });
+      }
+    }
+    // → lectureパラメータがあればそのダイアログを表示
   }
 }
 </script>
