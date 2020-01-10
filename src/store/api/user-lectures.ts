@@ -1,7 +1,6 @@
-import { BASE_URL, axios, YEAR } from './config';
+import { BASE_URL, axios } from './config';
 const url = BASE_URL + '/user-lectures';
 import { UserLectureEntity } from '../../types/server';
-import { getTimeTables } from './timetables';
 import union from 'lodash/union';
 
 /**
@@ -55,13 +54,14 @@ async function deleteUserData(user_lecture_id: string) {
 
 /**
  * 講義のユーザーデータをすべて削除
- * @param year
  */
-async function deleteUserDataAll(year = YEAR) {
+async function deleteUserDataAll() {
   try {
-    const targetLectures = await getTimeTables(year);
+    const targetLectures = await axios.get<UserLectureEntity[]>(
+      `${BASE_URL}/user-lectures`
+    );
 
-    const userLectureIds = targetLectures.reduce<string[]>((acc, l) => {
+    const userLectureIds = targetLectures.data.reduce<string[]>((acc, l) => {
       acc.push(l.user_lecture_id);
       return acc;
     }, []);

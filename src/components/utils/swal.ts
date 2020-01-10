@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { BASE_URL, YEAR } from '../../store/api/config';
+import { BASE_URL } from '../../store/api/config';
 
 const twinsToTwinteAlert = () => {
   Swal.mixin({
@@ -88,8 +88,8 @@ const loginAlert = () => {
 
 const deleteAlert = async () => {
   return await Swal.fire({
-    title: `${YEAR}年度の授業を全削除`,
-    text: `うまくインポートできないときにご利用下さい。${YEAR}年度の授業データをすべて削除します。復旧できないのでご了承下さい。`,
+    title: `授業データを全削除`,
+    text: `うまくインポートできないときにご利用下さい。授業データ（出席含む）をすべて削除します。消されたデータは復旧できないのでご了承下さい。`,
     type: 'warning'
   }).then(result => {
     return !!result.value;
