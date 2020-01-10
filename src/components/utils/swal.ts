@@ -87,12 +87,20 @@ const loginAlert = () => {
 };
 
 const deleteAlert = async () => {
-  return await Swal.fire({
+  const { value } = await Swal.fire({
     title: `授業データを全削除`,
     text: `うまくインポートできないときにご利用下さい。授業データ（出席含む）をすべて削除します。消されたデータは復旧できないのでご了承下さい。`,
+    showCancelButton: true,
     type: 'warning'
-  }).then(result => {
-    return !!result.value;
+  });
+
+  if (!value) return false;
+
+  return await Swal.fire({
+    title: `授業データを全削除`,
+    text: `ほんとによろしいですか？`,
+    showCancelButton: true,
+    type: 'warning'
   });
 };
 
