@@ -46,8 +46,9 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import * as Vuex from 'vuex';
 import Swal from 'sweetalert2';
-import { twinsToTwinteAlert, loginAlert } from './utils/swal';
+import { twinsToTwinteAlert, loginAlert, deleteAlert } from './utils/swal';
 import { BASE_URL } from '../store/api/config';
+import { deleteUserDataAll } from '../store/api/user-lectures';
 
 declare global {
   interface Window {
@@ -63,11 +64,11 @@ export default class Index extends Vue {
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
-    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' }
+    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' },
     // , { icon: "supervisor_account", name: "About", link: "/about" }
     // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
     // , { icon: "share", name: "時間割の共有", link: "/" }
-    // , { icon: "delete_sweep", name: "時間割データの消去", link: "/" }
+    { icon: 'delete_sweep', name: '時間割データの消去', link: 'func:delete' }
   ];
 
   get drawer(): boolean {
@@ -82,7 +83,7 @@ export default class Index extends Vue {
     this.$store.commit('visible/chDrawer', { display: false });
   }
 
-  goto(link: string) {
+  async goto(link: string) {
     if (link.startsWith('https://')) {
       location.href = link;
     } else if (link.startsWith('func:')) {
@@ -94,6 +95,10 @@ export default class Index extends Vue {
           break;
         case 'func:twins':
           twinsToTwinteAlert();
+        case 'func:delete':
+          if (await deleteAlert()) {
+            deleteUserDataAll();
+          }
           break;
       }
     } else {
