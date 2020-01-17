@@ -12,7 +12,7 @@
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
-        <h1 class="settings">設定</h1>
+        <h1>設定</h1>
         <div class="material-icons svg-button close-btn" @click="chDrawer()">
           close
         </div>
@@ -28,9 +28,11 @@
             :id="l.icon"
             @click="goto(l.link)"
           >
-            <span class="material-icons menu-icon">{{ l.icon }}</span>
-            <p>{{ l.name }}</p>
-            <span class="material-icons menu-allow">chevron_right</span>
+            <p>
+              <span class="material-icons menu-icon">{{ l.icon }}</span>
+              {{ l.name }}
+            </p>
+            <!-- <span class="material-icons ">chevron_right</span> -->
           </div>
         </section>
       </nav>
@@ -68,7 +70,7 @@ export default class Index extends Vue {
     // , { icon: "supervisor_account", name: "About", link: "/about" }
     // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
     // , { icon: "share", name: "時間割の共有", link: "/" }
-    // { icon: 'delete_sweep', name: '時間割データの消去', link: 'func:delete' }
+    // {icon: 'delete_sweep',name: '時間割データの消去',link: 'func:delete'}
   ];
 
   get drawer(): boolean {
@@ -150,30 +152,22 @@ export default class Index extends Vue {
 .main {
   font-family: Noto Sans JP;
   position: absolute;
-  left: 0px;
-  top: 0px;
-  max-width: 300px;
-  width: 75vw;
-  height: 100vh;
+  height: 100%;
+  top: 0;
+  left: 0;
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   background: #fff;
   z-index: 6;
-}
-@media screen and (min-width: 800px) {
-  .main {
-    min-width: 600px;
-    max-width: 1000px;
-    width: 40vmax;
-  }
+  padding: 5vh 3.5vh;
 }
 
 //++++++++++++++++++++++++// ドロワーメニューの内容（中身） //++++++++++++++++++++++++//
 
-.settings {
+h1 {
   color: #717171;
   font-size: 3.8vh;
   font-weight: 400;
-  margin: 12% auto 0 7%;
+  margin: 0 auto 9% 0;
 }
 .close-btn {
   position: absolute;
@@ -183,11 +177,10 @@ export default class Index extends Vue {
   font-size: 4vh;
 }
 .login-btn {
-  margin: 8% auto 0 auto;
   text-align: center;
   line-height: 5.5vh;
-  width: 83%;
   height: 5.5vh;
+  margin: 0 auto 3%;
   background-color: #4380f8;
   color: #ffffff;
   border-radius: 1vh;
@@ -201,44 +194,44 @@ export default class Index extends Vue {
 
 /* メニュー項目 */
 .main .menu-contents-wrap {
-  margin: 4% 5% auto 7%;
+  margin: 0;
 }
 .menu-content {
   position: relative;
-  line-height: 9vh;
   margin: 0;
   height: 9vh;
-  width: 100%;
   border-bottom: 0.2vh solid #c4c4c4;
+  padding-right: 5vh;
 }
 
 .menu-icon {
   color: #00c0c0;
-  position: absolute;
   left: 3%;
-  top: 50%;
-  transform: translateY(-50%);
+  display: inline-flex;
+  vertical-align: middle;
   font-size: 4.4vh;
 }
 .menu-content p {
   color: #717171;
   font-size: 2.5vh;
   font-weight: 300;
-  padding-left: 19%;
+  line-height: 9vh;
   margin: 0;
+  padding-left: 1vh;
 }
-.menu-allow {
-  color: #00c0c0;
+.menu-content p::after {
+  font-family: 'Material Icons';
+  content: 'chevron_right';
   position: absolute;
-  top: 50%;
-  right: 1%;
-  transform: translateY(-50%);
+  right: 0;
+  color: #00c0c0;
   font-size: 4.4vh;
+  display: inline-flex;
+  vertical-align: middle;
 }
+
+#home p,
 #home span {
-  color: #4380f8;
-}
-#home p {
   color: #4380f8;
 }
 
