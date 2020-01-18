@@ -8,7 +8,13 @@ beforeEach(() => {
     drawer: false,
     detail: false,
     add: false,
-    table: { display: true, move: 'left' }
+    table: { display: true, move: 'left' },
+    subject: {
+      lecture_name: true,
+      lecture_code: true,
+      instructor: false,
+      room: true
+    }
   };
 });
 

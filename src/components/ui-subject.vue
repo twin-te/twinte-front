@@ -10,9 +10,13 @@
       }"
       v-else
     >
-      <div class="sbj-lectureId">{{ table.lecture_code }}</div>
-      <div class="sbj-name">{{ table.lecture_name }}</div>
-      <div class="sbj-room">{{ table.room }}</div>
+      <div v-if="display.lecture_code" class="sbj-lectureId">
+        {{ table.lecture_code }}
+      </div>
+      <div v-if="display.lecture_name" class="sbj-name">
+        {{ table.lecture_name }}
+      </div>
+      <div v-if="display.room" class="sbj-room">{{ table.room }}</div>
     </div>
     <!-- → 授業が入っている -->
   </section>
@@ -40,10 +44,20 @@ export default class Index extends Vue {
 
   @Prop() day!: number;
   @Prop() period!: number;
+  @Prop() data!: Period | undefined;
+  @Prop() click!: string | undefined;
 
   week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
+  get display() {
+    return this.$store.getters['visible/subject'];
+  }
+
   get table() {
+    if (this.data) {
+      return this.data;
+    }
+
     const periods = this.$store.getters['api/table'];
     const module = this.module;
     const week = this.week;
@@ -70,6 +84,10 @@ export default class Index extends Vue {
     this.$store.commit('visible/chAdd', { display: true });
   }
   popUp() {
+    if (this.click === 'disable') {
+      return;
+    }
+
     if (this.table) {
       this.chDetail(this.table);
     } else {

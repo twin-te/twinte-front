@@ -5,14 +5,21 @@ export const state = (): S => ({
   drawer: false,
   detail: false,
   add: false,
-  table: { display: true, move: 'left' }
+  table: { display: true, move: 'left' },
+  subject: {
+    lecture_name: true,
+    lecture_code: true,
+    instructor: false,
+    room: true
+  }
 });
 
 export const getters: Getters<S, G> = {
   drawer: state => state.drawer,
   detail: state => state.detail,
   add: state => state.add,
-  table: state => state.table
+  table: state => state.table,
+  subject: state => state.subject
 };
 
 export const mutations: Mutations<S, M> = {
@@ -27,5 +34,8 @@ export const mutations: Mutations<S, M> = {
   },
   chTable(state, payload) {
     state.table = payload;
+  },
+  setDisplaySubject(state, payload) {
+    state.subject = payload;
   }
 };
