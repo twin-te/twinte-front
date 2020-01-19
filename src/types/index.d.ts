@@ -24,4 +24,12 @@ type OutputSearchData = {
   instructor: string;
 }[];
 
-export { Day, Module, TimeTables, Period, OutputSearchData };
+type SubjectSettings = {
+  lecture_name: boolean;
+  lecture_code: boolean;
+  instructor: boolean;
+  room: boolean;
+  font_size: 'small' | 'medium' | 'large';
+};
+
+export { Day, Module, TimeTables, Period, OutputSearchData, SubjectSettings };

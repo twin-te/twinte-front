@@ -8,9 +8,10 @@ export const state = (): S => ({
   table: { display: true, move: 'left' },
   subject: {
     lecture_name: true,
-    lecture_code: true,
+    lecture_code: false,
     instructor: false,
-    room: true
+    room: true,
+    font_size: 'medium'
   }
 });
 

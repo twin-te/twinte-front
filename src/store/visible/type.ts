@@ -9,18 +9,14 @@
  * - table: 時間割。アニメーション時に状態を変えます
  *
  */
+import { SubjectSettings } from '../../types';
 
 export interface S {
   drawer: boolean;
   detail: boolean;
   add: boolean;
   table: { display: boolean; move: 'left' | 'right' };
-  subject: {
-    lecture_name: boolean;
-    lecture_code: boolean;
-    instructor: boolean;
-    room: boolean;
-  };
+  subject: SubjectSettings;
 }
 export interface G {
   /**
@@ -39,12 +35,7 @@ export interface G {
    * 時間割 アニメーション実装するため、どちら遷移するかmoveで記述
    */
   table: { display: boolean; move: 'left' | 'right' };
-  subject: {
-    lecture_name: boolean;
-    lecture_code: boolean;
-    instructor: boolean;
-    room: boolean;
-  };
+  subject: SubjectSettings;
 }
 export interface RG {
   'visible/drawer': G['drawer'];
@@ -75,12 +66,7 @@ export interface M {
    * @param move "left" "right" アニメーション実装するため、どちら遷移するか記述
    */
   chTable: { display: boolean; move: 'left' | 'right' };
-  setDisplaySubject: {
-    lecture_name: boolean;
-    lecture_code: boolean;
-    instructor: boolean;
-    room: boolean;
-  };
+  setDisplaySubject: SubjectSettings;
 }
 export interface RM {
   'visible/chDrawer': M['chDrawer'];

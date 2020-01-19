@@ -3,18 +3,15 @@
     <div id="subject" v-if="!table"></div>
     <!-- → 授業が入っていない -->
 
-    <div
-      id="subject"
-      :style="{
-        background: getColor(table.lecture_code)
-      }"
-      v-else
-    >
+    <div id="subject" :style="setSubjectStyle()" v-else>
       <div v-if="display.lecture_code" class="sbj-lectureId">
         {{ table.lecture_code }}
       </div>
       <div v-if="display.lecture_name" class="sbj-name">
         {{ table.lecture_name }}
+      </div>
+      <div v-if="display.instructor" class="sbj-instructor">
+        {{ table.instructor }}
       </div>
       <div v-if="display.room" class="sbj-room">{{ table.room }}</div>
     </div>
@@ -76,6 +73,29 @@ export default class Index extends Vue {
   get module() {
     return this.$store.getters['table/module'];
   }
+  setSubjectStyle() {
+    switch (this.display.font_size) {
+      case 'small':
+        return {
+          background: this.getColor(this.table?.lecture_code),
+          fontSize: '1vh',
+          lineHeight: '2vh'
+        };
+      case 'medium':
+        return {
+          background: this.getColor(this.table?.lecture_code),
+          fontSize: '1.3vh',
+          lineHeight: '2vh'
+        };
+      default:
+        // 'large'
+        return {
+          background: this.getColor(this.table?.lecture_code),
+          fontSize: '1.9vh',
+          lineHeight: '2vh'
+        };
+    }
+  }
   chDetail(period: Period) {
     this.$store.dispatch('table/setPeriod', { period });
     this.$store.commit('visible/chDetail', { display: true });
@@ -87,6 +107,7 @@ export default class Index extends Vue {
     if (this.click === 'disable') {
       return;
     }
+    // 設定画面ではclickできない
 
     if (this.table) {
       this.chDetail(this.table);
@@ -95,7 +116,7 @@ export default class Index extends Vue {
     }
   }
   /** 授業に応じたテーマ色を返す */
-  getColor(number: string): string {
+  getColor(number: string | undefined): string {
     if (!number) {
       return '#EEEEEE';
     }
@@ -131,8 +152,6 @@ $width: calc(
   word-break: break-all;
   font-style: normal;
   font-weight: 700;
-  font-size: 1.3vh;
-  line-height: 2vh;
   overflow: hidden;
   &:active {
     transition: all 0.3s;
@@ -144,6 +163,9 @@ $width: calc(
 }
 .sbj-name {
   font-weight: 700;
+}
+.sbj-instructor {
+  font-weight: 400;
 }
 .sbj-room {
   font-weight: 400;

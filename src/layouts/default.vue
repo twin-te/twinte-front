@@ -66,6 +66,7 @@ export default class Index extends Vue {
     if (subject) {
       this.$store.commit('visible/setDisplaySubject', JSON.parse(subject));
     }
+    // → 表示設定
 
     const loginFlag = localStorage.getItem('login');
     if (!loginFlag && loginState) {

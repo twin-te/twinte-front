@@ -13,7 +13,8 @@ beforeEach(() => {
       lecture_name: true,
       lecture_code: true,
       instructor: false,
-      room: true
+      room: true,
+      font_size: 'medium'
     }
   };
 });
