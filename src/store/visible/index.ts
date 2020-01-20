@@ -11,7 +11,7 @@ export const state = (): S => ({
     lecture_code: false,
     instructor: false,
     room: true,
-    font_size: 'medium'
+    font_size: 'small'
   }
 });
 

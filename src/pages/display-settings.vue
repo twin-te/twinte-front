@@ -1,44 +1,93 @@
 <template>
-  <div>
-    <h2>表示する項目</h2>
-    <label
-      >教科名<input
-        v-model="sbj.lecture_name"
-        type="checkbox"
-        name="lecture_name"
-        id="lecture_name"
-    /></label>
-    <label
-      >教科番号<input
-        v-model="sbj.lecture_code"
-        type="checkbox"
-        name="lecture_number"
-        id="lecture_number"
-    /></label>
-    <label
-      >教師名<input
-        v-model="sbj.instructor"
-        type="checkbox"
-        name="instructor"
-        id="instructor"
-    /></label>
-    <label
-      >教室名<input v-model="sbj.room" type="checkbox" name="room" id="room"
-    /></label>
-    <Subject :data="sampleData" click="disable" />
+  <main class="display-settings">
+    <h1>表示設定</h1>
+    <div class="setting-card">
+      <h2>時間割表の設定</h2>
+      <div class="preview-flex">
+        <section class="visible-setting">
+          <h3>表示する項目</h3>
+          <ul>
+            <li>
+              <input
+                @change="setSbj()"
+                v-model="sbj.lecture_code"
+                type="checkbox"
+                name="lecture_number"
+                id="lecture_number"
+                class="setting-checkbox"
+              />
+              <label class="display-check" for="lecture_number"
+                ><span></span></label
+              >科目番号
+            </li>
+            <li>
+              <input
+                @change="setSbj()"
+                v-model="sbj.instructor"
+                type="checkbox"
+                name="instructor"
+                id="instructor"
+                class="setting-checkbox"
+              />
+              <label class="display-check" for="instructor"><span></span></label
+              >担当教員
+            </li>
+            <li>
+              <input
+                @change="setSbj()"
+                v-model="sbj.room"
+                type="checkbox"
+                name="room"
+                id="room"
+                class="setting-checkbox"
+              />
+              <label class="display-check" for="room"><span></span></label
+              >教室名
+            </li>
+          </ul>
+        </section>
 
-    <h2>文字の大きさ</h2>
-    <label
-      ><input v-model="sbj.font_size" type="radio" value="small" />小</label
-    >
-    <label
-      ><input v-model="sbj.font_size" type="radio" value="medium" />中</label
-    >
-    <label
-      ><input v-model="sbj.font_size" type="radio" value="large" />大</label
-    >
-    <button @click="setSbj()">保存</button>
-  </div>
+        <!-- 時間割表のプレビュー -->
+        <div class="preview-wrap">
+          <Subject class="subject" :data="sampleData" click="disable" />
+        </div>
+      </div>
+
+      <section class="fontsize-setting">
+        <h3>文字の大きさ</h3>
+        <div class="fontsizebtn-flex">
+          <label
+            ><input
+              @change="setSbj()"
+              v-model="sbj.font_size"
+              type="radio"
+              value="small"
+              class="setting-radio"
+            /><span class="fontsize-btn">小</span></label
+          >
+          <label
+            ><input
+              @change="setSbj()"
+              v-model="sbj.font_size"
+              type="radio"
+              value="medium"
+              class="setting-radio"
+            /><span class="fontsize-btn">中</span></label
+          >
+          <label
+            ><input
+              @change="setSbj()"
+              v-model="sbj.font_size"
+              type="radio"
+              value="large"
+              class="setting-radio"
+            /><span class="fontsize-btn">大</span></label
+          >
+        </div>
+        <!-- <button @click="setSbj()">保存</button> -->
+      </section>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -65,14 +114,14 @@ export default class Index extends Vue {
   };
 
   sampleData: Period = {
-    lecture_code: 'GB11514',
-    lecture_name: 'シミュレーション物理',
-    instructor: '都市樹',
+    lecture_code: '0A00000',
+    lecture_name: '科目名',
+    instructor: '担当教員',
     year: 2019,
     module: '秋C',
     day: '木',
     period: 4,
-    room: '3C313',
+    room: '0A000',
     user_lecture_id: 'sampledata'
   };
 
@@ -88,4 +137,124 @@ export default class Index extends Vue {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.display-settings {
+  color: #555555;
+  padding: 1vh 6vw;
+  max-width: 70vh;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 3vh;
+  font-weight: 500;
+}
+.setting-card {
+  background-color: white;
+  border-radius: 1vh;
+  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
+  margin: 1vh auto 2vh auto;
+  padding: 3vh 3vh 1vh;
+}
+.visible-setting {
+  width: 42%;
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  li {
+    font-size: 2.5vh;
+    line-height: 2.3 * 2.7vh;
+  }
+}
+.preview-flex {
+  display: flex;
+  justify-content: flex-start;
+}
+.preview-wrap {
+  position: relative;
+}
+.subject {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+section {
+  margin: 3vh 2.5vh;
+}
+
+h2 {
+  font-size: 3vh;
+  color: #00c0c0;
+  font-weight: 500;
+  margin: 0 0 2vh;
+}
+
+h3 {
+  font-size: 2.3vh;
+  font-weight: 500;
+  margin: 0 0 1vh;
+}
+
+.display-check {
+  margin-right: 3%;
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  border: 0.25vh solid #9a9a9a;
+  border-radius: 50% 50%;
+  width: 3.3vh;
+  height: 3.3vh;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    width: 2.5vh;
+    height: 2.5vh;
+    border-radius: 50% 50%;
+    opacity: 0;
+  }
+}
+
+.setting-checkbox:checked ~ .display-check {
+  border: 0.25vh solid #00c0c0;
+  span {
+    opacity: 1;
+    background-color: #00c0c0;
+  }
+}
+
+input {
+  display: none;
+}
+
+.fontsize-setting {
+  .fontsizebtn-flex {
+    display: flex;
+    vertical-align: middle;
+    justify-content: flex-start;
+    margin: 2vh 0;
+  }
+
+  .fontsize-btn {
+    display: block;
+    border: #00c0c0 0.2vh solid;
+    border-radius: 400px;
+    width: 10vh;
+    height: 5vh;
+    line-height: 5vh;
+    text-align: center;
+    color: #00c0c0;
+    margin-right: 3vh;
+    :nth-child(1) {
+      font-size: 1.9vh;
+    }
+  }
+  .setting-radio:checked ~ .fontsize-btn {
+    background-color: #00c0c0;
+    color: white;
+  }
+}
+</style>

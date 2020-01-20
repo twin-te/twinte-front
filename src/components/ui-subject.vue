@@ -78,21 +78,18 @@ export default class Index extends Vue {
       case 'small':
         return {
           background: this.getColor(this.table?.lecture_code),
-          fontSize: '1vh',
-          lineHeight: '2vh'
+          fontSize: '1.4vh'
         };
       case 'medium':
         return {
           background: this.getColor(this.table?.lecture_code),
-          fontSize: '1.3vh',
-          lineHeight: '2vh'
+          fontSize: '1.57vh'
         };
       default:
-        // 'large'
+        'large';
         return {
           background: this.getColor(this.table?.lecture_code),
-          fontSize: '1.9vh',
-          lineHeight: '2vh'
+          fontSize: '1.8vh'
         };
     }
   }
@@ -153,6 +150,7 @@ $width: calc(
   font-style: normal;
   font-weight: 700;
   overflow: hidden;
+  line-height: 2vh;
   &:active {
     transition: all 0.3s;
     filter: brightness(150%);
