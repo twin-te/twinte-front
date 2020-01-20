@@ -55,10 +55,10 @@ const nuxtConfig: Configuration = {
     ]
   },
   loadingIndicator: {
-    name: 'wandering-cubes',
+    name: 'cube-grid',
     color: 'teal',
-    color2: 'white',
-    background: 'gray'
+    color2: 'grey',
+    background: 'white'
   },
   loading: {
     color: 'teal',

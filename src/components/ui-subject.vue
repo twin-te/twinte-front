@@ -3,16 +3,17 @@
     <div id="subject" v-if="!table"></div>
     <!-- → 授業が入っていない -->
 
-    <div
-      id="subject"
-      :style="{
-        background: getColor(table.lecture_code)
-      }"
-      v-else
-    >
-      <div class="sbj-lectureId">{{ table.lecture_code }}</div>
-      <div class="sbj-name">{{ table.lecture_name }}</div>
-      <div class="sbj-room">{{ table.room }}</div>
+    <div id="subject" :style="setSubjectStyle()" v-else>
+      <div v-if="display.lecture_code" class="sbj-lectureId">
+        {{ table.lecture_code }}
+      </div>
+      <div v-if="display.lecture_name" class="sbj-name">
+        {{ table.lecture_name }}
+      </div>
+      <div v-if="display.instructor" class="sbj-instructor">
+        {{ table.instructor }}
+      </div>
+      <div v-if="display.room" class="sbj-room">{{ table.room }}</div>
     </div>
     <!-- → 授業が入っている -->
   </section>
@@ -40,10 +41,20 @@ export default class Index extends Vue {
 
   @Prop() day!: number;
   @Prop() period!: number;
+  @Prop() data!: Period | undefined;
+  @Prop() click!: string | undefined;
 
   week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
 
+  get display() {
+    return this.$store.getters['visible/subject'];
+  }
+
   get table() {
+    if (this.data) {
+      return this.data;
+    }
+
     const periods = this.$store.getters['api/table'];
     const module = this.module;
     const week = this.week;
@@ -62,6 +73,29 @@ export default class Index extends Vue {
   get module() {
     return this.$store.getters['table/module'];
   }
+  setSubjectStyle() {
+    switch (this.display.font_size) {
+      case 'small':
+        return {
+          background: this.getColor(this.table?.lecture_code),
+          fontSize: '1.4vh',
+          lineHeight: '2vh'
+        };
+      case 'medium':
+        return {
+          background: this.getColor(this.table?.lecture_code),
+          fontSize: '1.57vh',
+          lineHeight: '2.2vh'
+        };
+      default:
+        'large';
+        return {
+          background: this.getColor(this.table?.lecture_code),
+          fontSize: '1.8vh',
+          lineHeight: '2.4vh'
+        };
+    }
+  }
   chDetail(period: Period) {
     this.$store.dispatch('table/setPeriod', { period });
     this.$store.commit('visible/chDetail', { display: true });
@@ -70,6 +104,11 @@ export default class Index extends Vue {
     this.$store.commit('visible/chAdd', { display: true });
   }
   popUp() {
+    if (this.click === 'disable') {
+      return;
+    }
+    // 設定画面ではclickできない
+
     if (this.table) {
       this.chDetail(this.table);
     } else {
@@ -77,7 +116,7 @@ export default class Index extends Vue {
     }
   }
   /** 授業に応じたテーマ色を返す */
-  getColor(number: string): string {
+  getColor(number: string | undefined): string {
     if (!number) {
       return '#EEEEEE';
     }
@@ -113,8 +152,6 @@ $width: calc(
   word-break: break-all;
   font-style: normal;
   font-weight: 700;
-  font-size: 1.3vh;
-  line-height: 2vh;
   overflow: hidden;
   &:active {
     transition: all 0.3s;
@@ -126,6 +163,9 @@ $width: calc(
 }
 .sbj-name {
   font-weight: 700;
+}
+.sbj-instructor {
+  font-weight: 400;
 }
 .sbj-room {
   font-weight: 400;

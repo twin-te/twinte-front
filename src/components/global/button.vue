@@ -1,5 +1,5 @@
 <template>
-  <div class="btn" :style="{ width, height }">{{ text }}</div>
+  <button class="btn" :style="{ width, height }">{{ text }}</button>
 </template>
 
 <script lang="ts">
@@ -15,21 +15,24 @@ export default class Index extends Vue {
 
 <style scoped lang="scss">
 .btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 550px;
+  /* buttonのcssリセット */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+
   font-size: 2.3vh;
-  height: 6vh;
   line-height: 6vh;
   background: #00c0c0;
   border-radius: 1vh;
+  bottom: 0;
   color: #fff;
   text-align: center;
   &:active {
     transition: all 0.2s;
-    transform: translateX(-50%) scale(1.05);
+    transform: scale(1.05);
     background-color: #05dbdb;
   }
 }

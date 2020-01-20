@@ -66,9 +66,9 @@ export default class Index extends Vue {
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
-    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' }
+    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/howto' },
     // , { icon: "supervisor_account", name: "About", link: "/about" }
-    // , { icon: "view_quilt", name: "表示設定", link: "/settings" }
+    { icon: 'view_quilt', name: '表示設定', link: '/display-settings' }
     // , { icon: "share", name: "時間割の共有", link: "/" }
     // {icon: 'delete_sweep',name: '時間割データの消去',link: 'func:delete'}
   ];

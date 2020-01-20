@@ -62,6 +62,12 @@ export default class Index extends Vue {
     }
     // → 前回見ていた学期
 
+    const subject = localStorage.getItem('subject');
+    if (subject) {
+      this.$store.commit('visible/setDisplaySubject', JSON.parse(subject));
+    }
+    // → 表示設定
+
     const loginFlag = localStorage.getItem('login');
     if (!loginFlag && loginState) {
       Swal.fire(
