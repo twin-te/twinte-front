@@ -147,16 +147,24 @@ export default class Index extends Vue {
 h1 {
   font-size: 3vh;
   font-weight: 500;
+  margin-bottom: 2vh;
 }
 .setting-card {
   background-color: white;
   border-radius: 1vh;
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   margin: 1vh auto 2vh auto;
-  padding: 3vh 3vh 1vh;
+  padding: 3vh 5vmin;
+}
+
+.preview-flex {
+  display: flex;
+  justify-content: flex-start;
 }
 .visible-setting {
-  width: 42%;
+  width: 45%;
+  margin-bottom: 3vh;
+  padding-left: 2vmin;
   ul {
     list-style: none;
     padding-left: 0;
@@ -167,28 +175,23 @@ h1 {
     line-height: 2.3 * 2.7vh;
   }
 }
-.preview-flex {
-  display: flex;
-  justify-content: flex-start;
-}
 .preview-wrap {
   position: relative;
+  width: 46%;
 }
 .subject {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-section {
-  margin: 3vh 2.5vh;
+  top: 46%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  -ms-wrap-margin: 0;
 }
 
 h2 {
-  font-size: 3vh;
+  font-size: 2.7vh;
   color: #00c0c0;
   font-weight: 500;
-  margin: 0 0 2vh;
+  margin: 0 0 3vh;
 }
 
 h3 {
@@ -231,26 +234,34 @@ input {
 }
 
 .fontsize-setting {
+  padding-left: 2vmin;
   .fontsizebtn-flex {
     display: flex;
     vertical-align: middle;
     justify-content: flex-start;
-    margin: 2vh 0;
+    margin-top: 2vh;
   }
 
   .fontsize-btn {
     display: block;
     border: #00c0c0 0.2vh solid;
     border-radius: 400px;
-    width: 10vh;
-    height: 5vh;
-    line-height: 5vh;
+    width: 9vh;
+    height: 4.5vh;
+    line-height: 4.5vh;
     text-align: center;
     color: #00c0c0;
+    background-color: white;
     margin-right: 3vh;
-    :nth-child(1) {
-      font-size: 1.9vh;
-    }
+  }
+  label:nth-child(1) {
+    font-size: 1.9vh;
+  }
+  label:nth-child(2) {
+    font-size: 2.3vh;
+  }
+  label:nth-child(3) {
+    font-size: 2.7vh;
   }
   .setting-radio:checked ~ .fontsize-btn {
     background-color: #00c0c0;
