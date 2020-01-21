@@ -262,7 +262,7 @@ export default class Index extends Vue {
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   border-radius: 1vh;
   z-index: 6;
-  padding: 6vh;
+  padding: 5vh;
   box-sizing: border-box;
 }
 
@@ -346,7 +346,7 @@ h2 {
 /* メモ */
 .memo {
   width: 100%;
-  height: 12.5vh;
+  height: 14vh;
   border: 0.2vh solid #dddddd;
   border-radius: 0.5rem;
   margin: 0;
@@ -430,14 +430,14 @@ h2 {
   justify-content: space-between;
 }
 .delete-btn {
-  font-size: 2vh;
+  font-size: 2.1vh;
   color: rgb(255, 98, 98);
   i {
     font-size: 3vh;
   }
 }
 .edit-btn {
-  font-size: 2vh;
+  font-size: 2.1vh;
   color: rgb(102, 120, 223);
   i {
     font-size: 3vh;
