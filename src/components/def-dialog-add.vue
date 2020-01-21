@@ -15,7 +15,7 @@
             <input
               v-model="input"
               type="text"
-              value="授業名・科目番号で検索"
+              placeholder="授業名や科目番号で検索"
               class="form"
               　@keyup.enter="search(input)"
             />
@@ -286,8 +286,8 @@ h1 {
     height: 100%;
     width: 100%;
     background-color: #fff;
-    border: 0.2vh solid #adadad;
-    color: #4a5568;
+    border: 0.2vh solid #9a9a9a;
+    color: #555555;
     border-radius: 3vh;
     position: relative;
     margin: 0;
@@ -295,6 +295,11 @@ h1 {
     padding-left: 3%;
     font-size: 16px;
     box-sizing: border-box;
+  }
+  ::placeholder {
+    color: #9a9a9a;
+    font-size: 14px;
+    padding-top: 4px;
   }
   .search-btn {
     position: absolute;
