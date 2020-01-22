@@ -65,8 +65,12 @@ const nuxtConfig: Configuration = {
     height: '5px'
   },
   css: ['@/assets/css/main.scss'],
-  modules: ['@nuxtjs/pwa'],
   plugins: [{ src: '@/plugins/ga.js', mode: 'client' }],
+  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry'],
+  sentry: {
+    dsn: process.env.SENTRY_DSN || '',
+    disabled: process.env.NODE_ENV != 'production'
+  },
   workbox: {
     dev: false,
     runtimeCaching: [
