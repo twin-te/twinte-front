@@ -17,28 +17,24 @@
 
           <!-- 科目詳細 -->
           <h2>
-            <span class="material-icons icon">info</span>科目詳細
+            <i class="material-icons icon">info</i>科目詳細
             <span class="syllabus-btn" @click="syllabus()">
               シラバス
-              <span class="material-icons syllabus-chevron">chevron_right</span>
+              <i class="material-icons icon">chevron_right</i>
             </span>
           </h2>
           <section class="sbj-detail-wrapper">
-            <p class="h3">
+            <p class="subject-item">
               担当教員
-              <span class="sbj-detail">{{ table.instructor }}</span>
+              <span>{{ table.instructor }}</span>
             </p>
-            <p class="h3">
+            <p class="subject-item">
               開講時限
-              <span class="sbj-detail"
-                >{{ table.module }} {{ table.day }}{{ table.period }}</span
-              >
+              <span>{{ table.module }} {{ table.day }}{{ table.period }}</span>
             </p>
-            <p class="h3">
+            <p class="subject-item">
               授業教室
-              <span v-if="!editableLecture" class="sbj-detail">
-                {{ table.room }}
-              </span>
+              <span v-if="!editableLecture">{{ table.room }}</span>
 
               <input v-else class="sbj-detail" v-model="editableLecture.room" />
               <!-- → 教室変更 -->
@@ -46,11 +42,11 @@
           </section>
 
           <!-- メモ -->
-          <h2 class="h2-2">
-            <span class="material-icons icon">create</span>メモ
+          <h2>
+            <i class="material-icons icon">create</i>メモ
             <span class="syllabus-btn" @click="attend()">
               出席
-              <span class="material-icons syllabus-chevron">chevron_right</span>
+              <i class="material-icons icon">chevron_right</i>
             </span>
           </h2>
           <textarea class="memo" type="text" v-model="localMemo"></textarea>
@@ -76,12 +72,14 @@
             </div>
           </section>
           <div @click="save()" class="save-btn">変更を保存</div>
-          <p @click="deleteItem()" class="delete-btn">
-            <span class="material-icons delete-icon">delete</span>この科目を削除
-          </p>
-          <p @click="edit()" class="edit-btn">
-            <span class="material-icons delete-icon">edit</span>教室情報を編集
-          </p>
+          <div class="flex">
+            <p @click="deleteItem()" class="delete-btn">
+              <i class="material-icons icon">delete</i>この科目を削除
+            </p>
+            <p @click="edit()" class="edit-btn">
+              <i class="material-icons icon">edit</i>教室情報を編集
+            </p>
+          </div>
         </article>
       </nav>
     </transition>
@@ -266,25 +264,22 @@ export default class Index extends Vue {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   width: 92vw;
+  max-width: 70vh;
   height: 80vh;
   background: #ffffff;
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   border-radius: 1vh;
   z-index: 6;
+  padding: 5vh;
+  box-sizing: border-box;
 }
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
-  margin: 4vmax;
-  height: calc(80vh - 10vh);
 }
 
 /* ボタン・アイコン */
-.icon {
-  font-size: 2.9vh;
-  margin-bottom: 0;
-}
 .close-btn {
   position: absolute;
   top: -2.2vh;
@@ -292,145 +287,87 @@ article {
   font-size: 4vh;
   color: #717171;
 }
-.save-btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  font-size: 2.3vh;
-  height: 6vh;
-  line-height: 6vh;
-  background: #00c0c0;
-  border-radius: 1vh;
-  bottom: 3.1vh;
-  color: #fff;
-  text-align: center;
-  &:active {
-    transition: all 0.2s;
-    transform: translateX(-50%) scale(1.05);
-    background-color: #05dbdb;
-  }
-}
-.delete-btn {
-  position: absolute;
-  bottom: -1.7vh;
-  font-size: 2vh;
-  color: rgb(255, 98, 98);
-  margin: 0;
-}
-.edit-btn {
-  position: absolute;
-  bottom: -1.7vh;
-  right: 0;
-  font-size: 2vh;
-  color: rgb(102, 120, 223);
-  margin: 0;
-}
 .icon {
-  font-size: 2.7vh;
-  position: relative;
-  bottom: -0.4vh;
-  margin-right: 0.4vh;
-}
-.syllabus-chevron {
-  position: relative;
-  bottom: -0.9vh;
-}
-.delete-icon {
-  position: relative;
-  font-size: 3.2vh;
+  display: inline-flex;
   vertical-align: middle;
-  top: -0.2vh;
+  padding-bottom: 0.4vh;
 }
 
 /* 科目の情報 */
 h1 {
-  position: absolute;
-  top: -0.6vh;
-  padding-left: 1.2vh;
-  width: calc(100% - 1.5vh - 2vh);
   border-left: 0.8vh solid #00c0c0;
+  color: #555555;
+  font-size: 2.9vh;
+  line-height: 4.5vh;
+  font-weight: 500;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   height: 8vh;
-}
-.sbj-name {
-  color: #555555;
-  font-size: 2.7vh;
-  font-weight: 500;
-  line-height: 4.5vh;
+  padding-left: 0.9vh;
   margin: 0;
-}
-.sbj-number {
-  color: #c4c4c4;
-  font-size: 1.8vh;
-  font-weight: 400;
-  line-height: 3.5vh;
-  margin: 0;
+  .sbj-number {
+    color: #c4c4c4;
+    font-size: 1.8vh;
+    font-weight: 400;
+    line-height: 3.5vh;
+    margin: 0;
+  }
 }
 h2 {
-  position: absolute;
-  top: 10.3vh;
   width: 100%;
   color: #00c0c0;
   border-bottom: 0.2vh solid #00c0c0;
-  padding-bottom: 0.1vh;
   font-weight: 500;
-  font-size: 2.2vh;
+  font-size: 2.3vh;
+  i {
+    font-size: 2.9vh;
+  }
+  .syllabus-btn {
+    line-height: 3vh;
+    position: absolute;
+    right: 0;
+    font-size: 1.9vh;
+    font-weight: 400;
+    color: #c4c4c4;
+    i {
+      font-size: 3vh;
+    }
+  }
 }
-.syllabus-btn {
-  position: absolute;
-  right: 0;
-  font-size: 1.9vh;
-  font-weight: 400;
-  color: #c4c4c4;
-  bottom: 2px;
-}
+
 .sbj-detail-wrapper {
-  position: absolute;
-  top: 15.7vh;
-  font-size: 2vh;
-  left: 4%;
-  width: 96%;
+  padding: 0 2.5vmin;
+  font-size: 2.1vh;
+  line-height: 2.1vh;
+  margin-bottom: 3vh;
 }
-.h3 {
+.subject-item {
   color: #555555;
   font-weight: 500;
-}
-.sbj-detail {
-  padding-left: 5%;
-  font-weight: 400;
+  span {
+    padding-left: 5%;
+    font-weight: 400;
+  }
 }
 
 /* メモ */
-.h2-2 {
-  position: absolute;
-  top: 29.6vh;
-}
 .memo {
-  position: absolute;
-  bottom: 21vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 93%;
-  height: 12.5vh;
+  width: 100%;
+  height: 14vh;
   border: 0.2vh solid #dddddd;
+  border-radius: 0.5rem;
+  margin: 0;
   box-sizing: border-box;
-  border-radius: 8px;
 }
 
 /* 出欠 */
 .counters-wrapper {
   text-align: center;
-  position: absolute;
-  bottom: 11.3vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 94%;
   grid-template-columns: repeat(3, 1fr);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin-bottom: 2vh;
 }
 .counter-name {
   line-height: 4.4vh;
@@ -452,7 +389,7 @@ h2 {
 }
 .counter-left {
   color: #00c0c0;
-  font-size: 5vh;
+  font-size: 4.4vh;
   line-height: 4.3vh;
   width: 50%;
   border: 0.2vh solid #00c0c0;
@@ -462,7 +399,7 @@ h2 {
 }
 .counter-right {
   color: #00c0c0;
-  font-size: 4.9vh;
+  font-size: 4.3vh;
   line-height: 3.4vh;
   width: 50%;
   border: 0.2vh solid #00c0c0;
@@ -475,6 +412,44 @@ h2 {
 .counter-right:active {
   background-color: #00c0c0;
   color: white;
+}
+
+//++++++++++++++++++++++++// 保存・編集・削除ボタン //++++++++++++++++++++++++//
+.save-btn {
+  display: block;
+  margin: 0 auto;
+  color: #fff;
+  width: 100%;
+  height: 6vh;
+  font-size: 2.3vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  text-align: center;
+  &:active {
+    transition: all 0.2s;
+    transform: translateX(-50%) scale(1.05);
+    background-color: #05dbdb;
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.delete-btn {
+  font-size: 2.1vh;
+  color: rgb(255, 98, 98);
+  i {
+    font-size: 3vh;
+  }
+}
+.edit-btn {
+  font-size: 2.1vh;
+  color: rgb(102, 120, 223);
+  i {
+    font-size: 3vh;
+  }
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//

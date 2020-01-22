@@ -90,6 +90,11 @@ export default class Index extends Vue {
       }
     }
     // → lectureパラメータがあればそのダイアログを表示
+
+    document.documentElement.style.setProperty(
+      '--outer-height',
+      `${window.outerHeight}px`
+    );
   }
 }
 </script>

@@ -16,8 +16,8 @@
                 id="lecture_number"
                 class="setting-checkbox"
               />
-              <label class="display-check" for="lecture_number"
-                ><span></span></label
+              <label class="display-check" for="lecture_number">
+                <span></span> </label
               >科目番号
             </li>
             <li>
@@ -29,7 +29,8 @@
                 id="instructor"
                 class="setting-checkbox"
               />
-              <label class="display-check" for="instructor"><span></span></label
+              <label class="display-check" for="instructor">
+                <span></span> </label
               >担当教員
             </li>
             <li>
@@ -41,7 +42,7 @@
                 id="room"
                 class="setting-checkbox"
               />
-              <label class="display-check" for="room"><span></span></label
+              <label class="display-check" for="room"> <span></span> </label
               >教室名
             </li>
           </ul>
@@ -56,33 +57,36 @@
       <section class="fontsize-setting">
         <h3>文字の大きさ</h3>
         <div class="fontsizebtn-flex">
-          <label
-            ><input
+          <label>
+            <input
               @change="setSbj()"
               v-model="sbj.font_size"
               type="radio"
               value="small"
               class="setting-radio"
-            /><span class="fontsize-btn">小</span></label
-          >
-          <label
-            ><input
+            />
+            <span class="fontsize-btn">小</span>
+          </label>
+          <label>
+            <input
               @change="setSbj()"
               v-model="sbj.font_size"
               type="radio"
               value="medium"
               class="setting-radio"
-            /><span class="fontsize-btn">中</span></label
-          >
-          <label
-            ><input
+            />
+            <span class="fontsize-btn">中</span>
+          </label>
+          <label>
+            <input
               @change="setSbj()"
               v-model="sbj.font_size"
               type="radio"
               value="large"
               class="setting-radio"
-            /><span class="fontsize-btn">大</span></label
-          >
+            />
+            <span class="fontsize-btn">大</span>
+          </label>
         </div>
         <!-- <button @click="setSbj()">保存</button> -->
       </section>
@@ -171,7 +175,7 @@ h1 {
     margin: 0;
   }
   li {
-    font-size: 2.5vh;
+    font-size: 2.2vh;
     line-height: 2.3 * 2.7vh;
   }
 }
@@ -201,7 +205,7 @@ h3 {
 }
 
 .display-check {
-  margin-right: 3%;
+  margin-right: 4%;
   vertical-align: middle;
   display: inline-block;
   position: relative;

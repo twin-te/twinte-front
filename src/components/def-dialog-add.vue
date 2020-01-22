@@ -11,17 +11,15 @@
             close
           </div>
           <h1>授業の追加</h1>
-          <p class="content">科目名・授業番号で検索</p>
-          <p v-if="isMobile" class="twins-btn" @click="twins()">
-            Twinsからインポート
-          </p>
 
+          <!-- 検索フォーム -->
           <form class="search-form" @submit.prevent>
             <input
               v-model="input"
               type="text"
+              placeholder="授業名や科目番号で検索"
               class="form"
-              @keyup.enter="search(input)"
+              　@keyup.enter="search(input)"
             />
             <span
               v-if="input === ''"
@@ -36,8 +34,8 @@
               >search</span
             >
           </form>
-          <!-- → 検索ボックス -->
 
+          <!-- 以下検索結果 -->
           <section class="result-list">
             <div
               v-for="(n, i) in lectures"
@@ -56,26 +54,31 @@
               </label>
             </div>
           </section>
-          <!-- → 検索結果 -->
+          <!-- ここまで検索結果 -->
 
           <section class="others">
-            <p>
+            <p class="content" @click="twins()">
+              Twinsからインポート
+              <span class="material-icons icon">chevron_right</span>
+            </p>
+            <p class="content">
               CSVファイルから追加
               <br />
               <small>*{{ moduleMessage }}</small>
+              <input
+                type="file"
+                name="file"
+                accept="text/csv, .csv"
+                id="fileElem"
+                @change="onFileChange"
+                class="add-csv"
+              />
             </p>
-            <input
-              type="file"
-              name="file"
-              accept="text/csv, .csv"
-              id="fileElem"
-              @change="onFileChange"
-            />
+
             <!-- <p @click="custom()">手動入力で授業を作成</p> -->
           </section>
           <!-- → その他オプション -->
-
-          <section class="register-btn" @click="asyncNumber()">
+          <section class="save-btn" @click="asyncNumber()">
             時間割に追加
           </section>
         </article>
@@ -133,7 +136,15 @@ export default class Index extends Vue {
     this.$store.commit('visible/chAdd', { display: false });
   }
   twins() {
-    twinsToTwinteAlert();
+    if (this.isMobile) {
+      twinsToTwinteAlert();
+    } else {
+      Swal.fire(
+        'ご利用の環境では非対応です',
+        'この機能はiOS版アプリ・Android版アプリでのみ利用できます。',
+        'info'
+      );
+    }
   }
   custom() {
     this.$router.push('/custom');
@@ -144,7 +155,7 @@ export default class Index extends Vue {
     if (!le || le.length === 0) {
       Swal.fire(
         '見つかりません',
-        '検索しましたが何も見つかりませんでした',
+        '検索しましたが何も見つかりませんでした' /*宿題やったんですけど家に忘れてきました*/,
         'error'
       );
       return;
@@ -249,153 +260,145 @@ export default class Index extends Vue {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   width: 92vw;
+  max-width: 70vh;
   height: 80vh;
-  background: #fff;
+  background: #ffffff;
   box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
   border-radius: 1vh;
   z-index: 6;
+  padding: 5vh;
+  box-sizing: border-box;
 }
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
-  margin: 4vmax;
-  height: calc(80vh - 10vh);
 }
 
 /* ボタン・アイコン */
 .close-btn {
   position: absolute;
-  top: -1.5vh;
-  right: -1.5vh;
+  top: -2.2vh;
+  right: -2.1vh;
   font-size: 4vh;
-  transition: all 0.15s;
   color: #717171;
 }
-.register-btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: auto;
-  width: 100%;
-  font-size: 2.3vh;
-  height: 6vh;
-  line-height: 6vh;
-  background: #00c0c0;
-  border-radius: 1vh;
-  bottom: 0;
-  color: #fff;
-  text-align: center;
-  &:active {
-    transition: all 0.2s;
-    transform: translateX(-50%) scale(1.05);
-    background-color: #05dbdb;
-  }
-}
-@media screen and (min-width: 1300px) {
-  .register-btn {
-    max-width: 1000px;
-  }
+.icon {
+  display: inline-flex;
+  vertical-align: middle;
+  padding-bottom: 0.4vh;
 }
 
 /* 授業の追加 */
 h1 {
-  position: absolute;
-  top: -0.8vh;
   font-size: 2.9vh;
   color: #00c0c0;
   font-weight: 500;
-}
-.content {
-  position: absolute;
-  top: 4.5vh;
-  font-size: 2vh;
-  color: #555;
-  margin-left: 0.5vh;
-}
-.others {
-  position: absolute;
-  bottom: 7.5vh;
-  border-top: 1px solid #adadad;
-  width: 100%;
-}
-.others p {
-  font-size: 2vh;
-  color: #adadad;
-  margin-left: 0.5vh;
-  line-height: 100%;
-}
-.others input {
-  margin-left: auto;
-  margin-right: 0;
-  color: #adadad;
-  font-size: 1.8vh;
+  margin: 0 0 1.5vh;
 }
 
 /* 検索フォーム */
 .search-form {
-  position: absolute;
-  width: 98%;
-  height: 4.5vh;
-  top: 12vh;
-  margin: 0;
-}
-.form {
-  height: 100%;
-  width: 97%;
-  background-color: #fff;
-  border: 0.2vh solid #adadad;
-  color: #4a5568;
-  border-radius: 3vh;
   position: relative;
+  width: 100%;
+  height: 4.5vh;
   margin: 0;
   padding: 0;
-  padding-left: 3%;
-  font-size: 16px;
-}
-.search-btn {
-  position: absolute;
-  top: 0;
-  right: -0.4vh;
-  margin: 0;
-  padding: 0;
-  height: 4.8vh;
-  width: 4.8vh;
-  border-radius: 50% 50%;
-  background-color: #00c0c0;
-  color: #fff;
-  font-size: 3.5vh;
-  text-align: center;
-  line-height: 4.8vh;
-  &:active {
-    transition: all 0.2s;
-    transform: scale(1.1);
-    background-color: #05dbdb;
+  .form {
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    border: 0.2vh solid #9a9a9a;
+    color: #555555;
+    border-radius: 3vh;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    padding-left: 3%;
+    font-size: 16px;
+    box-sizing: border-box;
   }
-}
-
-.form:focus {
-  border-color: #558afa;
-  outline: 0;
-  background-color: #fff;
+  ::placeholder {
+    color: #9a9a9a;
+    font-size: 14px;
+    padding-top: 4px;
+  }
+  .search-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    height: 4.5vh;
+    width: 4.5vh;
+    border-radius: 50% 50%;
+    background-color: #00c0c0;
+    color: #fff;
+    font-size: 3.5vh;
+    text-align: center;
+    line-height: 4.8vh;
+    &:active {
+      transition: all 0.2s;
+      transform: scale(1.1);
+      background-color: #05dbdb;
+    }
+  }
 }
 
 /** 検索結果 */
 .result-list {
-  position: absolute;
   width: 100%;
-  height: 30.5vh;
-  top: 17.9vh;
-  margin: 0;
+  height: 36vh;
+  margin: 1.5vh 0;
   padding: 1vw 0.5vw;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
   font-size: 2vh;
   line-height: 150%;
+  box-sizing: border-box;
 }
 .result-list div {
   padding: 2vw;
+}
+
+//++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
+.others {
+  border-top: 1px solid #adadad;
+  width: 100%;
+}
+.content {
+  margin: 1vh;
+  font-size: 2vh;
+  color: #9a9a9a;
+  margin-left: 0.5vh;
+  span {
+    font-size: 3.4vh;
+  }
+}
+.add-csv {
+  margin-top: 1vh;
+  color: #adadad;
+  font-size: 1.8vh;
+}
+
+//++++++++++++++++++++++++// 保存ボタン //++++++++++++++++++++++++//
+.save-btn {
+  display: block;
+  margin: 2vh auto 0;
+  color: #fff;
+  width: 100%;
+  height: 6vh;
+  font-size: 2.3vh;
+  line-height: 6vh;
+  background: #00c0c0;
+  border-radius: 1vh;
+  text-align: center;
+  &:active {
+    transition: all 0.2s;
+    transform: scale(1.05);
+    background-color: #05dbdb;
+  }
 }
 
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
@@ -407,13 +410,5 @@ h1 {
   top: 0px;
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
-}
-.twins-btn {
-  position: absolute;
-  top: 7.4vh;
-  margin-left: 0.5vh;
-  font-size: 1.8vh;
-  font-weight: 400;
-  color: #8c6cff;
 }
 </style>
