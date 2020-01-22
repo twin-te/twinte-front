@@ -95,6 +95,7 @@ export default class Index extends Vue {
           break;
         case 'func:twins':
           twinsToTwinteAlert();
+          break;
         case 'func:delete':
           if (await deleteAlert()) {
             deleteUserDataAll();
