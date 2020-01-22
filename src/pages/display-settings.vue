@@ -17,8 +17,8 @@
                 class="setting-checkbox"
               />
               <label class="display-check" for="lecture_number">
-                <span></span>
-              </label>科目番号
+                <span></span> </label
+              >科目番号
             </li>
             <li>
               <input
@@ -30,8 +30,8 @@
                 class="setting-checkbox"
               />
               <label class="display-check" for="instructor">
-                <span></span>
-              </label>担当教員
+                <span></span> </label
+              >担当教員
             </li>
             <li>
               <input
@@ -42,9 +42,8 @@
                 id="room"
                 class="setting-checkbox"
               />
-              <label class="display-check" for="room">
-                <span></span>
-              </label>教室名
+              <label class="display-check" for="room"> <span></span> </label
+              >教室名
             </li>
           </ul>
         </section>

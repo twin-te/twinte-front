@@ -7,7 +7,9 @@
     <transition name="bound">
       <nav class="main" v-show="add">
         <article>
-          <div class="svg-button material-icons close-btn" @click="chAdd()">close</div>
+          <div class="svg-button material-icons close-btn" @click="chAdd()">
+            close
+          </div>
           <h1>授業の追加</h1>
 
           <!-- 検索フォーム -->
@@ -19,8 +21,18 @@
               class="form"
               　@keyup.enter="search(input)"
             />
-            <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
-            <span v-else @click="search(input)" class="material-icons search-btn">search</span>
+            <span
+              v-if="input === ''"
+              @click="lectures = []"
+              class="material-icons search-btn"
+              >close</span
+            >
+            <span
+              v-else
+              @click="search(input)"
+              class="material-icons search-btn"
+              >search</span
+            >
           </form>
 
           <!-- 以下検索結果 -->
@@ -66,7 +78,9 @@
             <!-- <p @click="custom()">手動入力で授業を作成</p> -->
           </section>
           <!-- → その他オプション -->
-          <section class="save-btn" @click="asyncNumber()">時間割に追加</section>
+          <section class="save-btn" @click="asyncNumber()">
+            時間割に追加
+          </section>
         </article>
       </nav>
     </transition>

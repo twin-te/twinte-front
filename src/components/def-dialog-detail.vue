@@ -6,7 +6,9 @@
       <nav class="main" v-show="dialog">
         <article v-if="table">
           <!-- 教科名 -->
-          <div class="svg-button material-icons close-btn" @click="chDetail()">close</div>
+          <div class="svg-button material-icons close-btn" @click="chDetail()">
+            close
+          </div>
           <h1>
             <div class="sbj-name">{{ table.lecture_name }}</div>
 
@@ -55,11 +57,17 @@
               :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
               style="width: 30%"
             >
-              <span class="counter-name">{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span>
+              <span class="counter-name"
+                >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
+              >
               <!-- <+|-> -->
               <div class="counter">
-                <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
-                <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
+                <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
+                  >+</span
+                >
+                <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
+                  >&#8211;</span
+                >
               </div>
             </div>
           </section>
