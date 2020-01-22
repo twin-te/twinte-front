@@ -176,7 +176,7 @@ h1 {
     margin: 0;
   }
   li {
-    font-size: 2.5vh;
+    font-size: 2.2vh;
     line-height: 2.3 * 2.7vh;
   }
 }
@@ -206,7 +206,7 @@ h3 {
 }
 
 .display-check {
-  margin-right: 3%;
+  margin-right: 4%;
   vertical-align: middle;
   display: inline-block;
   position: relative;

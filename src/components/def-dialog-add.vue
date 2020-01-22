@@ -45,7 +45,7 @@
           <!-- ここまで検索結果 -->
 
           <section class="others">
-            <p v-if="isMobile" class="content" @click="twins()">
+            <p class="content" @click="twins()">
               Twinsからインポート
               <span class="material-icons icon">chevron_right</span>
             </p>
@@ -122,7 +122,17 @@ export default class Index extends Vue {
     this.$store.commit('visible/chAdd', { display: false });
   }
   twins() {
-    twinsToTwinteAlert();
+    console.log(this.isMobile);
+
+    if (this.isMobile) {
+      twinsToTwinteAlert();
+    } else {
+      Swal.fire(
+        'ご利用の環境では非対応です',
+        'この機能はiOS版アプリ・Android版アプリでのみ利用できます。',
+        'info'
+      );
+    }
   }
   custom() {
     this.$router.push('/custom');
@@ -133,7 +143,7 @@ export default class Index extends Vue {
     if (!le || le.length === 0) {
       Swal.fire(
         '見つかりません',
-        '検索しましたが何も見つかりませんでした',
+        '検索しましたが何も見つかりませんでした' /*宿題やったんですけど家に忘れてきました*/,
         'error'
       );
       return;
@@ -326,7 +336,7 @@ h1 {
 /** 検索結果 */
 .result-list {
   width: 100%;
-  height: 35vh;
+  height: 36vh;
   margin: 1.5vh 0;
   padding: 1vw 0.5vw;
   overflow-y: scroll;
@@ -346,6 +356,7 @@ h1 {
   width: 100%;
 }
 .content {
+  margin: 1vh;
   font-size: 2vh;
   color: #9a9a9a;
   margin-left: 0.5vh;
@@ -362,7 +373,7 @@ h1 {
 //++++++++++++++++++++++++// 保存ボタン //++++++++++++++++++++++++//
 .save-btn {
   display: block;
-  margin: 0 auto;
+  margin: 2vh auto 0;
   color: #fff;
   width: 100%;
   height: 6vh;
