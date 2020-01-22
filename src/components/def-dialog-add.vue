@@ -122,8 +122,6 @@ export default class Index extends Vue {
     this.$store.commit('visible/chAdd', { display: false });
   }
   twins() {
-    console.log(this.isMobile);
-
     if (this.isMobile) {
       twinsToTwinteAlert();
     } else {
