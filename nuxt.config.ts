@@ -68,7 +68,7 @@ const nuxtConfig: Configuration = {
   plugins: [{ src: '@/plugins/ga.js', mode: 'client' }],
   modules: ['@nuxtjs/pwa', '@nuxtjs/sentry'],
   sentry: {
-    dsn: process.env.SENTRY_DNS || '',
+    dsn: process.env.SENTRY_DSN || '',
     disabled: process.env.NODE_ENV != 'production'
   },
   workbox: {
