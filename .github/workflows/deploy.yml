@@ -1,0 +1,20 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master # masterブランチにpushされた場合に起動
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v1.6.1
+      with: # shimataro/ssh-key-actionに渡すパラメーター
+        private-key: ${{ secrets.SSH_KEY }} # 必須
+        public-key: ${{ secrets.SSH_KEY_PUBLIC }} # 必須
+        name: id_rsa # 省略可
+        known-hosts: ${{ secrets.KNOWN_HOSTS }} # 省略可
+    - name: run deploy script
+      run: ${{ secrets.SSH_SCRIPT }}
