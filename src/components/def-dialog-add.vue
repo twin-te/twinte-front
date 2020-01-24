@@ -19,7 +19,7 @@
               type="text"
               placeholder="授業名や科目番号で検索"
               class="form"
-              　@keyup.enter="search(input)"
+              @keyup.enter="search(input, 'input')"
             />
             <span
               v-if="input === ''"
@@ -29,7 +29,7 @@
             >
             <span
               v-else
-              @click="search(input)"
+              @click="search(input, 'input')"
               class="material-icons search-btn"
               >search</span
             >
@@ -116,10 +116,12 @@ export default class Index extends Vue {
   //
   input: string = '';
   lectures: miniLecture[] = [];
-  isMobile = false;
 
   // computed___________________________________________________________________________________
   //
+  get isMobile() {
+    return /iP(hone|(o|a)d)|TwinteAppforAndroid/.test(navigator.userAgent);
+  }
   get moduleMessage(): string {
     return `${this.$store.getters['table/module']}のCSVファイルを入力してください`;
   }
@@ -150,31 +152,32 @@ export default class Index extends Vue {
     this.$router.push('/custom');
     this.$store.commit('visible/chAdd', { display: false });
   }
-  async search(input: string, type: 'csv' | 'input' = 'input') {
-    const le = await searchLectures(input);
-
-    if (!le || le.length === 0) {
+  async search(input: string, type: 'csv' | 'input') {
+    this.lectures = await this.parse(input, type);
+    if (this.lectures.length === 0) {
       Swal.fire(
         '見つかりません',
         '検索しましたが何も見つかりませんでした',
         'error'
       );
-      return;
-    } else {
-      le.forEach(l => {
-        this.lectures.push({
-          lecture_code: l.lectureCode,
-          lecture_name: l.name,
-          module: l.details[0].module || '',
-          day: l.details[0].day || '',
-          period: l.details[0].period || 0,
-          checked: type === 'csv'
-        });
-      });
     }
-
     this.input = '';
     (document.activeElement as HTMLElement).blur();
+  }
+
+  async parse(input: string, type: 'csv' | 'input'): Promise<miniLecture[]> {
+    const le = await searchLectures(input);
+
+    return le.map(l => {
+      return {
+        lecture_code: l.lectureCode,
+        lecture_name: l.name,
+        module: l.details[0]?.module || '',
+        day: l.details[0]?.day || '',
+        period: l.details[0]?.period || 0,
+        checked: type === 'csv'
+      };
+    });
   }
 
   async onFileChange(e: Event) {
@@ -183,27 +186,33 @@ export default class Index extends Vue {
     const reader = new FileReader();
 
     // viewとstate以外(csv処理)を入れたくない
-    const search = async (csv: string) => await this.search(csv, 'csv');
+    const parse = async (csv: string) => await this.parse(csv, 'csv');
+    const pushLecture = (lectures: miniLecture[]) => {
+      this.lectures = [...this.lectures, ...lectures];
+    };
     reader.onload = async () => {
       if (typeof reader.result !== 'string') return;
-      const csvLectureList = await Promise.all(
+      const lectures = await Promise.all(
         reader.result
           .split('\r\n')
-          .filter(csv => csv) // drop blank line
-          .map(csv => csv.replace(/["]/g, '')) // drop "
+          .filter(v => v) // drop blank line
+          .map(v => v.replace(/["]/g, '')) // drop "
+          .map(async lecture => {
+            return await parse(lecture);
+          })
       );
-      await csvLectureList.forEach(async csv => {
-        await search(csv);
-      });
+
+      pushLecture(lectures.flat());
     };
     await reader.readAsText(fileData);
   }
+
   async asyncNumber() {
     if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
         'まだログインしていません',
         '歯車⚙からログインして下さい',
-        'error'
+        'info'
       );
       return;
     }
@@ -241,12 +250,6 @@ export default class Index extends Vue {
       this.chAdd();
       // → ダイアログを閉じる
     });
-  }
-
-  mounted() {
-    this.isMobile =
-      /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-      /TwinteAppforAndroid/.test(navigator.userAgent);
   }
 }
 </script>
