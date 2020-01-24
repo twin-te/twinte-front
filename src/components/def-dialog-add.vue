@@ -152,39 +152,39 @@ export default class Index extends Vue {
   }
   async search(input: string, type: 'csv' | 'input' = 'input') {
     const le = await searchLectures(input);
+
     if (!le || le.length === 0) {
       Swal.fire(
         '見つかりません',
-        '検索しましたが何も見つかりませんでした' /*宿題やったんですけど家に忘れてきました*/,
+        '検索しましたが何も見つかりませんでした',
         'error'
       );
       return;
-    }
-
-    le.forEach(async l => {
-      await this.lectures.push({
-        lecture_code: l.lectureCode,
-        lecture_name: l.name,
-        module: l.details[0].module,
-        day: l.details[0].day,
-        period: l.details[0].period,
-        checked: type === 'csv'
+    } else {
+      le.forEach(l => {
+        this.lectures.push({
+          lecture_code: l.lectureCode,
+          lecture_name: l.name,
+          module: l.details[0].module || '',
+          day: l.details[0].day || '',
+          period: l.details[0].period || 0,
+          checked: type === 'csv'
+        });
       });
-    });
+    }
 
     this.input = '';
     (document.activeElement as HTMLElement).blur();
   }
-  async onFileChange(e: any) {
+
+  async onFileChange(e: Event) {
     e.preventDefault();
-    const search = async (csv: string) => await this.search(csv, 'csv');
-
-    const fileData: Blob = e.target.files[0];
-
+    const fileData: Blob = (e.target as any).files[0];
     const reader = new FileReader();
-    reader.onload = async () => {
-      console.log('load');
 
+    // viewとstate以外(csv処理)を入れたくない
+    const search = async (csv: string) => await this.search(csv, 'csv');
+    reader.onload = async () => {
       if (typeof reader.result !== 'string') return;
       const csvLectureList = await Promise.all(
         reader.result
@@ -193,7 +193,6 @@ export default class Index extends Vue {
           .map(csv => csv.replace(/["]/g, '')) // drop "
       );
       await csvLectureList.forEach(async csv => {
-        console.log('search');
         await search(csv);
       });
     };
