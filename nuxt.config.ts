@@ -38,7 +38,7 @@ const nuxtConfig: Configuration = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://www.twinte.net/ogp.png'
+        content: 'https://www.twinte.net/ogp.jpg'
       },
       { hid: 'og:description', property: 'og:description', content: baseDesc },
       {
