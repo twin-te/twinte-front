@@ -23,5 +23,5 @@ jobs:
       if: always()
       with:
         type: ${{ job.status }}
-        job_name: '*Deploy*'
+        job_name: '本番サーバーへのデプロイ'
         url: ${{ secrets.SLACK_WEBHOOK }}
