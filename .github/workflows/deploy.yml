@@ -18,3 +18,10 @@ jobs:
         known-hosts: ${{ secrets.KNOWN_HOSTS }} # 省略可
     - name: run deploy script
       run: ${{ secrets.SSH_SCRIPT }}
+    - name: Slack Notification
+      uses: homoluctus/slatify@v2.1.0
+      if: always()
+      with:
+        type: ${{ job.status }}
+        job_name: '本番サーバーへのデプロイ'
+        url: ${{ secrets.SLACK_WEBHOOK }}
