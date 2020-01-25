@@ -20,7 +20,7 @@ async function searchLectures(q: string, year = YEAR) {
   } catch (error) {
     const { status, statusText } = error.response;
     console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return null;
+    return [];
   }
 }
 
