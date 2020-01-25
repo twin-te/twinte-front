@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master # masterブランチにpushされた場合に起動
+      - slack_notify # masterブランチにpushされた場合に起動
 
 jobs:
   deploy:
@@ -18,3 +18,10 @@ jobs:
         known-hosts: ${{ secrets.KNOWN_HOSTS }} # 省略可
     - name: run deploy script
       run: ${{ secrets.SSH_SCRIPT }}
+    - name: Slack Notification
+      uses: homoluctus/slatify@v2.1.0
+      if: always()
+      with:
+        type: ${{ job.status }}
+        job_name: '*Deploy*'
+        url: ${{ secrets.SLACK_WEBHOOK }}
