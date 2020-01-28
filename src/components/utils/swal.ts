@@ -12,21 +12,21 @@ const twinsToTwinteAlert = () => {
         title: 'Twinsからインポート',
         text:
           'メニューから「Twinsからインポートする」ボタンを押してTwinsにログインします。',
-        imageUrl: 'https://www.twinte.net/_nuxt/img/214cb57.jpg',
+        imageUrl: 'https://app.twinte.net/usage/1.jpg',
         imageHeight: 300
       },
       {
         title: 'Twinsからインポート',
         text:
           '履修登録画面に行きます。まず「履修」ボタンを押してから、「履修登録・登録状況紹介」を押します。',
-        imageUrl: 'https://www.twinte.net/_nuxt/img/834f6e7.jpg',
+        imageUrl: 'https://app.twinte.net/usage/2.jpg',
         imageHeight: 300
       },
       {
         title: 'Twinsからインポート',
         text:
           '「Twin:teにインポート」ボタンがあるので、タップします。すると、現在表示している学期の授業がインポートされます。',
-        imageUrl: 'https://www.twinte.net/_nuxt/img/f9666f5.jpg',
+        imageUrl: 'https://app.twinte.net/usage/3.jpg',
         imageHeight: 300
       },
       {
