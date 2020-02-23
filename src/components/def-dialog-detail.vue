@@ -446,7 +446,7 @@ h2 {
 }
 .edit-btn {
   font-size: 2.1vh;
-  color: rgb(102, 120, 223);
+  color: #6678df;
   i {
     font-size: 3vh;
   }

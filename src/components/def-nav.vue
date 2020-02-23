@@ -166,26 +166,26 @@ export default class Index extends Vue {
 
 h1 {
   color: #717171;
-  font-size: 3.8vh;
+  font-size: 2rem;
   font-weight: 400;
   margin: 0 auto 9% 0;
 }
 .close-btn {
   position: absolute;
   color: #717171;
-  top: 4%;
-  right: 7%;
-  font-size: 4vh;
+  top: 5vh;
+  right: 3.5vh;
+  font-size: 2.8rem;
 }
 .login-btn {
   text-align: center;
-  line-height: 5.5vh;
-  height: 5.5vh;
+  line-height: 3.7rem;
+  height: 3.7rem;
   margin: 0 auto 3%;
   background-color: #4380f8;
   color: #ffffff;
-  border-radius: 1vh;
-  font-size: 2.5vh;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
   &:active {
     transition: all 0.15s;
     transform: scale(1.05);
@@ -200,7 +200,7 @@ h1 {
 .menu-content {
   position: relative;
   margin: 0;
-  height: 9vh;
+  height: 5rem;
   border-bottom: 0.2vh solid #c4c4c4;
   padding-right: 5vh;
 }
@@ -210,7 +210,7 @@ h1 {
   left: 3%;
   display: inline-flex;
   vertical-align: middle;
-  font-size: 4.4vh;
+  font-size: 3rem;
 }
 .menu-content p {
   color: #717171;
@@ -229,6 +229,38 @@ h1 {
   font-size: 4.4vh;
   display: inline-flex;
   vertical-align: middle;
+}
+@media screen and (min-height: 1000px) {
+  h1 {
+    font-size: 3.8vmin;
+  }
+  .login-btn {
+    line-height: 5.5vmin;
+    height: 5.5vmin;
+    border-radius: 1vmin;
+    font-size: 2.5vmin;
+  }
+  .close-btn {
+    top: 5vmin;
+    right: 3.5vmin;
+    font-size: 4.4vmin;
+  }
+  .main {
+    padding: 5vmin 3.5vmin;
+  }
+  .menu-content {
+    height: 9vmin;
+  }
+  .menu-icon {
+    font-size: 4.4vmin;
+  }
+  .menu-content p {
+    line-height: 9vmin;
+    font-size: 2.5vmin;
+  }
+  .menu-content p::after {
+    font-size: 4.4vmin;
+  }
 }
 
 #home p,

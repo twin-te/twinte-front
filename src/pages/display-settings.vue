@@ -272,4 +272,46 @@ input {
     color: white;
   }
 }
+@media screen and (min-height: 1000px) {
+  h1 {
+    font-size: 3vmin;
+  }
+  .visible-setting {
+    li {
+      font-size: 2.2vmin;
+      line-height: 2.3 * 2.7vmin;
+    }
+  }
+  h2 {
+    font-size: 2.7vmin;
+  }
+  h3 {
+    font-size: 2.3vmin;
+  }
+  .display-check {
+    width: 3.3vmin;
+    height: 3.3vmin;
+    span {
+      width: 2.5vmin;
+      height: 2.5vmin;
+    }
+  }
+  .fontsize-setting {
+    .fontsize-btn {
+      width: 9vmin;
+      height: 4.5vmin;
+      line-height: 4.5vmin;
+      margin-right: 3vmin;
+    }
+    label:nth-child(1) {
+      font-size: 1.9vmin;
+    }
+    label:nth-child(2) {
+      font-size: 2.3vmin;
+    }
+    label:nth-child(3) {
+      font-size: 2.7vmin;
+    }
+  }
+}
 </style>

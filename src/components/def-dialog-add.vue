@@ -360,6 +360,11 @@ h1 {
   line-height: 150%;
   box-sizing: border-box;
 }
+@media screen and(min-height:1000px) {
+  .result-list {
+    font-size: 2vmin;
+  }
+}
 .result-list div {
   padding: 2vw;
 }
