@@ -149,9 +149,21 @@ export default class Index extends Vue {
   margin: 0 auto;
 }
 h1 {
-  font-size: 3vh;
+  font-size: 2rem;
   font-weight: 500;
   margin-bottom: 2vh;
+}
+h2 {
+  font-size: 1.8rem;
+  color: #00c0c0;
+  font-weight: 500;
+  margin: 0 0 3vh;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 1vh;
 }
 .setting-card {
   background-color: white;
@@ -175,8 +187,8 @@ h1 {
     margin: 0;
   }
   li {
-    font-size: 2.2vh;
-    line-height: 2.3 * 2.7vh;
+    font-size: 1.4rem;
+    line-height: 2.5 * 1.4rem;
   }
 }
 .preview-wrap {
@@ -191,35 +203,22 @@ h1 {
   -ms-wrap-margin: 0;
 }
 
-h2 {
-  font-size: 2.7vh;
-  color: #00c0c0;
-  font-weight: 500;
-  margin: 0 0 3vh;
-}
-
-h3 {
-  font-size: 2.3vh;
-  font-weight: 500;
-  margin: 0 0 1vh;
-}
-
 .display-check {
-  margin-right: 4%;
-  vertical-align: middle;
-  display: inline-block;
   position: relative;
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: middle;
   border: 0.25vh solid #9a9a9a;
   border-radius: 50% 50%;
-  width: 3.3vh;
-  height: 3.3vh;
+  margin-right: 4%;
   span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    width: 2.5vh;
-    height: 2.5vh;
+    width: 1.4rem;
+    height: 1.4rem;
     border-radius: 50% 50%;
     opacity: 0;
   }
@@ -243,75 +242,35 @@ input {
     display: flex;
     vertical-align: middle;
     justify-content: flex-start;
-    margin-top: 2vh;
+    flex-wrap: wrap;
+    width: 100%;
   }
 
   .fontsize-btn {
     display: block;
+    width: 6rem;
+    height: 3rem;
+    background-color: white;
+    color: #00c0c0;
+    text-align: center;
+    line-height: 3rem;
     border: #00c0c0 0.2vh solid;
     border-radius: 400px;
-    width: 9vh;
-    height: 4.5vh;
-    line-height: 4.5vh;
-    text-align: center;
-    color: #00c0c0;
-    background-color: white;
+    margin-top: 1vh;
     margin-right: 3vh;
   }
   label:nth-child(1) {
-    font-size: 1.9vh;
+    font-size: 1.5rem;
   }
   label:nth-child(2) {
-    font-size: 2.3vh;
+    font-size: 1.8rem;
   }
   label:nth-child(3) {
-    font-size: 2.7vh;
+    font-size: 2rem;
   }
   .setting-radio:checked ~ .fontsize-btn {
     background-color: #00c0c0;
     color: white;
-  }
-}
-@media screen and (min-height: 1000px) {
-  h1 {
-    font-size: 3vmin;
-  }
-  .visible-setting {
-    li {
-      font-size: 2.2vmin;
-      line-height: 2.3 * 2.7vmin;
-    }
-  }
-  h2 {
-    font-size: 2.7vmin;
-  }
-  h3 {
-    font-size: 2.3vmin;
-  }
-  .display-check {
-    width: 3.3vmin;
-    height: 3.3vmin;
-    span {
-      width: 2.5vmin;
-      height: 2.5vmin;
-    }
-  }
-  .fontsize-setting {
-    .fontsize-btn {
-      width: 9vmin;
-      height: 4.5vmin;
-      line-height: 4.5vmin;
-      margin-right: 3vmin;
-    }
-    label:nth-child(1) {
-      font-size: 1.9vmin;
-    }
-    label:nth-child(2) {
-      font-size: 2.3vmin;
-    }
-    label:nth-child(3) {
-      font-size: 2.7vmin;
-    }
   }
 }
 </style>
