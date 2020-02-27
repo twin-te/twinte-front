@@ -4,11 +4,11 @@
   <section class="contents">
     <transition name="bound">
       <nav class="main" v-show="dialog">
+        <div class="svg-button material-icons close-btn" @click="chDetail()">
+          close
+        </div>
         <article v-if="table">
           <!-- 教科名 -->
-          <div class="svg-button material-icons close-btn" @click="chDetail()">
-            close
-          </div>
           <h1>
             <div class="sbj-name">{{ table.lecture_name }}</div>
 
@@ -257,36 +257,21 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-//++++++++++++++++++// ダイアログの枠 //++++++++++++++++++++++//
-.main {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  width: 92vw;
-  max-width: 70vh;
-  height: 80vh;
-  background: #ffffff;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
-  border-radius: 1vh;
-  z-index: 6;
-  padding: 5vh;
-  box-sizing: border-box;
-}
+@import '~/assets/css/dialog.scss';
+@import '~/assets/css/btn.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 }
 
 /* ボタン・アイコン */
-.close-btn {
-  position: absolute;
-  top: -2.2vh;
-  right: -2.1vh;
-  font-size: 4vh;
-  color: #717171;
-}
 .icon {
   display: inline-flex;
   vertical-align: middle;
@@ -295,56 +280,59 @@ article {
 
 /* 科目の情報 */
 h1 {
-  border-left: 0.8vh solid #00c0c0;
+  height: 6rem;
+  font-size: 1.7rem;
   color: #555555;
-  font-size: 2.9vh;
-  line-height: 4.5vh;
+  line-height: 3.4rem;
   font-weight: 500;
   text-overflow: ellipsis;
-  overflow: hidden;
+  border-left: 0.5rem solid #00c0c0;
+  // overflow: hidden;
   white-space: nowrap;
-  height: 8vh;
-  padding-left: 0.9vh;
-  margin: 0;
+  padding-left: 0.8rem;
+  margin: 0 0 2vh;
   .sbj-number {
+    font-size: 1.2rem;
     color: #c4c4c4;
-    font-size: 1.8vh;
     font-weight: 400;
-    line-height: 3.5vh;
-    margin: 0;
+    line-height: 2rem;
+    margin: 0 0 0.7rem;
   }
 }
 h2 {
   width: 100%;
+  font-size: 1.4rem;
   color: #00c0c0;
-  border-bottom: 0.2vh solid #00c0c0;
   font-weight: 500;
-  font-size: 2.3vh;
+  border-bottom: 0.2vh solid #00c0c0;
+  margin: 0;
   i {
-    font-size: 2.9vh;
+    font-size: 2rem;
+    margin-right: 1%;
   }
   .syllabus-btn {
-    line-height: 3vh;
     position: absolute;
     right: 0;
-    font-size: 1.9vh;
+    font-size: 1.2rem;
+    color: #9a9a9a;
     font-weight: 400;
-    color: #c4c4c4;
+    line-height: 2.4rem;
     i {
-      font-size: 3vh;
+      font-size: 1.6rem;
+      margin-right: 0;
     }
   }
 }
 
 .sbj-detail-wrapper {
+  font-size: 1.4rem;
   padding: 0 2.5vmin;
-  font-size: 2.1vh;
-  line-height: 2.1vh;
-  margin-bottom: 3vh;
+  margin: 0;
 }
 .subject-item {
   color: #555555;
   font-weight: 500;
+
   span {
     padding-left: 5%;
     font-weight: 400;
@@ -354,29 +342,30 @@ h2 {
 /* メモ */
 .memo {
   width: 100%;
-  height: 14vh;
+  height: 100%;
+  min-height: 10vh;
   border: 0.2vh solid #dddddd;
   border-radius: 0.5rem;
-  margin: 0;
+  margin: 1vh 0;
   box-sizing: border-box;
 }
 
 /* 出欠 */
 .counters-wrapper {
+  display: flex;
+  justify-content: space-between;
   text-align: center;
   grid-template-columns: repeat(3, 1fr);
-  display: flex;
-  justify-content: space-around;
   margin-bottom: 2vh;
 }
 .counter-name {
-  line-height: 4.4vh;
-  font-size: 2vh;
+  line-height: 2.6rem;
+  font-size: 1.3rem;
   color: #555555;
-  margin-left: -0.7vh;
 }
 .counter {
   display: flex;
+  justify-content: center;
 }
 .attend {
   grid-column: 1;
@@ -388,25 +377,25 @@ h2 {
   grid-column: 3;
 }
 .counter-left {
-  color: #00c0c0;
-  font-size: 4.4vh;
-  line-height: 4.3vh;
-  width: 50%;
-  border: 0.2vh solid #00c0c0;
-  border-radius: 2.8vh 0 0 2.8vh;
-  height: 4.6vh;
   position: relative;
+  height: 3.1rem;
+  width: 5rem;
+  font-size: 2.2rem;
+  color: #00c0c0;
+  line-height: 3rem;
+  border: 0.2vh solid #00c0c0;
+  border-radius: 3.1rem 0 0 3.1rem;
 }
 .counter-right {
-  color: #00c0c0;
-  font-size: 4.3vh;
-  line-height: 3.4vh;
-  width: 50%;
-  border: 0.2vh solid #00c0c0;
-  border-radius: 0 2.8vh 2.8vh 0;
-  height: 4.6vh;
   position: relative;
   left: -0.2vh;
+  height: 3.1rem;
+  width: 5rem;
+  font-size: 2.2rem;
+  color: #00c0c0;
+  line-height: 2.6rem;
+  border: 0.2vh solid #00c0c0;
+  border-radius: 0 3.1rem 3.1rem 0;
 }
 .counter-left:active,
 .counter-right:active {
@@ -414,52 +403,25 @@ h2 {
   color: white;
 }
 
-//++++++++++++++++++++++++// 保存・編集・削除ボタン //++++++++++++++++++++++++//
-.save-btn {
-  display: block;
-  margin: 0 auto;
-  color: #fff;
-  width: 100%;
-  height: 6vh;
-  font-size: 2.3vh;
-  line-height: 6vh;
-  background: #00c0c0;
-  border-radius: 1vh;
-  text-align: center;
-  &:active {
-    transition: all 0.2s;
-    transform: translateX(-50%) scale(1.05);
-    background-color: #05dbdb;
-  }
-}
-
+//++++++++++++++++++++++++// 編集・削除ボタン //++++++++++++++++++++++++//
 .flex {
   display: flex;
   justify-content: space-between;
 }
 .delete-btn {
-  font-size: 2.1vh;
+  font-size: 1.3rem;
   color: rgb(255, 98, 98);
+  margin: 2vh 0 0;
   i {
-    font-size: 3vh;
+    font-size: 2rem;
   }
 }
 .edit-btn {
-  font-size: 2.1vh;
-  color: rgb(102, 120, 223);
+  font-size: 1.3rem;
+  color: #6678df;
+  margin: 2vh 0 0;
   i {
-    font-size: 3vh;
+    font-size: 2rem;
   }
-}
-
-//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
-.back {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  left: 0px;
-  top: 0px;
-  background: rgba(100, 100, 100, 0.5);
-  z-index: 5;
 }
 </style>

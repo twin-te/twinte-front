@@ -78,21 +78,21 @@ export default class Index extends Vue {
       case 'small':
         return {
           background: this.getColor(this.table?.lecture_code),
-          fontSize: '1.4vh',
-          lineHeight: '2vh'
+          fontSize: '0.85rem',
+          lineHeight: '1.4rem'
         };
       case 'medium':
         return {
           background: this.getColor(this.table?.lecture_code),
-          fontSize: '1.57vh',
-          lineHeight: '2.2vh'
+          fontSize: '1.03rem',
+          lineHeight: '1.4rem'
         };
       default:
         'large';
         return {
           background: this.getColor(this.table?.lecture_code),
-          fontSize: '1.8vh',
-          lineHeight: '2.4vh'
+          fontSize: '1.2rem',
+          lineHeight: '1.6rem'
         };
     }
   }

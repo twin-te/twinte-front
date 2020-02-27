@@ -100,6 +100,7 @@ content {
   color: #9a9a9a;
   padding: 1vmin 1vw;
 }
+
 .column p {
   font-size: 1.5vh;
   line-height: 1vh;

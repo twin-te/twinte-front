@@ -13,7 +13,14 @@ $material-icons-font-family: 'Material Icons' !default;
 html {
   overflow-y: hidden;
   height: 100%;
+  font-size: 62.5%;
 }
+@media screen and (min-height: 1000px) {
+  html {
+    font-size: 85%;
+  }
+}
+
 body {
   height: 100%;
   overflow-x: hidden;

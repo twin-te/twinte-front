@@ -166,26 +166,26 @@ export default class Index extends Vue {
 
 h1 {
   color: #717171;
-  font-size: 3.8vh;
+  font-size: 2.3rem;
   font-weight: 400;
   margin: 0 auto 9% 0;
 }
 .close-btn {
   position: absolute;
   color: #717171;
-  top: 4%;
-  right: 7%;
-  font-size: 4vh;
+  top: 5vh;
+  right: 3.5vh;
+  font-size: 3.3rem;
 }
 .login-btn {
-  text-align: center;
-  line-height: 5.5vh;
-  height: 5.5vh;
-  margin: 0 auto 3%;
-  background-color: #4380f8;
+  height: 4rem;
+  font-size: 1.5rem;
   color: #ffffff;
-  border-radius: 1vh;
-  font-size: 2.5vh;
+  line-height: 4rem;
+  text-align: center;
+  background-color: #4380f8;
+  border-radius: 0.5rem;
+  margin: 0 auto 3%;
   &:active {
     transition: all 0.15s;
     transform: scale(1.05);
@@ -199,37 +199,69 @@ h1 {
 }
 .menu-content {
   position: relative;
-  margin: 0;
-  height: 9vh;
+  height: 5.3rem;
   border-bottom: 0.2vh solid #c4c4c4;
   padding-right: 5vh;
+  margin: 0;
 }
 
 .menu-icon {
-  color: #00c0c0;
   left: 3%;
   display: inline-flex;
+  font-size: 2.7rem;
+  color: #00c0c0;
   vertical-align: middle;
-  font-size: 4.4vh;
 }
 .menu-content p {
+  font-size: 1.7rem;
   color: #717171;
-  font-size: 2.5vh;
   font-weight: 300;
-  line-height: 9vh;
+  line-height: 5.3rem;
   margin: 0;
   padding-left: 1vh;
 }
 .menu-content p::after {
-  font-family: 'Material Icons';
   content: 'chevron_right';
   position: absolute;
   right: 0;
-  color: #00c0c0;
-  font-size: 4.4vh;
   display: inline-flex;
+  font-family: 'Material Icons';
+  color: #00c0c0;
+  font-size: 2.3rem;
   vertical-align: middle;
 }
+// @media screen and (min-height: 1000px) {
+//   h1 {
+//     font-size: 3.8vmin;
+//   }
+//   .login-btn {
+//     line-height: 5.5vmin;
+//     height: 5.5vmin;
+//     border-radius: 1vmin;
+//     font-size: 2.5vmin;
+//   }
+//   .close-btn {
+//     top: 5vmin;
+//     right: 3.5vmin;
+//     font-size: 4.4vmin;
+//   }
+//   .main {
+//     padding: 5vmin 3.5vmin;
+//   }
+//   .menu-content {
+//     height: 9vmin;
+//   }
+//   .menu-icon {
+//     font-size: 4.4vmin;
+//   }
+//   .menu-content p {
+//     line-height: 9vmin;
+//     font-size: 2.5vmin;
+//   }
+//   .menu-content p::after {
+//     font-size: 4.4vmin;
+//   }
+// }
 
 #home p,
 #home span {

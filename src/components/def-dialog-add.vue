@@ -6,10 +6,10 @@
   <section class="contents">
     <transition name="bound">
       <nav class="main" v-show="add">
+        <div class="svg-button material-icons close-btn" @click="chAdd()">
+          close
+        </div>
         <article>
-          <div class="svg-button material-icons close-btn" @click="chAdd()">
-            close
-          </div>
           <h1>授業の追加</h1>
 
           <!-- 検索フォーム -->
@@ -65,6 +65,7 @@
               CSVファイルから追加
               <br />
               <small>*{{ moduleMessage }}</small>
+              <br />
               <input
                 type="file"
                 name="file"
@@ -255,36 +256,20 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-//++++++++++++++++++++++++// ダイアログの枠 //++++++++++++++++++++++++//
-.main {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  width: 92vw;
-  max-width: 70vh;
-  height: 80vh;
-  background: #ffffff;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
-  border-radius: 1vh;
-  z-index: 6;
-  padding: 5vh;
-  box-sizing: border-box;
-}
+@import '~/assets/css/dialog.scss';
+@import '~/assets/css/btn.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 }
 
 /* ボタン・アイコン */
-.close-btn {
-  position: absolute;
-  top: -2.2vh;
-  right: -2.1vh;
-  font-size: 4vh;
-  color: #717171;
-}
 .icon {
   display: inline-flex;
   vertical-align: middle;
@@ -293,7 +278,7 @@ article {
 
 /* 授業の追加 */
 h1 {
-  font-size: 2.9vh;
+  font-size: 1.8rem;
   color: #00c0c0;
   font-weight: 500;
   margin: 0 0 1.5vh;
@@ -303,42 +288,42 @@ h1 {
 .search-form {
   position: relative;
   width: 100%;
-  height: 4.5vh;
+  height: 3.2rem;
   margin: 0;
   padding: 0;
   .form {
+    position: relative;
     height: 100%;
     width: 100%;
     background-color: #fff;
-    border: 0.2vh solid #9a9a9a;
+    font-size: 1.2rem;
     color: #555555;
-    border-radius: 3vh;
-    position: relative;
-    margin: 0;
+    box-sizing: border-box;
+    border: 0.2vh solid #9a9a9a;
+    border-radius: 3rem;
     padding: 0;
     padding-left: 3%;
-    font-size: 16px;
-    box-sizing: border-box;
+    margin: 0;
   }
   ::placeholder {
     color: #9a9a9a;
-    font-size: 14px;
+    font-size: 1.2rem;
     padding-top: 4px;
   }
   .search-btn {
     position: absolute;
     top: 0;
     right: 0;
+    height: 3.2rem;
+    width: 3.2rem;
+    background-color: #00c0c0;
+    font-size: 2.5rem;
+    color: #fff;
+    line-height: 3.2rem;
+    text-align: center;
+    border-radius: 50% 50%;
     margin: 0;
     padding: 0;
-    height: 4.5vh;
-    width: 4.5vh;
-    border-radius: 50% 50%;
-    background-color: #00c0c0;
-    color: #fff;
-    font-size: 3.5vh;
-    text-align: center;
-    line-height: 4.8vh;
     &:active {
       transition: all 0.2s;
       transform: scale(1.1);
@@ -350,18 +335,18 @@ h1 {
 /** 検索結果 */
 .result-list {
   width: 100%;
-  height: 36vh;
+  height: 100%;
   margin: 1.5vh 0;
   padding: 1vw 0.5vw;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
-  font-size: 2vh;
+  font-size: 1.3rem;
   line-height: 150%;
   box-sizing: border-box;
 }
 .result-list div {
-  padding: 2vw;
+  padding: 1rem;
 }
 
 //++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
@@ -370,47 +355,17 @@ h1 {
   width: 100%;
 }
 .content {
-  margin: 1vh;
-  font-size: 2vh;
+  font-size: 1.2rem;
   color: #9a9a9a;
+  margin: 1vh;
   margin-left: 0.5vh;
   span {
-    font-size: 3.4vh;
+    font-size: 2rem;
   }
 }
 .add-csv {
-  margin-top: 1vh;
+  margin: 1vh;
   color: #adadad;
-  font-size: 1.8vh;
-}
-
-//++++++++++++++++++++++++// 保存ボタン //++++++++++++++++++++++++//
-.save-btn {
-  display: block;
-  margin: 2vh auto 0;
-  color: #fff;
-  width: 100%;
-  height: 6vh;
-  font-size: 2.3vh;
-  line-height: 6vh;
-  background: #00c0c0;
-  border-radius: 1vh;
-  text-align: center;
-  &:active {
-    transition: all 0.2s;
-    transform: scale(1.05);
-    background-color: #05dbdb;
-  }
-}
-
-//++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
-.back {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  left: 0px;
-  top: 0px;
-  background: rgba(100, 100, 100, 0.5);
-  z-index: 5;
+  font-size: 1.2rem;
 }
 </style>
