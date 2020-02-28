@@ -352,8 +352,14 @@ h2 {
 
 /* 出欠 */
 .counters-wrapper {
-  display: flex;
-  justify-content: space-between;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: box;
+  -moz-box-pack: justify;
+  -webkit-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-box-pack: justify;
   text-align: center;
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 2vh;
