@@ -346,6 +346,8 @@ h2 {
   min-height: 10vh;
   border: 0.2vh solid #dddddd;
   border-radius: 0.5rem;
+  flex-basis: 20vh;
+  flex-shrink: 2;
   margin: 1vh 0;
   box-sizing: border-box;
 }
