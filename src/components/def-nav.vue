@@ -32,7 +32,6 @@
               <span class="material-icons menu-icon">{{ l.icon }}</span>
               {{ l.name }}
             </p>
-            <!-- <span class="material-icons ">chevron_right</span> -->
           </div>
         </section>
       </nav>
@@ -48,9 +47,8 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import * as Vuex from 'vuex';
 import Swal from 'sweetalert2';
-import { twinsToTwinteAlert, loginAlert, deleteAlert } from './utils/swal';
+import { twinsToTwinteAlert, loginAlert } from './utils/swal';
 import { BASE_URL } from '../store/api/config';
-import { deleteUserDataAll } from '../store/api/user-lectures';
 
 declare global {
   interface Window {
@@ -67,10 +65,8 @@ export default class Index extends Vue {
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
     { icon: 'help', name: '使い方', link: 'https://www.twinte.net/#usages' },
-    // , { icon: "supervisor_account", name: "About", link: "/about" }
     { icon: 'view_quilt', name: '表示設定', link: '/display-settings' }
     // , { icon: "share", name: "時間割の共有", link: "/" }
-    // {icon: 'delete_sweep',name: '時間割データの消去',link: 'func:delete'}
   ];
 
   get drawer(): boolean {
@@ -95,11 +91,6 @@ export default class Index extends Vue {
           break;
         case 'func:twins':
           twinsToTwinteAlert();
-          break;
-        case 'func:delete':
-          if (await deleteAlert()) {
-            deleteUserDataAll();
-          }
           break;
       }
     } else {
@@ -230,38 +221,6 @@ h1 {
   font-size: 2.3rem;
   vertical-align: middle;
 }
-// @media screen and (min-height: 1000px) {
-//   h1 {
-//     font-size: 3.8vmin;
-//   }
-//   .login-btn {
-//     line-height: 5.5vmin;
-//     height: 5.5vmin;
-//     border-radius: 1vmin;
-//     font-size: 2.5vmin;
-//   }
-//   .close-btn {
-//     top: 5vmin;
-//     right: 3.5vmin;
-//     font-size: 4.4vmin;
-//   }
-//   .main {
-//     padding: 5vmin 3.5vmin;
-//   }
-//   .menu-content {
-//     height: 9vmin;
-//   }
-//   .menu-icon {
-//     font-size: 4.4vmin;
-//   }
-//   .menu-content p {
-//     line-height: 9vmin;
-//     font-size: 2.5vmin;
-//   }
-//   .menu-content p::after {
-//     font-size: 4.4vmin;
-//   }
-// }
 
 #home p,
 #home span {

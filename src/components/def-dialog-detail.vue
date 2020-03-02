@@ -1,4 +1,3 @@
-/** -> "../layout/default.vue" */
 <template>
   <!-- 科目詳細画面 -->
   <section class="contents">
@@ -126,12 +125,7 @@ export default class Index extends Vue {
   }
 
   syllabus() {
-    switch (
-      this.table?.lecture_code
-        .split('')
-        .splice(0, 2)
-        .join('')
-    ) {
+    switch (this.table?.lecture_code.substring(0, 2)) {
       case 'GB':
         location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table?.lecture_code}.html`;
       default:

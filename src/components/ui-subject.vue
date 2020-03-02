@@ -122,7 +122,7 @@ export default class Index extends Vue {
     }
     // → カスタム授業
 
-    const char = number.split('')[0];
+    const char = number.substring(0, 1);
     switch (char) {
       case '1':
         return '#FFEEF7';

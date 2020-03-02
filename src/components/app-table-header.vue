@@ -1,5 +1,3 @@
-/** * モジュール名 * 矢印 * 曜日名 * width: 79vw x height: 7.6vh *
-prevModule、nextModule は アニメーションの関係上いろんな処理を行っている */
 <template>
   <section>
     <div id="module">
