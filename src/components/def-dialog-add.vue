@@ -3,94 +3,65 @@
     時間割追加画面
     ボタン、フォーム、CSVファイル追加辺りは別コンポネントに分けたい
   -->
-  <section class="contents">
-    <transition name="bound">
-      <nav class="main" v-show="add">
-        <div class="svg-button material-icons close-btn" @click="chAdd()">
-          close
+  <Dialog :show="show" @close="close()">
+    <article>
+      <h1>授業の追加</h1>
+
+      <!-- 検索フォーム -->
+      <form class="search-form" @submit.prevent>
+        <input
+          v-model="input"
+          type="text"
+          placeholder="授業名や科目番号で検索"
+          class="form"
+          @keyup.enter="search(input, 'input')"
+        />
+        <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
+        <span v-else @click="search(input, 'input')" class="material-icons search-btn">search</span>
+      </form>
+
+      <!-- 以下検索結果 -->
+      <section class="result-list">
+        <div
+          v-for="(n, i) in lectures"
+          :key="n.lecture_code + i"
+          :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
+        >
+          <input type="checkbox" :id="n.lecture_code" :value="n.lecture_code" v-model="n.checked" />
+          <label :for="n.lecture_code">
+            {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
+            }}{{ n.day }}{{ n.period }}
+          </label>
         </div>
-        <article>
-          <h1>授業の追加</h1>
+      </section>
+      <!-- ここまで検索結果 -->
 
-          <!-- 検索フォーム -->
-          <form class="search-form" @submit.prevent>
-            <input
-              v-model="input"
-              type="text"
-              placeholder="授業名や科目番号で検索"
-              class="form"
-              @keyup.enter="search(input, 'input')"
-            />
-            <span
-              v-if="input === ''"
-              @click="lectures = []"
-              class="material-icons search-btn"
-              >close</span
-            >
-            <span
-              v-else
-              @click="search(input, 'input')"
-              class="material-icons search-btn"
-              >search</span
-            >
-          </form>
+      <section class="others">
+        <p class="content" @click="twins()">
+          Twinsからインポート
+          <span class="material-icons icon">chevron_right</span>
+        </p>
+        <p class="content">
+          CSVファイルから追加
+          <br />
+          <small>*{{ moduleMessage }}</small>
+          <br />
+          <input
+            type="file"
+            name="file"
+            accept="text/csv, .csv"
+            id="fileElem"
+            @change="onFileChange"
+            class="add-csv"
+          />
+        </p>
 
-          <!-- 以下検索結果 -->
-          <section class="result-list">
-            <div
-              v-for="(n, i) in lectures"
-              :key="n.lecture_code + i"
-              :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
-            >
-              <input
-                type="checkbox"
-                :id="n.lecture_code"
-                :value="n.lecture_code"
-                v-model="n.checked"
-              />
-              <label :for="n.lecture_code">
-                {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
-                }}{{ n.day }}{{ n.period }}
-              </label>
-            </div>
-          </section>
-          <!-- ここまで検索結果 -->
-
-          <section class="others">
-            <p class="content" @click="twins()">
-              Twinsからインポート
-              <span class="material-icons icon">chevron_right</span>
-            </p>
-            <p class="content">
-              CSVファイルから追加
-              <br />
-              <small>*{{ moduleMessage }}</small>
-              <br />
-              <input
-                type="file"
-                name="file"
-                accept="text/csv, .csv"
-                id="fileElem"
-                @change="onFileChange"
-                class="add-csv"
-              />
-            </p>
-
-            <!-- <p @click="custom()">手動入力で授業を作成</p> -->
-          </section>
-          <!-- → その他オプション -->
-          <section class="save-btn" @click="asyncNumber()">
-            時間割に追加
-          </section>
-        </article>
-      </nav>
-    </transition>
-
-    <!-- 全体を暗くする -->
-    <transition name="fade">
-      <nav class="back" @click="chAdd()" v-if="add"></nav>
-    </transition>
-  </section>
+        <!-- <p @click="custom()">手動入力で授業を作成</p> -->
+      </section>
+      <!-- → その他オプション -->
+      <section class="save-btn" @click="asyncNumber()">時間割に追加</section>
+    </article>
+  </Dialog>
 </template>
 
 <script lang="ts">
@@ -109,7 +80,11 @@ type miniLecture = {
   checked: boolean;
 };
 
-@Component({})
+@Component({
+  components: {
+    Dialog: () => import('~/components/global/dialog.vue')
+  }
+})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
@@ -126,7 +101,7 @@ export default class Index extends Vue {
   get moduleMessage(): string {
     return `${this.$store.getters['table/module']}のCSVファイルを入力してください`;
   }
-  get add(): boolean {
+  get show(): boolean {
     return this.$store.getters['visible/add'];
   }
   get moduleNum(): number {
@@ -135,7 +110,7 @@ export default class Index extends Vue {
 
   // method___________________________________________________________________________________
   //
-  chAdd() {
+  close() {
     this.$store.commit('visible/chAdd', { display: false });
   }
   twins() {
@@ -248,7 +223,7 @@ export default class Index extends Vue {
       Swal.fire('追加完了', '時間割を更新しました', 'success');
 
       this.lectures = [];
-      this.chAdd();
+      this.close();
       // → ダイアログを閉じる
     });
   }
@@ -256,7 +231,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/dialog.scss';
 @import '~/assets/css/btn.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//

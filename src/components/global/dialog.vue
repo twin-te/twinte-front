@@ -10,7 +10,7 @@
 
   <section class="contents">
     <transition name="bound">
-      <main v-if="display" class="main">
+      <main v-if="show" class="main">
         <div class="svg-button material-icons close-btn" @click="$emit('close')">close</div>
 
         <slot></slot>
@@ -18,7 +18,7 @@
     </transition>
 
     <transition name="fade">
-      <div v-if="display" class="back" @click="$emit('close')"></div>
+      <div v-if="show" class="back" @click="$emit('close')"></div>
     </transition>
   </section>
 </template>
@@ -28,7 +28,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
 @Component({})
 export default class Index extends Vue {
-  @Prop({ default: false }) display!: boolean;
+  @Prop({ default: false }) show!: boolean;
 }
 </script>
 
