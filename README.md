@@ -91,11 +91,3 @@ $ yarn format
 または[バックエンド](https://github.com/twin-te/twinte-server)のコードをごらんください。
 
 ![build with Nuxt](https://ja.nuxtjs.org/logos/built-with-nuxt.svg)
-
-```
-
-```
-
-### よくある注意
-
-- TypeScript 3.7 以降を利用すること（現在 VSCode のデフォルトバージョンは 3.6）
