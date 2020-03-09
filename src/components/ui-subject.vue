@@ -4,15 +4,9 @@
     <!-- → 授業が入っていない -->
 
     <div id="subject" :style="setSubjectStyle()" v-else>
-      <div v-if="display.lecture_code" class="sbj-lectureId">
-        {{ table.lecture_code }}
-      </div>
-      <div v-if="display.lecture_name" class="sbj-name">
-        {{ table.lecture_name }}
-      </div>
-      <div v-if="display.instructor" class="sbj-instructor">
-        {{ table.instructor }}
-      </div>
+      <div v-if="display.lecture_code" class="sbj-lectureId">{{ table.lecture_code }}</div>
+      <div v-if="display.lecture_name" class="sbj-name">{{ table.lecture_name }}</div>
+      <div v-if="display.instructor" class="sbj-instructor">{{ table.instructor }}</div>
       <div v-if="display.room" class="sbj-room">{{ table.room }}</div>
     </div>
     <!-- → 授業が入っている -->
@@ -23,6 +17,7 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import * as Vuex from 'vuex';
 import { Period } from '../types/index';
+import { YEAR } from '../store/api/config';
 
 enum Day {
   Sun = '日',
@@ -65,7 +60,8 @@ export default class Index extends Vue {
       return (
         (lecture.module === module || lecture.module === '通年') && // module
         week.indexOf(lecture.day) === day && // day
-        lecture.period === period // period
+        lecture.period === period && // period
+        lecture.year === YEAR
       );
     });
     return validPeriod;

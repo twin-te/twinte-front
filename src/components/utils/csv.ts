@@ -3,7 +3,7 @@
  * @param blob csv data
  */
 
-const csvHandle = async (blob: Blob): Promise<string[]> => {
+export const csvHandle = async (blob: Blob): Promise<string[]> => {
   const reader = new FileReader();
   return new Promise<string[]>(done => {
     reader.onload = () => {
