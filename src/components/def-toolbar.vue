@@ -1,4 +1,3 @@
-/** -> "../layouts/default.vue" */
 <template>
   <!-- 上につける緑のバー 高さ 56px + 2px -->
   <div>

@@ -1,94 +1,75 @@
-/** -> "../layout/default.vue" */
 <template>
   <!-- 科目詳細画面 -->
-  <section class="contents">
-    <transition name="bound">
-      <nav class="main" v-show="dialog">
-        <div class="svg-button material-icons close-btn" @click="chDetail()">
-          close
-        </div>
-        <article v-if="table">
-          <!-- 教科名 -->
-          <h1>
-            <div class="sbj-name">{{ table.lecture_name }}</div>
+  <Dialog :show="show" @close="close()">
+    <article v-if="table">
+      <!-- 教科名 -->
+      <h1>
+        <div class="sbj-name">{{ table.lecture_name }}</div>
 
-            <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
-          </h1>
+        <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
+      </h1>
 
-          <!-- 科目詳細 -->
-          <h2>
-            <i class="material-icons icon">info</i>科目詳細
-            <span class="syllabus-btn" @click="syllabus()">
-              シラバス
-              <i class="material-icons icon">chevron_right</i>
-            </span>
-          </h2>
-          <section class="sbj-detail-wrapper">
-            <p class="subject-item">
-              担当教員
-              <span>{{ table.instructor }}</span>
-            </p>
-            <p class="subject-item">
-              開講時限
-              <span>{{ table.module }} {{ table.day }}{{ table.period }}</span>
-            </p>
-            <p class="subject-item">
-              授業教室
-              <span v-if="!editableLecture">{{ table.room }}</span>
+      <!-- 科目詳細 -->
+      <h2>
+        <i class="material-icons icon">info</i>科目詳細
+        <span class="syllabus-btn" @click="syllabus()">
+          シラバス
+          <i class="material-icons icon">chevron_right</i>
+        </span>
+      </h2>
+      <section class="sbj-detail-wrapper">
+        <p class="subject-item">
+          担当教員
+          <span>{{ table.instructor }}</span>
+        </p>
+        <p class="subject-item">
+          開講時限
+          <span>{{ table.module }} {{ table.day }}{{ table.period }}</span>
+        </p>
+        <p class="subject-item">
+          授業教室
+          <span v-if="!editableLecture">{{ table.room }}</span>
 
-              <input v-else class="sbj-detail" v-model="editableLecture.room" />
-              <!-- → 教室変更 -->
-            </p>
-          </section>
+          <input v-else class="sbj-detail" v-model="editableLecture.room" />
+          <!-- → 教室変更 -->
+        </p>
+      </section>
 
-          <!-- メモ -->
-          <h2>
-            <i class="material-icons icon">create</i>メモ
-            <span class="syllabus-btn" @click="attend()">
-              出席
-              <i class="material-icons icon">chevron_right</i>
-            </span>
-          </h2>
-          <textarea class="memo" type="text" v-model="localMemo"></textarea>
-          <section class="counters-wrapper">
-            <div
-              v-for="n in 3"
-              :key="n"
-              :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
-              style="width: 30%"
-            >
-              <span class="counter-name"
-                >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
-              >
-              <!-- <+|-> -->
-              <div class="counter">
-                <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
-                  >+</span
-                >
-                <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
-                  >&#8211;</span
-                >
-              </div>
-            </div>
-          </section>
-          <div @click="save()" class="save-btn">変更を保存</div>
-          <div class="flex">
-            <p @click="deleteItem()" class="delete-btn">
-              <i class="material-icons icon">delete</i>この科目を削除
-            </p>
-            <p @click="edit()" class="edit-btn">
-              <i class="material-icons icon">edit</i>教室情報を編集
-            </p>
+      <!-- メモ -->
+      <h2>
+        <i class="material-icons icon">create</i>メモ
+        <span class="syllabus-btn" @click="attend()">
+          出席
+          <i class="material-icons icon">chevron_right</i>
+        </span>
+      </h2>
+      <textarea class="memo" type="text" v-model="localMemo"></textarea>
+      <section class="counters-wrapper">
+        <div
+          v-for="n in 3"
+          :key="n"
+          :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
+          style="width: 30%"
+        >
+          <span class="counter-name">{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span>
+          <!-- <+|-> -->
+          <div class="counter">
+            <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
+            <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
           </div>
-        </article>
-      </nav>
-    </transition>
-
-    <!-- 全体を暗くする -->
-    <transition name="fade">
-      <nav class="back" @click="chDetail()" v-if="dialog"></nav>
-    </transition>
-  </section>
+        </div>
+      </section>
+      <div @click="save()" class="save-btn">変更を保存</div>
+      <div class="flex">
+        <p @click="deleteItem()" class="delete-btn">
+          <i class="material-icons icon">delete</i>この科目を削除
+        </p>
+        <p @click="edit()" class="edit-btn">
+          <i class="material-icons icon">edit</i>教室情報を編集
+        </p>
+      </div>
+    </article>
+  </Dialog>
 </template>
 
 <script lang="ts">
@@ -100,7 +81,11 @@ import { updateLecture } from '../store/api/timetables';
 import cloneDeep from 'lodash/cloneDeep';
 import Swal from 'sweetalert2';
 
-@Component({})
+@Component({
+  components: {
+    Dialog: () => import('~/components/global/dialog.vue')
+  }
+})
 export default class Index extends Vue {
   $store!: Vuex.ExStore;
 
@@ -121,17 +106,12 @@ export default class Index extends Vue {
   get table(): Period | null {
     return this.$store.getters['table/looking'];
   }
-  get dialog(): boolean {
+  get show(): boolean {
     return this.$store.getters['visible/detail'];
   }
 
   syllabus() {
-    switch (
-      this.table?.lecture_code
-        .split('')
-        .splice(0, 2)
-        .join('')
-    ) {
+    switch (this.table?.lecture_code.substring(0, 2)) {
       case 'GB':
         location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table?.lecture_code}.html`;
       default:
@@ -190,13 +170,13 @@ export default class Index extends Vue {
           UserLecture: this.userData
         });
 
-        this.chDetail();
+        this.close();
         // → ダイアログを閉じる
       }
     });
   }
 
-  chDetail(): void {
+  close(): void {
     this.localMemo = '';
     this.editableLecture = null;
     this.$store.commit('visible/chDetail', { display: false });
@@ -230,7 +210,7 @@ export default class Index extends Vue {
     // → 反映
 
     this.editableLecture = null; // 編集モードをオフに
-    this.chDetail(); // 閉じさせる
+    this.close(); // 閉じさせる
     Swal.fire('完了', 'メモを保存しました', 'success');
   }
 
@@ -257,7 +237,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/dialog.scss';
 @import '~/assets/css/btn.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
@@ -354,14 +333,8 @@ h2 {
 
 /* 出欠 */
 .counters-wrapper {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -o-box;
-  display: box;
-  -moz-box-pack: justify;
-  -webkit-box-pack: justify;
-  -o-box-pack: justify;
-  -ms-box-pack: justify;
+  display: flex;
+  justify-content: space-between;
   text-align: center;
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 2vh;
