@@ -95,27 +95,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
-import { Period, SubjectSettings } from '../types';
-import cloneDeep from 'lodash/cloneDeep';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import { Period, SubjectSettings } from '../types'
+import cloneDeep from 'lodash/cloneDeep'
 
 @Component({
   components: {
     Subject: () => import('~/components/ui-subject.vue'),
-    TButton: () => import('~/components/global/button.vue')
-  }
+    TButton: () => import('~/components/global/button.vue'),
+  },
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
   sbj: SubjectSettings = {
     lecture_name: false,
     lecture_code: false,
     instructor: false,
     room: false,
-    font_size: 'medium'
-  };
+    font_size: 'medium',
+  }
 
   sampleData: Period = {
     lecture_code: '0A00000',
@@ -126,17 +126,17 @@ export default class Index extends Vue {
     day: '木',
     period: 4,
     room: '0A000',
-    user_lecture_id: 'sampledata'
-  };
+    user_lecture_id: 'sampledata',
+  }
 
   setSbj() {
-    this.$store.commit('visible/setDisplaySubject', this.sbj);
-    this.sbj = cloneDeep(this.$store.getters['visible/subject']);
-    localStorage.setItem('subject', JSON.stringify(this.sbj));
+    this.$store.commit('visible/setDisplaySubject', this.sbj)
+    this.sbj = cloneDeep(this.$store.getters['visible/subject'])
+    localStorage.setItem('subject', JSON.stringify(this.sbj))
   }
 
   mounted() {
-    this.sbj = cloneDeep(this.$store.getters['visible/subject']);
+    this.sbj = cloneDeep(this.$store.getters['visible/subject'])
   }
 }
 </script>

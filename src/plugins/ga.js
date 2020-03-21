@@ -4,33 +4,33 @@ export default ({ app }) => {
   /*
    ** クライアントサイドかつプロダクションモードでのみ実行
    */
-  if (process.env.NODE_ENV !== "production") return;
+  if (process.env.NODE_ENV !== 'production') return
   /*
    ** Google アナリティクスのスクリプトをインクルード
    */
-  (function(i, s, o, g, r, a, m) {
-    i["GoogleAnalyticsObject"] = r;
-    (i[r] =
+  ;(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r
+    ;(i[r] =
       i[r] ||
-      function() {
-        (i[r].q = i[r].q || []).push(arguments);
+      function () {
+        ;(i[r].q = i[r].q || []).push(arguments)
       }),
-      (i[r].l = 1 * new Date());
-    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
-    a.async = 1;
-    a.src = g;
-    m.parentNode.insertBefore(a, m);
+      (i[r].l = 1 * new Date())
+    ;(a = s.createElement(o)), (m = s.getElementsByTagName(o)[0])
+    a.async = 1
+    a.src = g
+    m.parentNode.insertBefore(a, m)
   })(
     window,
     document,
-    "script",
-    "https://www.google-analytics.com/analytics.js",
-    "ga"
-  );
+    'script',
+    'https://www.google-analytics.com/analytics.js',
+    'ga'
+  )
   /*
    ** 現在のページをセット
    */
-  ga("create", "UA-153429703-1", "auto");
+  ga('create', 'UA-153429703-1', 'auto')
   /*
    ** ルートが変更されるたびに毎回実行（初期化も実行される）
    */
@@ -38,7 +38,7 @@ export default ({ app }) => {
     /*
      ** Google アナリティクスにページビューが追加されたことを伝える
      */
-    ga("set", "page", to.fullPath);
-    ga("send", "pageview");
-  });
-};
+    ga('set', 'page', to.fullPath)
+    ga('send', 'pageview')
+  })
+}

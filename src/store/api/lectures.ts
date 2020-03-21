@@ -1,7 +1,7 @@
-import { OutputSearchData } from '../../types';
+import { OutputSearchData } from '../../types'
 
-import { BASE_URL, axios, YEAR } from '../../common/config';
-const url = BASE_URL + '/lectures';
+import { BASE_URL, axios, YEAR } from '../../common/config'
+const url = BASE_URL + '/lectures'
 
 /**
  * 授業名、科目番号等から該当する授業を返す
@@ -13,15 +13,15 @@ async function searchLectures(q: string, year = YEAR) {
     const { data } = await axios.get<OutputSearchData>(`${url}/search`, {
       params: {
         q,
-        year
-      }
-    });
-    return data;
+        year,
+      },
+    })
+    return data
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return [];
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return []
   }
 }
 
-export { searchLectures };
+export { searchLectures }

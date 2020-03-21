@@ -1,47 +1,47 @@
-import { TimeTables, Period } from '../../types/index';
-import { UserLectureEntity } from '~/src/types/server';
+import { TimeTables, Period } from '../../types/index'
+import { UserLectureEntity } from '~/src/types/server'
 
 export interface S {
-  timeTables: TimeTables;
-  isLogin: boolean;
+  timeTables: TimeTables
+  isLogin: boolean
 }
 
 export interface G {
-  table: TimeTables;
-  isLogin: boolean;
+  table: TimeTables
+  isLogin: boolean
 }
 export interface RG {
-  'api/table': G['table'];
-  'api/isLogin': G['isLogin'];
+  'api/table': G['table']
+  'api/isLogin': G['isLogin']
 }
 
 export interface M {
-  SET_TABLE: { periodDatas: TimeTables };
+  SET_TABLE: { periodDatas: TimeTables }
 
-  LOGIN: null;
-  LOGOUT: null;
+  LOGIN: null
+  LOGOUT: null
 }
 export interface RM {
-  'API/SET_TABLE': M['SET_TABLE'];
-  'API/LOGIN': M['LOGIN'];
-  'API/LOGOUT': M['LOGOUT'];
+  'API/SET_TABLE': M['SET_TABLE']
+  'API/LOGIN': M['LOGIN']
+  'API/LOGOUT': M['LOGOUT']
 }
 
 export interface A {
-  addTable: { lectureCodes: string[] };
+  addTable: { lectureCodes: string[] }
   deleteTable: {
-    table: Period;
-    UserLecture: UserLectureEntity;
-  };
-  fetch: null;
+    table: Period
+    UserLecture: UserLectureEntity
+  }
+  fetch: null
 
-  login: null;
-  logout: null;
+  login: null
+  logout: null
 }
 export interface RA {
-  'api/addTable': A['addTable'];
-  'api/deleteTable': A['deleteTable'];
-  'api/fetch': A['fetch'];
-  'api/login': A['login'];
-  'api/logout': A['logout'];
+  'api/addTable': A['addTable']
+  'api/deleteTable': A['deleteTable']
+  'api/fetch': A['fetch']
+  'api/login': A['login']
+  'api/logout': A['logout']
 }

@@ -30,18 +30,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
 
 @Component
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
   chDrawer() {
-    this.$store.commit('visible/chDrawer', { display: true });
+    this.$store.commit('visible/chDrawer', { display: true })
   }
   chAdd() {
-    this.$store.commit('visible/chAdd', { display: true });
+    this.$store.commit('visible/chAdd', { display: true })
   }
 }
 </script>

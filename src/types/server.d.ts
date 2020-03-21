@@ -9,14 +9,14 @@
  * @post /timetables/
  */
 export interface UserLectureEntity {
-  twinte_lecture_id?: string;
-  user_lecture_id: string;
-  attendance: number;
-  absence: number;
-  late: number;
-  memo: string;
-  lecture_name: string;
-  instructor: string;
+  twinte_lecture_id?: string
+  user_lecture_id: string
+  attendance: number
+  absence: number
+  late: number
+  memo: string
+  lecture_name: string
+  instructor: string
 }
 
 /**
@@ -26,13 +26,13 @@ export interface UserLectureEntity {
  * @post /timetables​/{year}​/{module}​/{day}​/{period}
  */
 export interface OutputPeriodData {
-  lecture_code: string;
-  lecture_name: string;
-  instructor: string;
-  year: number;
-  module: string;
-  day: string;
-  period: number;
-  room: string;
-  user_lecture_id: string;
+  lecture_code: string
+  lecture_name: string
+  instructor: string
+  year: number
+  module: string
+  day: string
+  period: number
+  room: string
+  user_lecture_id: string
 }

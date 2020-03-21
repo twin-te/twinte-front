@@ -1,13 +1,13 @@
 export interface Lecture {
-  lectureID: string;
-  name: string;
+  lectureID: string
+  name: string
   details: {
-    module: Module;
-    day: Day;
-    period: number;
-    room: string;
-  }[];
-  instructor: string;
+    module: Module
+    day: Day
+    period: number
+    room: string
+  }[]
+  instructor: string
 }
 
 export enum Module {
@@ -20,7 +20,7 @@ export enum Module {
   SummerVacation = '夏季休業中',
   SpringVacation = '春季休業中',
   Annual = '通年',
-  Unknown = '不明'
+  Unknown = '不明',
 }
 
 export enum Day {
@@ -31,5 +31,5 @@ export enum Day {
   Thu = '木',
   Fri = '金',
   Sat = '土',
-  Unknown = '不明'
+  Unknown = '不明',
 }

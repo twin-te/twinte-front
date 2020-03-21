@@ -10,26 +10,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator'
 
-type Today = { month: number | null; day: number | null; week: string | null };
+type Today = { month: number | null; day: number | null; week: string | null }
 
 @Component({})
 export default class Index extends Vue {
   today: Today = {
     month: null,
     day: null,
-    week: null
-  };
+    week: null,
+  }
 
   mounted() {
-    const date = new Date();
-    const weeks = ['日', '月', '火', '水', '木', '金', '土'];
+    const date = new Date()
+    const weeks = ['日', '月', '火', '水', '木', '金', '土']
     this.today = {
       month: date.getMonth() + 1,
       day: date.getDate(),
-      week: weeks[date.getDay()]
-    };
+      week: weeks[date.getDay()],
+    }
   }
 }
 </script>

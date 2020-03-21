@@ -37,29 +37,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
 
 @Component({
   components: {
-    Subject: () => import('~/components/ui-subject.vue')
-  }
+    Subject: () => import('~/components/ui-subject.vue'),
+  },
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
   timeTable = [
     ['8:40', '9:55'],
     ['10:10', '11:25'],
     ['12:15', '13:30'],
     ['13:45', '15:00'],
     ['15:15', '16:30'],
-    ['16:45', '18:00']
-  ];
+    ['16:45', '18:00'],
+  ]
   get visible() {
-    return this.$store.getters['visible/table'].display;
+    return this.$store.getters['visible/table'].display
   }
   get moveDirection() {
-    return this.$store.getters['visible/table'].move;
+    return this.$store.getters['visible/table'].move
   }
 }
 </script>

@@ -1,7 +1,7 @@
-import { BASE_URL, axios } from '../../common/config';
-const url = BASE_URL + '/user-lectures';
-import { UserLectureEntity } from '../../types/server';
-import union from 'lodash/union';
+import { BASE_URL, axios } from '../../common/config'
+const url = BASE_URL + '/user-lectures'
+import { UserLectureEntity } from '../../types/server'
+import union from 'lodash/union'
 
 /**
  * 指定した講義のユーザーデータを取得
@@ -11,12 +11,12 @@ async function getUserData(user_lecture_id: string) {
   try {
     const { data } = await axios.get<UserLectureEntity>(
       `${url}/${user_lecture_id}`
-    );
-    return data;
+    )
+    return data
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return null;
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
   }
 }
 
@@ -29,12 +29,12 @@ async function updateUserData(UserLecture: UserLectureEntity) {
     const { data } = await axios.put<UserLectureEntity>(
       `${url}/${UserLecture.user_lecture_id}`,
       UserLecture
-    );
-    return data;
+    )
+    return data
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return null;
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
   }
 }
 
@@ -44,12 +44,12 @@ async function updateUserData(UserLecture: UserLectureEntity) {
  */
 async function deleteUserData(user_lecture_id: string) {
   try {
-    await axios.delete<UserLectureEntity>(`${url}/${user_lecture_id}`);
+    await axios.delete<UserLectureEntity>(`${url}/${user_lecture_id}`)
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
   }
-  return;
+  return
 }
 
 /**
@@ -59,20 +59,20 @@ async function deleteUserDataAll() {
   try {
     const targetLectures = await axios.get<UserLectureEntity[]>(
       `${BASE_URL}/user-lectures`
-    );
+    )
 
     const userLectureIds = targetLectures.data.reduce<string[]>((acc, l) => {
-      acc.push(l.user_lecture_id);
-      return acc;
-    }, []);
+      acc.push(l.user_lecture_id)
+      return acc
+    }, [])
 
-    union(userLectureIds).forEach(async i => await deleteUserData(i));
-    location.reload();
+    union(userLectureIds).forEach(async i => await deleteUserData(i))
+    location.reload()
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
   }
-  return;
+  return
 }
 
-export { getUserData, updateUserData, deleteUserData, deleteUserDataAll };
+export { getUserData, updateUserData, deleteUserData, deleteUserDataAll }

@@ -80,122 +80,122 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
-import { searchLectures } from '../store/api/lectures';
-import Swal from 'sweetalert2';
-import { twinsToTwinteAlert } from './utils/swal';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import { searchLectures } from '../store/api/lectures'
+import Swal from 'sweetalert2'
+import { twinsToTwinteAlert } from './utils/swal'
 
 type miniLecture = {
-  lecture_code: string;
-  lecture_name: string;
-  module: string;
-  day: string;
-  period: number;
-  checked: boolean;
-};
+  lecture_code: string
+  lecture_name: string
+  module: string
+  day: string
+  period: number
+  checked: boolean
+}
 
 @Component({
   components: {
-    Dialog: () => import('~/components/global/dialog.vue')
-  }
+    Dialog: () => import('~/components/global/dialog.vue'),
+  },
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
   // data___________________________________________________________________________________
   //
-  input: string = '';
-  lectures: miniLecture[] = [];
+  input: string = ''
+  lectures: miniLecture[] = []
 
   // computed___________________________________________________________________________________
   //
   get isMobile() {
-    return /iP(hone|(o|a)d)|TwinteAppforAndroid/.test(navigator.userAgent);
+    return /iP(hone|(o|a)d)|TwinteAppforAndroid/.test(navigator.userAgent)
   }
   get moduleMessage(): string {
-    return `${this.$store.getters['table/module']}のCSVファイルを入力してください`;
+    return `${this.$store.getters['table/module']}のCSVファイルを入力してください`
   }
   get show(): boolean {
-    return this.$store.getters['visible/add'];
+    return this.$store.getters['visible/add']
   }
   get moduleNum(): number {
-    return this.$store.getters['table/moduleNum'];
+    return this.$store.getters['table/moduleNum']
   }
 
   // method___________________________________________________________________________________
   //
   close() {
-    this.$store.commit('visible/chAdd', { display: false });
+    this.$store.commit('visible/chAdd', { display: false })
   }
   twins() {
     if (this.isMobile) {
-      twinsToTwinteAlert();
+      twinsToTwinteAlert()
     } else {
       Swal.fire(
         'ご利用の環境では非対応です',
         'この機能はiOS版アプリ・Android版アプリでのみ利用できます。',
         'info'
-      );
+      )
     }
   }
   custom() {
-    this.$router.push('/custom');
-    this.$store.commit('visible/chAdd', { display: false });
+    this.$router.push('/custom')
+    this.$store.commit('visible/chAdd', { display: false })
   }
   async search(input: string, type: 'csv' | 'input') {
-    this.lectures = await this.parse(input, type);
+    this.lectures = await this.parse(input, type)
     if (this.lectures.length === 0) {
       Swal.fire(
         '見つかりません',
         '検索しましたが何も見つかりませんでした',
         'error'
-      );
+      )
     }
-    this.input = '';
-    (document.activeElement as HTMLElement).blur();
+    this.input = ''
+    ;(document.activeElement as HTMLElement).blur()
   }
 
   async parse(input: string, type: 'csv' | 'input'): Promise<miniLecture[]> {
-    const le = await searchLectures(input);
+    const le = await searchLectures(input)
 
-    return le.map(l => {
+    return le.map((l) => {
       return {
         lecture_code: l.lectureCode,
         lecture_name: l.name,
         module: l.details[0]?.module || '',
         day: l.details[0]?.day || '',
         period: l.details[0]?.period || 0,
-        checked: type === 'csv'
-      };
-    });
+        checked: type === 'csv',
+      }
+    })
   }
 
   async onFileChange(e: Event) {
-    e.preventDefault();
-    const fileData: Blob = (e.target as any).files[0];
-    const reader = new FileReader();
+    e.preventDefault()
+    const fileData: Blob = (e.target as any).files[0]
+    const reader = new FileReader()
 
     // viewとstate以外(csv処理)を入れたくない
-    const parse = async (csv: string) => await this.parse(csv, 'csv');
+    const parse = async (csv: string) => await this.parse(csv, 'csv')
     const pushLecture = (lectures: miniLecture[]) => {
-      this.lectures = [...this.lectures, ...lectures];
-    };
+      this.lectures = [...this.lectures, ...lectures]
+    }
     reader.onload = async () => {
-      if (typeof reader.result !== 'string') return;
+      if (typeof reader.result !== 'string') return
       const lectures = await Promise.all(
         reader.result
           .split('\r\n')
-          .filter(v => v) // drop blank line
-          .map(v => v.replace(/["]/g, '')) // drop "
-          .map(async lecture => {
-            return await parse(lecture);
+          .filter((v) => v) // drop blank line
+          .map((v) => v.replace(/["]/g, '')) // drop "
+          .map(async (lecture) => {
+            return await parse(lecture)
           })
-      );
+      )
 
-      pushLecture(lectures.flat());
-    };
-    await reader.readAsText(fileData);
+      pushLecture(lectures.flat())
+    }
+    await reader.readAsText(fileData)
   }
 
   async asyncNumber() {
@@ -204,8 +204,8 @@ export default class Index extends Vue {
         'まだログインしていません',
         '歯車⚙からログインして下さい',
         'info'
-      );
-      return;
+      )
+      return
     }
 
     Swal.fire({
@@ -213,34 +213,34 @@ export default class Index extends Vue {
       text: '現在表示されている時間割は上書きされます',
       showCancelButton: true,
       confirmButtonText: 'はい',
-      cancelButtonText: 'いいえ'
-    }).then(async result => {
+      cancelButtonText: 'いいえ',
+    }).then(async (result) => {
       if (!result.value) {
-        return;
+        return
       }
 
       const lectureCodes = await Promise.all(
-        this.lectures.filter(l => l.checked).map(l => l.lecture_code)
-      );
+        this.lectures.filter((l) => l.checked).map((l) => l.lecture_code)
+      )
 
       if (lectureCodes.length === 0) {
         Swal.fire(
           '追加するデータがありません',
           '検索を行い、追加する授業にチェックマークをつけて下さい',
           'warning'
-        );
-        return;
+        )
+        return
       }
 
-      await this.$store.dispatch('api/addTable', { lectureCodes });
+      await this.$store.dispatch('api/addTable', { lectureCodes })
       // → 追加
 
-      Swal.fire('追加完了', '時間割を更新しました', 'success');
+      Swal.fire('追加完了', '時間割を更新しました', 'success')
 
-      this.lectures = [];
-      this.close();
+      this.lectures = []
+      this.close()
       // → ダイアログを閉じる
-    });
+    })
   }
 }
 </script>
