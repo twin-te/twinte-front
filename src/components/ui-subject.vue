@@ -20,10 +20,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
-import { Period } from '../types/index';
-import { YEAR } from '../common/config';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import { Period } from '../types/index'
+import { YEAR } from '../common/config'
 
 enum Day {
   Sun = '日',
@@ -33,34 +33,34 @@ enum Day {
   Thu = '木',
   Fri = '金',
   Sat = '土',
-  Unknown = '不明'
+  Unknown = '不明',
 }
 
 @Component({})
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
-  @Prop() day!: number;
-  @Prop() period!: number;
-  @Prop() data!: Period | undefined;
-  @Prop() click!: string | undefined;
+  @Prop() day!: number
+  @Prop() period!: number
+  @Prop() data!: Period | undefined
+  @Prop() click!: string | undefined
 
-  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri];
+  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
 
   get display() {
-    return this.$store.getters['visible/subject'];
+    return this.$store.getters['visible/subject']
   }
 
   get table() {
     if (this.data) {
-      return this.data;
+      return this.data
     }
 
-    const periods = this.$store.getters['api/table'];
-    const module = this.module;
-    const week = this.week;
-    const day = this.day;
-    const period = this.period + 1;
+    const periods = this.$store.getters['api/table']
+    const module = this.module
+    const week = this.week
+    const day = this.day
+    const period = this.period + 1
 
     const validPeriod = periods.find(lecture => {
       return (
@@ -68,12 +68,12 @@ export default class Index extends Vue {
         week.indexOf(lecture.day) === day && // day
         lecture.period === period && // period
         lecture.year === YEAR
-      );
-    });
-    return validPeriod;
+      )
+    })
+    return validPeriod
   }
   get module() {
-    return this.$store.getters['table/module'];
+    return this.$store.getters['table/module']
   }
   setSubjectStyle() {
     switch (this.display.font_size) {
@@ -81,59 +81,59 @@ export default class Index extends Vue {
         return {
           background: this.getColor(this.table?.lecture_code),
           fontSize: '0.85rem',
-          lineHeight: '1.4rem'
-        };
+          lineHeight: '1.4rem',
+        }
       case 'medium':
         return {
           background: this.getColor(this.table?.lecture_code),
           fontSize: '1.03rem',
-          lineHeight: '1.4rem'
-        };
+          lineHeight: '1.4rem',
+        }
       default:
-        'large';
+        'large'
         return {
           background: this.getColor(this.table?.lecture_code),
           fontSize: '1.2rem',
-          lineHeight: '1.6rem'
-        };
+          lineHeight: '1.6rem',
+        }
     }
   }
   chDetail(period: Period) {
-    this.$store.dispatch('table/setPeriod', { period });
-    this.$store.commit('visible/chDetail', { display: true });
+    this.$store.dispatch('table/setPeriod', { period })
+    this.$store.commit('visible/chDetail', { display: true })
   }
   chAdd() {
-    this.$store.commit('visible/chAdd', { display: true });
+    this.$store.commit('visible/chAdd', { display: true })
   }
   popUp() {
     if (this.click === 'disable') {
-      return;
+      return
     }
     // 設定画面ではclickできない
 
     if (this.table) {
-      this.chDetail(this.table);
+      this.chDetail(this.table)
     } else {
-      this.chAdd();
+      this.chAdd()
     }
   }
   /** 授業に応じたテーマ色を返す */
   getColor(number: string | undefined): string {
     if (!number) {
-      return '#EEEEEE';
+      return '#EEEEEE'
     }
     // → カスタム授業
 
-    const char = number.substring(0, 1);
+    const char = number.substring(0, 1)
     switch (char) {
       case '1':
-        return '#FFEEF7';
+        return '#FFEEF7'
       case '2':
-        return '#F0EBFF';
+        return '#F0EBFF'
       case '3':
-        return '#FFFCEB';
+        return '#FFFCEB'
       default:
-        return '#DEFFF9';
+        return '#DEFFF9'
     }
   }
 }

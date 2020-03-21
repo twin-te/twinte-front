@@ -1,7 +1,7 @@
-import { Period } from '../../types';
-import { BASE_URL, axios, YEAR } from '../../common/config';
-const url = BASE_URL + '/timetables';
-import union from 'lodash/union';
+import { Period } from '../../types'
+import { BASE_URL, axios, YEAR } from '../../common/config'
+const url = BASE_URL + '/timetables'
+import union from 'lodash/union'
 
 export enum Module {
   SpringA = '春A',
@@ -13,7 +13,7 @@ export enum Module {
   SummerVacation = '夏季休業中',
   SpringVacation = '春季休業中',
   Annual = '通年',
-  Unknown = '不明'
+  Unknown = '不明',
 }
 export enum Day {
   Sun = '日',
@@ -23,7 +23,7 @@ export enum Day {
   Thu = '木',
   Fri = '金',
   Sat = '土',
-  Unknown = '不明'
+  Unknown = '不明',
 }
 
 /**
@@ -34,14 +34,14 @@ async function getTimeTables(year = YEAR) {
   try {
     const { data } = await axios.get<Period[]>(`${url}`, {
       params: {
-        year
-      }
-    });
-    return data;
+        year,
+      },
+    })
+    return data
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return [];
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return []
   }
 }
 
@@ -54,13 +54,13 @@ async function postLecture(lectureCode: string, year = YEAR) {
   try {
     const { data } = await axios.post<any>(`${url}`, {
       year,
-      lectureCode
-    });
-    return data; // 利用する予定はない
+      lectureCode,
+    })
+    return data // 利用する予定はない
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return null;
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
   }
 }
 
@@ -74,9 +74,9 @@ async function postAllLectures(
 ): Promise<void> {
   await Promise.all(
     union(lectureCodes).map(async lectureCode => {
-      return await postLecture(lectureCode, year);
+      return await postLecture(lectureCode, year)
     })
-  );
+  )
 }
 
 /**
@@ -84,19 +84,19 @@ async function postAllLectures(
  */
 async function updateLecture(lecture: Period) {
   try {
-    const { year, module, day, period, user_lecture_id, room } = lecture;
+    const { year, module, day, period, user_lecture_id, room } = lecture
     const { data } = await axios.put(
       `${url}/${year}/${module}/${day}/${period}`,
       {
         room,
-        user_lecture_id
+        user_lecture_id,
       }
-    );
-    return data;
+    )
+    return data
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return null;
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
   }
 }
 
@@ -116,12 +116,12 @@ async function deleteLecture(
   try {
     const { data } = await axios.delete(
       `${url}/${year}/${module}/${day}/${period}`
-    );
-    return data;
+    )
+    return data
   } catch (error) {
-    const { status, statusText } = error.response;
-    console.log(`Error! HTTP Status: ${status} ${statusText}`);
-    return null;
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
   }
 }
 
@@ -130,5 +130,5 @@ export {
   postLecture,
   postAllLectures,
   updateLecture,
-  deleteLecture
-};
+  deleteLecture,
+}

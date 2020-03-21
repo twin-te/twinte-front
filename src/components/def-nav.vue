@@ -53,54 +53,54 @@ import { BASE_URL } from '../common/config';
 declare global {
   interface Window {
     android?: {
-      openSettings: () => void;
-    };
+      openSettings: () => void
+    }
   }
 }
 
 @Component({})
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
     { icon: 'help', name: '使い方', link: 'https://www.twinte.net/#usages' },
-    { icon: 'view_quilt', name: '表示設定', link: '/display-settings' }
+    { icon: 'view_quilt', name: '表示設定', link: '/display-settings' },
     // , { icon: "share", name: "時間割の共有", link: "/" }
-  ];
+  ]
 
   get drawer(): boolean {
-    return this.$store.getters['visible/drawer'];
+    return this.$store.getters['visible/drawer']
   }
 
   get isLogin(): boolean {
-    return this.$store.getters['api/isLogin'];
+    return this.$store.getters['api/isLogin']
   }
 
   chDrawer() {
-    this.$store.commit('visible/chDrawer', { display: false });
+    this.$store.commit('visible/chDrawer', { display: false })
   }
 
   async goto(link: string) {
     if (link.startsWith('https://')) {
-      location.href = link;
+      location.href = link
     } else if (link.startsWith('func:')) {
       switch (link) {
         case 'func:android':
-          window.android?.openSettings();
-          break;
+          window.android?.openSettings()
+          break
         case 'func:twins':
-          twinsToTwinteAlert();
-          break;
+          twinsToTwinteAlert()
+          break
       }
     } else {
-      this.$router.push(link);
-      this.chDrawer();
+      this.$router.push(link)
+      this.chDrawer()
     }
   }
 
   async login() {
-    loginAlert();
+    loginAlert()
   }
 
   logout() {
@@ -108,32 +108,32 @@ export default class Index extends Vue {
       title: 'ログアウトしますか?',
       showCancelButton: true,
       confirmButtonText: 'はい',
-      cancelButtonText: 'いいえ'
-    }).then(async result => {
+      cancelButtonText: 'いいえ',
+    }).then(async (result) => {
       if (result.value) {
-        await this.$store.dispatch('api/logout');
-        location.href = `${BASE_URL}/auth/logout`;
+        await this.$store.dispatch('api/logout')
+        location.href = `${BASE_URL}/auth/logout`
       }
-    });
+    })
   }
 
   mounted() {
     const isMobile =
       /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-      /TwinteAppforAndroid/.test(navigator.userAgent);
+      /TwinteAppforAndroid/.test(navigator.userAgent)
     if (isMobile) {
       this.list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
-        link: 'func:twins'
-      });
+        link: 'func:twins',
+      })
     }
     if (window.android) {
       this.list.push({
         icon: 'settings',
         name: 'Androidアプリの設定',
-        link: 'func:android'
-      });
+        link: 'func:android',
+      })
     }
   }
 }
