@@ -16,8 +16,18 @@
           class="form"
           @keyup.enter="search(input, 'input')"
         />
-        <span v-if="input === ''" @click="lectures = []" class="material-icons search-btn">close</span>
-        <span v-else @click="search(input, 'input')" class="material-icons search-btn">search</span>
+        <span
+          v-if="input === ''"
+          @click="lectures = []"
+          class="material-icons search-btn"
+          >close</span
+        >
+        <span
+          v-else
+          @click="search(input, 'input')"
+          class="material-icons search-btn"
+          >search</span
+        >
       </form>
 
       <!-- 以下検索結果 -->
@@ -27,7 +37,12 @@
           :key="n.lecture_code + i"
           :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
         >
-          <input type="checkbox" :id="n.lecture_code" :value="n.lecture_code" v-model="n.checked" />
+          <input
+            type="checkbox"
+            :id="n.lecture_code"
+            :value="n.lecture_code"
+            v-model="n.checked"
+          />
           <label :for="n.lecture_code">
             {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
             }}{{ n.day }}{{ n.period }}

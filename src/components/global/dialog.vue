@@ -11,7 +11,12 @@
   <section class="contents">
     <transition name="bound">
       <main v-if="show" class="main">
-        <div class="svg-button material-icons close-btn" @click="$emit('close')">close</div>
+        <div
+          class="svg-button material-icons close-btn"
+          @click="$emit('close')"
+        >
+          close
+        </div>
 
         <slot></slot>
       </main>
