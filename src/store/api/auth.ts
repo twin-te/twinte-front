@@ -1,4 +1,4 @@
-import { BASE_URL, axios } from './config';
+import { BASE_URL, axios } from '../../common/config';
 const url = BASE_URL;
 
 /**

@@ -48,7 +48,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import * as Vuex from 'vuex';
 import Swal from 'sweetalert2';
 import { twinsToTwinteAlert, loginAlert } from './utils/swal';
-import { BASE_URL } from '../store/api/config';
+import { BASE_URL } from '../common/config';
 
 declare global {
   interface Window {

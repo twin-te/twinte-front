@@ -1,6 +1,6 @@
 import { OutputSearchData } from '../../types';
 
-import { BASE_URL, axios, YEAR } from './config';
+import { BASE_URL, axios, YEAR } from '../../common/config';
 const url = BASE_URL + '/lectures';
 
 /**

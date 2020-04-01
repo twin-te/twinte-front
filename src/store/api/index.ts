@@ -10,7 +10,7 @@ import { Getters, Mutations, Actions } from 'vuex';
 import { S, G, M, A } from './type';
 
 import { deleteLecture, postAllLectures, getTimeTables } from './timetables';
-import { YEAR } from './config';
+import { YEAR } from '../../common/config';
 import { deleteUserData } from './user-lectures';
 
 export const state = (): S => ({

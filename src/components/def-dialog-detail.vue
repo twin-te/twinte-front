@@ -51,11 +51,17 @@
           :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
           style="width: 30%"
         >
-          <span class="counter-name">{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span>
+          <span class="counter-name"
+            >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
+          >
           <!-- <+|-> -->
           <div class="counter">
-            <span @click="counter(atmnb[n - 1], +1)" class="counter-left">+</span>
-            <span @click="counter(atmnb[n - 1], -1)" class="counter-right">&#8211;</span>
+            <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
+              >+</span
+            >
+            <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
+              >&#8211;</span
+            >
           </div>
         </div>
       </section>
@@ -80,6 +86,7 @@ import { UserLectureEntity } from '../types/server';
 import { updateLecture } from '../store/api/timetables';
 import cloneDeep from 'lodash/cloneDeep';
 import Swal from 'sweetalert2';
+import { YEAR } from '../common/config';
 
 @Component({
   components: {
@@ -115,7 +122,7 @@ export default class Index extends Vue {
       case 'GB':
         location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table?.lecture_code}.html`;
       default:
-        location.href = `https://kdb.tsukuba.ac.jp/syllabi/2019/${this.table?.lecture_code}/jpn/#course-title`;
+        location.href = `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`;
     }
   }
   attend() {

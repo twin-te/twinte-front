@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { BASE_URL } from '../../store/api/config';
+import { BASE_URL } from '../../common/config';
 
 const twinsToTwinteAlert = () => {
   Swal.mixin({

@@ -1,5 +1,5 @@
 import { Period } from '../../types';
-import { BASE_URL, axios, YEAR } from './config';
+import { BASE_URL, axios, YEAR } from '../../common/config';
 const url = BASE_URL + '/timetables';
 import union from 'lodash/union';
 
@@ -119,9 +119,8 @@ async function deleteLecture(
     );
     return data;
   } catch (error) {
-    console.log(
-      `Error! HTTP Status: ${error.response.status} ${error.response.statusText}`
-    );
+    const { status, statusText } = error.response;
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return null;
   }
 }
