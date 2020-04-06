@@ -210,7 +210,7 @@ export default class Index extends Vue {
 
     Swal.fire({
       title: '科目追加を行いますか？',
-      text: '現在表示されている時間割は上書きされます',
+      text: '時間割が重複している場合はあらかじめ削除してください。',
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
