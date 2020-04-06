@@ -55,6 +55,13 @@ declare global {
     android?: {
       openSettings: () => void
     }
+    webkit?: {
+      messageHandlers: {
+        callbackHandler: {
+          postMessage: (hoge: string) => void
+        }
+      }
+    }
   }
 }
 
@@ -89,14 +96,18 @@ export default class Index extends Vue {
         case 'func:android':
           window.android?.openSettings()
           break
+        case 'func:iPhone':
+          window.webkit?.messageHandlers.callbackHandler.postMessage('')
+          break
         case 'func:twins':
           twinsToTwinteAlert()
           break
       }
     } else {
       this.$router.push(link)
-      this.chDrawer()
     }
+
+    this.chDrawer()
   }
 
   async login() {
@@ -109,7 +120,7 @@ export default class Index extends Vue {
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
-    }).then(async (result) => {
+    }).then(async result => {
       if (result.value) {
         await this.$store.dispatch('api/logout')
         location.href = `${BASE_URL}/auth/logout`
@@ -133,6 +144,13 @@ export default class Index extends Vue {
         icon: 'settings',
         name: 'Androidアプリの設定',
         link: 'func:android',
+      })
+    }
+    if (window.webkit) {
+      this.list.push({
+        icon: 'settings',
+        name: 'iPhoneアプリの設定',
+        link: 'func:iPhone',
       })
     }
   }
