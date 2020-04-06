@@ -73,7 +73,7 @@ async function postAllLectures(
   year = YEAR
 ): Promise<void> {
   await Promise.all(
-    union(lectureCodes).map(async lectureCode => {
+    union(lectureCodes).map(async (lectureCode) => {
       return await postLecture(lectureCode, year)
     })
   )

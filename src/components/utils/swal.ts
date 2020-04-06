@@ -36,7 +36,7 @@ const twinsToTwinteAlert = () => {
         type: 'warning',
       },
     ])
-    .then(result => {
+    .then((result) => {
       if (result.value) {
         location.href = 'https://twins.tsukuba.ac.jp'
       }
