@@ -66,7 +66,7 @@ async function deleteUserDataAll() {
       return acc
     }, [])
 
-    union(userLectureIds).forEach(async i => await deleteUserData(i))
+    union(userLectureIds).forEach(async (i) => await deleteUserData(i))
     location.reload()
   } catch (error) {
     const { status, statusText } = error.response

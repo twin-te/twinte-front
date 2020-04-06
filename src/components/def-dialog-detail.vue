@@ -170,7 +170,7 @@ export default class Index extends Vue {
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
-    }).then(async result => {
+    }).then(async (result) => {
       if (result.value && this.table && this.userData) {
         await this.$store.dispatch('api/deleteTable', {
           table: this.table,
