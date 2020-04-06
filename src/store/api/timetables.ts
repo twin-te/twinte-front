@@ -2,6 +2,7 @@ import { Period } from '../../types'
 import { BASE_URL, axios, YEAR } from '../../common/config'
 const url = BASE_URL + '/timetables'
 import union from 'lodash/union'
+import Swal from 'sweetalert2'
 
 export enum Module {
   SpringA = '春A',
@@ -56,7 +57,10 @@ async function postLecture(lectureCode: string, year = YEAR) {
       year,
       lectureCode,
     })
-    return data // 利用する予定はない
+    if (data?.msg === '重複する時限が存在します') {
+      Swal.fire('重複する時限が存在します', lectureCode, 'error')
+    }
+    return data // 重複する時限が存在します or 時間割データ
   } catch (error) {
     const { status, statusText } = error.response
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
