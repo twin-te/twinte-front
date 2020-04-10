@@ -57,11 +57,11 @@ async function postLecture(lectureCode: string, year = YEAR) {
       year,
       lectureCode,
     })
-    if (data?.msg === '重複する時限が存在します') {
-      Swal.fire('重複する時限が存在します', lectureCode, 'error')
-    }
     return data // 重複する時限が存在します or 時間割データ
   } catch (error) {
+    if (error?.msg === '重複する時限が存在します') {
+      Swal.fire('重複する時限が存在します', lectureCode, 'error')
+    }
     const { status, statusText } = error.response
     console.log(`Error! HTTP Status: ${status} ${statusText}`)
     return null
