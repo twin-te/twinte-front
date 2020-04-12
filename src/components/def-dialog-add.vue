@@ -324,6 +324,9 @@ h1 {
     }
   }
 }
+:focus {
+  outline: none;
+}
 
 /** 検索結果 */
 .result-list {
