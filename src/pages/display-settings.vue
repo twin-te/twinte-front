@@ -17,7 +17,7 @@
                 class="setting-checkbox"
               />
               <label class="display-check" for="lecture_number">
-                <span></span> </label
+                <span class="material-icons">check</span> </label
               >科目番号
             </li>
             <li>
@@ -30,7 +30,7 @@
                 class="setting-checkbox"
               />
               <label class="display-check" for="instructor">
-                <span></span> </label
+                <span class="material-icons">check</span> </label
               >担当教員
             </li>
             <li>
@@ -42,7 +42,8 @@
                 id="room"
                 class="setting-checkbox"
               />
-              <label class="display-check" for="room"> <span></span> </label
+              <label class="display-check" for="room">
+                <span class="material-icons">check</span> </label
               >教室名
             </li>
           </ul>
@@ -210,25 +211,27 @@ h3 {
   height: 2rem;
   vertical-align: middle;
   border: 0.25vh solid #9a9a9a;
-  border-radius: 50% 50%;
+  border-radius: 20% 20%;
   margin-right: 4%;
+  opacity: 0.5;
   span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50% 50%;
-    opacity: 0;
+    font-size: 1.6rem;
+    color: #9a9a9a;
+    opacity: 0.8;
   }
 }
 
 .setting-checkbox:checked ~ .display-check {
   border: 0.25vh solid #00c0c0;
+  opacity: 1;
   span {
+    color: #00c0c0;
+    font-weight: bold;
     opacity: 1;
-    background-color: #00c0c0;
   }
 }
 
