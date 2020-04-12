@@ -163,7 +163,7 @@ export default class Index extends Vue {
   async parse(input: string, type: 'csv' | 'input'): Promise<miniLecture[]> {
     const le = await searchLectures(input)
 
-    return le.map((l) => {
+    return le.map(l => {
       return {
         lecture_code: l.lectureCode,
         lecture_name: l.name,
@@ -190,9 +190,9 @@ export default class Index extends Vue {
       const lectures = await Promise.all(
         reader.result
           .split('\r\n')
-          .filter((v) => v) // drop blank line
-          .map((v) => v.replace(/["]/g, '')) // drop "
-          .map(async (lecture) => {
+          .filter(v => v) // drop blank line
+          .map(v => v.replace(/["]/g, '')) // drop "
+          .map(async lecture => {
             return await parse(lecture)
           })
       )
@@ -218,13 +218,13 @@ export default class Index extends Vue {
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ',
-    }).then(async (result) => {
+    }).then(async result => {
       if (!result.value) {
         return
       }
 
       const lectureCodes = await Promise.all(
-        this.lectures.filter((l) => l.checked).map((l) => l.lecture_code)
+        this.lectures.filter(l => l.checked).map(l => l.lecture_code)
       )
 
       if (lectureCodes.length === 0) {
@@ -323,6 +323,9 @@ h1 {
       background-color: #05dbdb;
     }
   }
+}
+:focus {
+  outline: none;
 }
 
 /** 検索結果 */
