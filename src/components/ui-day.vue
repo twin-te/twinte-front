@@ -1,11 +1,11 @@
 <template>
   <!-- 時間割の日時 -->
-  <section id="day">
-    <div id="cal-month">{{ today.month }}月</div>
-    <div id="cal-day">
+  <section class="cal">
+    <div class="cal__month">{{ today.month }}月</div>
+    <div class="cal__day">
       {{ today.day }}
     </div>
-    <div id="cal-week">({{ today.week }})</div>
+    <div class="cal__week">({{ today.week }})</div>
   </section>
 </template>
 
@@ -35,7 +35,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-#day {
+.cal {
   position: absolute;
   box-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0, 0, 0, 0.226);
   border-radius: 1vh;
@@ -43,24 +43,25 @@ export default class Index extends Vue {
   width: 6.5vh;
   left: 4.5vw;
   top: -3.7vh;
-}
-#cal-month {
-  background: #00c0c0;
-  color: #fcfcfc;
-  font-size: 1.5vh;
-  text-align: center;
-  line-height: 2vh;
-}
-#cal-day {
-  color: #9a9a9a;
-  font-size: 2.6vh;
-  text-align: center;
-  line-height: 2.5vh;
-}
-#cal-week {
-  color: #9a9a9a;
-  font-size: 1.4vh;
-  text-align: center;
-  line-height: 2.1vh;
+
+  &__month {
+    background: #00c0c0;
+    color: #fcfcfc;
+    font-size: 1.5vh;
+    text-align: center;
+    line-height: 2vh;
+  }
+  &__day {
+    color: #9a9a9a;
+    font-size: 2.6vh;
+    text-align: center;
+    line-height: 2.5vh;
+  }
+  &__week {
+    color: #9a9a9a;
+    font-size: 1.4vh;
+    text-align: center;
+    line-height: 2.1vh;
+  }
 }
 </style>
