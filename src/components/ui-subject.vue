@@ -1,19 +1,19 @@
 <template>
   <section @click="popUp()">
-    <div id="subject" v-if="!table"></div>
+    <div class="subject" v-if="!table"></div>
     <!-- → 授業が入っていない -->
 
-    <div id="subject" :style="setSubjectStyle()" v-else>
-      <div v-if="display.lecture_code" class="sbj-lectureId">
+    <div class="subject" :style="setSubjectStyle()" v-else>
+      <div v-if="display.lecture_code" class="subject__lectureId">
         {{ table.lecture_code }}
       </div>
-      <div v-if="display.lecture_name" class="sbj-name">
+      <div v-if="display.lecture_name" class="subject__name">
         {{ table.lecture_name }}
       </div>
-      <div v-if="display.instructor" class="sbj-instructor">
+      <div v-if="display.instructor" class="subject__instructor">
         {{ table.instructor }}
       </div>
-      <div v-if="display.room" class="sbj-room">{{ table.room }}</div>
+      <div v-if="display.room" class="subject__room">{{ table.room }}</div>
     </div>
     <!-- → 授業が入っている -->
   </section>
@@ -145,8 +145,9 @@ $width: calc(
   (100vw - 8vw /**外枠 */ - 11vw /** 時限 */ - 12vw /** 科目+時限 padding */) /
     5
 );
+
 /* 科目 */
-#subject {
+.subject {
   color: #555;
   width: $width;
   height: $height;
@@ -159,17 +160,18 @@ $width: calc(
     transition: all 0.3s;
     filter: brightness(150%);
   }
-}
-.sbj-lectureId {
-  font-weight: 400;
-}
-.sbj-name {
-  font-weight: 700;
-}
-.sbj-instructor {
-  font-weight: 400;
-}
-.sbj-room {
-  font-weight: 400;
+
+  &__lectureId {
+    font-weight: 400;
+  }
+  &__name {
+    font-weight: 700;
+  }
+  &__instructor {
+    font-weight: 400;
+  }
+  &__room {
+    font-weight: 400;
+  }
 }
 </style>
