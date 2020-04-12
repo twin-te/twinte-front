@@ -148,7 +148,7 @@ export default class Index extends Vue {
     if (this.lectures.length === 0) {
       Swal.fire(
         '見つかりません',
-        '検索しましたが何も見つかりませんでした',
+        '科目番号や科目名が正しいかどうかご確認ください',
         'error'
       )
     }
@@ -202,7 +202,7 @@ export default class Index extends Vue {
     if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
         'まだログインしていません',
-        '歯車⚙からログインして下さい',
+        '歯車⚙からログインしてください',
         'info'
       )
       return
@@ -226,7 +226,7 @@ export default class Index extends Vue {
       if (lectureCodes.length === 0) {
         Swal.fire(
           '追加するデータがありません',
-          '検索を行い、追加する授業にチェックマークをつけて下さい',
+          '検索を行い、追加する授業にチェックマークをつけてください',
           'warning'
         )
         return
@@ -248,7 +248,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 @import '~/assets/css/btn.scss';
 
-//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
+//++++++++++++++++++// 以くだダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
   display: flex;
