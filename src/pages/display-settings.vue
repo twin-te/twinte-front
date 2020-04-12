@@ -210,28 +210,28 @@ h3 {
   width: 2rem;
   height: 2rem;
   vertical-align: middle;
-  border: 0.25vh solid #9a9a9a;
+  border: 0.2rem solid #c9c9c9;
   border-radius: 20% 20%;
   margin-right: 4%;
-  opacity: 0.5;
+  cursor: pointer;
   span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    font-size: 1.6rem;
-    color: #9a9a9a;
-    opacity: 0.8;
+    font-size: 100%;
+    color: #c9c9c9;
+    cursor: pointer;
+    user-select: none;
   }
 }
 
 .setting-checkbox:checked ~ .display-check {
-  border: 0.25vh solid #00c0c0;
-  opacity: 1;
+  border: 0.2rem solid #00c0c0;
+  background-color: #00c0c0;
   span {
-    color: #00c0c0;
+    color: #fff;
     font-weight: bold;
-    opacity: 1;
   }
 }
 
@@ -254,10 +254,10 @@ input {
     width: 6rem;
     height: 3rem;
     background-color: white;
-    color: #00c0c0;
+    color: #c9c9c9;
     text-align: center;
     line-height: 3rem;
-    border: #00c0c0 0.2vh solid;
+    border: #c9c9c9 0.2rem solid;
     border-radius: 400px;
     margin-top: 1vh;
     margin-right: 3vh;
@@ -272,8 +272,10 @@ input {
     font-size: 2rem;
   }
   .setting-radio:checked ~ .fontsize-btn {
+    border: #00c0c0 0.2rem solid;
     background-color: #00c0c0;
     color: white;
+    opacity: 1;
   }
 }
 </style>
