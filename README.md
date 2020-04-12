@@ -38,56 +38,11 @@ Twin:te - https://app.twinte.net のフロントエンドです。
 
 ## Development
 
+[DEVELOPMENT.md](./.github/DEVELOPMENT.md)をご覧ください
+
 - 📥 Pull requests and 🌟 Stars are always welcome.
 - このプロジェクトは OSS のため、コントリビュートを歓迎しております。
 - TypeScript と Vuejs のいづれかの基礎知識(HTML, SASS など)があればコントリビュート可能です。
 - ![https://github.com/twin-te/twinte-front/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22](https://img.shields.io/github/issues/twin-te/twinte-front/good%20first%20issue.svg?style=flat-square) のタグがついているものは比較的新規者でも扱いやすい issue になっています。
-
-まずはリポジトリをクローンして依存ライブラリをインストールします。
-
-```
-$ git clone git@github.com:twin-te/twinte-front.git
-$ cd twinte-front
-$ yarn
-```
-
-ローカルホストで動かします。
-
-```
-$ yarn dev
-```
-
-ビルドします。`.nuxt`に吐き出します。
-
-```
-$ yarn build
-```
-
-ビルドしてスタートします。`.nuxt`に吐き出してスタートします。
-
-```
-$ yarn start
-```
-
-静的ファイルを出力します。出力先は`./dist`です
-
-```
-$yarn generate
-```
-
-フォーマットをします。Prettier の標準ルールに準拠しています。
-
-```
-$ yarn format
-```
-
-### API ドキュメントの確認
-
-- Twitter アカウント [@te_twin](https://twitter.com/te_twin)
-- email info@twinte.net
-
-へご連絡して下さい。
-
-または[バックエンド](https://github.com/twin-te/twinte-server)のコードをごらんください。
 
 ![build with Nuxt](https://ja.nuxtjs.org/logos/built-with-nuxt.svg)
