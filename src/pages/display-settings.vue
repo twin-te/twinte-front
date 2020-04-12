@@ -254,10 +254,10 @@ input {
     width: 6rem;
     height: 3rem;
     background-color: white;
-    color: #00c0c0;
+    color: #c9c9c9;
     text-align: center;
     line-height: 3rem;
-    border: #00c0c0 0.2vh solid;
+    border: #c9c9c9 0.2rem solid;
     border-radius: 400px;
     margin-top: 1vh;
     margin-right: 3vh;
@@ -272,8 +272,10 @@ input {
     font-size: 2rem;
   }
   .setting-radio:checked ~ .fontsize-btn {
+    border: #00c0c0 0.2rem solid;
     background-color: #00c0c0;
     color: white;
+    opacity: 1;
   }
 }
 </style>

@@ -35,15 +35,19 @@
         <div
           v-for="(n, i) in lectures"
           :key="n.lecture_code + i"
-          :style="{ background: i % 2 === 0 ? '#F9F9F9' : '#ebebeb' }"
+          :style="{ background: i % 2 === 0 ? '#Fbfbfb' : '#f5f5f5' }"
         >
           <input
             type="checkbox"
             :id="n.lecture_code"
             :value="n.lecture_code"
             v-model="n.checked"
+            class="result"
           />
-          <label :for="n.lecture_code">
+          <label class="result-checkbox" :for="n.lecture_code">
+            <span class="material-icons">check</span>
+          </label>
+          <label for="n.lecture_code" class="result-list-label">
             {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
             }}{{ n.day }}{{ n.period }}
           </label>
@@ -336,6 +340,46 @@ h1 {
 }
 .result-list div {
   padding: 1rem;
+  display: flex;
+}
+.result-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 0.17rem solid #c9c9c9;
+  border-radius: 20% 20%;
+  margin-right: 0.8rem;
+  cursor: pointer;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 100%;
+    color: #c9c9c9;
+    cursor: pointer;
+  }
+}
+
+.result:checked ~ .result-checkbox {
+  border: 0.17rem solid #00c0c0;
+  background-color: #00c0c0;
+  opacity: 1;
+  span {
+    color: #fff;
+    font-weight: bold;
+    opacity: 1;
+  }
+}
+
+.result-list-label {
+  display: inline-block;
+  width: calc(100% - 3.5rem);
+}
+
+.result {
+  display: none;
 }
 
 //++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
