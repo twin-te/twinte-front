@@ -12,7 +12,7 @@
       <!-- 時限 -->
       <section class="column">
         <div
-          id="time"
+          class="time"
           v-for="i in 6"
           :key="i"
           :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
@@ -89,7 +89,7 @@ content {
 }
 
 /* 時限 */
-#time {
+.time {
   width: 11vw;
   height: $height;
   font-style: normal;
