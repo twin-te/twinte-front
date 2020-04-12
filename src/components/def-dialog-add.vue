@@ -278,6 +278,9 @@ h1 {
 }
 
 /* 検索フォーム */
+input:focus {
+  outline: 0;
+}
 .search-form {
   position: relative;
   width: 100%;
