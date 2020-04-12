@@ -222,6 +222,7 @@ h3 {
     font-size: 100%;
     color: #c9c9c9;
     cursor: pointer;
+    user-select: none;
   }
 }
 
