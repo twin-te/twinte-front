@@ -161,7 +161,13 @@ export default class Index extends Vue {
   }
 
   async parse(input: string, type: 'csv' | 'input'): Promise<miniLecture[]> {
-    const le = await searchLectures(input.toUpperCase())
+    const le = await searchLectures(
+      input
+        .replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => {
+          return String.fromCharCode(s.charCodeAt(0) - 65248)
+        })
+        .toUpperCase()
+    )
 
     return le.map((l) => {
       return {
