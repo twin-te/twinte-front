@@ -62,7 +62,7 @@ async function postLecture(lectureCode: string, year = YEAR) {
   } catch (error) {
     const { status, statusText, data } = error.response;
     if (data?.msg === '重複する時限が存在します') {
-      Swal.fire(
+      await Swal.fire(
         '重複する時限が存在します',
         `${lectureCode}と重複している授業がないか確認してください。`,
         'info'
