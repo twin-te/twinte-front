@@ -26,7 +26,7 @@
             v-for="(l, id) in list"
             :key="id"
             :id="l.icon"
-            @click="goto(l.link)"
+            @click="navigateHandler(l.link)"
           >
             <p>
               <span class="material-icons menu-icon">{{ l.icon }}</span>
@@ -54,10 +54,14 @@ declare global {
   interface Window {
     android?: {
       openSettings: () => void
+      share: () => void
     }
     webkit?: {
       messageHandlers: {
-        callbackHandler: {
+        iPhoneSettings: {
+          postMessage: (hoge: string) => void
+        }
+        share: {
           postMessage: (hoge: string) => void
         }
       }
@@ -88,29 +92,7 @@ export default class Index extends Vue {
     this.$store.commit('visible/chDrawer', { display: false })
   }
 
-  async goto(link: string) {
-    if (link.startsWith('https://')) {
-      location.href = link
-    } else if (link.startsWith('func:')) {
-      switch (link) {
-        case 'func:android':
-          window.android?.openSettings()
-          break
-        case 'func:iPhone':
-          window.webkit?.messageHandlers.callbackHandler.postMessage('')
-          break
-        case 'func:twins':
-          twinsToTwinteAlert()
-          break
-      }
-    } else {
-      this.$router.push(link)
-    }
-
-    this.chDrawer()
-  }
-
-  async login() {
+  login() {
     loginAlert()
   }
 
@@ -128,6 +110,34 @@ export default class Index extends Vue {
     })
   }
 
+  navigateHandler(link: string) {
+    if (link.startsWith('https://')) {
+      location.href = link
+    } else if (link.startsWith('func:')) {
+      switch (link) {
+        case 'func:android-settings':
+          window.android?.openSettings()
+          break
+        case 'func:android-share':
+          window.android?.share()
+          break
+        case 'func:iPhone-settings':
+          window.webkit?.messageHandlers.iPhoneSettings.postMessage('')
+          break
+        case 'func:iPhone-share':
+          window.webkit?.messageHandlers.share.postMessage('#Twinte')
+          break
+        case 'func:twins':
+          twinsToTwinteAlert()
+          break
+      }
+    } else {
+      this.$router.push(link)
+    }
+
+    this.chDrawer()
+  }
+
   mounted() {
     const isMobile =
       /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
@@ -140,18 +150,32 @@ export default class Index extends Vue {
       })
     }
     if (window.android) {
-      this.list.push({
-        icon: 'settings',
-        name: 'Androidアプリの設定',
-        link: 'func:android',
-      })
+      this.list.push(
+        {
+          icon: 'settings',
+          name: 'Androidアプリの設定',
+          link: 'func:android-settings',
+        },
+        {
+          icon: 'share',
+          name: '時間割のシェア',
+          link: 'func:android-share',
+        }
+      )
     }
     if (window.webkit) {
-      this.list.push({
-        icon: 'settings',
-        name: 'iPhoneアプリの設定',
-        link: 'func:iPhone',
-      })
+      this.list.push(
+        {
+          icon: 'settings',
+          name: 'iPhoneアプリの設定',
+          link: 'func:iPhone-settings',
+        },
+        {
+          icon: 'share',
+          name: '時間割のシェア',
+          link: 'func:iPhone-share',
+        }
+      )
     }
   }
 }
