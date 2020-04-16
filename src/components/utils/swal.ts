@@ -32,11 +32,11 @@ const twinsToTwinteAlert = () => {
       {
         title: '注意',
         html:
-          'この機能は自己責任での利用となっております。この機能を利用して起きた損害等は一切Twin:teは責任を負いません。詳細は<a href="https://www.twinte.net/terms">利用規約</a>をご覧ください。',
+          'この機能は自己責任での利用となっております。この機能を利用して起きた損害等は一切Twin:teは責任を負いません。詳細は<a href="https://www.twinte.net/terms" target="_blank">利用規約</a>をご覧ください。',
         type: 'warning'
       }
     ])
-    .then(result => {
+    .then((result) => {
       if (result.value) {
         location.href = 'https://twins.tsukuba.ac.jp';
       }
@@ -50,7 +50,7 @@ const loginAlert = () => {
       <p>
         Twin:teにログインしたことがない場合は自動的にアカウントが作成されます。
         <br />ログインをした場合、
-        <a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。
+        <a href="https://www.twinte.net/terms" target="_blank">利用規約</a>に同意したものとします。
       </p>
       <p>
         <a href="${BASE_URL}/auth/google">
