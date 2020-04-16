@@ -214,7 +214,7 @@ export default class Index extends Vue {
 
     Swal.fire({
       title: '科目追加を行いますか？',
-      text: '現在表示されている時間割は上書きされます',
+      text: '時間割が重複している場合はあらかじめ削除してください。',
       showCancelButton: true,
       confirmButtonText: 'はい',
       cancelButtonText: 'いいえ'
@@ -239,7 +239,7 @@ export default class Index extends Vue {
       await this.$store.dispatch('api/addTable', { lectureCodes });
       // → 追加
 
-      Swal.fire('追加完了', '時間割を更新しました', 'success');
+      Swal.fire('完了', '時間割が更新されました。', 'success');
 
       this.lectures = [];
       this.close();

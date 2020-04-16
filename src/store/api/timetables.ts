@@ -1,7 +1,9 @@
+import Swal from 'sweetalert2';
+import union from 'lodash/union';
+
 import { Period } from '../../types';
 import { BASE_URL, axios, YEAR } from '../../common/config';
 const url = BASE_URL + '/timetables';
-import union from 'lodash/union';
 
 export enum Module {
   SpringA = '春A',
@@ -56,9 +58,16 @@ async function postLecture(lectureCode: string, year = YEAR) {
       year,
       lectureCode
     });
-    return data; // 利用する予定はない
+    return data; // 重複する時限が存在します or 時間割データ
   } catch (error) {
-    const { status, statusText } = error.response;
+    const { status, statusText, data } = error.response;
+    if (data?.msg === '重複する時限が存在します') {
+      await Swal.fire(
+        '重複する時限が存在します',
+        `${lectureCode}と重複している授業がないか確認してください。`,
+        'info'
+      );
+    }
     console.log(`Error! HTTP Status: ${status} ${statusText}`);
     return null;
   }
