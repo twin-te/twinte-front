@@ -54,6 +54,7 @@ declare global {
   interface Window {
     android?: {
       openSettings: () => void
+      share: () => void
     }
     webkit?: {
       messageHandlers: {
@@ -117,6 +118,9 @@ export default class Index extends Vue {
         case 'func:android-settings':
           window.android?.openSettings()
           break
+        case 'func:android-share':
+          window.android?.share()
+          break
         case 'func:iPhone-settings':
           window.webkit?.messageHandlers.iPhoneSettings.postMessage('')
           break
@@ -146,11 +150,18 @@ export default class Index extends Vue {
       })
     }
     if (window.android) {
-      this.list.push({
-        icon: 'settings',
-        name: 'Androidアプリの設定',
-        link: 'func:android-settings',
-      })
+      this.list.push(
+        {
+          icon: 'settings',
+          name: 'Androidアプリの設定',
+          link: 'func:android-settings',
+        },
+        {
+          icon: 'share',
+          name: '時間割のシェア',
+          link: 'func:android-share',
+        }
+      )
     }
     if (window.webkit) {
       this.list.push(
