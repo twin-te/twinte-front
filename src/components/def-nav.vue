@@ -60,7 +60,7 @@ declare global {
         iPhoneSettings: {
           postMessage: (hoge: string) => void
         }
-        Share: {
+        share: {
           postMessage: (hoge: string) => void
         }
       }
@@ -121,7 +121,7 @@ export default class Index extends Vue {
           window.webkit?.messageHandlers.iPhoneSettings.postMessage('')
           break
         case 'func:iPhone-share':
-          window.webkit?.messageHandlers.Share.postMessage('#Twinte')
+          window.webkit?.messageHandlers.share.postMessage('#Twinte')
           break
         case 'func:twins':
           twinsToTwinteAlert()
