@@ -47,7 +47,9 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
+
 import { twinsToTwinteAlert, loginAlert } from './utils/swal'
+import { sleep } from './utils/sleep'
 import { BASE_URL } from '../common/config'
 
 declare global {
@@ -110,7 +112,7 @@ export default class Index extends Vue {
     })
   }
 
-  navigateHandler(link: string) {
+  async navigateHandler(link: string) {
     const shareMessage = '#Twinte'
 
     this.closeDrawer()
@@ -118,6 +120,7 @@ export default class Index extends Vue {
     if (link.startsWith('https://')) {
       location.href = link
     } else if (link.startsWith('func:')) {
+      await sleep(300)
       switch (link) {
         case 'func:android-settings':
           window.android?.openSettings()
