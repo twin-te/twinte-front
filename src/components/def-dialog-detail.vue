@@ -49,7 +49,7 @@
           v-for="n in 3"
           :key="n"
           :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
-          style="width: 30%"
+          style="width: 30%;"
         >
           <span class="counter-name"
             >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
@@ -79,77 +79,77 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
-import { Period } from '../types';
-import { UserLectureEntity } from '../types/server';
-import { updateLecture } from '../store/api/timetables';
-import cloneDeep from 'lodash/cloneDeep';
-import Swal from 'sweetalert2';
-import { YEAR } from '../common/config';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import { Period } from '../types'
+import { UserLectureEntity } from '../types/server'
+import { updateLecture } from '../store/api/timetables'
+import cloneDeep from 'lodash/cloneDeep'
+import Swal from 'sweetalert2'
+import { YEAR } from '../common/config'
 
 @Component({
   components: {
-    Dialog: () => import('~/components/global/dialog.vue')
-  }
+    Dialog: () => import('~/components/global/dialog.vue'),
+  },
 })
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
-  atmnb = ['出席', '欠席', '遅刻'];
-  moduleNum = this.$store.getters['table/moduleNum'];
-  localMemo = '';
-  localLectureId = '';
-  editableLecture: Period | null = null;
+  atmnb = ['出席', '欠席', '遅刻']
+  moduleNum = this.$store.getters['table/moduleNum']
+  localMemo = ''
+  localLectureId = ''
+  editableLecture: Period | null = null
 
   get atmnbCount() {
     return this.userData
       ? [this.userData.attendance, this.userData.absence, this.userData.late]
-      : [0, 0, 0];
+      : [0, 0, 0]
   }
   get userData() {
-    return this.$store.getters['table/userData'];
+    return this.$store.getters['table/userData']
   }
   get table(): Period | null {
-    return this.$store.getters['table/looking'];
+    return this.$store.getters['table/looking']
   }
   get show(): boolean {
-    return this.$store.getters['visible/detail'];
+    return this.$store.getters['visible/detail']
   }
 
   syllabus() {
     switch (this.table?.lecture_code.substring(0, 2)) {
       case 'GB':
-        location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table?.lecture_code}.html`;
+        location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table?.lecture_code}.html`
       default:
-        location.href = `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`;
+        location.href = `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`
     }
   }
   attend() {
-    location.href = 'https://atmnb.tsukuba.ac.jp';
+    location.href = 'https://atmnb.tsukuba.ac.jp'
   }
   edit() {
     if (this.editableLecture) {
-      this.editableLecture = null;
+      this.editableLecture = null
     } else {
-      this.editableLecture = cloneDeep(this.table);
+      this.editableLecture = cloneDeep(this.table)
     }
   }
   counter(type: string, num: number) {
     if (!this.userData) {
-      return;
+      return
     }
-    let { attendance, absence, late } = this.userData;
+    let { attendance, absence, late } = this.userData
     switch (type) {
       case '出席':
-        attendance + num >= 0 ? (attendance += num) : 0;
-        break;
+        attendance + num >= 0 ? (attendance += num) : 0
+        break
       case '欠席':
-        absence + num >= 0 ? (absence += num) : 0;
-        break;
+        absence + num >= 0 ? (absence += num) : 0
+        break
       case '遅刻':
-        late + num >= 0 ? (late += num) : 0;
-        break;
+        late + num >= 0 ? (late += num) : 0
+        break
     }
     const userData: UserLectureEntity = {
       twinte_lecture_id: this.userData.twinte_lecture_id,
@@ -159,9 +159,9 @@ export default class Index extends Vue {
       memo: this.userData.memo,
       attendance,
       absence,
-      late
-    };
-    this.$store.dispatch('table/updatePeriod', { userData });
+      late,
+    }
+    this.$store.dispatch('table/updatePeriod', { userData })
   }
 
   deleteItem() {
@@ -169,31 +169,31 @@ export default class Index extends Vue {
       title: 'この時間割を削除しますか?',
       showCancelButton: true,
       confirmButtonText: 'はい',
-      cancelButtonText: 'いいえ'
-    }).then(async result => {
+      cancelButtonText: 'いいえ',
+    }).then(async (result) => {
       if (result.value && this.table && this.userData) {
         await this.$store.dispatch('api/deleteTable', {
           table: this.table,
-          UserLecture: this.userData
-        });
+          UserLecture: this.userData,
+        })
 
-        this.close();
+        this.close()
         // → ダイアログを閉じる
       }
-    });
+    })
   }
 
   close(): void {
-    this.localMemo = '';
-    this.editableLecture = null;
-    this.$store.commit('visible/chDetail', { display: false });
-    this.$store.commit('table/setUserData', { userData: null });
-    this.$store.commit('table/setLooking', { period: null });
+    this.localMemo = ''
+    this.editableLecture = null
+    this.$store.commit('visible/chDetail', { display: false })
+    this.$store.commit('table/setUserData', { userData: null })
+    this.$store.commit('table/setLooking', { period: null })
   }
 
   async save() {
     if (!this.userData) {
-      return;
+      return
     }
     const userData: UserLectureEntity = {
       twinte_lecture_id: this.userData.twinte_lecture_id,
@@ -203,22 +203,22 @@ export default class Index extends Vue {
       memo: this.localMemo,
       attendance: this.userData.attendance,
       absence: this.userData.absence,
-      late: this.userData.late
-    };
-    await this.$store.dispatch('table/updatePeriod', { userData });
+      late: this.userData.late,
+    }
+    await this.$store.dispatch('table/updatePeriod', { userData })
     // → メモの変更
 
     if (this.editableLecture) {
-      await updateLecture(this.editableLecture);
+      await updateLecture(this.editableLecture)
     }
     // → 教室の変更
 
-    this.$store.dispatch('api/login');
+    this.$store.dispatch('api/login')
     // → 反映
 
-    this.editableLecture = null; // 編集モードをオフに
-    this.close(); // 閉じさせる
-    Swal.fire('完了', 'メモを保存しました', 'success');
+    this.editableLecture = null // 編集モードをオフに
+    this.close() // 閉じさせる
+    Swal.fire('完了', 'メモを保存しました', 'success')
   }
 
   fetchMemo() {
@@ -227,18 +227,18 @@ export default class Index extends Vue {
         this.userData &&
         this.localLectureId !== this.userData.user_lecture_id
       ) {
-        this.localMemo = this.userData.memo;
-        this.localLectureId = this.userData.user_lecture_id;
+        this.localMemo = this.userData.memo
+        this.localLectureId = this.userData.user_lecture_id
       }
-      this.fetchMemo();
-    }, 1000);
+      this.fetchMemo()
+    }, 1000)
     // リアクティブにできないのは既知のバグ
   }
 
   mounted() {
     this.$nextTick(() => {
-      this.fetchMemo();
-    });
+      this.fetchMemo()
+    })
   }
 }
 </script>

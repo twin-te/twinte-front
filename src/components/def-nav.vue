@@ -26,7 +26,7 @@
             v-for="(l, id) in list"
             :key="id"
             :id="l.icon"
-            @click="goto(l.link)"
+            @click="navigateHandler(l.link)"
           >
             <p>
               <span class="material-icons menu-icon">{{ l.icon }}</span>
@@ -44,63 +44,58 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
-import Swal from 'sweetalert2';
-import { twinsToTwinteAlert, loginAlert } from './utils/swal';
-import { BASE_URL } from '../common/config';
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import Swal from 'sweetalert2'
+
+import { twinsToTwinteAlert, loginAlert } from './utils/swal'
+import { sleep } from './utils/sleep'
+import { BASE_URL } from '../common/config'
 
 declare global {
   interface Window {
     android?: {
-      openSettings: () => void;
-    };
+      openSettings: () => void
+      share: (message: string) => void
+    }
+    webkit?: {
+      messageHandlers: {
+        iPhoneSettings: {
+          postMessage: (hoge: string) => void
+        }
+        share: {
+          postMessage: (message: string) => void
+        }
+      }
+    }
   }
 }
 
 @Component({})
 export default class Index extends Vue {
-  $store!: Vuex.ExStore;
+  $store!: Vuex.ExStore
 
   list = [
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
     { icon: 'help', name: '使い方', link: 'https://www.twinte.net/#usages' },
-    { icon: 'view_quilt', name: '表示設定', link: '/display-settings' }
+    { icon: 'view_quilt', name: '表示設定', link: '/display-settings' },
     // , { icon: "share", name: "時間割の共有", link: "/" }
-  ];
+  ]
 
   get drawer(): boolean {
-    return this.$store.getters['visible/drawer'];
+    return this.$store.getters['visible/drawer']
   }
 
   get isLogin(): boolean {
-    return this.$store.getters['api/isLogin'];
+    return this.$store.getters['api/isLogin']
   }
 
-  chDrawer() {
-    this.$store.commit('visible/chDrawer', { display: false });
+  closeDrawer() {
+    this.$store.commit('visible/chDrawer', { display: false })
   }
 
-  async goto(link: string) {
-    if (link.startsWith('https://')) {
-      location.href = link;
-    } else if (link.startsWith('func:')) {
-      switch (link) {
-        case 'func:android':
-          window.android?.openSettings();
-          break;
-        case 'func:twins':
-          twinsToTwinteAlert();
-          break;
-      }
-    } else {
-      this.$router.push(link);
-      this.chDrawer();
-    }
-  }
-
-  async login() {
-    loginAlert();
+  login() {
+    loginAlert()
   }
 
   logout() {
@@ -108,32 +103,84 @@ export default class Index extends Vue {
       title: 'ログアウトしますか?',
       showCancelButton: true,
       confirmButtonText: 'はい',
-      cancelButtonText: 'いいえ'
-    }).then(async result => {
+      cancelButtonText: 'いいえ',
+    }).then(async (result) => {
       if (result.value) {
-        await this.$store.dispatch('api/logout');
-        location.href = `${BASE_URL}/auth/logout`;
+        await this.$store.dispatch('api/logout')
+        location.href = `${BASE_URL}/auth/logout`
       }
-    });
+    })
+  }
+
+  async navigateHandler(link: string) {
+    const shareMessage = '#Twinte'
+
+    this.closeDrawer()
+
+    if (link.startsWith('https://')) {
+      location.href = link
+    } else if (link.startsWith('func:')) {
+      await sleep(300)
+      switch (link) {
+        case 'func:android-settings':
+          window.android?.openSettings()
+          break
+        case 'func:android-share':
+          window.android?.share(shareMessage)
+          break
+        case 'func:iPhone-settings':
+          window.webkit?.messageHandlers.iPhoneSettings.postMessage('')
+          break
+        case 'func:iPhone-share':
+          window.webkit?.messageHandlers.share.postMessage(shareMessage)
+          break
+        case 'func:twins':
+          twinsToTwinteAlert()
+          break
+      }
+    } else {
+      this.$router.push(link)
+    }
   }
 
   mounted() {
     const isMobile =
       /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-      /TwinteAppforAndroid/.test(navigator.userAgent);
+      /TwinteAppforAndroid/.test(navigator.userAgent)
     if (isMobile) {
       this.list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
-        link: 'func:twins'
-      });
+        link: 'func:twins',
+      })
     }
     if (window.android) {
-      this.list.push({
-        icon: 'settings',
-        name: 'Androidアプリの設定',
-        link: 'func:android'
-      });
+      this.list.push(
+        {
+          icon: 'settings',
+          name: 'Androidアプリの設定',
+          link: 'func:android-settings',
+        },
+        {
+          icon: 'share',
+          name: '時間割のシェア',
+          link: 'func:android-share',
+        }
+      )
+    }
+    if (window.webkit) {
+      this.list.push(
+        {
+          icon: 'settings',
+          name: 'iPhoneアプリの設定',
+          link: 'func:iPhone-settings',
+        },
+        {
+          icon: 'share',
+          name: '時間割のシェア',
+          link: 'func:iPhone-share',
+        }
+      )
     }
   }
 }

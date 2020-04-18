@@ -29,11 +29,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({})
 export default class Index extends Vue {
-  @Prop({ default: false }) show!: boolean;
+  @Prop({ default: false }) show!: boolean
 }
 </script>
 

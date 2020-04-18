@@ -1,23 +1,23 @@
 // import { mutations } from '../api'
-import { S } from '../src/store/api/type';
+import { S } from '../src/store/api/type'
 
-let state: S;
-const todo = true;
+let state: S
+const todo = true
 
 beforeEach(() => {
   state = {
     timeTables: [],
-    isLogin: false
-  };
-});
+    isLogin: false,
+  }
+})
 
 describe('add lecture', () => {
   it('no login', () => {
-    state.isLogin = false;
-    expect(todo).toBe(todo);
-  });
+    state.isLogin = false
+    expect(todo).toBe(todo)
+  })
   it('logined', () => {
-    state.isLogin = true;
-    expect(todo).toBe(todo);
-  });
-});
+    state.isLogin = true
+    expect(todo).toBe(todo)
+  })
+})
