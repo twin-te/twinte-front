@@ -13,7 +13,7 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1>設定</h1>
-        <div class="material-icons svg-button close-btn" @click="chDrawer()">
+        <div class="material-icons svg-button close-btn" @click="closeDrawer()">
           close
         </div>
 
@@ -38,7 +38,7 @@
     </transition>
 
     <transition name="fade">
-      <nav class="back" @click="chDrawer()" v-if="drawer"></nav>
+      <nav class="back" @click="closeDrawer()" v-if="drawer"></nav>
     </transition>
   </section>
 </template>
