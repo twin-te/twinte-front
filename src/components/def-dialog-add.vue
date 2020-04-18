@@ -239,8 +239,7 @@ export default class Index extends Vue {
       await this.$store.dispatch('api/addTable', { lectureCodes })
       // → 追加
 
-
-      Swal.fire('完了', '時間割が更新されました。', 'success');
+      Swal.fire('完了', '時間割が更新されました。', 'success')
 
       this.lectures = []
       this.close()
