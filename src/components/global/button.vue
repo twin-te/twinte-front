@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({})
 export default class Index extends Vue {
-  @Prop({ default: '300' }) width!: string;
-  @Prop({ default: '60' }) height!: string;
+  @Prop({ default: '300' }) width!: string
+  @Prop({ default: '60' }) height!: string
 }
 </script>
 

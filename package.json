@@ -9,16 +9,18 @@
     "start": "nuxt-ts build && nuxt-ts start",
     "dev": "nuxt-ts",
     "generate": "nuxt-ts generate",
-    "format": "prettier --write \"{,!(node_modules|dist|build|coverage|.nuxt|.serverless)/**/}*.{ts,json,vue,md}\"",
+    "format": "prettier --write .",
     "test": "jest"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.5.4",
     "@types/jest": "^24.0.25",
     "@types/lodash": "^4.14.149",
+    "husky": "^4.2.3",
     "jest": "^24.9.0",
+    "lint-staged": "^10.1.2",
     "node-sass": "^4.13.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.1",
     "sass-loader": "^8.0.0",
     "ts-jest": "^24.2.0",
     "vue-eslint-parser": "^7.0.0"
@@ -52,6 +54,17 @@
     },
     "testMatch": [
       "**/__test__/**/*.test.ts"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,vue}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
