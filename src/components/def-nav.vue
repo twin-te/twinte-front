@@ -55,15 +55,15 @@ import { BASE_URL } from '../common/config'
 declare global {
   interface Window {
     android?: {
-      openSettings: () => void
-      share: (message: string) => void
+      openSettings?: () => void
+      share?: (message: string) => void
     }
     webkit?: {
       messageHandlers: {
-        iPhoneSettings: {
+        iPhoneSettings?: {
           postMessage: (hoge: string) => void
         }
-        share: {
+        share?: {
           postMessage: (message: string) => void
         }
       }
