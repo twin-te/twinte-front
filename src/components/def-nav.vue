@@ -88,7 +88,7 @@ export default class Index extends Vue {
     return this.$store.getters['api/isLogin']
   }
 
-  chDrawer() {
+  closeDrawer() {
     this.$store.commit('visible/chDrawer', { display: false })
   }
 
@@ -113,6 +113,8 @@ export default class Index extends Vue {
   navigateHandler(link: string) {
     const shareMessage = '#Twinte'
 
+    this.closeDrawer()
+
     if (link.startsWith('https://')) {
       location.href = link
     } else if (link.startsWith('func:')) {
@@ -136,8 +138,6 @@ export default class Index extends Vue {
     } else {
       this.$router.push(link)
     }
-
-    this.chDrawer()
   }
 
   mounted() {
