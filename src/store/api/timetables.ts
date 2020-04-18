@@ -1,8 +1,9 @@
-import { Period } from '../../types'
-import { BASE_URL, axios, YEAR } from '../../common/config'
-const url = BASE_URL + '/timetables'
-import union from 'lodash/union'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import union from 'lodash/union';
+
+import { Period } from '../../types';
+import { BASE_URL, axios, YEAR } from '../../common/config';
+const url = BASE_URL + '/timetables';
 
 export enum Module {
   SpringA = '春A',
@@ -55,16 +56,20 @@ async function postLecture(lectureCode: string, year = YEAR) {
   try {
     const { data } = await axios.post<any>(`${url}`, {
       year,
-      lectureCode,
-    })
-    return data // 重複する時限が存在します or 時間割データ
+      lectureCode
+    });
+    return data; // 重複する時限が存在します or 時間割データ
   } catch (error) {
-    const { status, statusText, data } = error.response
+    const { status, statusText, data } = error.response;
     if (data?.msg === '重複する時限が存在します') {
-      Swal.fire('重複する時限が存在します', lectureCode, 'error')
+      await Swal.fire(
+        '重複する時限が存在します',
+        `${lectureCode}と重複している授業がないか確認してください。`,
+        'info'
+      );
     }
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
-    return null
+    console.log(`Error! HTTP Status: ${status} ${statusText}`);
+    return null;
   }
 }
 
