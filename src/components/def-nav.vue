@@ -54,7 +54,7 @@ declare global {
   interface Window {
     android?: {
       openSettings: () => void
-      share: () => void
+      share: (message: string) => void
     }
     webkit?: {
       messageHandlers: {
@@ -62,7 +62,7 @@ declare global {
           postMessage: (hoge: string) => void
         }
         share: {
-          postMessage: (hoge: string) => void
+          postMessage: (message: string) => void
         }
       }
     }
@@ -111,6 +111,8 @@ export default class Index extends Vue {
   }
 
   navigateHandler(link: string) {
+    const shareMessage = '#Twinte'
+
     if (link.startsWith('https://')) {
       location.href = link
     } else if (link.startsWith('func:')) {
@@ -119,13 +121,13 @@ export default class Index extends Vue {
           window.android?.openSettings()
           break
         case 'func:android-share':
-          window.android?.share()
+          window.android?.share(shareMessage)
           break
         case 'func:iPhone-settings':
           window.webkit?.messageHandlers.iPhoneSettings.postMessage('')
           break
         case 'func:iPhone-share':
-          window.webkit?.messageHandlers.share.postMessage('#Twinte')
+          window.webkit?.messageHandlers.share.postMessage(shareMessage)
           break
         case 'func:twins':
           twinsToTwinteAlert()
