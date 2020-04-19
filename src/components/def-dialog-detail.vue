@@ -79,14 +79,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import * as Vuex from 'vuex'
-import { Period } from '../types'
-import { UserLectureEntity } from '../types/server'
-import { updateLecture } from '../store/api/timetables'
-import cloneDeep from 'lodash/cloneDeep'
-import Swal from 'sweetalert2'
-import { YEAR } from '../common/config'
+import { Component, Vue } from 'nuxt-property-decorator';
+import * as Vuex from 'vuex';
+import { Period } from '../types';
+import { UserLectureEntity } from '../types/server';
+import { updateLecture } from '../store/api/timetables';
+import cloneDeep from 'lodash/cloneDeep';
+import Swal from 'sweetalert2';
+import { YEAR } from '../common/config';
+import { openUrl } from './utils/openUrl'; 
 
 @Component({
   components: {
@@ -118,15 +119,10 @@ export default class Index extends Vue {
   }
 
   syllabus() {
-    switch (this.table?.lecture_code.substring(0, 2)) {
-      case 'GB':
-        location.href = `http://www.coins.tsukuba.ac.jp/syllabus/${this.table?.lecture_code}.html`
-      default:
-        location.href = `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`
-    }
+    openUrl(`https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`);
   }
   attend() {
-    location.href = 'https://atmnb.tsukuba.ac.jp'
+    openUrl('https://atmnb.tsukuba.ac.jp');
   }
   edit() {
     if (this.editableLecture) {
