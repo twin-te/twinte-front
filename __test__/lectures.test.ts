@@ -1,5 +1,7 @@
 import { searchLectures } from '../src/store/api/lectures'
 
+jest.setTimeout(30000)
+
 describe('授業名での検索 searchLectures', () => {
   it('search トマト -> オートマトン', async () => {
     const data = await searchLectures('トマト')

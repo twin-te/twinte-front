@@ -1,6 +1,8 @@
 // import { mutations } from '../api'
 import { S } from '../src/store/api/type'
 
+jest.setTimeout(30000)
+
 let state: S
 const todo = true
 
