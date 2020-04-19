@@ -55,15 +55,15 @@ import { BASE_URL } from '../common/config'
 declare global {
   interface Window {
     android?: {
-      openSettings: () => void
-      share: (message: string) => void
+      openSettings?: () => void
+      share?: (message: string) => void
     }
     webkit?: {
-      messageHandlers: {
-        iPhoneSettings: {
+      messageHandlers?: {
+        iPhoneSettings?: {
           postMessage: (hoge: string) => void
         }
-        share: {
+        share?: {
           postMessage: (message: string) => void
         }
       }
@@ -123,16 +123,16 @@ export default class Index extends Vue {
       await sleep(300)
       switch (link) {
         case 'func:android-settings':
-          window.android?.openSettings()
+          if (window.android?.openSettings) window.android?.openSettings()
           break
         case 'func:android-share':
-          window.android?.share(shareMessage)
+          if (window.android?.share) window.android?.share(shareMessage)
           break
         case 'func:iPhone-settings':
-          window.webkit?.messageHandlers.iPhoneSettings.postMessage('')
+          window.webkit?.messageHandlers?.iPhoneSettings?.postMessage('')
           break
         case 'func:iPhone-share':
-          window.webkit?.messageHandlers.share.postMessage(shareMessage)
+          window.webkit?.messageHandlers?.share?.postMessage(shareMessage)
           break
         case 'func:twins':
           twinsToTwinteAlert()
@@ -155,32 +155,32 @@ export default class Index extends Vue {
       })
     }
     if (window.android) {
-      this.list.push(
-        {
+      if (window.android?.openSettings)
+        this.list.push({
           icon: 'settings',
           name: 'Androidアプリの設定',
           link: 'func:android-settings',
-        },
-        {
+        })
+      if (window.android?.share)
+        this.list.push({
           icon: 'share',
           name: '時間割のシェア',
           link: 'func:android-share',
-        }
-      )
+        })
     }
     if (window.webkit) {
-      this.list.push(
-        {
+      if (window.webkit.messageHandlers?.iPhoneSettings)
+        this.list.push({
           icon: 'settings',
           name: 'iPhoneアプリの設定',
           link: 'func:iPhone-settings',
-        },
-        {
+        })
+      if (window.webkit.messageHandlers?.share)
+        this.list.push({
           icon: 'share',
           name: '時間割のシェア',
           link: 'func:iPhone-share',
-        }
-      )
+        })
     }
   }
 }
