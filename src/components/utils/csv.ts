@@ -5,7 +5,7 @@
 
 export const csvHandle = async (blob: Blob): Promise<string[]> => {
   const reader = new FileReader()
-  return new Promise<string[]>((done) => {
+  const lectures = await new Promise<string[]>((done) => {
     reader.onload = () => {
       if (typeof reader.result !== 'string') return
       const lectures = reader.result
@@ -14,6 +14,9 @@ export const csvHandle = async (blob: Blob): Promise<string[]> => {
         .map((v) => v.replace(/["]/g, '')) // drop "
       done(lectures)
     }
-    reader.readAsText(blob)
+    reader.onerror = () => done([])
   })
+  reader.readAsText(blob)
+
+  return lectures
 }
