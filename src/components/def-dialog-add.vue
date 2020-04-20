@@ -88,7 +88,6 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
-import { searchLectures } from '../store/api/lectures'
 import { twinsToTwinteAlert } from './utils/swal'
 import { isMobile } from '../common/ua'
 
