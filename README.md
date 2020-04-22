@@ -42,7 +42,7 @@ Twin:te - https://app.twinte.net のフロントエンドです。
 
 - 📥 Pull requests and 🌟 Stars are always welcome.
 - このプロジェクトは OSS のため、コントリビュートを歓迎しております。
-- TypeScript と Vuejs のいづれかの基礎知識(HTML, SASS など)があればコントリビュート可能です。
+- TypeScript と Vuejs のいずれかの基礎知識(HTML, SASS など)があればコントリビュート可能です。
 - ![https://github.com/twin-te/twinte-front/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22](https://img.shields.io/github/issues/twin-te/twinte-front/good%20first%20issue.svg?style=flat-square) のタグがついているものは比較的新規者でも扱いやすい issue になっています。
 
 ![build with Nuxt](https://ja.nuxtjs.org/logos/built-with-nuxt.svg)
