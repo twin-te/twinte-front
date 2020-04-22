@@ -2,8 +2,8 @@
   <div>
     <Toolbar />
     <Navigation />
-    <DialogAdd />
-    <DialogDetail />
+    <ModalAdd />
+    <ModalAddCustom />
     <nuxt />
   </div>
 </template>
@@ -19,8 +19,8 @@ import Swal from 'sweetalert2'
   components: {
     Toolbar: () => import('~/components/def-toolbar.vue'),
     Navigation: () => import('~/components/def-nav.vue'),
-    DialogAdd: () => import('~/components/def-dialog-add.vue'),
-    DialogDetail: () => import('~/components/def-dialog-detail.vue'),
+    ModalAdd: () => import('~/components/def-modal-add.vue'),
+    ModalAddCustom: () => import('~/components/def-modal-add-custom.vue'),
   },
 })
 export default class Index extends Vue {
