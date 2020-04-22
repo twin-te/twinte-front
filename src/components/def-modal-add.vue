@@ -56,8 +56,12 @@
       <!-- ここまで検索結果 -->
 
       <section class="others-form">
-        <p class="others-form__content" @click="twins()">
+        <p class="others-form__content --clickable" @click="twins()">
           Twinsからインポート
+          <span class="material-icons icon">chevron_right</span>
+        </p>
+        <p class="others-form__content --clickable" @click="custom()">
+          手動入力で授業を作成
           <span class="material-icons icon">chevron_right</span>
         </p>
         <p class="others-form__content">
@@ -74,11 +78,9 @@
             class="add-csv"
           />
         </p>
-
-        <!-- <p @click="custom()">手動入力で授業を作成</p> -->
       </section>
       <!-- → その他オプション -->
-      <section class="save-btn" @click="asyncNumber()">時間割に追加</section>
+      <section class="save-btn" @click="submitByNumber()">時間割に追加</section>
     </article>
   </Dialog>
 </template>
@@ -89,6 +91,7 @@ import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert } from './utils/swal'
+import { addCustomLecture } from './utils/addCustomLecture'
 import { isMobile } from '../common/ua'
 
 type miniLecture = {
@@ -142,9 +145,11 @@ export default class Index extends Vue {
     }
   }
   custom() {
-    this.$router.push('/custom')
-    this.$store.commit('visible/chAdd', { display: false })
+    addCustomLecture()
+    // this.$store.commit('visible/chAdd', { display: false })
+    // this.$store.commit('visible/chCustom', { display: true })
   }
+
   async search(input: string, type: 'csv' | 'input') {
     this.lectures = await this.parse(input, type)
     if (this.lectures.length === 0) {
@@ -200,7 +205,7 @@ export default class Index extends Vue {
     await reader.readAsText(fileData)
   }
 
-  async asyncNumber() {
+  async submitByNumber() {
     if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
         'まだログインしていません',
@@ -393,6 +398,10 @@ article {
     margin-left: 0.5vh;
     span {
       font-size: 2rem;
+    }
+    &.--clickable {
+      cursor: pointer;
+      user-select: none;
     }
   }
 }

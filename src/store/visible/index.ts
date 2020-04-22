@@ -5,6 +5,7 @@ export const state = (): S => ({
   drawer: false,
   detail: false,
   add: false,
+  custom: false,
   table: { display: true, move: 'left' },
   subject: {
     lecture_name: true,
@@ -19,6 +20,7 @@ export const getters: Getters<S, G> = {
   drawer: (state) => state.drawer,
   detail: (state) => state.detail,
   add: (state) => state.add,
+  custom: (state) => state.custom,
   table: (state) => state.table,
   subject: (state) => state.subject,
 }
@@ -32,6 +34,9 @@ export const mutations: Mutations<S, M> = {
   },
   chAdd(state, payload) {
     state.add = payload.display
+  },
+  chCustom(state, payload) {
+    state.custom = payload.display
   },
   chTable(state, payload) {
     state.table = payload

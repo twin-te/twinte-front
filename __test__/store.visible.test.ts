@@ -8,6 +8,7 @@ beforeEach(() => {
     drawer: false,
     detail: false,
     add: false,
+    custom: false,
     table: { display: true, move: 'left' },
     subject: {
       lecture_name: true,
@@ -49,5 +50,16 @@ describe('科目追加画面の表示の切り替え chAdd', () => {
   it('set false', () => {
     mutations.chAdd(state, { display: false })
     expect(state.add).toBe(false)
+  })
+})
+
+describe('カスタム授業追加画面の表示の切り替え chAdd', () => {
+  it('set true', () => {
+    mutations.chCustom(state, { display: true })
+    expect(state.custom).toBe(true)
+  })
+  it('set false', () => {
+    mutations.chCustom(state, { display: false })
+    expect(state.custom).toBe(false)
   })
 })
