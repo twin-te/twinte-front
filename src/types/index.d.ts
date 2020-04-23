@@ -10,10 +10,12 @@ type TimeTables = OutputPeriodData[]
 type Period = OutputPeriodData
 
 type OutputSearchData = {
-  twinte_lecture_id: string
-  year: number
   lectureCode: string
   name: string
+  credits: number
+  overview: string
+  remarks: string
+  type: number
   details: {
     id: number
     module: Module
@@ -22,6 +24,9 @@ type OutputSearchData = {
     room: string
   }[]
   instructor: string
+  twinte_lecture_id: string
+  year: number
+  standardYear: number[]
 }[]
 
 type SubjectSettings = {
