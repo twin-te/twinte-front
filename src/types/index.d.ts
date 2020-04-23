@@ -17,6 +17,7 @@ type OutputSearchData = {
   remarks: string
   type: number
   details: {
+    id: number
     module: Module
     day: Day
     period: number
