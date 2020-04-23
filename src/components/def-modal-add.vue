@@ -144,10 +144,11 @@ export default class Index extends Vue {
       )
     }
   }
-  custom() {
-    addCustomLecture()
-    // this.$store.commit('visible/chAdd', { display: false })
-    // this.$store.commit('visible/chCustom', { display: true })
+  async custom() {
+    await addCustomLecture()
+    await this.$store.commit('visible/chAdd', { display: false })
+    await // this.$store.commit('visible/chCustom', { display: true })
+    await this.$store.dispatch('api/fetch')
   }
 
   async search(input: string, type: 'csv' | 'input') {

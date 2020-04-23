@@ -1,5 +1,11 @@
 import Swal from 'sweetalert2'
 
+import { postUserData } from '../../store/api/user-lectures'
+import { updateLecture } from '../../store/api/timetables'
+
+import { Period } from '../../types'
+import { YEAR } from '../../common/config'
+
 type Form = {
   lecture_name: string
   instructor: string
@@ -79,8 +85,8 @@ const view = async (): Promise<Form | null> => {
         input: 'select',
         inputOptions: moduleOption,
         inputPlaceholder: 'クリックしてモジュールを選択する',
-        preConfirm: (module: string) => {
-          form.module = module
+        preConfirm: (module: keyof typeof moduleOption) => {
+          form.module = moduleOption[module]
         },
       },
       {
@@ -89,8 +95,8 @@ const view = async (): Promise<Form | null> => {
         input: 'select',
         inputOptions: dayOption,
         inputPlaceholder: 'クリックして曜日を選択する',
-        preConfirm: (day: string) => {
-          form.day = day
+        preConfirm: (day: keyof typeof dayOption) => {
+          form.day = dayOption[day]
         },
       },
       {
@@ -125,8 +131,27 @@ const view = async (): Promise<Form | null> => {
 
 export const addCustomLecture = async () => {
   const form = await view()
-  window.alert(JSON.stringify(form))
   if (form) {
+    // 時間割の作成
+    const userData = await postUserData(form.lecture_name, form.instructor)
+    if (!userData) {
+      Swal.fire('原因不明のエラー', '', 'error')
+      return
+    }
+    const lecture: Period = {
+      lecture_code: '',
+      lecture_name: form.lecture_name,
+      instructor: form.instructor,
+      year: YEAR,
+      module: form.module,
+      day: form.day,
+      period: parseInt(form.period),
+      room: form.room,
+      user_lecture_id: userData.user_lecture_id,
+    }
+
+    // 時間割の追加
+    await updateLecture(lecture)
     Swal.fire('追加が完了しました', '', 'success')
   } else {
     Swal.fire('追加をキャンセルしました。', '', 'info')
