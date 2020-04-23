@@ -93,6 +93,7 @@ import Swal from 'sweetalert2'
 import { twinsToTwinteAlert } from './utils/swal'
 import { addCustomLecture } from './utils/addCustomLecture'
 import { isMobile } from '../common/ua'
+import { searchLectures } from '../store/api/lectures'
 
 type miniLecture = {
   lecture_code: string
