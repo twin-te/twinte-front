@@ -154,7 +154,7 @@ export default class Index extends Vue {
       user_lecture_id: this.userData.user_lecture_id,
       lecture_name: this.userData.lecture_name,
       instructor: this.userData.instructor,
-      memo: this.userData.memo,
+      memo: this.localMemo,
       attendance,
       absence,
       late,
