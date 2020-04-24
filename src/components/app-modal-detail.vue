@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import { Period } from '../types'
 import { UserLectureEntity } from '../types/server'
@@ -120,7 +120,7 @@ export default class Index extends Vue {
 
   syllabus() {
     openUrl(
-      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/0/`
+      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`
     )
   }
   attend() {
@@ -219,24 +219,12 @@ export default class Index extends Vue {
     Swal.fire('完了', 'メモを保存しました', 'success')
   }
 
-  fetchMemo() {
-    setTimeout(() => {
-      if (
-        this.userData &&
-        this.localLectureId !== this.userData.user_lecture_id
-      ) {
-        this.localMemo = this.userData.memo
-        this.localLectureId = this.userData.user_lecture_id
-      }
-      this.fetchMemo()
-    }, 1000)
-    // リアクティブにできないのは既知のバグ
-  }
-
-  mounted() {
-    this.$nextTick(() => {
-      this.fetchMemo()
-    })
+  @Watch('userData')
+  onUserDataChange() {
+    if (this.userData) {
+      this.localLectureId = this.userData.user_lecture_id
+      this.localMemo = this.userData.memo
+    }
   }
 }
 </script>
