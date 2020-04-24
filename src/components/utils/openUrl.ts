@@ -1,10 +1,10 @@
 export const openUrl = (url: string) => {
   const isMobile =
     /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-    /TwinteAppforAndroid/.test(navigator.userAgent);
+    /TwinteAppforAndroid/.test(navigator.userAgent)
   if (isMobile) {
-    location.href = url;
+    location.href = url
   } else {
-    window.open(url);
+    window.open(url)
   }
-};
+}
