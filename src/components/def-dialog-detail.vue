@@ -79,15 +79,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import * as Vuex from 'vuex';
-import { Period } from '../types';
-import { UserLectureEntity } from '../types/server';
-import { updateLecture } from '../store/api/timetables';
-import cloneDeep from 'lodash/cloneDeep';
-import Swal from 'sweetalert2';
-import { YEAR } from '../common/config';
-import { openUrl } from './utils/openUrl'; 
+import { Component, Vue } from 'nuxt-property-decorator'
+import * as Vuex from 'vuex'
+import { Period } from '../types'
+import { UserLectureEntity } from '../types/server'
+import { updateLecture } from '../store/api/timetables'
+import cloneDeep from 'lodash/cloneDeep'
+import Swal from 'sweetalert2'
+import { YEAR } from '../common/config'
+import { openUrl } from './utils/openUrl'
 
 @Component({
   components: {
@@ -119,10 +119,12 @@ export default class Index extends Vue {
   }
 
   syllabus() {
-    openUrl(`https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`);
+    openUrl(
+      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/0/`
+    )
   }
   attend() {
-    openUrl('https://atmnb.tsukuba.ac.jp');
+    openUrl('https://atmnb.tsukuba.ac.jp')
   }
   edit() {
     if (this.editableLecture) {
