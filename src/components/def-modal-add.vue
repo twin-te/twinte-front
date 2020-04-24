@@ -349,6 +349,13 @@ article {
     padding: 1rem;
     display: flex;
   }
+  &__label {
+    display: inline-block;
+    width: calc(100% - 3.5rem);
+  }
+  &__input {
+    display: none;
+  }
   &__checkbox {
     position: relative;
     display: inline-block;
@@ -369,23 +376,15 @@ article {
       user-select: none;
     }
   }
-  &__label {
-    display: inline-block;
-    width: calc(100% - 3.5rem);
-  }
-  &__input {
-    display: none;
-  }
-}
-
-.result:checked ~ .result-list__checkbox {
-  border: 0.17rem solid #00c0c0;
-  background-color: #00c0c0;
-  opacity: 1;
-  span {
-    color: #fff;
-    font-weight: bold;
+  &__input:checked ~ &__checkbox {
+    border: 0.17rem solid #00c0c0;
+    background-color: #00c0c0;
     opacity: 1;
+    span {
+      color: #fff;
+      font-weight: bold;
+      opacity: 1;
+    }
   }
 }
 
