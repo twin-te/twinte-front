@@ -120,7 +120,7 @@ export default class Index extends Vue {
 
   syllabus() {
     openUrl(
-      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/#course-title`
+      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/0/`
     )
   }
   attend() {
