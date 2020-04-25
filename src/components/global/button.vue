@@ -3,11 +3,7 @@
     Basic usage:
     <Button @button-click="fun()" width="200" height="100">save</Button>
   -->
-  <button
-    @click="$emit('button-click')"
-    class="save-btn"
-    :style="{ width, height }"
-  >
+  <button @click="$emit('button-click')" class="btn" :style="{ width, height }">
     <slot></slot>
   </button>
 </template>

@@ -65,7 +65,7 @@
           </div>
         </div>
       </section>
-      <div @click="save()" class="save-btn">変更を保存</div>
+      <div @click="save()" class="btn">変更を保存</div>
       <div class="flex">
         <p @click="deleteItem()" class="delete-btn">
           <i class="material-icons icon">delete</i>この科目を削除
