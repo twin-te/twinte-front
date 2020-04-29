@@ -100,7 +100,6 @@ export default class Index extends Vue {
   atmnb = ['出席', '欠席', '遅刻']
   moduleNum = this.$store.getters['table/moduleNum']
   localMemo = ''
-  localLectureId = ''
   editableLecture: Period | null = null
 
   get atmnbCount() {
@@ -222,7 +221,6 @@ export default class Index extends Vue {
   @Watch('userData')
   onUserDataChange() {
     if (this.userData) {
-      this.localLectureId = this.userData.user_lecture_id
       this.localMemo = this.userData.memo
     }
   }
