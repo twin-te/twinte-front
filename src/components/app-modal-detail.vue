@@ -81,11 +81,12 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
+import cloneDeep from 'lodash/cloneDeep'
+import Swal from 'sweetalert2'
+
 import { Period } from '../types'
 import { UserLectureEntity } from '../types/server'
 import { updateLecture } from '../store/api/timetables'
-import cloneDeep from 'lodash/cloneDeep'
-import Swal from 'sweetalert2'
 import { YEAR } from '../common/config'
 import { openUrl } from './utils/openUrl'
 
