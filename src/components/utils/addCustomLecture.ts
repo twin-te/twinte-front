@@ -22,20 +22,20 @@ const moduleOption = {
   FallA: '秋A',
   FallB: '秋B',
   FallC: '秋C',
-  SummerVacation: '夏季休業中',
-  SpringVacation: '春季休業中',
-  Annual: '通年',
-  Unknown: '不明',
+  // SummerVacation: '夏季休業中',
+  // SpringVacation: '春季休業中',
+  // Annual: '通年',
+  // Unknown: '不明',
 }
 const dayOption = {
-  Sun: '日',
+  // Sun: '日',
   Mon: '月',
   Tue: '火',
   Wed: '水',
   Thu: '木',
   Fri: '金',
-  Sat: '土',
-  Unknown: '不明',
+  // Sat: '土',
+  // Unknown: '不明',
 }
 const periodOption = {
   1: '1',
@@ -128,7 +128,14 @@ const makeForm = async (): Promise<Form> => {
 
 export const addCustomLecture = async () => {
   const form = await makeForm()
-  if (validator(form)) {
+  const { value: allowAdd } = await Swal.fire(
+    '注意',
+    '追加する時間帯にすでに授業が入っている場合上書きされます',
+    'info'
+  )
+
+  // 有効な授業で、確認に同意した場合
+  if (validator(form) && allowAdd) {
     // 時間割の作成
     const userData = await postUserData(form.lecture_name, form.instructor)
     if (!userData) {
