@@ -4,7 +4,7 @@ import { postUserData } from '../../store/api/user-lectures'
 import { updateLecture } from '../../store/api/timetables'
 
 import { Period } from '../../types'
-import { YEAR } from '../../common/config'
+import { YEAR, axios, BASE_URL } from '../../common/config'
 
 type Form = {
   lecture_name: string
@@ -55,8 +55,16 @@ const initFormValue = {
   room: '',
 }
 
-const validator = (form: Form): boolean => {
-  return form.module !== '' && form.day !== '' && form.period !== ''
+const validator = async (form: Form): Promise<boolean> => {
+  const response = await axios.get(
+    `${BASE_URL}/timetables/${YEAR}/${form.module}/${form.day}/${form.period}`
+  )
+  return (
+    response.status === 204 &&
+    form.module !== '' &&
+    form.day !== '' &&
+    form.period !== ''
+  )
 }
 
 const makeForm = async (): Promise<Form> => {
@@ -130,12 +138,13 @@ export const addCustomLecture = async () => {
   const form = await makeForm()
   const { value: allowAdd } = await Swal.fire(
     '注意',
-    '追加する時間帯にすでに授業が入っている場合上書きされます',
+    '追加する時間帯にすでに授業が入っている場合追加しないようにしています。',
     'info'
   )
+  const validForm = await validator(form)
 
   // 有効な授業で、確認に同意した場合
-  if (validator(form) && allowAdd) {
+  if (validForm && allowAdd) {
     // 時間割の作成
     const userData = await postUserData(form.lecture_name, form.instructor)
     if (!userData) {
