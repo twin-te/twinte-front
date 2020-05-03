@@ -55,16 +55,18 @@ const initFormValue = {
   room: '',
 }
 
+/**
+ * true == Formは正しい
+ */
 const validator = async (form: Form): Promise<boolean> => {
+  if (form.module === '' || form.day === '' || form.period === '') {
+    return false
+  }
   const response = await axios.get(
     `${BASE_URL}/timetables/${YEAR}/${form.module}/${form.day}/${form.period}`
   )
-  return (
-    response.status === 204 &&
-    form.module !== '' &&
-    form.day !== '' &&
-    form.period !== ''
-  )
+  // TODO かぶってるエラー
+  return response.status === 204
 }
 
 const makeForm = async (): Promise<Form> => {
