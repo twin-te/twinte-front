@@ -253,14 +253,15 @@ input {
     display: block;
     width: 6rem;
     height: 3rem;
+    margin-top: 1vh;
+    margin-right: 3vh;
     background-color: white;
     color: #c9c9c9;
     text-align: center;
     line-height: 3rem;
     border: #c9c9c9 0.2rem solid;
     border-radius: 400px;
-    margin-top: 1vh;
-    margin-right: 3vh;
+    user-select: none;
   }
   label:nth-child(1) {
     font-size: 1.5rem;

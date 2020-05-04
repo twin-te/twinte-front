@@ -309,14 +309,15 @@ article {
     right: 0;
     height: 3.2rem;
     width: 3.2rem;
+    margin: 0;
+    padding: 0;
     background-color: #00c0c0;
     font-size: 2.5rem;
     color: #fff;
     line-height: 3.2rem;
     text-align: center;
     border-radius: 50% 50%;
-    margin: 0;
-    padding: 0;
+    user-select: none;
     &:active {
       transition: all 0.2s;
       transform: scale(1.1);

@@ -12,7 +12,7 @@
     <transition name="bound">
       <main v-if="show" class="main">
         <div
-          class="svg-button material-icons close-btn"
+          class="material-icons close-btn svg-button"
           @click="$emit('close')"
         >
           close
