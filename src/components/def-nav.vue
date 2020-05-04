@@ -249,12 +249,13 @@ h1 {
   vertical-align: middle;
 }
 .menu-content p {
+  margin: 0;
+  padding-left: 1vh;
   font-size: 1.7rem;
   color: #717171;
   font-weight: 300;
   line-height: 5.3rem;
-  margin: 0;
-  padding-left: 1vh;
+  user-select: none;
 }
 .menu-content p::after {
   content: 'chevron_right';
