@@ -294,7 +294,7 @@ article {
     height: 100%;
     width: 100%;
     background-color: #fff;
-    font-size: 1.2rem;
+    font-size: 16px;
     color: #555555;
     box-sizing: border-box;
     border: 0.2vh solid #9a9a9a;
