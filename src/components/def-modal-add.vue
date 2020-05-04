@@ -325,7 +325,7 @@ article {
   }
   ::placeholder {
     color: #9a9a9a;
-    font-size: 1.2rem;
+    font-size: 14px;
     padding-top: 4px;
   }
   :focus {
