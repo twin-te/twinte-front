@@ -2,6 +2,7 @@
   <section>
     <TableHeader />
     <Table />
+    <ModalDetail />
   </section>
 </template>
 
@@ -12,6 +13,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
   components: {
     TableHeader: () => import('~/components/app-table-header.vue'),
     Table: () => import('~/components/app-table-contents.vue'),
+    ModalDetail: () => import('~/components/app-modal-detail.vue'),
   },
 })
 export default class Index extends Vue {}

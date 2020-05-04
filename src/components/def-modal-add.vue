@@ -5,7 +5,7 @@
   -->
   <Dialog :show="show" @close="close()">
     <article>
-      <h1>授業の追加</h1>
+      <h1 class="title">授業の追加</h1>
 
       <!-- 検索フォーム -->
       <form class="search-form" @submit.prevent>
@@ -13,19 +13,19 @@
           v-model="input"
           type="text"
           placeholder="授業名や科目番号で検索"
-          class="form"
+          class="search-form__form"
           @keyup.enter="search(input, 'input')"
         />
         <span
           v-if="input === ''"
           @click="lectures = []"
-          class="material-icons search-btn"
+          class="search-form__btn material-icons"
           >close</span
         >
         <span
           v-else
           @click="search(input, 'input')"
-          class="material-icons search-btn"
+          class="search-form__btn material-icons"
           >search</span
         >
       </form>
@@ -42,12 +42,12 @@
             :id="n.lecture_code"
             :value="n.lecture_code"
             v-model="n.checked"
-            class="result"
+            class="result-list__input"
           />
-          <label class="result-checkbox" :for="n.lecture_code">
+          <label class="result-list__checkbox" :for="n.lecture_code">
             <span class="material-icons">check</span>
           </label>
-          <label for="n.lecture_code" class="result-list-label">
+          <label class="result-list__label" for="n.lecture_code">
             {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
             }}{{ n.day }}{{ n.period }}
           </label>
@@ -55,12 +55,16 @@
       </section>
       <!-- ここまで検索結果 -->
 
-      <section class="others">
-        <p class="content" @click="twins()">
+      <section class="others-form">
+        <p class="others-form__content --clickable" @click="twins()">
           Twinsからインポート
           <span class="material-icons icon">chevron_right</span>
         </p>
-        <p class="content">
+        <p class="others-form__content --clickable" @click="custom()">
+          手動入力で授業を作成
+          <span class="material-icons icon">chevron_right</span>
+        </p>
+        <p class="others-form__content">
           CSVファイルから追加
           <br />
           <small>*{{ moduleMessage }}</small>
@@ -74,11 +78,9 @@
             class="add-csv"
           />
         </p>
-
-        <!-- <p @click="custom()">手動入力で授業を作成</p> -->
       </section>
       <!-- → その他オプション -->
-      <section class="save-btn" @click="asyncNumber()">時間割に追加</section>
+      <section class="btn" @click="submitByNumber()">時間割に追加</section>
     </article>
   </Dialog>
 </template>
@@ -86,9 +88,12 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { searchLectures } from '../store/api/lectures'
 import Swal from 'sweetalert2'
+
 import { twinsToTwinteAlert } from './utils/swal'
+import { addCustomLecture } from './utils/addCustomLecture'
+import { isMobile } from '../common/ua'
+import { searchLectures } from '../store/api/lectures'
 
 type miniLecture = {
   lecture_code: string
@@ -114,9 +119,6 @@ export default class Index extends Vue {
 
   // computed___________________________________________________________________________________
   //
-  get isMobile() {
-    return /iP(hone|(o|a)d)|TwinteAppforAndroid/.test(navigator.userAgent)
-  }
   get moduleMessage(): string {
     return `${this.$store.getters['table/module']}のCSVファイルを入力してください`
   }
@@ -133,7 +135,7 @@ export default class Index extends Vue {
     this.$store.commit('visible/chAdd', { display: false })
   }
   twins() {
-    if (this.isMobile) {
+    if (isMobile()) {
       twinsToTwinteAlert()
     } else {
       Swal.fire(
@@ -143,10 +145,13 @@ export default class Index extends Vue {
       )
     }
   }
-  custom() {
-    this.$router.push('/custom')
-    this.$store.commit('visible/chAdd', { display: false })
+  async custom() {
+    await addCustomLecture()
+    await this.$store.commit('visible/chAdd', { display: false })
+    await // this.$store.commit('visible/chCustom', { display: true })
+    await this.$store.dispatch('api/fetch')
   }
+
   async search(input: string, type: 'csv' | 'input') {
     this.lectures = await this.parse(input, type)
     if (this.lectures.length === 0) {
@@ -202,7 +207,7 @@ export default class Index extends Vue {
     await reader.readAsText(fileData)
   }
 
-  async asyncNumber() {
+  async submitByNumber() {
     if (!this.$store.getters['api/isLogin']) {
       Swal.fire(
         'まだログインしていません',
@@ -270,7 +275,7 @@ article {
 }
 
 /* 授業の追加 */
-h1 {
+.title {
   font-size: 1.8rem;
   color: #00c0c0;
   font-weight: 500;
@@ -284,7 +289,7 @@ h1 {
   height: 3.2rem;
   margin: 0;
   padding: 0;
-  .form {
+  &__form {
     position: relative;
     height: 100%;
     width: 100%;
@@ -298,12 +303,7 @@ h1 {
     padding-left: 3%;
     margin: 0;
   }
-  ::placeholder {
-    color: #9a9a9a;
-    font-size: 1.2rem;
-    padding-top: 4px;
-  }
-  .search-btn {
+  &__btn {
     position: absolute;
     top: 0;
     right: 0;
@@ -323,9 +323,14 @@ h1 {
       background-color: #05dbdb;
     }
   }
-}
-:focus {
-  outline: none;
+  ::placeholder {
+    color: #9a9a9a;
+    font-size: 1.2rem;
+    padding-top: 4px;
+  }
+  :focus {
+    outline: none;
+  }
 }
 
 /** 検索結果 */
@@ -340,64 +345,65 @@ h1 {
   font-size: 1.3rem;
   line-height: 150%;
   box-sizing: border-box;
-}
-.result-list div {
-  padding: 1rem;
-  display: flex;
-}
-.result-checkbox {
-  position: relative;
-  display: inline-block;
-  width: 1.7rem;
-  height: 1.7rem;
-  border: 0.17rem solid #c9c9c9;
-  border-radius: 20% 20%;
-  margin-right: 0.8rem;
-  cursor: pointer;
-  span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    font-size: 100%;
-    color: #c9c9c9;
+  div {
+    padding: 1rem;
+    display: flex;
+  }
+  &__label {
+    display: inline-block;
+    width: calc(100% - 3.5rem);
+  }
+  &__input {
+    display: none;
+  }
+  &__checkbox {
+    position: relative;
+    display: inline-block;
+    width: 1.7rem;
+    height: 1.7rem;
+    border: 0.17rem solid #c9c9c9;
+    border-radius: 20% 20%;
+    margin-right: 0.8rem;
     cursor: pointer;
-    user-select: none;
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      font-size: 100%;
+      color: #c9c9c9;
+      cursor: pointer;
+      user-select: none;
+    }
   }
-}
-
-.result:checked ~ .result-checkbox {
-  border: 0.17rem solid #00c0c0;
-  background-color: #00c0c0;
-  opacity: 1;
-  span {
-    color: #fff;
-    font-weight: bold;
+  &__input:checked ~ &__checkbox {
+    border: 0.17rem solid #00c0c0;
+    background-color: #00c0c0;
     opacity: 1;
+    span {
+      color: #fff;
+      font-weight: bold;
+      opacity: 1;
+    }
   }
-}
-
-.result-list-label {
-  display: inline-block;
-  width: calc(100% - 3.5rem);
-}
-
-.result {
-  display: none;
 }
 
 //++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
-.others {
+.others-form {
   border-top: 1px solid #adadad;
   width: 100%;
-}
-.content {
-  font-size: 1.2rem;
-  color: #9a9a9a;
-  margin: 1vh;
-  margin-left: 0.5vh;
-  span {
-    font-size: 2rem;
+  &__content {
+    font-size: 1.2rem;
+    color: #9a9a9a;
+    margin: 1vh;
+    margin-left: 0.5vh;
+    span {
+      font-size: 2rem;
+    }
+    &.--clickable {
+      cursor: pointer;
+      user-select: none;
+    }
   }
 }
 .add-csv {

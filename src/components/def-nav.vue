@@ -51,6 +51,7 @@ import Swal from 'sweetalert2'
 import { twinsToTwinteAlert, loginAlert } from './utils/swal'
 import { sleep } from './utils/sleep'
 import { BASE_URL } from '../common/config'
+import { isMobile } from '../common/ua'
 
 declare global {
   interface Window {
@@ -144,10 +145,7 @@ export default class Index extends Vue {
   }
 
   mounted() {
-    const isMobile =
-      /iP(hone|(o|a)d)/.test(navigator.userAgent) ||
-      /TwinteAppforAndroid/.test(navigator.userAgent)
-    if (isMobile) {
+    if (isMobile()) {
       this.list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',

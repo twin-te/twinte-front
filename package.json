@@ -29,15 +29,15 @@
     "@nuxt/typescript-runtime": "^0.3.5",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@nuxtjs/sentry": "^3.0.1",
-    "axios": "^0.19.0",
-    "lodash.clonedeep": "^4.5.0",
-    "lodash.union": "^4.6.0",
-    "material-icons": "^0.3.1",
-    "normalize.css": "^8.0.1",
     "nuxt": "^2.11.0",
     "nuxt-property-decorator": "^2.3.0",
     "ts-node": "^8.5.4",
-    "vue-sweetalert2": "^2.1.5"
+    "axios": "^0.19.0",
+    "normalize.css": "^8.0.1",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.union": "^4.6.0",
+    "vue-sweetalert2": "^2.1.5",
+    "material-icons": "^0.3.1"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -65,7 +65,7 @@
           </div>
         </div>
       </section>
-      <div @click="save()" class="save-btn">変更を保存</div>
+      <div @click="save()" class="btn">変更を保存</div>
       <div class="flex">
         <p @click="deleteItem()" class="delete-btn">
           <i class="material-icons icon">delete</i>この科目を削除
@@ -79,13 +79,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
+import cloneDeep from 'lodash/cloneDeep'
+import Swal from 'sweetalert2'
+
 import { Period } from '../types'
 import { UserLectureEntity } from '../types/server'
 import { updateLecture } from '../store/api/timetables'
-import cloneDeep from 'lodash/cloneDeep'
-import Swal from 'sweetalert2'
 import { YEAR } from '../common/config'
 import { openUrl } from './utils/openUrl'
 
@@ -100,7 +101,6 @@ export default class Index extends Vue {
   atmnb = ['出席', '欠席', '遅刻']
   moduleNum = this.$store.getters['table/moduleNum']
   localMemo = ''
-  localLectureId = ''
   editableLecture: Period | null = null
 
   get atmnbCount() {
@@ -154,7 +154,7 @@ export default class Index extends Vue {
       user_lecture_id: this.userData.user_lecture_id,
       lecture_name: this.userData.lecture_name,
       instructor: this.userData.instructor,
-      memo: this.userData.memo,
+      memo: this.localMemo,
       attendance,
       absence,
       late,
@@ -219,24 +219,11 @@ export default class Index extends Vue {
     Swal.fire('完了', 'メモを保存しました', 'success')
   }
 
-  fetchMemo() {
-    setTimeout(() => {
-      if (
-        this.userData &&
-        this.localLectureId !== this.userData.user_lecture_id
-      ) {
-        this.localMemo = this.userData.memo
-        this.localLectureId = this.userData.user_lecture_id
-      }
-      this.fetchMemo()
-    }, 1000)
-    // リアクティブにできないのは既知のバグ
-  }
-
-  mounted() {
-    this.$nextTick(() => {
-      this.fetchMemo()
-    })
+  @Watch('userData')
+  onUserDataChange() {
+    if (this.userData) {
+      this.localMemo = this.userData.memo
+    }
   }
 }
 </script>

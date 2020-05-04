@@ -15,6 +15,7 @@ export interface S {
   drawer: boolean
   detail: boolean
   add: boolean
+  custom: boolean
   table: { display: boolean; move: 'left' | 'right' }
   subject: SubjectSettings
 }
@@ -32,6 +33,10 @@ export interface G {
    */
   add: boolean
   /**
+   * カスタム授業
+   */
+  custom: boolean
+  /**
    * 時間割 アニメーション実装するため、どちら遷移するかmoveで記述
    */
   table: { display: boolean; move: 'left' | 'right' }
@@ -41,6 +46,7 @@ export interface RG {
   'visible/drawer': G['drawer']
   'visible/detail': G['detail']
   'visible/add': G['add']
+  'visible/custom': G['custom']
   'visible/table': G['table']
   'visible/subject': G['subject']
 }
@@ -61,6 +67,11 @@ export interface M {
    */
   chAdd: { display: boolean }
   /**
+   * カスタム授業追加の表示のon/off
+   * @param display bool
+   */
+  chCustom: { display: boolean }
+  /**
    * 時間割画面の表示のon/off
    * @param display bool
    * @param move "left" "right" アニメーション実装するため、どちら遷移するか記述
@@ -72,6 +83,7 @@ export interface RM {
   'visible/chDrawer': M['chDrawer']
   'visible/chDetail': M['chDetail']
   'visible/chAdd': M['chAdd']
+  'visible/chCustom': M['chCustom']
   'visible/chTable': M['chTable']
   'visible/setDisplaySubject': M['setDisplaySubject']
 }

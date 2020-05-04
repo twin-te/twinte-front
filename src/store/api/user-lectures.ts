@@ -1,7 +1,26 @@
-import { BASE_URL, axios } from '../../common/config'
+import { BASE_URL, axios, YEAR } from '../../common/config'
 const url = BASE_URL + '/user-lectures'
 import { UserLectureEntity } from '../../types/server'
 import union from 'lodash/union'
+
+/**
+ * 指定した講義のユーザーデータを追加
+ * 取得された `user_lecture_id` はとっても大事
+ */
+async function postUserData(lecture_name: string, instructor: string) {
+  try {
+    const { data } = await axios.post<UserLectureEntity>(`${url}`, {
+      year: YEAR,
+      lecture_name,
+      instructor,
+    })
+    return data
+  } catch (error) {
+    const { status, statusText } = error.response
+    console.log(`Error! HTTP Status: ${status} ${statusText}`)
+    return null
+  }
+}
 
 /**
  * 指定した講義のユーザーデータを取得
@@ -75,4 +94,10 @@ async function deleteUserDataAll() {
   return
 }
 
-export { getUserData, updateUserData, deleteUserData, deleteUserDataAll }
+export {
+  postUserData,
+  getUserData,
+  updateUserData,
+  deleteUserData,
+  deleteUserDataAll,
+}
