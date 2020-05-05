@@ -163,13 +163,13 @@ h2 {
 
 h3 {
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 400;
   margin: 0 0 1vh;
 }
 .setting-card {
   background-color: white;
   border-radius: 1vh;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
+  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
   margin: 1vh auto 2vh auto;
   padding: 3vh 5vmin;
 }
@@ -207,12 +207,12 @@ h3 {
 .display-check {
   position: relative;
   display: inline-block;
-  width: 2rem;
-  height: 2rem;
+  width: 1.9rem;
+  height: 1.9rem;
   vertical-align: middle;
-  border: 0.2rem solid #c9c9c9;
+  border: 0.14rem solid #c9c9c9;
   border-radius: 20% 20%;
-  margin-right: 4%;
+  margin-right: 7%;
   cursor: pointer;
   span {
     position: absolute;
@@ -227,7 +227,7 @@ h3 {
 }
 
 .setting-checkbox:checked ~ .display-check {
-  border: 0.2rem solid #00c0c0;
+  border: 0.14rem solid #00c0c0;
   background-color: #00c0c0;
   span {
     color: #fff;
@@ -259,8 +259,8 @@ input {
     color: #c9c9c9;
     text-align: center;
     line-height: 3rem;
-    border: #c9c9c9 0.2rem solid;
-    border-radius: 400px;
+    border: #c9c9c9 0.14rem solid;
+    border-radius: 3rem;
     user-select: none;
   }
   label:nth-child(1) {
@@ -273,7 +273,7 @@ input {
     font-size: 2rem;
   }
   .setting-radio:checked ~ .fontsize-btn {
-    border: #00c0c0 0.2rem solid;
+    border: #00c0c0 0.14rem solid;
     background-color: #00c0c0;
     color: white;
     opacity: 1;
