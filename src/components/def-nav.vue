@@ -205,7 +205,7 @@ export default class Index extends Vue {
 //++++++++++++++++++++++++// ドロワーメニューの内容（中身） //++++++++++++++++++++++++//
 
 h1 {
-  color: #969696;
+  color: #aaaaaa;
   font-size: 2.3rem;
   font-weight: 400;
   margin: 0 auto 10% 0;
@@ -241,7 +241,7 @@ h1 {
   margin: 0;
   padding-left: 1vh;
   font-size: 1.5rem;
-  color: #717171;
+  color: #929292;
   font-weight: 300;
   line-height: 4.5rem;
   user-select: none;
