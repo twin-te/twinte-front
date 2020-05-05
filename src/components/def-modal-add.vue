@@ -56,27 +56,17 @@
       <!-- ここまで検索結果 -->
 
       <section class="others-form">
-        <p class="others-form__content --clickable" @click="twins()">
+        <p class="others-form__content" @click="twins()">
           Twinsからインポート
           <span class="material-icons icon">chevron_right</span>
         </p>
-        <p class="others-form__content --clickable" @click="custom()">
+        <p class="others-form__content" @click="custom()">
           手動入力で授業を作成
           <span class="material-icons icon">chevron_right</span>
         </p>
-        <p class="others-form__content">
+        <p class="others-form__content" @click="csv()">
           CSVファイルから追加
-          <br />
-          <small>*{{ moduleMessage }}</small>
-          <br />
-          <input
-            type="file"
-            name="file"
-            accept="text/csv, .csv"
-            id="fileElem"
-            @change="onFileChange"
-            class="add-csv"
-          />
+          <span class="material-icons icon">chevron_right</span>
         </p>
       </section>
       <!-- → その他オプション -->
@@ -180,31 +170,46 @@ export default class Index extends Vue {
     })
   }
 
-  async onFileChange(e: Event) {
-    e.preventDefault()
-    const fileData: Blob = (e.target as any).files[0]
-    const reader = new FileReader()
+  async csv() {
+    const { value: file } = await Swal.fire({
+      title: 'CSVファイルから追加',
+      text: this.moduleMessage,
+      input: 'file',
+      inputAttributes: {
+        accept: 'text/csv, .csv',
+        'aria-label': this.moduleMessage,
+      },
+    })
 
-    // viewとstate以外(csv処理)を入れたくない
-    const parse = async (csv: string) => await this.parse(csv, 'csv')
-    const pushLecture = (lectures: miniLecture[]) => {
-      this.lectures = [...this.lectures, ...lectures]
-    }
-    reader.onload = async () => {
-      if (typeof reader.result !== 'string') return
-      const lectures = await Promise.all(
-        reader.result
-          .split('\r\n')
-          .filter((v) => v) // drop blank line
-          .map((v) => v.replace(/["]/g, '')) // drop "
-          .map(async (lecture) => {
-            return await parse(lecture)
-          })
-      )
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e: any) => {
+        e.preventDefault()
+        const fileData: Blob = (e.target as any).files[0]
+        const reader = new FileReader()
 
-      pushLecture(lectures.flat())
+        // viewとstate以外(csv処理)を入れたくない
+        const parse = async (csv: string) => await this.parse(csv, 'csv')
+        const pushLecture = (lectures: miniLecture[]) => {
+          this.lectures = [...this.lectures, ...lectures]
+        }
+        reader.onload = async () => {
+          if (typeof reader.result !== 'string') return
+          const lectures = await Promise.all(
+            reader.result
+              .split('\r\n')
+              .filter((v) => v) // drop blank line
+              .map((v) => v.replace(/["]/g, '')) // drop "
+              .map(async (lecture) => {
+                return await parse(lecture)
+              })
+          )
+
+          pushLecture(lectures.flat())
+        }
+        reader.readAsText(fileData)
+      }
     }
-    await reader.readAsText(fileData)
   }
 
   async submitByNumber() {
@@ -398,18 +403,11 @@ article {
     color: #9a9a9a;
     margin: 1vh;
     margin-left: 0.5vh;
+    cursor: pointer;
+    user-select: none;
     span {
       font-size: 2rem;
     }
-    &.--clickable {
-      cursor: pointer;
-      user-select: none;
-    }
   }
-}
-.add-csv {
-  margin: 1vh;
-  color: #adadad;
-  font-size: 1.2rem;
 }
 </style>
