@@ -43,11 +43,11 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">
-              {{ n.lecture_name }}
-            </label>
+            <label class="result-list__lecture-name" for="n.lecture_code">{{
+              n.lecture_name
+            }}</label>
           </div>
-          <span class="sylbus-btn material-icons">menu_book</span>
+          <span class="syllabus-btn material-icons">menu_book</span>
         </div>
       </section>
       <!-- ここまで検索結果 -->
@@ -405,9 +405,9 @@ article {
       font-weight: 400;
     }
   }
-  .sylbus-btn {
+  .syllabus-btn {
     padding-left: 0.3rem;
-    color: #75d4d4;
+    color: #00c0c0;
     font-size: 1.9rem;
   }
 }
