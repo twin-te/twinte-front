@@ -72,7 +72,7 @@ content {
   position: relative;
   margin: 2vmin 2vw;
   padding: 2vmin 2vw;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.226);
+  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
   border-radius: 10px;
 }
 
@@ -102,7 +102,7 @@ content {
 }
 
 .column p {
-  font-size: 1.5vh;
+  font-size: 1.65vh;
   line-height: 1vh;
   font-weight: 400;
 }

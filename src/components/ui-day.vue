@@ -2,9 +2,7 @@
   <!-- 時間割の日時 -->
   <section class="cal">
     <div class="cal__month">{{ today.month }}月</div>
-    <div class="cal__day">
-      {{ today.day }}
-    </div>
+    <div class="cal__day">{{ today.day }}</div>
     <div class="cal__week">({{ today.week }})</div>
   </section>
 </template>
@@ -37,7 +35,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 .cal {
   position: absolute;
-  box-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0, 0, 0, 0.226);
+  box-shadow: 0.2rem 0.2rem 1.2rem rgba(0, 0, 0, 0.123);
   border-radius: 1vh;
   height: 6.7vh;
   width: 6.5vh;

@@ -88,7 +88,7 @@ $week-width: calc(
     font-family: Noto Sans JP;
     color: #9a9a9a;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2.2vh;
     line-height: 4.6vh;
     width: 45vw;
@@ -103,7 +103,7 @@ $week-width: calc(
     height: 2.5vh;
     font-family: Noto Sans JP;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2vh;
     color: #9a9a9a;
 

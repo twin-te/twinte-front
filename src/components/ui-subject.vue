@@ -148,13 +148,12 @@ $width: calc(
 
 /* 科目 */
 .subject {
-  color: #555;
   width: $width;
   height: $height;
   padding: 1vmin 1vw;
   word-break: break-all;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   overflow: hidden;
   &:active {
     transition: all 0.3s;
@@ -162,15 +161,19 @@ $width: calc(
   }
 
   &__lectureId {
+    color: #777;
     font-weight: 400;
   }
   &__name {
-    font-weight: 700;
+    color: #6e6e6e;
+    font-weight: 600;
   }
   &__instructor {
+    color: #777;
     font-weight: 400;
   }
   &__room {
+    color: #777;
     font-weight: 400;
   }
 }

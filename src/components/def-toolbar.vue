@@ -48,7 +48,8 @@ export default class Index extends Vue {
   line-height: 8vh;
   background-color: #00c0c0;
   font-size: 2em;
-  border-bottom: 2px solid #c7c7c7;
+  // border-bottom: 2px solid #c7c7c7;
+  box-shadow: 0rem 0.3rem 0.6rem #00000028;
 }
 .top .title-logo {
   height: 5vh;
