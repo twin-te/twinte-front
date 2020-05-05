@@ -192,32 +192,29 @@ export default class Index extends Vue {
 
     if (file) {
       const reader = new FileReader()
-      reader.onload = (e: any) => {
+      reader.onload = async (e: any) => {
         e.preventDefault()
-        const fileData: Blob = (e.target as any).files[0]
-        const reader = new FileReader()
 
         // viewとstate以外(csv処理)を入れたくない
         const parse = async (csv: string) => await this.parse(csv, 'csv')
         const pushLecture = (lectures: miniLecture[]) => {
           this.lectures = [...this.lectures, ...lectures]
         }
-        reader.onload = async () => {
-          if (typeof reader.result !== 'string') return
-          const lectures = await Promise.all(
-            reader.result
-              .split('\r\n')
-              .filter((v) => v) // drop blank line
-              .map((v) => v.replace(/["]/g, '')) // drop "
-              .map(async (lecture) => {
-                return await parse(lecture)
-              })
-          )
+        if (typeof reader.result !== 'string') return
 
-          pushLecture(lectures.flat())
-        }
-        reader.readAsText(fileData)
+        const lectures = await Promise.all(
+          reader.result
+            .split('\r\n')
+            .filter((v) => v) // drop blank line
+            .map((v) => v.replace(/["]/g, '')) // drop "
+            .map(async (lecture) => {
+              return await parse(lecture)
+            })
+        )
+
+        pushLecture(lectures.flat())
       }
+      reader.readAsText(file)
     }
   }
 
