@@ -16,16 +16,7 @@
           class="search-form__form"
           @keyup.enter="search(input, 'input')"
         />
-        <span
-          v-if="input === ''"
-          @click="lectures = []"
-          class="search-form__btn material-icons"
-          >close</span
-        >
-        <span
-          v-else
-          @click="search(input, 'input')"
-          class="search-form__btn material-icons"
+        <span @click="lectures = []" class="search-form__btn material-icons"
           >search</span
         >
       </form>
@@ -33,9 +24,9 @@
       <!-- 以下検索結果 -->
       <section class="result-list">
         <div
+          class="result-wrap"
           v-for="(n, i) in lectures"
           :key="n.lecture_code + i"
-          :style="{ background: i % 2 === 0 ? '#Fbfbfb' : '#f5f5f5' }"
         >
           <input
             type="checkbox"
@@ -47,10 +38,16 @@
           <label class="result-list__checkbox" :for="n.lecture_code">
             <span class="material-icons">check</span>
           </label>
-          <label class="result-list__label" for="n.lecture_code">
-            {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
-            }}{{ n.day }}{{ n.period }}
-          </label>
+          <div class="result-content">
+            <label class="result-list__lecture-code" for="n.lecture_code">
+              {{ n.lecture_code }}
+              <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
+            </label>
+            <label class="result-list__lecture-name" for="n.lecture_code">{{
+              n.lecture_name
+            }}</label>
+          </div>
+          <span class="sylbus-btn material-icons">menu_book</span>
         </div>
       </section>
       <!-- ここまで検索結果 -->
@@ -280,7 +277,7 @@ article {
 .title {
   font-size: 1.8rem;
   color: #00c0c0;
-  font-weight: 500;
+  font-weight: 400;
   margin: 0 0 1.5vh;
 }
 
@@ -299,37 +296,35 @@ article {
     font-size: 16px;
     color: #555555;
     box-sizing: border-box;
-    border: 0.2vh solid #9a9a9a;
+    border: 0.1rem solid #c7c7c7;
     border-radius: 3rem;
     padding: 0;
-    padding-left: 3%;
+    padding-left: 4%;
     margin: 0;
   }
   &__btn {
     position: absolute;
     top: 0;
     right: 0;
-    height: 3.2rem;
-    width: 3.2rem;
+    height: 3rem;
+    width: 4rem;
     margin: 0;
     padding: 0;
-    background-color: #00c0c0;
     font-size: 2.5rem;
-    color: #fff;
-    line-height: 3.2rem;
+    color: #00c0c0;
+    line-height: 3.4rem;
     text-align: center;
     border-radius: 50% 50%;
     user-select: none;
     &:active {
       transition: all 0.2s;
       transform: scale(1.1);
-      background-color: #05dbdb;
     }
   }
   ::placeholder {
-    color: #9a9a9a;
+    color: #c7c7c7;
     font-size: 14px;
-    padding-top: 4px;
+    font-weight: 300;
   }
   :focus {
     outline: none;
@@ -341,16 +336,15 @@ article {
   width: 100%;
   height: 100%;
   margin: 1.5vh 0;
-  padding: 1vw 0.5vw;
+  padding: 0;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
-  font-size: 1.3rem;
-  line-height: 150%;
   box-sizing: border-box;
-  div {
-    padding: 1rem;
+  .result-wrap {
+    padding: 0.8rem 1rem;
     display: flex;
+    align-items: center;
   }
   &__label {
     display: inline-block;
@@ -364,7 +358,7 @@ article {
     display: inline-block;
     width: 1.7rem;
     height: 1.7rem;
-    border: 0.17rem solid #c9c9c9;
+    border: 0.14rem solid #bdbdbd;
     border-radius: 20% 20%;
     margin-right: 0.8rem;
     cursor: pointer;
@@ -374,20 +368,47 @@ article {
       left: 50%;
       transform: translateY(-50%) translateX(-50%);
       font-size: 100%;
+      font-weight: 600;
       color: #c9c9c9;
       cursor: pointer;
       user-select: none;
     }
   }
   &__input:checked ~ &__checkbox {
-    border: 0.17rem solid #00c0c0;
+    border: 0.14rem solid #00c0c0;
     background-color: #00c0c0;
     opacity: 1;
     span {
       color: #fff;
-      font-weight: bold;
+      font-weight: 600;
       opacity: 1;
     }
+  }
+  .result-content {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+  &__lecture-name {
+    color: #6e6e6e;
+    font-size: 1.35rem;
+    line-height: 160%;
+    font-weight: 500;
+  }
+  &__lecture-code {
+    // color: #75d4d4;
+    color: #a5a5a5;
+    font-size: 1.2rem;
+    font-weight: 400;
+    span {
+      padding-left: 0.3rem;
+      font-weight: 400;
+    }
+  }
+  .sylbus-btn {
+    padding-left: 0.3rem;
+    color: #75d4d4;
+    font-size: 1.9rem;
   }
 }
 
