@@ -43,9 +43,9 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">{{
-              n.lecture_name
-            }}</label>
+            <label class="result-list__lecture-name" for="n.lecture_code">
+              {{ n.lecture_name }}
+            </label>
           </div>
           <span class="sylbus-btn material-icons">menu_book</span>
         </div>

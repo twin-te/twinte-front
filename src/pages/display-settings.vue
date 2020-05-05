@@ -144,20 +144,19 @@ export default class Index extends Vue {
 
 <style scoped lang="scss">
 .display-settings {
-  color: #555555;
   padding: 1vh 6vw;
   max-width: 70vh;
   margin: 0 auto;
 }
 h1 {
   font-size: 2rem;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 2vh;
 }
 h2 {
   font-size: 1.8rem;
   color: #00c0c0;
-  font-weight: 500;
+  font-weight: 400;
   margin: 0 0 3vh;
 }
 
@@ -168,8 +167,8 @@ h3 {
 }
 .setting-card {
   background-color: white;
-  border-radius: 1vh;
-  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
+  border-radius: 1rem;
+  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.123);
   margin: 1vh auto 2vh auto;
   padding: 3vh 5vmin;
 }
