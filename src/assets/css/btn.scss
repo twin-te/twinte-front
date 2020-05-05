@@ -1,4 +1,4 @@
-.btn {
+.register-btn {
   position: relative;
   display: block;
   margin: 0 auto;
@@ -8,9 +8,10 @@
   font-size: 2.3vh;
   line-height: 6vh;
   background: #00c0c0;
-  border-radius: 1vh;
+  border-radius: 0.4rem;
   text-align: center;
   user-select: none;
+  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
   &:active {
     transition: all 0.2s;
     transform: scale(1.05);

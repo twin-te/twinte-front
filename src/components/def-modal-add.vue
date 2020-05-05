@@ -80,7 +80,9 @@
         </p>
       </section>
       <!-- → その他オプション -->
-      <section class="btn" @click="submitByNumber()">時間割に追加</section>
+      <section class="register-btn" @click="submitByNumber()">
+        時間割に追加
+      </section>
     </article>
   </Dialog>
 </template>
