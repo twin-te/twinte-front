@@ -33,6 +33,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/css/variable.scss';
+
 .cal {
   position: absolute;
   box-shadow: 0.2rem 0.2rem 1.2rem rgba(0, 0, 0, 0.123);
@@ -43,20 +45,20 @@ export default class Index extends Vue {
   top: -3.7vh;
 
   &__month {
-    background: #00c0c0;
-    color: #fcfcfc;
+    background: $primary-color;
+    color: #fff;
     font-size: 1.5vh;
     text-align: center;
     line-height: 2vh;
   }
   &__day {
-    color: #9a9a9a;
+    color: $sub-text-color;
     font-size: 2.6vh;
     text-align: center;
     line-height: 2.5vh;
   }
   &__week {
-    color: #9a9a9a;
+    color: $sub-text-color;
     font-size: 1.4vh;
     text-align: center;
     line-height: 2.1vh;

@@ -5,6 +5,7 @@ $material-icons-font-family: 'Material Icons' !default;
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,600&display=swap&subset=japanese');
 @import '~material-icons/iconfont/material-icons.scss';
 @import 'normalize.css/normalize.css';
+@import '~/assets/css/variable.scss';
 
 :root {
   --outer-height: 100vh;
@@ -14,7 +15,7 @@ html {
   overflow-y: hidden;
   height: 100%;
   font-size: 62.5%;
-  color: #777;
+  color: $main-text-color;
 }
 @media screen and (min-height: 1000px) {
   html {

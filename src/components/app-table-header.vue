@@ -70,6 +70,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/css/variable.scss';
+
 $week-width: calc(
   100vw - 8vw /*contentのmargin+padding*/ - 13vw /*timeのwidth+padding*/
 );

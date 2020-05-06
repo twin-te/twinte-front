@@ -1,3 +1,5 @@
+@import '~/assets/css/variable.scss';
+
 .register-btn {
   position: relative;
   display: block;
@@ -7,7 +9,7 @@
   color: #fff;
   font-size: 2.3vh;
   line-height: 6vh;
-  background: #00c0c0;
+  background: $primary-color;
   border-radius: 0.4rem;
   text-align: center;
   user-select: none;

@@ -40,15 +40,17 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/css/variable.scss';
+
 .top {
   position: relative;
   display: flex;
   width: 100vw;
   height: 8vh;
   line-height: 8vh;
-  background-color: #00c0c0;
+  background-color: $primary-color;
   font-size: 2em;
-  // border-bottom: 2px solid #c7c7c7;
+  // border-bottom: 2px solid $form-border-color;
   box-shadow: 0rem 0.3rem 0.6rem #00000028;
 }
 .top .title-logo {
@@ -64,7 +66,7 @@ export default class Index extends Vue {
 .btn {
   &--add {
     font-size: 5.5vh;
-    color: #ffffff;
+    color: #fff;
     position: absolute;
     right: 0;
     top: 50%;
@@ -75,7 +77,7 @@ export default class Index extends Vue {
   }
   &--setting {
     font-size: 4.3vh;
-    color: #ffffff;
+    color: #fff;
     left: 0;
     position: absolute;
     top: 50%;

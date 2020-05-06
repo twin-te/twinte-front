@@ -232,6 +232,7 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 @import '~/assets/css/btn.scss';
+@import '~/assets/css/variable.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
@@ -258,13 +259,13 @@ h1 {
   line-height: 3.4rem;
   font-weight: 500;
   text-overflow: ellipsis;
-  border-left: 0.5rem solid #00c0c0;
+  border-left: 0.5rem solid $primary-color;
   white-space: nowrap;
   padding-left: 0.8rem;
   margin: 0;
   .sbj-number {
     font-size: 1.2rem;
-    color: #a5a5a5;
+    color: $sub-text-color;
     font-weight: 400;
     line-height: 2rem;
     margin: 0 0 0.7rem;
@@ -273,7 +274,7 @@ h1 {
 h2 {
   width: 100%;
   font-size: 1.4rem;
-  color: #00c0c0;
+  color: $primary-color;
   font-weight: 400;
   margin: 0;
   padding-bottom: 0.3rem;
@@ -305,7 +306,7 @@ h2 {
   .edit-btn {
     padding-left: 0.5rem;
     font-size: 1.7rem;
-    color: #a5a5a5;
+    color: $sub-text-color;
   }
   span {
     padding-left: 5%;
@@ -319,8 +320,8 @@ h2 {
   width: 100%;
   height: 100%;
   min-height: 10vh;
-  color: #777;
-  border: 0.2vh solid #dddddd;
+  color: $main-text-color;
+  border: 0.2vh solid $form-border-color;
   border-radius: 0.5rem;
   flex-basis: 20vh;
   flex-shrink: 2;
@@ -337,7 +338,7 @@ h2 {
   margin-bottom: 2vh;
 }
 .counter-name {
-  color: #a5a5a5;
+  color: $sub-text-color;
   line-height: 2.6rem;
   font-size: 1.3rem;
 }
@@ -359,9 +360,9 @@ h2 {
   height: 3.1rem;
   width: 5rem;
   font-size: 2.2rem;
-  color: #00c0c0;
+  color: $primary-color;
   line-height: 3rem;
-  border: 0.2vh solid #00c0c0;
+  border: 0.2vh solid $primary-color;
   border-radius: 3.1rem 0 0 3.1rem;
 }
 .counter-right {
@@ -370,14 +371,14 @@ h2 {
   height: 3.1rem;
   width: 5rem;
   font-size: 2.2rem;
-  color: #00c0c0;
+  color: $primary-color;
   line-height: 2.6rem;
-  border: 0.2vh solid #00c0c0;
+  border: 0.2vh solid $primary-color;
   border-radius: 0 3.1rem 3.1rem 0;
 }
 .counter-left:active,
 .counter-right:active {
-  background-color: #00c0c0;
+  background-color: $primary-color;
   color: white;
 }
 
@@ -388,7 +389,7 @@ h2 {
 }
 .delete-btn {
   font-size: 1.3rem;
-  color: rgb(255, 98, 98);
+  color: $denger-element-color;
   margin: 2vh 0 0;
   i {
     font-size: 2rem;
@@ -396,7 +397,7 @@ h2 {
 }
 .syllabus-btn {
   font-size: 1.3rem;
-  color: #00c0c0;
+  color: $primary-color;
   margin: 2vh 0 0;
   i {
     font-size: 2rem;

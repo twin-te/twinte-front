@@ -1,3 +1,5 @@
+@import '~/assets/css/variable.scss';
+
 // ダイアログのスタイル
 .main {
   position: absolute;
@@ -28,5 +30,5 @@
   top: 2.2vh;
   right: 2.1vh;
   font-size: 3.1rem;
-  color: #717171;
+  color: $close-btn-color;
 }

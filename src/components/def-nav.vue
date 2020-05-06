@@ -188,7 +188,7 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 @import '~/assets/css/btn.scss';
-
+@import '~/assets/css/variable.scss';
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
   font-family: Noto Sans JP;
@@ -205,14 +205,14 @@ export default class Index extends Vue {
 //++++++++++++++++++++++++// ドロワーメニューの内容（中身） //++++++++++++++++++++++++//
 
 h1 {
-  color: #aaaaaa;
+  color: $sub-text-color;
   font-size: 2.3rem;
   font-weight: 400;
   margin: 0 auto 10% 0;
 }
 .close-btn {
   position: absolute;
-  color: #717171;
+  color: $close-btn-color;
   top: 5vh;
   right: 3.5vh;
   font-size: 3rem;
@@ -234,14 +234,14 @@ h1 {
   left: 3%;
   margin-right: 1vh;
   font-size: 2.7rem;
-  color: #00c0c0;
+  color: $primary-color;
   vertical-align: middle;
 }
 .menu-content p {
   margin: 0;
   padding-left: 1vh;
   font-size: 1.5rem;
-  color: #929292;
+  color: $main-text-color;
   font-weight: 300;
   line-height: 4.5rem;
   user-select: none;
@@ -252,7 +252,7 @@ h1 {
   right: 0;
   display: inline-flex;
   font-family: 'Material Icons';
-  color: #00c0c0;
+  color: $primary-color;
   font-size: 2.3rem;
   vertical-align: middle;
 }

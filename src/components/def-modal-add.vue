@@ -43,9 +43,9 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">{{
-              n.lecture_name
-            }}</label>
+            <label class="result-list__lecture-name" for="n.lecture_code">
+              {{ n.lecture_name }}
+            </label>
           </div>
           <span class="syllabus-btn material-icons">menu_book</span>
         </div>
@@ -255,6 +255,7 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 @import '~/assets/css/btn.scss';
+@import '~/assets/css/variable.scss';
 
 //++++++++++++++++++// 以くだダイアログの内容（中身） //+++++++++++++++++//
 article {
@@ -276,7 +277,7 @@ article {
 /* 授業の追加 */
 .title {
   font-size: 1.8rem;
-  color: #00c0c0;
+  color: $primary-color;
   font-weight: 400;
   margin: 0 0 1.5vh;
 }
@@ -294,9 +295,9 @@ article {
     width: 100%;
     background-color: #fff;
     font-size: 16px;
-    color: #555555;
+    color: $main-text-color;
     box-sizing: border-box;
-    border: 0.1rem solid #c7c7c7;
+    border: 0.1rem solid $form-border-color;
     border-radius: 3rem;
     padding: 0;
     padding-left: 4%;
@@ -311,7 +312,7 @@ article {
     margin: 0;
     padding: 0;
     font-size: 2.5rem;
-    color: #00c0c0;
+    color: $primary-color;
     line-height: 3.4rem;
     text-align: center;
     border-radius: 50% 50%;
@@ -322,7 +323,7 @@ article {
     }
   }
   ::placeholder {
-    color: #c7c7c7;
+    color: $sub-text-color;
     font-size: 14px;
     font-weight: 300;
   }
@@ -358,7 +359,7 @@ article {
     display: inline-block;
     width: 1.7rem;
     height: 1.7rem;
-    border: 0.14rem solid #bdbdbd;
+    border: 0.14rem solid $unselected-element-color;
     border-radius: 20% 20%;
     margin-right: 0.8rem;
     cursor: pointer;
@@ -369,14 +370,14 @@ article {
       transform: translateY(-50%) translateX(-50%);
       font-size: 100%;
       font-weight: 600;
-      color: #c9c9c9;
+      color: $unselected-element-color;
       cursor: pointer;
       user-select: none;
     }
   }
   &__input:checked ~ &__checkbox {
-    border: 0.14rem solid #00c0c0;
-    background-color: #00c0c0;
+    border: 0.14rem solid $primary-color;
+    background-color: $primary-color;
     opacity: 1;
     span {
       color: #fff;
@@ -390,14 +391,13 @@ article {
     flex-direction: column;
   }
   &__lecture-name {
-    color: #6e6e6e;
+    color: $emphasis-text-color;
     font-size: 1.35rem;
     line-height: 160%;
     font-weight: 500;
   }
   &__lecture-code {
-    // color: #75d4d4;
-    color: #a5a5a5;
+    color: $sub-text-color;
     font-size: 1.2rem;
     font-weight: 400;
     span {
@@ -407,7 +407,7 @@ article {
   }
   .syllabus-btn {
     padding-left: 0.3rem;
-    color: #00c0c0;
+    color: $primary-color;
     font-size: 1.9rem;
   }
 }
@@ -418,7 +418,7 @@ article {
   width: 100%;
   &__content {
     font-size: 1.2rem;
-    color: #9a9a9a;
+    color: $sub-text-color;
     margin: 1vh;
     margin-left: 0.5vh;
     span {
@@ -432,7 +432,7 @@ article {
 }
 .add-csv {
   margin: 1vh;
-  color: #adadad;
+  color: $sub-text-color;
   font-size: 1.2rem;
 }
 </style>
