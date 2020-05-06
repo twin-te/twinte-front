@@ -38,6 +38,6 @@ export default class Index extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/css/main.scss';
+@import '~/assets/css/variable.scss';
 @import '~/assets/css/modal.scss';
 </style>

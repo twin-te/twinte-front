@@ -1,11 +1,6 @@
-$material-icons-font-path: '~material-icons/iconfont/';
-$material-icons-font-path: '' !default;
-$material-icons-font-name: 'MaterialIcons-Regular' !default;
-$material-icons-font-family: 'Material Icons' !default;
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,600&display=swap&subset=japanese');
-@import '~material-icons/iconfont/material-icons.scss';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import 'normalize.css/normalize.css';
-@import 'variable';
 @import 'btn';
 
 root {

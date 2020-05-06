@@ -190,7 +190,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/main.scss';
+@import '~/assets/css/variable.scss';
 
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
@@ -256,7 +256,7 @@ h1 {
   display: inline-flex;
   font-family: 'Material Icons';
   color: $primary-color;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
   vertical-align: middle;
 }
 

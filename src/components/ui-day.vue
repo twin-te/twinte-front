@@ -33,7 +33,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/main.scss';
+@import '~/assets/css/variable.scss';
 
 .cal {
   position: absolute;
