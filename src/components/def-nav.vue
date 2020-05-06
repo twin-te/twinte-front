@@ -12,13 +12,18 @@
   <section class="contents">
     <transition name="slide">
       <nav class="main" v-if="drawer">
-        <h1>設定</h1>
-        <div class="material-icons svg-button close-btn" @click="closeDrawer()">
+        <h1>メニュー</h1>
+        <div
+          class="material-icons btn-animation close-btn"
+          @click="closeDrawer()"
+        >
           close
         </div>
 
-        <div class="login-btn" @click="logout()" v-if="isLogin">ログアウト</div>
-        <div class="login-btn" @click="login()" v-else>ログイン</div>
+        <div class="register-btn" @click="logout()" v-if="isLogin">
+          ログアウト
+        </div>
+        <div class="register-btn" @click="login()" v-else>ログイン</div>
 
         <section class="menu-contents-wrap">
           <div
@@ -185,6 +190,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/css/variable.scss';
+
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
   font-family: Noto Sans JP;
@@ -192,7 +199,7 @@ export default class Index extends Vue {
   height: 100%;
   top: 0;
   left: 0;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
+  box-shadow: $large-shadow;
   background: #fff;
   z-index: 6;
   padding: 5vh 3.5vh;
@@ -201,60 +208,45 @@ export default class Index extends Vue {
 //++++++++++++++++++++++++// ドロワーメニューの内容（中身） //++++++++++++++++++++++++//
 
 h1 {
-  color: #717171;
+  color: $sub-text-color;
   font-size: 2.3rem;
   font-weight: 400;
-  margin: 0 auto 9% 0;
+  margin: 0 auto 10% 0;
 }
 .close-btn {
   position: absolute;
-  color: #717171;
+  color: $close-btn-color;
   top: 5vh;
   right: 3.5vh;
-  font-size: 3.3rem;
-}
-.login-btn {
-  height: 4rem;
-  font-size: 1.5rem;
-  color: #ffffff;
-  line-height: 4rem;
-  text-align: center;
-  background-color: #4380f8;
-  border-radius: 0.5rem;
-  margin: 0 auto 3%;
-  &:active {
-    transition: all 0.15s;
-    transform: scale(1.05);
-    background-color: #7aa6fd;
-  }
+  font-size: 3rem;
 }
 
 /* メニュー項目 */
 .main .menu-contents-wrap {
-  margin: 0;
+  margin-top: 4%;
 }
 .menu-content {
   position: relative;
-  height: 5.3rem;
-  border-bottom: 0.2vh solid #c4c4c4;
-  padding-right: 5vh;
+  height: 4.2rem;
+  padding-right: 6vh;
   margin: 0;
 }
 
 .menu-icon {
-  left: 3%;
   display: inline-flex;
+  left: 3%;
+  margin-right: 1vh;
   font-size: 2.7rem;
-  color: #00c0c0;
+  color: $primary-color;
   vertical-align: middle;
 }
 .menu-content p {
   margin: 0;
   padding-left: 1vh;
-  font-size: 1.7rem;
-  color: #717171;
+  font-size: 1.5rem;
+  color: $main-text-color;
   font-weight: 300;
-  line-height: 5.3rem;
+  line-height: 4.5rem;
   user-select: none;
 }
 .menu-content p::after {
@@ -263,14 +255,9 @@ h1 {
   right: 0;
   display: inline-flex;
   font-family: 'Material Icons';
-  color: #00c0c0;
-  font-size: 2.3rem;
+  color: $primary-color;
+  font-size: 2.1rem;
   vertical-align: middle;
-}
-
-#home p,
-#home span {
-  color: #4380f8;
 }
 
 /** animation */
