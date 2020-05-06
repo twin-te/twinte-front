@@ -64,7 +64,7 @@ export default class Index extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $width: calc((100vw - 8vw - 11vw - 12vw) / 5);
@@ -74,7 +74,7 @@ content {
   position: relative;
   margin: 2vmin 2vw;
   padding: 2vmin 2vw;
-  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
+  box-shadow: $large-shadow;
   border-radius: 10px;
 }
 

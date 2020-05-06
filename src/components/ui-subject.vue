@@ -140,7 +140,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $width: calc(

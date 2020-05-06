@@ -19,5 +19,5 @@ export default class Index extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/css/btn.scss';
+@import '~/assets/css/main.scss';
 </style>

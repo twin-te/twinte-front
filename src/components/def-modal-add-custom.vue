@@ -41,8 +41,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 //++++++++++++++++++// 以くだダイアログの内容（中身） //+++++++++++++++++//
 .custom-form {

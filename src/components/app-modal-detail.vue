@@ -231,8 +231,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
+@import '~/assets/css/modal.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {

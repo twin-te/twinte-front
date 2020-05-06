@@ -12,7 +12,7 @@
     <transition name="bound">
       <main v-if="show" class="main">
         <div
-          class="material-icons close-btn svg-button"
+          class="material-icons close-btn btn-animation"
           @click="$emit('close')"
         >
           close
@@ -39,5 +39,5 @@ export default class Index extends Vue {
 
 <style scoped lang="scss">
 @import '~/assets/css/main.scss';
-@import '~/assets/css/dialog.scss';
+@import '~/assets/css/modal.scss';
 </style>

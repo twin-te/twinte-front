@@ -2,13 +2,13 @@
   <section class="table-header">
     <div class="table-header__module">
       <span
-        class="table-header__icon material-icons svg-button"
+        class="table-header__icon material-icons btn-animation"
         @click="prevModule"
         >chevron_left</span
       >
       <span>{{ module }}</span>
       <span
-        class="table-header__icon material-icons svg-button"
+        class="table-header__icon material-icons btn-animation"
         @click="nextModule"
         >chevron_right</span
       >
@@ -70,7 +70,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 $week-width: calc(
   100vw - 8vw /*contentのmargin+padding*/ - 13vw /*timeのwidth+padding*/

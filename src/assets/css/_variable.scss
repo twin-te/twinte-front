@@ -10,6 +10,10 @@ $sub-text-color: #a5a5a5;
 $unselected-element-color: #c9c9c9;
 $denger-element-color: #f05033;
 $close-btn-color: #717171;
-
-// 検索窓やメモ等のform関連カラー
 $form-border-color: #c7c7c7;
+
+// box-shadow
+$large-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
+$middle-shadow: 0.6rem 0.6rem 1.3rem rgba(0, 0, 0, 0.123);
+$small-shadow: 0.2rem 0.2rem 1.2rem rgba(0, 0, 0, 0.123);
+$toolber-shadow: 0rem 0.3rem 0.6rem rgba(0, 0, 0, 0.123);

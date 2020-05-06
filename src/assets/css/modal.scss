@@ -1,6 +1,4 @@
-@import '~/assets/css/variable.scss';
-
-// ダイアログのスタイル
+// モーダルのスタイル
 .main {
   position: absolute;
   top: 50%;
@@ -10,7 +8,7 @@
   max-width: 70vh;
   height: 80vh;
   background: #ffffff;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
+  box-shadow: $large-shadow;
   border-radius: 1vh;
   z-index: 6;
   padding: 4.4vh;

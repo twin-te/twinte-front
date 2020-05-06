@@ -13,7 +13,10 @@
     <transition name="slide">
       <nav class="main" v-if="drawer">
         <h1>メニュー</h1>
-        <div class="material-icons svg-button close-btn" @click="closeDrawer()">
+        <div
+          class="material-icons btn-animation close-btn"
+          @click="closeDrawer()"
+        >
           close
         </div>
 
@@ -187,8 +190,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
+
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
   font-family: Noto Sans JP;
@@ -196,7 +199,7 @@ export default class Index extends Vue {
   height: 100%;
   top: 0;
   left: 0;
-  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
+  box-shadow: $large-shadow;
   background: #fff;
   z-index: 6;
   padding: 5vh 3.5vh;

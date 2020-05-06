@@ -43,9 +43,9 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">
-              {{ n.lecture_name }}
-            </label>
+            <label class="result-list__lecture-name" for="n.lecture_code">{{
+              n.lecture_name
+            }}</label>
           </div>
           <span class="syllabus-btn material-icons">menu_book</span>
         </div>
@@ -254,10 +254,10 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
+@import '~/assets/css/modal.scss';
 
-//++++++++++++++++++// 以くだダイアログの内容（中身） //+++++++++++++++++//
+//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
   display: flex;

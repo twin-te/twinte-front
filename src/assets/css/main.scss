@@ -5,9 +5,10 @@ $material-icons-font-family: 'Material Icons' !default;
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,600&display=swap&subset=japanese');
 @import '~material-icons/iconfont/material-icons.scss';
 @import 'normalize.css/normalize.css';
-@import '~/assets/css/variable.scss';
+@import 'variable';
+@import 'btn';
 
-:root {
+root {
   --outer-height: 100vh;
 }
 
@@ -27,22 +28,6 @@ body {
   height: 100%;
   overflow-x: hidden;
   font-family: 'Noto Sans JP';
-}
-
-.svg-button {
-  border: none;
-  background: none;
-  transition: transform 0.3s liner;
-  user-select: none;
-  &:focus {
-    outline: 2px dashed #17171d;
-  }
-  &:hover {
-    transform: scale(1.1);
-  }
-  &:active {
-    transform: scale(1.2);
-  }
 }
 
 /** animation */

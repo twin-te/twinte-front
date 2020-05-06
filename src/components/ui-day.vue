@@ -33,11 +33,11 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 .cal {
   position: absolute;
-  box-shadow: 0.2rem 0.2rem 1.2rem rgba(0, 0, 0, 0.123);
+  box-shadow: $small-shadow;
   border-radius: 1vh;
   height: 6.7vh;
   width: 6.5vh;

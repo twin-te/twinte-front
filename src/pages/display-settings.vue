@@ -143,7 +143,7 @@ export default class Index extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 .display-settings {
   padding: 1vh 6vw;
@@ -170,7 +170,7 @@ h3 {
 .setting-card {
   background-color: white;
   border-radius: 1rem;
-  box-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.123);
+  box-shadow: $middle-shadow;
   margin: 1vh auto 2vh auto;
   padding: 3vh 5vmin;
 }

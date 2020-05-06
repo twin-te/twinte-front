@@ -3,7 +3,7 @@
   <div>
     <nav class="top">
       <!-- ⚙ -->
-      <span class="material-icons svg-button btn--setting" @click="chDrawer()"
+      <span class="material-icons btn--setting" @click="chDrawer()"
         >settings</span
       >
       <!-- Twin:te -->
@@ -15,9 +15,7 @@
         />
       </router-link>
       <!-- + -->
-      <span class="material-icons svg-button btn--add" @click="chAdd()"
-        >add</span
-      >
+      <span class="material-icons btn--add" @click="chAdd()">add</span>
     </nav>
   </div>
 </template>
@@ -40,7 +38,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
 
 .top {
   position: relative;
@@ -51,7 +49,7 @@ export default class Index extends Vue {
   background-color: $primary-color;
   font-size: 2em;
   // border-bottom: 2px solid $form-border-color;
-  box-shadow: 0rem 0.3rem 0.6rem #00000028;
+  box-shadow: $toolber-shadow;
 }
 .top .title-logo {
   height: 5vh;
