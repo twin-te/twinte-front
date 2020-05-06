@@ -43,11 +43,13 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">
-              {{ n.lecture_name }}
-            </label>
+            <label class="result-list__lecture-name" for="n.lecture_code">{{
+              n.lecture_name
+            }}</label>
           </div>
-          <span class="syllabus-btn material-icons">menu_book</span>
+          <span @click="syllabus(n)" class="syllabus-btn material-icons"
+            >menu_book</span
+          >
         </div>
       </section>
       <!-- ここまで検索結果 -->
@@ -93,6 +95,8 @@ import { twinsToTwinteAlert } from './utils/swal'
 import { addCustomLecture } from './utils/addCustomLecture'
 import { isMobile } from '../common/ua'
 import { searchLectures } from '../store/api/lectures'
+import { YEAR } from '../common/config'
+import { openUrl } from './utils/openUrl'
 
 type miniLecture = {
   lecture_code: string
@@ -144,6 +148,12 @@ export default class Index extends Vue {
       )
     }
   }
+  syllabus(n: miniLecture) {
+    openUrl(
+      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${n.lecture_code}/jpn/0/`
+    )
+  }
+
   async custom() {
     await addCustomLecture()
     await this.$store.commit('visible/chAdd', { display: false })
