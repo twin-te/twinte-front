@@ -16,16 +16,7 @@
           class="search-form__form"
           @keyup.enter="search(input, 'input')"
         />
-        <span
-          v-if="input === ''"
-          @click="lectures = []"
-          class="search-form__btn material-icons"
-          >close</span
-        >
-        <span
-          v-else
-          @click="search(input, 'input')"
-          class="search-form__btn material-icons"
+        <span @click="lectures = []" class="search-form__btn material-icons"
           >search</span
         >
       </form>
@@ -33,9 +24,9 @@
       <!-- 以下検索結果 -->
       <section class="result-list">
         <div
+          class="result-wrap"
           v-for="(n, i) in lectures"
           :key="n.lecture_code + i"
-          :style="{ background: i % 2 === 0 ? '#Fbfbfb' : '#f5f5f5' }"
         >
           <input
             type="checkbox"
@@ -47,10 +38,18 @@
           <label class="result-list__checkbox" :for="n.lecture_code">
             <span class="material-icons">check</span>
           </label>
-          <label class="result-list__label" for="n.lecture_code">
-            {{ n.lecture_code }} - {{ n.lecture_name }} - {{ n.module
-            }}{{ n.day }}{{ n.period }}
-          </label>
+          <div class="result-content">
+            <label class="result-list__lecture-code" for="n.lecture_code">
+              {{ n.lecture_code }}
+              <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
+            </label>
+            <label class="result-list__lecture-name" for="n.lecture_code">{{
+              n.lecture_name
+            }}</label>
+          </div>
+          <span @click="syllabus(n)" class="syllabus-btn material-icons"
+            >menu_book</span
+          >
         </div>
       </section>
       <!-- ここまで検索結果 -->
@@ -80,7 +79,9 @@
         </p>
       </section>
       <!-- → その他オプション -->
-      <section class="btn" @click="submitByNumber()">時間割に追加</section>
+      <section class="register-btn" @click="submitByNumber()">
+        時間割に追加
+      </section>
     </article>
   </Dialog>
 </template>
@@ -94,6 +95,8 @@ import { twinsToTwinteAlert } from './utils/swal'
 import { addCustomLecture } from './utils/addCustomLecture'
 import { isMobile } from '../common/ua'
 import { searchLectures } from '../store/api/lectures'
+import { YEAR } from '../common/config'
+import { openUrl } from './utils/openUrl'
 
 type miniLecture = {
   lecture_code: string
@@ -145,6 +148,12 @@ export default class Index extends Vue {
       )
     }
   }
+  syllabus(n: miniLecture) {
+    openUrl(
+      `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${n.lecture_code}/jpn/0/`
+    )
+  }
+
   async custom() {
     await addCustomLecture()
     await this.$store.commit('visible/chAdd', { display: false })
@@ -255,9 +264,10 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
+@import '~/assets/css/variable.scss';
+@import '~/assets/css/modal.scss';
 
-//++++++++++++++++++// 以くだダイアログの内容（中身） //+++++++++++++++++//
+//++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
   position: relative;
   display: flex;
@@ -277,8 +287,8 @@ article {
 /* 授業の追加 */
 .title {
   font-size: 1.8rem;
-  color: #00c0c0;
-  font-weight: 500;
+  color: $primary-color;
+  font-weight: 400;
   margin: 0 0 1.5vh;
 }
 
@@ -295,39 +305,37 @@ article {
     width: 100%;
     background-color: #fff;
     font-size: 16px;
-    color: #555555;
+    color: $main-text-color;
     box-sizing: border-box;
-    border: 0.2vh solid #9a9a9a;
+    border: 0.1rem solid $form-border-color;
     border-radius: 3rem;
     padding: 0;
-    padding-left: 3%;
+    padding-left: 4%;
     margin: 0;
   }
   &__btn {
     position: absolute;
     top: 0;
     right: 0;
-    height: 3.2rem;
-    width: 3.2rem;
+    height: 3rem;
+    width: 4rem;
     margin: 0;
     padding: 0;
-    background-color: #00c0c0;
     font-size: 2.5rem;
-    color: #fff;
-    line-height: 3.2rem;
+    color: $primary-color;
+    line-height: 3.4rem;
     text-align: center;
     border-radius: 50% 50%;
     user-select: none;
     &:active {
       transition: all 0.2s;
       transform: scale(1.1);
-      background-color: #05dbdb;
     }
   }
   ::placeholder {
-    color: #9a9a9a;
+    color: $sub-text-color;
     font-size: 14px;
-    padding-top: 4px;
+    font-weight: 300;
   }
   :focus {
     outline: none;
@@ -339,16 +347,15 @@ article {
   width: 100%;
   height: 100%;
   margin: 1.5vh 0;
-  padding: 1vw 0.5vw;
+  padding: 0;
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
-  font-size: 1.3rem;
-  line-height: 150%;
   box-sizing: border-box;
-  div {
-    padding: 1rem;
+  .result-wrap {
+    padding: 0.8rem 1rem;
     display: flex;
+    align-items: center;
   }
   &__label {
     display: inline-block;
@@ -362,7 +369,7 @@ article {
     display: inline-block;
     width: 1.7rem;
     height: 1.7rem;
-    border: 0.17rem solid #c9c9c9;
+    border: 0.14rem solid $unselected-element-color;
     border-radius: 20% 20%;
     margin-right: 0.8rem;
     cursor: pointer;
@@ -372,20 +379,46 @@ article {
       left: 50%;
       transform: translateY(-50%) translateX(-50%);
       font-size: 100%;
-      color: #c9c9c9;
+      font-weight: 600;
+      color: $unselected-element-color;
       cursor: pointer;
       user-select: none;
     }
   }
   &__input:checked ~ &__checkbox {
-    border: 0.17rem solid #00c0c0;
-    background-color: #00c0c0;
+    border: 0.14rem solid $primary-color;
+    background-color: $primary-color;
     opacity: 1;
     span {
       color: #fff;
-      font-weight: bold;
+      font-weight: 600;
       opacity: 1;
     }
+  }
+  .result-content {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+  &__lecture-name {
+    color: $emphasis-text-color;
+    font-size: 1.35rem;
+    line-height: 160%;
+    font-weight: 500;
+  }
+  &__lecture-code {
+    color: $sub-text-color;
+    font-size: 1.2rem;
+    font-weight: 400;
+    span {
+      padding-left: 0.3rem;
+      font-weight: 400;
+    }
+  }
+  .syllabus-btn {
+    padding-left: 0.3rem;
+    color: $primary-color;
+    font-size: 1.9rem;
   }
 }
 
@@ -395,7 +428,7 @@ article {
   width: 100%;
   &__content {
     font-size: 1.2rem;
-    color: #9a9a9a;
+    color: $sub-text-color;
     margin: 1vh;
     margin-left: 0.5vh;
     span {
@@ -409,7 +442,7 @@ article {
 }
 .add-csv {
   margin: 1vh;
-  color: #adadad;
+  color: $sub-text-color;
   font-size: 1.2rem;
 }
 </style>

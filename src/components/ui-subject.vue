@@ -140,6 +140,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/css/variable.scss';
+
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $width: calc(
   (100vw - 8vw /**外枠 */ - 11vw /** 時限 */ - 12vw /** 科目+時限 padding */) /
@@ -148,13 +150,12 @@ $width: calc(
 
 /* 科目 */
 .subject {
-  color: #555;
   width: $width;
   height: $height;
   padding: 1vmin 1vw;
   word-break: break-all;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   overflow: hidden;
   &:active {
     transition: all 0.3s;
@@ -162,15 +163,19 @@ $width: calc(
   }
 
   &__lectureId {
+    color: $main-text-color;
     font-weight: 400;
   }
   &__name {
-    font-weight: 700;
+    color: $emphasis-text-color;
+    font-weight: 600;
   }
   &__instructor {
+    color: $main-text-color;
     font-weight: 400;
   }
   &__room {
+    color: $main-text-color;
     font-weight: 400;
   }
 }

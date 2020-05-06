@@ -10,13 +10,6 @@
       </h1>
 
       <!-- 科目詳細 -->
-      <h2>
-        <i class="material-icons icon">info</i>科目詳細
-        <span class="syllabus-btn" @click="syllabus()">
-          シラバス
-          <i class="material-icons icon">chevron_right</i>
-        </span>
-      </h2>
       <section class="sbj-detail-wrapper">
         <p class="subject-item">
           担当教員
@@ -29,21 +22,30 @@
         <p class="subject-item">
           授業教室
           <span v-if="!editableLecture">{{ table.room }}</span>
-
           <input v-else class="sbj-detail" v-model="editableLecture.room" />
+          <i @click="edit()" class="edit-btn material-icons icon">edit</i>
           <!-- → 教室変更 -->
         </p>
+        <!-- 
+        <p class="subject-item">
+          単位数
+          <span>{{userData.credits}}</span>
+        </p>-->
       </section>
 
       <!-- メモ -->
       <h2>
-        <i class="material-icons icon">create</i>メモ
-        <span class="syllabus-btn" @click="attend()">
-          出席
+        <!-- <i class="material-icons icon">description</i> -->
+        メモ
+      </h2>
+      <textarea class="memo" type="text" v-model="localMemo"></textarea>
+      <h2>
+        出欠管理
+        <span class="assign-btn" @click="attend()">
+          出席する(responへ)
           <i class="material-icons icon">chevron_right</i>
         </span>
       </h2>
-      <textarea class="memo" type="text" v-model="localMemo"></textarea>
       <section class="counters-wrapper">
         <div
           v-for="n in 3"
@@ -65,13 +67,13 @@
           </div>
         </div>
       </section>
-      <div @click="save()" class="btn">変更を保存</div>
+      <div @click="save()" class="register-btn">変更を保存</div>
       <div class="flex">
         <p @click="deleteItem()" class="delete-btn">
           <i class="material-icons icon">delete</i>この科目を削除
         </p>
-        <p @click="edit()" class="edit-btn">
-          <i class="material-icons icon">edit</i>教室情報を編集
+        <p @click="syllabus()" class="syllabus-btn">
+          <i class="material-icons icon">menu_book</i>シラバスを参照
         </p>
       </div>
     </article>
@@ -229,7 +231,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
+@import '~/assets/css/variable.scss';
+@import '~/assets/css/modal.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
@@ -253,18 +256,16 @@ article {
 h1 {
   height: 6rem;
   font-size: 1.7rem;
-  color: #555555;
   line-height: 3.4rem;
   font-weight: 500;
   text-overflow: ellipsis;
-  border-left: 0.5rem solid #00c0c0;
-  // overflow: hidden;
+  border-left: 0.5rem solid $primary-color;
   white-space: nowrap;
   padding-left: 0.8rem;
-  margin: 0 0 2vh;
+  margin: 0;
   .sbj-number {
     font-size: 1.2rem;
-    color: #c4c4c4;
+    color: $sub-text-color;
     font-weight: 400;
     line-height: 2rem;
     margin: 0 0 0.7rem;
@@ -273,37 +274,40 @@ h1 {
 h2 {
   width: 100%;
   font-size: 1.4rem;
-  color: #00c0c0;
-  font-weight: 500;
-  border-bottom: 0.2vh solid #00c0c0;
+  color: $primary-color;
+  font-weight: 400;
   margin: 0;
+  padding-bottom: 0.3rem;
   i {
     font-size: 2rem;
     margin-right: 1%;
   }
-  .syllabus-btn {
+  .assign-btn {
     position: absolute;
-    right: 0;
     font-size: 1.2rem;
-    color: #9a9a9a;
+    color: #c0c0c0;
     font-weight: 400;
-    line-height: 2.4rem;
+    line-height: 1.5rem;
+    padding-left: 1rem;
     i {
       font-size: 1.6rem;
       margin-right: 0;
     }
   }
 }
-
 .sbj-detail-wrapper {
   font-size: 1.4rem;
-  padding: 0 2.5vmin;
-  margin: 0;
+  padding: 0 0.3rem;
+  margin: 0.5rem 0;
 }
 .subject-item {
-  color: #555555;
   font-weight: 500;
-
+  margin: 1.2rem 0;
+  .edit-btn {
+    padding-left: 0.5rem;
+    font-size: 1.7rem;
+    color: $sub-text-color;
+  }
   span {
     padding-left: 5%;
     font-weight: 400;
@@ -311,15 +315,17 @@ h2 {
 }
 
 /* メモ */
+
 .memo {
   width: 100%;
   height: 100%;
   min-height: 10vh;
-  border: 0.2vh solid #dddddd;
+  color: $main-text-color;
+  border: 0.2vh solid $form-border-color;
   border-radius: 0.5rem;
   flex-basis: 20vh;
   flex-shrink: 2;
-  margin: 1vh 0;
+  margin: 0 0 3vh;
   box-sizing: border-box;
 }
 
@@ -332,9 +338,9 @@ h2 {
   margin-bottom: 2vh;
 }
 .counter-name {
+  color: $sub-text-color;
   line-height: 2.6rem;
   font-size: 1.3rem;
-  color: #555555;
 }
 .counter {
   display: flex;
@@ -354,9 +360,9 @@ h2 {
   height: 3.1rem;
   width: 5rem;
   font-size: 2.2rem;
-  color: #00c0c0;
+  color: $primary-color;
   line-height: 3rem;
-  border: 0.2vh solid #00c0c0;
+  border: 0.2vh solid $primary-color;
   border-radius: 3.1rem 0 0 3.1rem;
 }
 .counter-right {
@@ -365,14 +371,14 @@ h2 {
   height: 3.1rem;
   width: 5rem;
   font-size: 2.2rem;
-  color: #00c0c0;
+  color: $primary-color;
   line-height: 2.6rem;
-  border: 0.2vh solid #00c0c0;
+  border: 0.2vh solid $primary-color;
   border-radius: 0 3.1rem 3.1rem 0;
 }
 .counter-left:active,
 .counter-right:active {
-  background-color: #00c0c0;
+  background-color: $primary-color;
   color: white;
 }
 
@@ -383,18 +389,19 @@ h2 {
 }
 .delete-btn {
   font-size: 1.3rem;
-  color: rgb(255, 98, 98);
+  color: $denger-element-color;
   margin: 2vh 0 0;
   i {
     font-size: 2rem;
   }
 }
-.edit-btn {
+.syllabus-btn {
   font-size: 1.3rem;
-  color: #6678df;
+  color: $primary-color;
   margin: 2vh 0 0;
   i {
     font-size: 2rem;
+    padding-right: 0.4rem;
   }
 }
 </style>

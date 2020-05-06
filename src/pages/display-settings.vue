@@ -143,33 +143,34 @@ export default class Index extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import '~/assets/css/variable.scss';
+
 .display-settings {
-  color: #555555;
   padding: 1vh 6vw;
   max-width: 70vh;
   margin: 0 auto;
 }
 h1 {
   font-size: 2rem;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 2vh;
 }
 h2 {
   font-size: 1.8rem;
-  color: #00c0c0;
-  font-weight: 500;
+  color: $primary-color;
+  font-weight: 400;
   margin: 0 0 3vh;
 }
 
 h3 {
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 400;
   margin: 0 0 1vh;
 }
 .setting-card {
   background-color: white;
-  border-radius: 1vh;
-  box-shadow: 1vmin 1vmin 3vmin rgba(0, 0, 0, 0.349);
+  border-radius: 1rem;
+  box-shadow: $middle-shadow;
   margin: 1vh auto 2vh auto;
   padding: 3vh 5vmin;
 }
@@ -207,12 +208,12 @@ h3 {
 .display-check {
   position: relative;
   display: inline-block;
-  width: 2rem;
-  height: 2rem;
+  width: 1.9rem;
+  height: 1.9rem;
   vertical-align: middle;
-  border: 0.2rem solid #c9c9c9;
+  border: 0.14rem solid $unselected-element-color;
   border-radius: 20% 20%;
-  margin-right: 4%;
+  margin-right: 7%;
   cursor: pointer;
   span {
     position: absolute;
@@ -220,15 +221,15 @@ h3 {
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 100%;
-    color: #c9c9c9;
+    color: $unselected-element-color;
     cursor: pointer;
     user-select: none;
   }
 }
 
 .setting-checkbox:checked ~ .display-check {
-  border: 0.2rem solid #00c0c0;
-  background-color: #00c0c0;
+  border: 0.14rem solid $primary-color;
+  background-color: $primary-color;
   span {
     color: #fff;
     font-weight: bold;
@@ -256,11 +257,11 @@ input {
     margin-top: 1vh;
     margin-right: 3vh;
     background-color: white;
-    color: #c9c9c9;
+    color: $unselected-element-color;
     text-align: center;
     line-height: 3rem;
-    border: #c9c9c9 0.2rem solid;
-    border-radius: 400px;
+    border: $unselected-element-color 0.14rem solid;
+    border-radius: 3rem;
     user-select: none;
   }
   label:nth-child(1) {
@@ -273,8 +274,8 @@ input {
     font-size: 2rem;
   }
   .setting-radio:checked ~ .fontsize-btn {
-    border: #00c0c0 0.2rem solid;
-    background-color: #00c0c0;
+    border: $primary-color 0.14rem solid;
+    background-color: $primary-color;
     color: white;
     opacity: 1;
   }

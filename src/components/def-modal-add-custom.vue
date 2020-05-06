@@ -41,7 +41,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/btn.scss';
+@import '~/assets/css/variable.scss';
 
 //++++++++++++++++++// 以くだダイアログの内容（中身） //+++++++++++++++++//
 .custom-form {
@@ -58,7 +58,7 @@ export default class Index extends Vue {
 /* 授業の追加 */
 .title {
   font-size: 1.8rem;
-  color: #00c0c0;
+  color: $primary-color;
   font-weight: 500;
   margin: 0 0 1.5vh;
 }

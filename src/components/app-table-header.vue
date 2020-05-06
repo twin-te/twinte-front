@@ -2,13 +2,13 @@
   <section class="table-header">
     <div class="table-header__module">
       <span
-        class="table-header__icon material-icons svg-button"
+        class="table-header__icon material-icons btn-animation"
         @click="prevModule"
         >chevron_left</span
       >
       <span>{{ module }}</span>
       <span
-        class="table-header__icon material-icons svg-button"
+        class="table-header__icon material-icons btn-animation"
         @click="nextModule"
         >chevron_right</span
       >
@@ -70,6 +70,8 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/css/variable.scss';
+
 $week-width: calc(
   100vw - 8vw /*contentのmargin+padding*/ - 13vw /*timeのwidth+padding*/
 );
@@ -88,7 +90,7 @@ $week-width: calc(
     font-family: Noto Sans JP;
     color: #9a9a9a;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2.2vh;
     line-height: 4.6vh;
     width: 45vw;
@@ -103,7 +105,7 @@ $week-width: calc(
     height: 2.5vh;
     font-family: Noto Sans JP;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2vh;
     color: #9a9a9a;
 
