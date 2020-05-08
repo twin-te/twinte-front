@@ -43,9 +43,9 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">{{
-              n.lecture_name
-            }}</label>
+            <label class="result-list__lecture-name" for="n.lecture_code">
+              {{ n.lecture_name }}
+            </label>
           </div>
           <span @click="syllabus(n)" class="syllabus-btn material-icons"
             >menu_book</span
@@ -341,6 +341,10 @@ article {
     color: $sub-text-color;
     font-size: 14px;
     font-weight: 300;
+    line-height: normal;
+  }
+  ::-webkit-input-placeholder {
+    padding-top: 0.2em;
   }
   :focus {
     outline: none;
