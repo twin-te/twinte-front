@@ -16,7 +16,9 @@
           class="search-form__form"
           @keyup.enter="search(input, 'input')"
         />
-        <span @click="lectures = []" class="search-form__btn material-icons"
+        <span
+          @click="search(input, 'input')"
+          class="search-form__btn material-icons"
           >search</span
         >
       </form>
@@ -43,9 +45,9 @@
               {{ n.lecture_code }}
               <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
             </label>
-            <label class="result-list__lecture-name" for="n.lecture_code">
-              {{ n.lecture_name }}
-            </label>
+            <label class="result-list__lecture-name" for="n.lecture_code">{{
+              n.lecture_name
+            }}</label>
           </div>
           <span @click="syllabus(n)" class="syllabus-btn material-icons"
             >menu_book</span
@@ -152,6 +154,9 @@ export default class Index extends Vue {
   }
 
   async search(input: string, type: 'csv' | 'input') {
+    if (input === '') {
+      return
+    }
     this.lectures = await this.parse(input, type)
     if (this.lectures.length === 0) {
       Swal.fire(
