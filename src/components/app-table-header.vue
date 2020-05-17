@@ -14,7 +14,7 @@
       >
     </div>
     <div class="table-header__week">
-      <day class="table-header__week-cal"></day>
+      <Day class="table-header__week-cal"></Day>
       <section class="table-header__week-wrapper">
         <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
       </section>

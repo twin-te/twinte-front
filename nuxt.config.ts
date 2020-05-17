@@ -54,6 +54,9 @@ const nuxtConfig: Configuration = {
       { hid: 'twitter:site', name: 'twitter:site', content: '@te_twin' },
     ],
   },
+  typescript: {
+    typeCheck: false,
+  },
   loadingIndicator: {
     name: 'cube-grid',
     color: 'teal',
@@ -70,10 +73,13 @@ const nuxtConfig: Configuration = {
     formatter: 'prettier-stylelint',
   },
   plugins: [{ src: '@/plugins/ga.js', mode: 'client' }],
-  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry'],
+  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry', '@nuxtjs/dayjs'],
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
     disabled: process.env.NODE_ENV != 'production',
+  },
+  dayjs: {
+    locales: ['ja'],
   },
   workbox: {
     dev: false,
