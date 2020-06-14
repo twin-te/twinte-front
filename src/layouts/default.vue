@@ -4,6 +4,7 @@
     <Navigation />
     <ModalAdd />
     <ModalAddCustom />
+    <Information />
     <nuxt />
   </div>
 </template>
@@ -21,6 +22,7 @@ import Swal from 'sweetalert2'
     Navigation: () => import('~/components/def-nav.vue'),
     ModalAdd: () => import('~/components/def-modal-add.vue'),
     ModalAddCustom: () => import('~/components/def-modal-add-custom.vue'),
+    Information: () => import('~/components/def-modal-information.vue'),
   },
 })
 export default class Index extends Vue {
