@@ -222,7 +222,7 @@ export default class Index extends Vue {
 
         pushLecture(lectures.flat())
       }
-      reader.readAsText(file)
+      reader.readAsText(file as Blob)
     }
   }
 

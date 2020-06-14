@@ -9,6 +9,7 @@ const nuxtConfig: Configuration = {
   buildModules: ['@nuxt/typescript-build'],
   mode: 'universal',
   srcDir: 'src/',
+  fetchOnServer: false,
   env: {
     baseName,
     baseDesc,

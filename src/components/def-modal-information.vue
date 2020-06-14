@@ -1,23 +1,16 @@
 <template>
   <Dialog :show="show" @close="close()">
-    <article>
-      <h1 class="title">モーダル</h1>
-      <div v-if="information.length === 0">
-        nothing to read...
-      </div>
-      <ul v-else>
-        <li v-for="info in information" :key="info.id">
-          <p>{{ info.title }}</p>
-          <p>{{ info.date }}</p>
-          <p v-html="info.content"></p>
-        </li>
-      </ul>
-    </article>
+    <h1>モーダル</h1>
+    <div v-for="info in information" :key="info.id">
+      <h2>{{ info.title }}</h2>
+      <div>{{ info.date }}</div>
+      <div v-html="info.content" />
+    </div>
   </Dialog>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { getInformation, parse, Information } from '../api/information'
 
 @Component({
@@ -34,15 +27,27 @@ export default class Index extends Vue {
     this.show = false
   }
 
-  @Watch('show')
-  async fetchInformation() {
-    const info = await getInformation()
-    this.information = parse(info)
+  async fetch() {
+    this.information = parse(await getInformation())
   }
 
-  // dev
   mounted() {
-    this.fetchInformation()
+    // 起動時にお知らせを表示するかどうか
+    const displayInfo = this.getDisplayInfo()
+    if (!displayInfo) {
+      return this.setDisplayInfo(true)
+    }
+    this.updateDisplayInfo(displayInfo)
+  }
+
+  setDisplayInfo(bool: boolean) {
+    return localStorage.setItem('DisplayInfo', String(bool))
+  }
+  getDisplayInfo() {
+    return localStorage.getItem('DisplayInfo')
+  }
+  updateDisplayInfo(displayInfo: string) {
+    this.show = displayInfo === String(true)
   }
 }
 </script>
