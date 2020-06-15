@@ -11,8 +11,8 @@ describe(getInformation.name, () => {
 })
 
 describe(parse.name, () => {
-  it('parse is Endomophism', async () => {
-    const info = await getInformation()
+  it('parse is Endomorphism', async () => {
+    const { data: info } = await getInformation()
     const parsedInfo = parse(info)
     expect(parsedInfo.slice(-1)[0]).toMatchSnapshot('info__result__parced')
   })

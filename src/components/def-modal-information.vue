@@ -28,7 +28,8 @@ export default class Index extends Vue {
   }
 
   async fetch() {
-    this.information = parse(await getInformation())
+    const { data: info } = await getInformation()
+    this.information = parse(info)
   }
 
   mounted() {

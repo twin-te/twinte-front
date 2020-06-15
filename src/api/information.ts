@@ -40,7 +40,6 @@ export const getInformation = async (
 /**
  * markdownをHTMLに変換
  */
-export const parse = (res: AxiosResponse<Information>): Information => {
-  const infos = res.data
+export const parse = (infos: Information): Information => {
   return infos.map((info) => ({ ...info, content: marked(info.content) }))
 }
