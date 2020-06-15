@@ -34,15 +34,9 @@ export default class Index extends Vue {
     this.show = false
   }
 
-  @Watch('show')
-  async fetchInformation() {
-    const info = await getInformation()
+  async fetch() {
+    const { data: info } = await getInformation()
     this.information = parse(info)
-  }
-
-  // dev
-  mounted() {
-    this.fetchInformation()
   }
 }
 </script>
