@@ -194,7 +194,6 @@ export default class Index extends Vue {
 
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
-  font-family: Noto Sans JP;
   position: absolute;
   height: 100%;
   top: 0;
@@ -254,7 +253,7 @@ h1 {
   position: absolute;
   right: 0;
   display: inline-flex;
-  font-family: 'Material Icons';
+  font-family: 'Material Icons', sans-serif;
   color: $primary-color;
   font-size: 2.1rem;
   vertical-align: middle;
@@ -282,8 +281,8 @@ h1 {
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
 .back {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(100, 100, 100, 0.5);

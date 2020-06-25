@@ -143,10 +143,7 @@ export default class Index extends Vue {
 @import '~/assets/css/variable.scss';
 
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
-$width: calc(
-  (100vw - 8vw /**外枠 */ - 11vw /** 時限 */ - 12vw /** 科目+時限 padding */) /
-    5
-);
+$width: calc((100vw - 8vw - 11vw - 12vw) / 5);
 
 /* 科目 */
 .subject {

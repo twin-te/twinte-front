@@ -72,9 +72,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
 
-$week-width: calc(
-  100vw - 8vw /*contentのmargin+padding*/ - 13vw /*timeのwidth+padding*/
-);
+$week-width: calc(100vw - 8vw - 13vw);
 
 .table-header {
   &__icon {
@@ -87,7 +85,6 @@ $week-width: calc(
     position: relative;
     display: flex;
     justify-content: space-between;
-    font-family: Noto Sans JP;
     color: #9a9a9a;
     font-style: normal;
     font-weight: 400;
@@ -103,7 +100,6 @@ $week-width: calc(
     display: flex;
     width: 87vw;
     height: 2.5vh;
-    font-family: Noto Sans JP;
     font-style: normal;
     font-weight: 400;
     font-size: 2vh;

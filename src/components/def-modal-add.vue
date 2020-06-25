@@ -356,6 +356,23 @@ article {
   }
 }
 
+//++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
+.others-form {
+  border-top: 1px solid #adadad;
+  width: 100%;
+  &__content {
+    font-size: 1.2rem;
+    color: $sub-text-color;
+    margin: 1vh;
+    margin-left: 0.5vh;
+    cursor: pointer;
+    user-select: none;
+    span {
+      font-size: 2rem;
+    }
+  }
+}
+
 /** 検索結果 */
 .result-list {
   width: 100%;
@@ -399,16 +416,6 @@ article {
       user-select: none;
     }
   }
-  &__input:checked ~ &__checkbox {
-    border: 0.14rem solid $primary-color;
-    background-color: $primary-color;
-    opacity: 1;
-    span {
-      color: #fff;
-      font-weight: 600;
-      opacity: 1;
-    }
-  }
   .result-content {
     width: 90%;
     display: flex;
@@ -429,27 +436,20 @@ article {
       font-weight: 400;
     }
   }
+  &__input:checked ~ &__checkbox {
+    border: 0.14rem solid $primary-color;
+    background-color: $primary-color;
+    opacity: 1;
+    span {
+      color: #fff;
+      font-weight: 600;
+      opacity: 1;
+    }
+  }
   .syllabus-btn {
     padding-left: 0.3rem;
     color: $primary-color;
     font-size: 1.9rem;
-  }
-}
-
-//++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
-.others-form {
-  border-top: 1px solid #adadad;
-  width: 100%;
-  &__content {
-    font-size: 1.2rem;
-    color: $sub-text-color;
-    margin: 1vh;
-    margin-left: 0.5vh;
-    cursor: pointer;
-    user-select: none;
-    span {
-      font-size: 2rem;
-    }
   }
 }
 </style>

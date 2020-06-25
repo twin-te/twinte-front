@@ -6,7 +6,7 @@ const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
 const baseDir = process.env.BASE_DIR || '/'
 
 const nuxtConfig: Configuration = {
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
   mode: 'universal',
   srcDir: 'src/',
   env: {
@@ -65,6 +65,10 @@ const nuxtConfig: Configuration = {
     height: '5px',
   },
   css: ['@/assets/css/main.scss'],
+  stylelint: {
+    fix: true,
+    formatter: 'prettier-stylelint',
+  },
   plugins: [{ src: '@/plugins/ga.js', mode: 'client' }],
   modules: ['@nuxtjs/pwa', '@nuxtjs/sentry'],
   sentry: {
