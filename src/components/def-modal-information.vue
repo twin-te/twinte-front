@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { getInformation, parse, Information } from '../api/information'
 
 @Component({
@@ -91,7 +91,7 @@ $info-title-color: #f2b456;
     &::before {
       content: 'announcement';
       display: inline-flex;
-      font-family: 'Material Icons';
+      font-family: 'Material Icons', sans-serif;
       vertical-align: middle;
     }
   }
@@ -115,6 +115,7 @@ $info-title-color: #f2b456;
 
   &__subtitle {
     @include elipsis;
+
     color: $info-title-color;
     height: 20px;
     font-size: 13px;
