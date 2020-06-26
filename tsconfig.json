@@ -36,9 +36,9 @@
     "types": [
       "@nuxt/types",
       "@nuxtjs/dayjs",
-      "node",
-      "jest",
-      "lodash",
+      "@types/node",
+      "@types/jest",
+      "@types/lodash",
     ],
     "typeRoots": ["./src/types"]
   },
