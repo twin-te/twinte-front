@@ -27,7 +27,7 @@
       <!-- 授業 -->
       <section class="row">
         <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
-        <div v-for="date in weekCalender" :key="date.date" class="column">
+        <div v-for="day in 5" :key="day" class="column">
           <div v-for="period in 6" :key="period">
             <Subject :day="day" :period="period" />
           </div>
