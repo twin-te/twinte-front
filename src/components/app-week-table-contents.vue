@@ -29,7 +29,11 @@
         <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
         <div v-for="date in weekCalender" :key="date.date" class="column">
           <div v-for="period in 6" :key="period">
-            <Subject :day="day" :period="period" />
+            <Subject
+              :day="date.day"
+              :period="period"
+              :moduleProp="date.module"
+            />
           </div>
         </div>
       </section>
@@ -40,6 +44,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
+import { getSchoolCalender } from '../api/school-calender'
 
 @Component({
   components: {
@@ -56,6 +61,40 @@ export default class Index extends Vue {
     ['15:15', '16:30'],
     ['16:45', '18:00'],
   ]
+  weekCalender: { module: string; day: number; date: string }[] = []
+
+  // 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6
+  week2num(week: string) {
+    const w = ['日', '月', '火', '水', '木', '金', '土']
+    return w.indexOf(week)
+  }
+
+  async mounted() {
+    const now = this.$dayjs()
+
+    // [日, 月, 火, 水, 木, 金, 土] の日時
+    // ['2020-5-18', '2020-5-19', '2020-5-20', '2020-5-21', '2020-5-22']
+    const weeks = ['日', '月', '火', '水', '木', '金', '土']
+      .map(this.week2num)
+      .map((index) => now.day(index).format('YYYY-MM-DD'))
+
+    // {
+    //   date: "2020-06-14"
+    //   day: 0 ← 日曜日の時間割
+    //   module: "春B"
+    // }
+    this.weekCalender = (await Promise.all(weeks.map(getSchoolCalender)))
+      .map(({ data: d }, i) => ({
+        module: d.module,
+        day: d.substituteDay ? this.week2num(d.substituteDay.change_to) : i,
+        date: weeks[i],
+      }))
+      .slice(1, 6)
+
+    // 今週の曜日を出力
+    console.log(this.weekCalender)
+  }
+
   get visible() {
     return this.$store.getters['visible/table'].display
   }

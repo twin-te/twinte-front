@@ -3,7 +3,7 @@
     <div class="subject" v-if="!table"></div>
     <!-- → 授業が入っていない -->
 
-    <div class="subject" :style="setSubjectStyle()" v-else>
+    <div class="subject" v-else :style="setSubjectStyle()">
       <div v-if="display.lecture_code" class="subject__lectureId">
         {{ table.lecture_code }}
       </div>
@@ -22,59 +22,63 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { Period } from '../types/index'
+import { Period } from '../types'
 import { YEAR } from '../common/config'
-
-enum Day {
-  Sun = '日',
-  Mon = '月',
-  Tue = '火',
-  Wed = '水',
-  Thu = '木',
-  Fri = '金',
-  Sat = '土',
-  Unknown = '不明',
-}
 
 @Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
+  // 曜日。休日は -1
   @Prop() day!: number
+  // 時限
   @Prop() period!: number
-  @Prop() data!: Period | undefined
-  @Prop() click!: string | undefined
+  // day, period 指定の他にdataを直接入力できる仕様
+  @Prop() data?: Period
+  // クリックして詳細が開かないように disableオプションを用意
+  @Prop() click?: 'disable'
+  @Prop() moduleProp?: string
 
-  week: string[] = [Day.Mon, Day.Tue, Day.Wed, Day.Thu, Day.Fri]
+  week: string[] = ['日', '月', '火', '水', '木', '金', '土']
 
+  // 表示設定の情報
   get display() {
     return this.$store.getters['visible/subject']
   }
 
+  /**
+   * day, period もしくは data を用いて
+   * Periodを返す
+   */
   get table() {
     if (this.data) {
       return this.data
     }
 
+    // 休日
+    if (this.day === -1) {
+      return undefined
+    }
+
     const periods = this.$store.getters['api/table']
-    const module = this.module
-    const week = this.week
-    const day = this.day
-    const period = this.period + 1
 
     const validPeriod = periods.find((lecture) => {
       return (
-        (lecture.module === module || lecture.module === '通年') && // module
-        week.indexOf(lecture.day) === day && // day
-        lecture.period === period && // period
-        lecture.year === YEAR
+        (lecture.module === this.module || lecture.module === '通年') && // module
+        this.week.indexOf(lecture.day) === this.day && // day
+        lecture.period === this.period && // period
+        lecture.year === YEAR // 年度
       )
     })
     return validPeriod
   }
+
+  // 学期を返す ex.春B
   get module() {
-    return this.$store.getters['table/module']
+    return this.moduleProp ?? this.$store.getters['table/module']
   }
+
+  // 表示設定オプションから適切な文字の大きさを返す
   setSubjectStyle() {
     switch (this.display.font_size) {
       case 'small':
@@ -98,25 +102,28 @@ export default class Index extends Vue {
         }
     }
   }
+
+  // この授業の詳細モーダルを開く
   chDetail(period: Period) {
     this.$store.dispatch('table/setPeriod', { period })
     this.$store.commit('visible/chDetail', { display: true })
   }
+
+  // 新規追加モーダルを開く
   chAdd() {
     this.$store.commit('visible/chAdd', { display: true })
   }
+
+  // クリックした時の挙動
   popUp() {
+    // 設定画面ではclickできない
     if (this.click === 'disable') {
       return
     }
-    // 設定画面ではclickできない
 
-    if (this.table) {
-      this.chDetail(this.table)
-    } else {
-      this.chAdd()
-    }
+    this.table ? this.chDetail(this.table) : this.chAdd()
   }
+
   /** 授業に応じたテーマ色を返す */
   getColor(number: string | undefined): string {
     if (!number) {
@@ -142,6 +149,7 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
 
+/** FIXME gridにしてwidthとheightを消して! */
 $height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
 $width: calc((100vw - 8vw - 11vw - 12vw) / 5);
 
