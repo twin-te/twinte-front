@@ -2,7 +2,7 @@
   <Dialog class="info" :show="show" @close="close()">
     <h1 class="info__title">Twin:teからの新着お知らせ</h1>
     <div class="info__body">
-      <div class="info__post" v-for="info in information" :key="info.id">
+      <section class="info__post" v-for="info in information" :key="info.id">
         <div class="info__date">{{ info.date }}</div>
         <h2 class="info__topic-title">{{ info.title }}</h2>
         <div class="info__content" v-html="info.content" />
@@ -10,19 +10,23 @@
           class="info__divider"
           v-if="information[information.length - 1] !== info"
         />
-      </div>
+      </section>
     </div>
     <Button class="info__button" @button-click="show = false">OK</Button>
 
-    <input
-      v-model="displayInfo"
-      @change="setDisplayInfo(displayInfo)"
-      name="DisplayInfo"
-      type="checkbox"
-    />
-    <label for="DisplayInfo" class="info__check-display"
-      >次回のTwin:te起動時に表示する</label
-    >
+    <div class="info__check-display">
+      <input
+        type="checkbox"
+        id="DisplayInfo"
+        v-model="displayInfo"
+        @change="setDisplayInfo(displayInfo)"
+        name="DisplayInfo"
+        class="info__check-display__input"
+      />
+      <label class="info__check-display__checkbox" for="DisplayInfo"
+        ><span class="material-icons">check</span></label
+      >次回のTwin:te起動時に表示する
+    </div>
   </Dialog>
 </template>
 
@@ -79,6 +83,7 @@ export default class Index extends Vue {
 
 @mixin elipsis {
   width: 100%;
+  line-height: 140%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -109,13 +114,13 @@ export default class Index extends Vue {
   }
 
   &__post {
-    padding: 3% 5%;
+    padding: 3% 5% 0;
   }
 
   &__date {
     color: $sub-text-color;
     font-size: 1.1rem;
-    line-height: 1.4rem;
+    margin: 0 0 1.5%;
   }
 
   &__topic-title {
@@ -123,12 +128,26 @@ export default class Index extends Vue {
 
     color: $info-topic-title-color;
     font-size: 1.4rem;
+    margin: 0 0 4%;
   }
 
   &__content {
+    display: inline-block;
     color: $main-text-color;
     font-size: 1.2rem;
-    line-height: 1.7rem;
+    margin: 0 0 6%;
+
+    /deep/ h2 {
+      font-size: 1.35rem;
+    }
+    /deep/ h3 {
+      font-size: 1.3rem;
+    }
+    /deep/ p {
+      margin: 0 0 5%;
+      padding: 0;
+      line-height: 140%;
+    }
   }
 
   &__divider {
@@ -139,10 +158,50 @@ export default class Index extends Vue {
   }
 
   &__check-display {
-    display: inline-block;
+    display: flex;
     color: $sub-text-color;
     font-size: 1.2rem;
     margin-top: 5%;
+    align-items: center;
+
+    &__label {
+      display: inline-block;
+      width: calc(100% - 3.5rem);
+    }
+    &__input {
+      display: none;
+    }
+    &__checkbox {
+      position: relative;
+      display: inline-block;
+      width: 1.7rem;
+      height: 1.7rem;
+      border: 0.14rem solid $unselected-element-color;
+      border-radius: 20% 20%;
+      margin-right: 0.8rem;
+      cursor: pointer;
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        font-size: 100%;
+        font-weight: 600;
+        color: $unselected-element-color;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+    &__input:checked ~ &__checkbox {
+      border: 0.14rem solid $primary-color;
+      background-color: $primary-color;
+      opacity: 1;
+      span {
+        color: #fff;
+        font-weight: 600;
+        opacity: 1;
+      }
+    }
   }
 }
 </style>

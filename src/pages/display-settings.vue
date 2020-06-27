@@ -1,7 +1,7 @@
 <template>
   <main class="display-settings">
     <h1>表示設定</h1>
-    <div class="setting-card">
+    <div class="card">
       <h2>時間割表の設定</h2>
       <div class="preview-flex">
         <section class="visible-setting">
@@ -151,23 +151,23 @@ export default class DisplaySettings extends Vue {
   margin: 0 auto;
 }
 h1 {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 400;
   margin-bottom: 2vh;
 }
 h2 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: $primary-color;
   font-weight: 400;
   margin: 0 0 3vh;
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   margin: 0 0 1vh;
 }
-.setting-card {
+.card {
   background-color: white;
   border-radius: 1rem;
   box-shadow: $middle-shadow;
