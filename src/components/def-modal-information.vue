@@ -1,16 +1,17 @@
 <template>
   <Dialog class="info" :show="show" @close="close()">
     <h1 class="info__title">Twin:teからの新着お知らせ</h1>
-    <div class="info__post" v-for="info in information" :key="info.id">
-      <div class="info__date">{{ info.date }}</div>
-      <h2 class="info__subtitle">{{ info.title }}</h2>
-      <div class="info__content" v-html="info.content" />
-      <hr
-        class="info__divider"
-        v-if="information[information.length - 1] !== info"
-      />
+    <div class="info__body">
+      <div class="info__post" v-for="info in information" :key="info.id">
+        <div class="info__date">{{ info.date }}</div>
+        <h2 class="info__topic-title">{{ info.title }}</h2>
+        <div class="info__content" v-html="info.content" />
+        <hr
+          class="info__divider"
+          v-if="information[information.length - 1] !== info"
+        />
+      </div>
     </div>
-
     <Button class="info__button" @button-click="show = false">OK</Button>
 
     <input
@@ -19,7 +20,9 @@
       name="DisplayInfo"
       type="checkbox"
     />
-    <label for="DisplayInfo">次回のTwin:te起動時に表示する</label>
+    <label for="DisplayInfo" class="info__check-display"
+      >次回のTwin:te起動時に表示する</label
+    >
   </Dialog>
 </template>
 
@@ -73,7 +76,6 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
-$info-title-color: #f2b456;
 
 @mixin elipsis {
   width: 100%;
@@ -86,50 +88,61 @@ $info-title-color: #f2b456;
   width: 100%;
 
   &__title {
+    margin-top: 0;
     color: $primary-color;
-    // fixme ずれてる
+    font-weight: 400;
+    font-size: 1.7rem;
     &::before {
       content: 'announcement';
       display: inline-flex;
       font-family: 'Material Icons', sans-serif;
       vertical-align: middle;
+      font-size: 3rem;
+      margin-right: 2%;
     }
+  }
+
+  &__body {
+    height: 73%;
+    overflow-y: scroll;
+    margin-bottom: 5%;
+  }
+
+  &__post {
+    padding: 3% 5%;
   }
 
   &__date {
     color: $sub-text-color;
-    height: 14px;
-    font-size: 10px;
-    line-height: 14px;
+    font-size: 1.1rem;
+    line-height: 1.4rem;
   }
 
-  &__post {
-    padding: 17px;
+  &__topic-title {
+    @include elipsis;
+
+    color: $info-topic-title-color;
+    font-size: 1.4rem;
   }
 
   &__content {
     color: $main-text-color;
-    font-size: 10px;
-    line-height: 15px;
-  }
-
-  &__subtitle {
-    @include elipsis;
-    color: $info-title-color;
-    height: 20px;
-    font-size: 13px;
-    line-height: 20px;
+    font-size: 1.2rem;
+    line-height: 1.7rem;
   }
 
   &__divider {
-    border: 0.5px solid $element-gray;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-bottom: 0.1rem solid $element-gray;
   }
 
-  // fixme
-  &__button {
-    background: $primary-color;
-    width: 100%;
-    height: 60px;
+  &__check-display {
+    display: inline-block;
+    color: $sub-text-color;
+    font-size: 1.2rem;
+    margin-top: 5%;
   }
 }
 </style>
