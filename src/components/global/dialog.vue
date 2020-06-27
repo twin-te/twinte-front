@@ -1,7 +1,7 @@
 <template>
   <!--
   Basic usage:
-  <Dialog @close="this.$store.commit('close')" :display='false'>
+  <Dialog @close="this.$store.commit('close')" :show='false'>
     <section />
     <section />
     <section />
@@ -10,7 +10,7 @@
 
   <section class="contents">
     <transition name="bound">
-      <main v-if="show" class="main">
+      <main v-show="show" class="main">
         <div
           class="material-icons close-btn btn-animation"
           @click="$emit('close')"
@@ -22,7 +22,7 @@
     </transition>
 
     <transition name="fade">
-      <div v-if="show" class="back" @click="$emit('close')"></div>
+      <div v-show="show" class="back" @click="$emit('close')"></div>
     </transition>
   </section>
 </template>
@@ -31,8 +31,9 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({})
-export default class Index extends Vue {
-  @Prop({ default: false }) show!: boolean
+export default class Dialog extends Vue {
+  @Prop({ required: true })
+  show!: boolean
 }
 </script>
 

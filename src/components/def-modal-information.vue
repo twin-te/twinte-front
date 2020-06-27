@@ -6,10 +6,7 @@
         <div class="info__date">{{ info.date }}</div>
         <h2 class="info__topic-title">{{ info.title }}</h2>
         <div class="info__content" v-html="info.content" />
-        <hr
-          class="info__divider"
-          v-if="information[information.length - 1] !== info"
-        />
+        <hr class="info__divider" v-if="information.slice(-1)[0] !== info" />
       </section>
     </div>
     <Button class="info__button" @button-click="show = false">OK</Button>
@@ -19,7 +16,6 @@
         type="checkbox"
         id="DisplayInfo"
         v-model="displayInfo"
-        @change="setDisplayInfo(displayInfo)"
         name="DisplayInfo"
         class="info__check-display__input"
       />
@@ -31,8 +27,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { getInformation, parse, Information } from '../api/information'
+import * as Vuex from 'vuex'
 
 @Component({
   components: {
@@ -40,40 +37,54 @@ import { getInformation, parse, Information } from '../api/information'
     Button: () => import('~/components/global/button.vue'),
   },
 })
-export default class Index extends Vue {
-  // dev
-  show = true
+export default class ModalInfomation extends Vue {
+  $store!: Vuex.ExStore
+
   information: Information = []
   displayInfo = true
 
-  close() {
-    this.show = false
+  get show() {
+    return this.$store.getters['visible/info']
   }
 
-  async fetch() {
+  close() {
+    this.$store.commit('visible/chInfo', { display: false })
+  }
+
+  async mounted() {
+    await this.fetchInfo()
+
+    // 起動時にお知らせを表示するかどうか
+    const displayInfo = this.getDisplayInfo()
+    const existInfo = this.existInfo()
+    this.updateDisplayInfo(displayInfo || existInfo)
+    this.saveLatestInfo()
+  }
+
+  async fetchInfo() {
     const { data: info } = await getInformation()
     this.information = parse(info)
   }
 
-  mounted() {
-    // 起動時にお知らせを表示するかどうか
-    const displayInfo = this.getDisplayInfo()
-    if (!displayInfo) {
-      return this.setDisplayInfo(true)
-    }
-    this.updateDisplayInfo(displayInfo)
-  }
-
-  setDisplayInfo(bool: boolean) {
-    return localStorage.setItem('DisplayInfo', String(bool))
+  @Watch('displayInfo')
+  setDisplayInfo() {
+    return localStorage.setItem('DisplayInfo', String(this.displayInfo))
   }
   getDisplayInfo() {
-    return localStorage.getItem('DisplayInfo')
+    const strageData = localStorage.getItem('DisplayInfo') ?? 'true'
+    return strageData === String(true)
   }
-  updateDisplayInfo(displayInfo: string) {
-    const d = displayInfo === String(true)
-    this.displayInfo = d
-    this.show = d
+  updateDisplayInfo(displayInfo: boolean) {
+    this.$store.commit('visible/chInfo', { display: displayInfo })
+  }
+
+  saveLatestInfo() {
+    localStorage.setItem('LatestInfo', this.information.slice(-1)[0]?.id)
+  }
+  existInfo() {
+    const id = localStorage.getItem('LatestInfo')
+    const latestId = this.information.slice(-1)[0]?.id
+    return id !== latestId
   }
 }
 </script>
