@@ -85,6 +85,11 @@ export default class Index extends Vue {
     { icon: 'home', name: 'ホームへ戻る', link: '/' },
     { icon: 'help', name: '使い方', link: 'https://www.twinte.net/#usages' },
     { icon: 'view_quilt', name: '表示設定', link: '/display-settings' },
+    {
+      icon: 'group',
+      name: '寄付者一覧',
+      link: 'https://www.twinte.net/sponsorship/index.html',
+    },
     // , { icon: "share", name: "時間割の共有", link: "/" }
   ]
 
