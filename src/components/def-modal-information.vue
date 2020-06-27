@@ -91,7 +91,7 @@ $info-title-color: #f2b456;
     &::before {
       content: 'announcement';
       display: inline-flex;
-      font-family: 'Material Icons';
+      font-family: 'Material Icons', sans-serif;
       vertical-align: middle;
     }
   }

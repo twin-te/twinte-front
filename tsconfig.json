@@ -14,7 +14,6 @@
     "sourceMap": true,
     "noEmit": true,
     "baseUrl": ".",
-    "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -35,10 +34,15 @@
       ]
     },
     "types": [
-      "@types/node",
       "@nuxt/types",
+      "@nuxtjs/dayjs",
+      "@types/node",
       "@types/jest",
-      "@types/lodash"
-    ]
-  }
+      "@types/lodash",
+    ],
+    "typeRoots": ["./src/types"]
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

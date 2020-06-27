@@ -107,7 +107,7 @@ import cloneDeep from 'lodash/cloneDeep'
     TButton: () => import('~/components/global/button.vue'),
   },
 })
-export default class Index extends Vue {
+export default class DisplaySettings extends Vue {
   $store!: Vuex.ExStore
 
   sbj: SubjectSettings = {

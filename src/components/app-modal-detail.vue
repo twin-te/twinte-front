@@ -391,6 +391,7 @@ h2 {
   font-size: 1.3rem;
   color: $denger-element-color;
   margin: 2vh 0 0;
+  /* stylelint-disable-next-line no-descending-specificity */
   i {
     font-size: 2rem;
   }
@@ -399,6 +400,7 @@ h2 {
   font-size: 1.3rem;
   color: $primary-color;
   margin: 2vh 0 0;
+  /* stylelint-disable-next-line no-descending-specificity */
   i {
     font-size: 2rem;
     padding-right: 0.4rem;

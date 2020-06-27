@@ -6,7 +6,7 @@ const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
 const baseDir = process.env.BASE_DIR || '/'
 
 const nuxtConfig: Configuration = {
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
   mode: 'universal',
   srcDir: 'src/',
   fetchOnServer: false,
@@ -55,6 +55,9 @@ const nuxtConfig: Configuration = {
       { hid: 'twitter:site', name: 'twitter:site', content: '@te_twin' },
     ],
   },
+  typescript: {
+    typeCheck: false,
+  },
   loadingIndicator: {
     name: 'cube-grid',
     color: 'teal',
@@ -66,11 +69,18 @@ const nuxtConfig: Configuration = {
     height: '5px',
   },
   css: ['@/assets/css/main.scss'],
+  stylelint: {
+    fix: true,
+    formatter: 'prettier-stylelint',
+  },
   plugins: [{ src: '@/plugins/ga.js', mode: 'client' }],
-  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry'],
+  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry', '@nuxtjs/dayjs'],
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
     disabled: process.env.NODE_ENV != 'production',
+  },
+  dayjs: {
+    locales: ['ja'],
   },
   workbox: {
     dev: false,
