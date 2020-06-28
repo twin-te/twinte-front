@@ -9,6 +9,7 @@ beforeEach(() => {
     detail: false,
     add: false,
     custom: false,
+    info: false,
     table: { display: true, move: 'left' },
     subject: {
       lecture_name: true,
