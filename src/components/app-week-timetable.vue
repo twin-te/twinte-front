@@ -24,16 +24,14 @@
       </div>
 
       <!-- 授業 -->
-      <section class="row">
+      <section class="timetable-panel__subjects-wrap">
         <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
-        <div v-for="date in weekCalender" :key="date.date" class="column">
-          <div v-for="period in 6" :key="period">
-            <Subject
-              :day="date.day"
-              :period="period"
-              :moduleProp="date.module"
-            />
-          </div>
+        <div v-for="(date, i) in weekCalender" :key="i">
+          <Subject
+            :day="date.day"
+            :period="date.period"
+            :moduleProp="date.module"
+          />
         </div>
       </section>
     </content>
@@ -81,17 +79,24 @@ export default class Index extends Vue {
     //   date: "2020-06-14"
     //   day: 0 ← 日曜日の時間割
     //   module: "春B"
+    //   period: 3 ← 3限
     // }
-    this.weekCalender = (await Promise.all(weeks.map(getSchoolCalender)))
+    // fixme
+    const calender = await Promise.all(weeks.map(getSchoolCalender))
+    this.weekCalender = calender
       .map(({ data: d }, i) => ({
         module: d.module,
         day: d.substituteDay ? this.week2num(d.substituteDay.change_to) : i,
         date: weeks[i],
       }))
       .slice(1, 6)
-
-    // 今週の曜日を出力
-    console.log(this.weekCalender)
+      .reduce(
+        (sum: any[], cal) => [
+          ...sum,
+          ...[...Array(6).keys()].map((i) => ({ ...cal, period: i + 1 })),
+        ],
+        []
+      )
   }
 
   get visible() {
@@ -104,6 +109,7 @@ export default class Index extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
+
 .timetable-panel {
   position: relative;
   margin: 2vmin;

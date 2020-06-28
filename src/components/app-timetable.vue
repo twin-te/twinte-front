@@ -25,12 +25,9 @@
 
       <!-- 授業 -->
       <div class="timetable-panel__subjects-wrap">
-        <section v-for="subjectIndex in 30" :key="subjectIndex">
+        <section v-for="subject in subjects(30)" :key="subject">
           <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
-          <Subject
-            :day="subject(subjectIndex).day"
-            :period="subject(subjectIndex).period"
-          />
+          <Subject :day="subject.day" :period="subject.period" />
         </section>
       </div>
     </content>
@@ -56,13 +53,15 @@ export default class Index extends Vue {
     ['15:15', '16:30'],
     ['16:45', '18:00'],
   ]
-  subject(num: number) {
-    const day = Math.floor(num / 6 + 1)
-    const period = num % 6
-    return {
-      day,
-      period,
-    }
+  subjects(num: number) {
+    return [...Array(num).keys()].map((i) => {
+      const day = Math.floor(i / 6 + 1)
+      const period = (i % 6) + 1
+      return {
+        day,
+        period,
+      }
+    })
   }
   get visible() {
     return this.$store.getters['visible/table'].display
