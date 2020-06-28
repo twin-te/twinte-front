@@ -13,9 +13,9 @@
         >chevron_right</span
       >
     </div>
-    <div class="table-header__week">
+    <div class="table-header__wrap">
       <Day class="table-header__week-cal"></Day>
-      <section class="table-header__week-wrapper">
+      <section class="table-header__wrap--week">
         <div v-for="n in 5" :key="n">{{ week[n - 1] }}</div>
       </section>
     </div>
@@ -72,9 +72,12 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
 
-$week-width: calc(100vw - 8vw - 13vw);
+$week-width: calc(100vw - 8vmin - 11vw);
 
 .table-header {
+  box-sizing: border-box;
+  height: 8.4vh;
+
   &__icon {
     display: block;
     width: 15vw;
@@ -95,22 +98,21 @@ $week-width: calc(100vw - 8vw - 13vw);
     left: 50%;
     transform: translateX(-50%);
   }
-  &__week {
+  &__wrap {
     position: relative;
     display: flex;
-    width: 87vw;
     height: 2.5vh;
     font-style: normal;
     font-weight: 400;
     font-size: 2vh;
     color: #9a9a9a;
 
-    &-wrapper {
+    &--week {
       position: absolute;
       display: flex;
       width: $week-width;
       justify-content: space-around;
-      left: calc(13vw + 4vw);
+      left: calc(11vw + 4vmin);
       top: 0.6vh;
     }
   }

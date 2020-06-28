@@ -12,6 +12,7 @@ html {
   height: 100%;
   font-size: 62.5%;
   color: $main-text-color;
+  box-sizing: border-box;
 }
 @media screen and (min-height: 1000px) {
   html {

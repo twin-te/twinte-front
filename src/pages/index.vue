@@ -12,7 +12,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component({
   components: {
     TableHeader: () => import('~/components/app-table-header.vue'),
-    Table: () => import('~/components/app-table-contents.vue'),
+    Table: () => import('~/components/app-timetable.vue'),
     ModalDetail: () => import('~/components/app-modal-detail.vue'),
   },
 })

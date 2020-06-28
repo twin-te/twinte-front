@@ -1,22 +1,22 @@
 <template>
-  <section @click="popUp()">
-    <div class="subject" v-if="!table"></div>
-    <!-- → 授業が入っていない -->
+  <div class="subject" @click="popUp()" v-if="!table"></div>
+  <!-- → 授業が入っていない -->
 
-    <div class="subject" v-else :style="setSubjectStyle()">
-      <div v-if="display.lecture_code" class="subject__lectureId">
-        {{ table.lecture_code }}
-      </div>
-      <div v-if="display.lecture_name" class="subject__name">
-        {{ table.lecture_name }}
-      </div>
-      <div v-if="display.instructor" class="subject__instructor">
-        {{ table.instructor }}
-      </div>
-      <div v-if="display.room" class="subject__room">{{ table.room }}</div>
+  <div class="subject" @click="popUp()" v-else :style="setSubjectStyle()">
+    <div v-if="display.lecture_code" class="subject--lectureId">
+      {{ table.lecture_code }}
     </div>
-    <!-- → 授業が入っている -->
-  </section>
+    <div v-if="display.lecture_name" class="subject--name">
+      {{ table.lecture_name }}
+    </div>
+    <div v-if="display.instructor" class="subject--instructor">
+      {{ table.instructor }}
+    </div>
+    <div v-if="display.room" class="subject--room">
+      {{ table.room }}
+    </div>
+  </div>
+  <!-- → 授業が入っている -->
 </template>
 
 <script lang="ts">
@@ -149,37 +149,33 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
 
-/** FIXME gridにしてwidthとheightを消して! */
-$height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
-$width: calc((100vw - 8vw - 11vw - 12vw) / 5);
-
 /* 科目 */
 .subject {
-  width: $width;
-  height: $height;
-  padding: 1vmin 1vw;
+  height: 100%;
+  box-sizing: border-box;
   word-break: break-all;
   font-style: normal;
   font-weight: 500;
   overflow: hidden;
+  padding: 1.1vmin;
   &:active {
     transition: all 0.3s;
     filter: brightness(150%);
   }
 
-  &__lectureId {
+  &--lectureId {
     color: $main-text-color;
     font-weight: 400;
   }
-  &__name {
+  &--name {
     color: $emphasis-text-color;
     font-weight: 600;
   }
-  &__instructor {
+  &--instructor {
     color: $main-text-color;
     font-weight: 400;
   }
-  &__room {
+  &--room {
     color: $main-text-color;
     font-weight: 400;
   }
