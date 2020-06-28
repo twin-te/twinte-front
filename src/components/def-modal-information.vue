@@ -17,7 +17,7 @@
         id="DisplayInfo"
         v-model="displayInfo"
         name="DisplayInfo"
-        class="info__check-display__input"
+        class="check-display__input"
       />
       <label class="info__check-display__checkbox" for="DisplayInfo"
         ><span class="material-icons">check</span></label
