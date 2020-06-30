@@ -43,10 +43,16 @@ export default class ModalInfomation extends Vue {
   information: Information = []
   displayInfo = true
 
+  /**
+   * モーダルが開いているかどうかの状態を取得
+   */
   get show() {
     return this.$store.getters['visible/info']
   }
 
+  /**
+   * モーダルを閉じる
+   */
   close() {
     this.$store.commit('visible/chInfo', { display: false })
   }
@@ -61,29 +67,52 @@ export default class ModalInfomation extends Vue {
     this.saveLatestInfo()
   }
 
+  /**
+   * infoを取得する
+   *
+   * fetchにしていたけどライフサイクルがうまく非同期にならなかったのでmount時に実行
+   */
   async fetchInfo() {
     const { data: info } = await getInformation()
     this.information = parse(info)
   }
 
+  /**
+   * 次回の起動時に表示するかを保存する
+   */
   @Watch('displayInfo')
   setDisplayInfo() {
     return localStorage.setItem('DisplayInfo', String(this.displayInfo))
   }
+
+  /**
+   * 次回の起動時に表示するかを返す
+   */
   getDisplayInfo() {
     const strageData = localStorage.getItem('DisplayInfo') ?? 'true'
     return strageData === String(true)
   }
+
+  /**
+   * モーダルの表示を切り替える
+   */
   updateDisplayInfo(displayInfo: boolean) {
     this.$store.commit('visible/chInfo', { display: displayInfo })
   }
 
+  /**
+   * 最新のinfoのidをLocalStrageに保存する
+   */
   saveLatestInfo() {
-    localStorage.setItem('LatestInfo', this.information.slice(-1)[0]?.id)
+    localStorage.setItem('LatestInfo', this.information[0]?.id)
   }
+
+  /**
+   * 最新のinfoがすでに表示済みかどうかを返す
+   */
   existInfo() {
     const id = localStorage.getItem('LatestInfo')
-    const latestId = this.information.slice(-1)[0]?.id
+    const latestId = this.information[0]?.id
     return id !== latestId
   }
 }
