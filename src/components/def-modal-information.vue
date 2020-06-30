@@ -9,7 +9,7 @@
         <hr class="info__divider" v-if="information.slice(-1)[0] !== info" />
       </section>
     </div>
-    <Button class="info__button" @button-click="show = false">OK</Button>
+    <Button class="info__button" @button-click="close()">OK</Button>
 
     <div class="check-display">
       <input
