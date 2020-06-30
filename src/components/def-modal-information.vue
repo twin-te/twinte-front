@@ -11,7 +11,7 @@
     </div>
     <Button class="info__button" @button-click="show = false">OK</Button>
 
-    <div class="info__check-display">
+    <div class="check-display">
       <input
         type="checkbox"
         id="DisplayInfo"
@@ -19,7 +19,7 @@
         name="DisplayInfo"
         class="check-display__input"
       />
-      <label class="info__check-display__checkbox" for="DisplayInfo"
+      <label class="check-display__checkbox" for="DisplayInfo"
         ><span class="material-icons">check</span></label
       >次回のTwin:te起動時に表示する
     </div>
@@ -167,51 +167,51 @@ export default class ModalInfomation extends Vue {
     border: none;
     border-bottom: 0.1rem solid $element-gray;
   }
+}
 
-  &__check-display {
-    display: flex;
-    color: $sub-text-color;
-    font-size: 1.2rem;
-    margin-top: 5%;
-    align-items: center;
+.check-display {
+  display: flex;
+  color: $sub-text-color;
+  font-size: 1.2rem;
+  margin-top: 5%;
+  align-items: center;
 
-    &__label {
-      display: inline-block;
-      width: calc(100% - 3.5rem);
-    }
-    &__input {
-      display: none;
-    }
-    &__checkbox {
-      position: relative;
-      display: inline-block;
-      width: 1.7rem;
-      height: 1.7rem;
-      border: 0.14rem solid $unselected-element-color;
-      border-radius: 20% 20%;
-      margin-right: 0.8rem;
+  &__label {
+    display: inline-block;
+    width: calc(100% - 3.5rem);
+  }
+  &__input {
+    display: none;
+  }
+  &__checkbox {
+    position: relative;
+    display: inline-block;
+    width: 1.7rem;
+    height: 1.7rem;
+    border: 0.14rem solid $unselected-element-color;
+    border-radius: 20% 20%;
+    margin-right: 0.8rem;
+    cursor: pointer;
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      font-size: 100%;
+      font-weight: 600;
+      color: $unselected-element-color;
       cursor: pointer;
-      span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
-        font-size: 100%;
-        font-weight: 600;
-        color: $unselected-element-color;
-        cursor: pointer;
-        user-select: none;
-      }
+      user-select: none;
     }
-    &__input:checked ~ &__checkbox {
-      border: 0.14rem solid $primary-color;
-      background-color: $primary-color;
+  }
+  &__input:checked ~ &__checkbox {
+    border: 0.14rem solid $primary-color;
+    background-color: $primary-color;
+    opacity: 1;
+    span {
+      color: #fff;
+      font-weight: 600;
       opacity: 1;
-      span {
-        color: #fff;
-        font-weight: 600;
-        opacity: 1;
-      }
     }
   }
 }
