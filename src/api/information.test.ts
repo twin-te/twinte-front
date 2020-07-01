@@ -6,14 +6,14 @@ describe(getInformation.name, () => {
   it('basic usage', async () => {
     const info = await getInformation()
     expect(info.status).toBe(200)
-    expect(info.data.slice(-1)[0]).toMatchSnapshot('info__result')
   })
 })
 
 describe(parse.name, () => {
-  it('parse is Endomorphism', async () => {
+  it('idが多分36文字固定だろうから、取得できるかためす', async () => {
     const { data: info } = await getInformation()
+    console.dir(info)
     const parsedInfo = parse(info)
-    expect(parsedInfo.slice(-1)[0]).toMatchSnapshot('info__result__parced')
+    expect(parsedInfo[0].id.length).toBe(36)
   })
 })
