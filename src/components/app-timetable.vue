@@ -2,37 +2,34 @@
   <!--
    * 時間割カード
    *
-   * height 65vh x width 69vw
    * period: 時限, day: 曜日
    *
    * 授業内容は ./ui-subject.vue を参照
   -->
   <transition :name="moveDirection === 'left' ? 'slide-l' : 'slide-r'">
-    <content class="row" v-show="visible">
+    <content class="timetable-panel" v-show="visible">
       <!-- 時限 -->
-      <section class="column">
-        <div
-          class="time"
+      <div class="timetable-panel__times-wrap">
+        <section
+          class="timetable-panel__times"
           v-for="i in 6"
           :key="i"
           :style="{ background: i % 2 === 0 ? '#F3F3F3' : '#F8F8F8' }"
         >
           {{ i }}
           <p>{{ timeTable[i - 1][0] }}</p>
-          <p class="tilde">~</p>
+          <p class="timetable-panel__times--tilde">~</p>
           <p>{{ timeTable[i - 1][1] }}</p>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <!-- 授業 -->
-      <section class="row">
-        <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
-        <div v-for="day in 5" :key="day" class="column">
-          <div v-for="period in 6" :key="period">
-            <Subject :day="day" :period="period" />
-          </div>
-        </div>
-      </section>
+      <div class="timetable-panel__subjects-wrap">
+        <section v-for="subject in subjects(30)" :key="subject">
+          <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
+          <Subject :day="subject.day" :period="subject.period" />
+        </section>
+      </div>
     </content>
   </transition>
 </template>
@@ -56,6 +53,16 @@ export default class Index extends Vue {
     ['15:15', '16:30'],
     ['16:45', '18:00'],
   ]
+  subjects(num: number) {
+    return [...Array(num).keys()].map((i) => {
+      const day = Math.floor(i / 6 + 1)
+      const period = (i % 6) + 1
+      return {
+        day,
+        period,
+      }
+    })
+  }
   get visible() {
     return this.$store.getters['visible/table'].display
   }
@@ -67,50 +74,48 @@ export default class Index extends Vue {
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
 
-$height: calc((100vh - 16.5vh - 6vmin - 12vmin) / 6);
-$width: calc((100vw - 8vw - 11vw - 12vw) / 5);
-
-//++++++++++++++++++++++++// 時間割表の枠 //++++++++++++++++++++++++//
-content {
+.timetable-panel {
+  box-sizing: border-box;
+  height: 82vh;
   position: relative;
-  margin: 2vmin 2vw;
-  padding: 2vmin 2vw;
+  margin: 0 2vmin 2vmin;
+  padding: 2vmin;
   box-shadow: $large-shadow;
-  border-radius: 10px;
-}
-
-//+++++++++++++++++++// 以下時間割の内容（中身） //++++++++++++++++++//
-
-/* 縦横の整列 */
-.row {
+  border-radius: 0.5rem;
   display: flex;
-  flex-direction: row;
-}
-.column {
-  display: flex;
-  flex-direction: column;
-}
 
-/* 時限 */
-.time {
-  width: 11vw;
-  height: $height;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 1.9vh;
-  line-height: 3vh;
-  text-align: center;
-  color: #9a9a9a;
-  padding: 1vmin 1vw;
-}
+  &__times-wrap {
+    display: flex;
+    flex-direction: column;
+  }
 
-.column p {
-  font-size: 1.65vh;
-  line-height: 1vh;
-  font-weight: 400;
-}
-.tilde {
-  transform: rotate(90deg);
+  &__times {
+    height: 100%;
+    width: 11vw;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.9vh;
+    line-height: 3vh;
+    text-align: center;
+    color: #9a9a9a;
+    p {
+      font-size: 1.65vh;
+      line-height: 1vh;
+      font-weight: 400;
+    }
+    &--tilde {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__subjects-wrap {
+    display: block;
+    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(6, calc(calc(82vh - 4vmin) / 6));
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 /* animation */

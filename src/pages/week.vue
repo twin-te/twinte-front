@@ -10,7 +10,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
   components: {
-    Table: () => import('~/components/app-week-table-contents.vue'),
+    Table: () => import('~/components/app-week-timetable.vue'),
     ModalDetail: () => import('~/components/app-modal-detail.vue'),
   },
 })
