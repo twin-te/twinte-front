@@ -33,10 +33,10 @@ const twinsToTwinteAlert = () => {
         title: '注意',
         html:
           'この機能は自己責任での利用となっております。この機能を利用して起きた損害等は一切Twin:teは責任を負いません。詳細は<a href="https://www.twinte.net/terms" target="_blank">利用規約</a>をご覧ください。',
-        type: 'warning',
+        icon: 'warning',
       },
     ])
-    .then((result) => {
+    .then((result: any) => {
       if (result.value) {
         location.href = 'https://twins.tsukuba.ac.jp'
       }

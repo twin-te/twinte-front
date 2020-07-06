@@ -164,7 +164,7 @@ export default class Index extends Vue {
     this.$store.dispatch('table/updatePeriod', { userData })
   }
 
-  deleteItem() {
+  async deleteItem() {
     Swal.fire({
       title: 'この時間割を削除しますか?',
       showCancelButton: true,
@@ -183,7 +183,7 @@ export default class Index extends Vue {
     })
   }
 
-  close(): void {
+  async close() {
     this.localMemo = ''
     this.editableLecture = null
     this.$store.commit('visible/chDetail', { display: false })

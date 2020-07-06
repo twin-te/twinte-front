@@ -9,6 +9,7 @@ const nuxtConfig: Configuration = {
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
   mode: 'universal',
   srcDir: 'src/',
+  fetchOnServer: false,
   env: {
     baseName,
     baseDesc,
