@@ -88,7 +88,12 @@ export default class Index extends Vue {
     {
       icon: 'announcement',
       name: 'Twin:teからのお知らせ',
-      link: '../info',
+      link: '/info',
+    },
+    {
+      icon: 'group',
+      name: '寄付者一覧',
+      link: 'https://www.twinte.net/sponsorship/index.html',
     },
     // , { icon: "share", name: "時間割の共有", link: "/" }
   ]
