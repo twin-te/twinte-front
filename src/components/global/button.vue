@@ -3,7 +3,11 @@
     Basic usage:
     <Button @button-click="fun()" width="200" height="100">save</Button>
   -->
-  <button @click="$emit('button-click')" class="btn" :style="{ width, height }">
+  <button
+    @click="$emit('button-click')"
+    class="register-btn"
+    :style="{ width, height }"
+  >
     <slot></slot>
   </button>
 </template>
@@ -20,4 +24,13 @@ export default class Index extends Vue {
 
 <style scoped lang="scss">
 @import '~/assets/css/variable.scss';
+@import '~/assets/css/main.scss';
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+}
 </style>

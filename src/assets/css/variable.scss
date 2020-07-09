@@ -5,6 +5,7 @@ $primary-color: #00c0c0;
 $main-text-color: #777;
 $emphasis-text-color: #6e6e6e;
 $sub-text-color: #a5a5a5;
+$info-topic-title-color: #f2b456;
 
 // element（要素）用のカラー
 $unselected-element-color: #c9c9c9;
@@ -16,4 +17,8 @@ $form-border-color: #c7c7c7;
 $large-shadow: 0.7rem 0.7rem 1.4rem rgba(0, 0, 0, 0.164);
 $middle-shadow: 0.6rem 0.6rem 1.3rem rgba(0, 0, 0, 0.123);
 $small-shadow: 0.2rem 0.2rem 1.2rem rgba(0, 0, 0, 0.123);
-$toolber-shadow: 0rem 0.3rem 0.6rem rgba(0, 0, 0, 0.123);
+$toolber-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.123);
+
+// element
+$element-denger: #f05033;
+$element-gray: #c7c7c7;

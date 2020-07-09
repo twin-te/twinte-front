@@ -1,6 +1,5 @@
 <template>
   <section>
-    <TableHeader />
     <Table />
     <ModalDetail />
   </section>
@@ -11,8 +10,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
   components: {
-    TableHeader: () => import('~/components/app-table-header.vue'),
-    Table: () => import('~/components/app-timetable.vue'),
+    Table: () => import('~/components/app-week-timetable.vue'),
     ModalDetail: () => import('~/components/app-modal-detail.vue'),
   },
 })

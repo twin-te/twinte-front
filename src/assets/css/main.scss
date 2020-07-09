@@ -12,6 +12,7 @@ html {
   height: 100%;
   font-size: 62.5%;
   color: $main-text-color;
+  box-sizing: border-box;
 }
 @media screen and (min-height: 1000px) {
   html {
@@ -22,8 +23,9 @@ html {
 body {
   height: 100%;
   overflow-x: hidden;
-  font-family: 'Noto Sans JP';
+  font-family: 'Noto Sans JP', sans-serif;
 }
+
 .csv-form {
   border: none !important;
   box-shadow: none !important;

@@ -26,7 +26,7 @@
           <i @click="edit()" class="edit-btn material-icons icon">edit</i>
           <!-- → 教室変更 -->
         </p>
-        <!-- 
+        <!--
         <p class="subject-item">
           単位数
           <span>{{userData.credits}}</span>
@@ -164,7 +164,7 @@ export default class Index extends Vue {
     this.$store.dispatch('table/updatePeriod', { userData })
   }
 
-  deleteItem() {
+  async deleteItem() {
     Swal.fire({
       title: 'この時間割を削除しますか?',
       showCancelButton: true,
@@ -183,7 +183,7 @@ export default class Index extends Vue {
     })
   }
 
-  close(): void {
+  async close() {
     this.localMemo = ''
     this.editableLecture = null
     this.$store.commit('visible/chDetail', { display: false })
@@ -391,6 +391,7 @@ h2 {
   font-size: 1.3rem;
   color: $denger-element-color;
   margin: 2vh 0 0;
+  /* stylelint-disable-next-line no-descending-specificity */
   i {
     font-size: 2rem;
   }
@@ -399,6 +400,7 @@ h2 {
   font-size: 1.3rem;
   color: $primary-color;
   margin: 2vh 0 0;
+  /* stylelint-disable-next-line no-descending-specificity */
   i {
     font-size: 2rem;
     padding-right: 0.4rem;

@@ -7,7 +7,7 @@
   width: 92vw;
   max-width: 70vh;
   height: 80vh;
-  background: #ffffff;
+  background: #fff;
   box-shadow: $large-shadow;
   border-radius: 1vh;
   z-index: 6;
@@ -18,8 +18,8 @@
   position: absolute;
   width: 100vw;
   height: 100vh;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   background: rgba(100, 100, 100, 0.5);
   z-index: 5;
 }

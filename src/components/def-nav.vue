@@ -86,6 +86,11 @@ export default class Index extends Vue {
     { icon: 'help', name: '使い方', link: 'https://www.twinte.net/#usages' },
     { icon: 'view_quilt', name: '表示設定', link: '/display-settings' },
     {
+      icon: 'announcement',
+      name: 'Twin:teからのお知らせ',
+      link: '/info',
+    },
+    {
       icon: 'group',
       name: '寄付者一覧',
       link: 'https://www.twinte.net/sponsorship/index.html',
@@ -199,7 +204,6 @@ export default class Index extends Vue {
 
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
-  font-family: Noto Sans JP;
   position: absolute;
   height: 100%;
   top: 0;
@@ -259,7 +263,7 @@ h1 {
   position: absolute;
   right: 0;
   display: inline-flex;
-  font-family: 'Material Icons';
+  font-family: 'Material Icons', sans-serif;
   color: $primary-color;
   font-size: 2.1rem;
   vertical-align: middle;
@@ -287,8 +291,8 @@ h1 {
 //++++++++++++++++++++++++// 後ろ //++++++++++++++++++++++++//
 .back {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(100, 100, 100, 0.5);
