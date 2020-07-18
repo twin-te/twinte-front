@@ -27,7 +27,7 @@
       <div class="timetable-panel__subjects-wrap">
         <section
           v-for="subject in subjects(30)"
-          :key="subject.day + subject.period"
+          :key="`${subject.day}${subject.period}`"
         >
           <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
           <Subject :day="subject.day" :period="subject.period" />
