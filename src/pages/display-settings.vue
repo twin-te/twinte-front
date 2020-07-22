@@ -203,6 +203,8 @@ h3 {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   -ms-wrap-margin: 0;
+  width: 12vw;
+  height: calc(14vh - 3vmin);
 }
 
 .display-check {
