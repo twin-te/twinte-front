@@ -15,6 +15,7 @@ import * as Vuex from 'vuex'
 // import { TimeTables } from "../types";
 import { isLogin } from '../store/api/auth'
 import Swal from 'sweetalert2'
+import { getSchoolCalender } from '../api/school-calender'
 
 @Component({
   components: {
@@ -92,6 +93,18 @@ export default class Index extends Vue {
       }
     }
     // → lectureパラメータがあればそのダイアログを表示
+
+    const cal = await getSchoolCalender(this.$dayjs().format('YYYY-MM-DD'))
+    if (cal.data.substituteDay) {
+      Swal.fire({
+        toast: true,
+        text: `今日は${cal.data.substituteDay?.change_to}曜日課です`,
+        position: 'bottom-left',
+        showConfirmButton: false,
+        type: 'info',
+        timer: 6000,
+      })
+    }
 
     document.documentElement.style.setProperty(
       '--outer-height',
