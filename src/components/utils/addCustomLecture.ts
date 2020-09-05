@@ -3,8 +3,9 @@ import Swal from 'sweetalert2'
 import { postUserData } from '../../store/api/user-lectures'
 import { updateLecture } from '../../store/api/timetables'
 
-import { Period } from '../../types'
+import type { Period } from '../../types'
 import { YEAR, axios, BASE_URL } from '../../common/config'
+import type { Day, Module } from 'twinte-parser'
 
 type Form = {
   lecture_name: string
@@ -158,11 +159,12 @@ export const addCustomLecture = async () => {
       lecture_name: form.lecture_name,
       instructor: form.instructor,
       year: YEAR,
-      module: form.module,
-      day: form.day,
+      module: form.module as Module,
+      day: form.day as Day,
       period: parseInt(form.period),
       room: form.room,
       user_lecture_id: userData.user_lecture_id,
+      formats: userData.formats,
     }
 
     // 時間割の追加
