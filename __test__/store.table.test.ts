@@ -82,6 +82,7 @@ describe('クリックした授業情報を追加', () => {
     user_lecture_id: '63427819',
     lecture_name: '電磁気学',
     instructor: '安永 守利',
+    formats: [],
   }
   it('set period GB11404 into looking', () => {
     mutations.setLooking(state, { period })

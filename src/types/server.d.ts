@@ -1,4 +1,5 @@
-// https://github.com/twin-te/twinte-server/blob/working-clean/src/domain/entities/user.ts
+// https://github.com/twin-te/twinte-server/blob/develop/src/entity
+import { Day, Module } from 'twinte-parser'
 
 /**
  * 出欠などのユーザーデータ構造
@@ -17,6 +18,24 @@ export interface UserLectureEntity {
   memo: string
   lecture_name: string
   instructor: string
+  credits: number
+  formats: LectureFormat[]
+}
+
+export interface PeriodEntity {
+  year: number
+  module: Module
+  day: Day
+  period: number
+  room: string
+  user_lecture_id: string
+}
+
+export enum LectureFormat {
+  OnlineAsynchronous = 'Asynchronous',
+  OnlineSynchronous = 'Synchronous',
+  FaceToFace = 'FaceToFace',
+  Others = 'Others',
 }
 
 /**
@@ -25,14 +44,9 @@ export interface UserLectureEntity {
  * @get /timetables/{year}/{module}/{day}/{period}
  * @post /timetables​/{year}​/{module}​/{day}​/{period}
  */
-export interface OutputPeriodData {
-  lecture_code: string
+export interface TimetableEntity extends PeriodEntity {
   lecture_name: string
+  lecture_code?: string
   instructor: string
-  year: number
-  module: string
-  day: string
-  period: number
-  room: string
-  user_lecture_id: string
+  formats: LectureFormat[]
 }
