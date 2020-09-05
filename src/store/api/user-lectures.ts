@@ -13,6 +13,9 @@ async function postUserData(lecture_name: string, instructor: string) {
       year: YEAR,
       lecture_name,
       instructor,
+      // TODO
+      credits: 0,
+      formats: [],
     })
     return data
   } catch (error) {
