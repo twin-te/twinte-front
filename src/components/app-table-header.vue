@@ -88,7 +88,7 @@ $week-width: calc(100vw - 8vmin - 11vw);
     position: relative;
     display: flex;
     justify-content: space-between;
-    color: #9a9a9a;
+    color: $sub-text-color;
     font-style: normal;
     font-weight: 400;
     font-size: 2.2vh;
@@ -105,7 +105,7 @@ $week-width: calc(100vw - 8vmin - 11vw);
     font-style: normal;
     font-weight: 400;
     font-size: 2vh;
-    color: #9a9a9a;
+    color: $sub-text-color;
 
     &--week {
       position: absolute;

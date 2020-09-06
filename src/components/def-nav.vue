@@ -209,7 +209,7 @@ export default class Index extends Vue {
   top: 0;
   left: 0;
   box-shadow: $large-shadow;
-  background: #fff;
+  background: $white;
   z-index: 6;
   padding: 5vh 3.5vh;
 }
@@ -224,7 +224,7 @@ h1 {
 }
 .close-btn {
   position: absolute;
-  color: $close-btn-color;
+  color: $main-text-color;
   top: 5vh;
   right: 3.5vh;
   font-size: 3rem;

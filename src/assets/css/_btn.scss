@@ -6,7 +6,7 @@
   margin: 0 auto;
   width: 100%;
   height: 6vh;
-  color: #fff;
+  color: $white;
   font-size: 2.3vh;
   line-height: 6vh;
   background: $primary-color;
@@ -14,10 +14,11 @@
   text-align: center;
   user-select: none;
   box-shadow: $middle-shadow;
+  flex-shrink: 0;
   &:active {
     transition: all 0.2s;
     transform: scale(1.05);
-    background-color: #05dbdb;
+    background-color: $primary-light-color;
   }
 }
 .btn-animation {
