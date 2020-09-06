@@ -8,7 +8,7 @@ const baseDir = process.env.BASE_DIR || '/'
 const nuxtConfig: Configuration = {
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
   mode: 'universal',
-  srcDir: 'src/',
+  srcDir: 'src',
   fetchOnServer: false,
   env: {
     baseName,
@@ -56,7 +56,7 @@ const nuxtConfig: Configuration = {
     ],
   },
   typescript: {
-    typeCheck: false,
+    typeCheck: true,
   },
   loadingIndicator: {
     name: 'cube-grid',
