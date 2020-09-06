@@ -1,6 +1,6 @@
-import { BASE_URL, axios, YEAR } from '../../common/config'
+import { BASE_URL, axios, YEAR } from '@/common/config'
 const url = BASE_URL + '/user-lectures'
-import { UserLectureEntity } from '../../types/server'
+import { UserLectureEntity } from '@/types/server'
 import union from 'lodash/union'
 
 /**
@@ -13,6 +13,9 @@ async function postUserData(lecture_name: string, instructor: string) {
       year: YEAR,
       lecture_name,
       instructor,
+      // TODO
+      credits: 0,
+      formats: [],
     })
     return data
   } catch (error) {

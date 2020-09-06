@@ -1,5 +1,5 @@
 // import { mutations } from '../api'
-import { S } from '../src/store/api/type'
+import { S } from '@/store/api/type'
 
 jest.setTimeout(30000)
 

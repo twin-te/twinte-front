@@ -27,11 +27,12 @@
     "resolveJsonModule": true,
     "paths": {
       "~/*": [
-        "./*"
+        "./src/*"
       ],
       "@/*": [
-        "./*"
-      ]
+        "./src/*"
+      ],
+      "vuex": ["src/types/index.d.ts"]
     },
     "types": [
       "@nuxt/types",
@@ -40,7 +41,6 @@
       "@types/jest",
       "@types/lodash",
     ],
-    "typeRoots": ["./src/types"]
   },
   "exclude": [
     "node_modules"

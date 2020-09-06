@@ -26,8 +26,8 @@
       <!-- 授業 -->
       <div class="timetable-panel__subjects-wrap">
         <section
-          v-for="subject in subjects(30)"
-          :key="subject.day + subject.period"
+          v-for="subject in subjects"
+          :key="`${subject.day}${subject.period}`"
         >
           <!-- 日: 0, 月: 1, 火: 2, 水: 3, 木: 4, 金: 5, 土: 6 -->
           <Subject :day="subject.day" :period="subject.period" />
@@ -41,12 +41,17 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 
+type Subject = {
+  day: number
+  period: number
+}
+
 @Component({
   components: {
     Subject: () => import('~/components/ui-subject.vue'),
   },
 })
-export default class Index extends Vue {
+export default class AppTimeTable extends Vue {
   $store!: Vuex.ExStore
   timeTable = [
     ['8:40', '9:55'],
@@ -56,7 +61,8 @@ export default class Index extends Vue {
     ['15:15', '16:30'],
     ['16:45', '18:00'],
   ]
-  subjects(num: number) {
+  subjects: Subject[] = []
+  getSubjects(num: number): Subject[] {
     return [...Array(num).keys()].map((i) => {
       const day = Math.floor(i / 6 + 1)
       const period = (i % 6) + 1
@@ -71,6 +77,10 @@ export default class Index extends Vue {
   }
   get moveDirection() {
     return this.$store.getters['visible/table'].move
+  }
+
+  created() {
+    this.subjects = this.getSubjects(30)
   }
 }
 </script>

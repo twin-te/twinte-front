@@ -1,5 +1,5 @@
 import { TimeTables, Period } from '../../types/index'
-import { UserLectureEntity } from '~/src/types/server'
+import { UserLectureEntity } from '@/types/server'
 
 export interface S {
   timeTables: TimeTables
