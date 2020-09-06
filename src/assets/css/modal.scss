@@ -7,11 +7,11 @@
   width: 92vw;
   max-width: 70vh;
   height: 80vh;
-  background: #fff;
+  background: $white;
   box-shadow: $large-shadow;
   border-radius: 1vh;
   z-index: 6;
-  padding: 4.4vh;
+  padding: 4vh;
   box-sizing: border-box;
 }
 .back {
@@ -28,5 +28,5 @@
   top: 2.2vh;
   right: 2.1vh;
   font-size: 3.1rem;
-  color: $close-btn-color;
+  color: $main-text-color;
 }

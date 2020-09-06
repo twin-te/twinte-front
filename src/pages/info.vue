@@ -73,7 +73,7 @@ export default class Info extends Vue {
     &__topic-title {
       @include elipsis;
 
-      color: $info-topic-title-color;
+      color: $yellow-orange;
       font-size: 1.4rem;
       margin: 0 0 4%;
     }
