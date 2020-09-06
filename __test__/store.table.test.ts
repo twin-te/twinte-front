@@ -1,6 +1,6 @@
-import { mutations } from '../src/store/table'
-import { S, Module } from '../src/store/table/type'
-import { Period } from '~/src/types'
+import { mutations } from '@/store/table'
+import { S, Module } from '@/store/table/type'
+import { Period } from '@/types'
 export enum Day {
   Sun = '日',
   Mon = '月',
