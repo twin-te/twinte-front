@@ -1,4 +1,4 @@
-import { searchLectures } from '../src/store/api/lectures'
+import { searchLectures } from '@/store/api/lectures'
 
 jest.setTimeout(30000)
 

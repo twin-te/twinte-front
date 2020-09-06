@@ -1,5 +1,5 @@
-import { mutations } from '../src/store/visible'
-import { S } from '../src/store/visible/type'
+import { mutations } from '@/store/visible'
+import { S } from '@/store/visible/type'
 
 let state: S
 
