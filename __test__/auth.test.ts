@@ -1,4 +1,4 @@
-import { isLogin } from '../src/store/api/auth'
+import { isLogin } from '../src/api/auth'
 
 jest.setTimeout(30000)
 

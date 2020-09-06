@@ -100,6 +100,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import { Period, SubjectSettings } from '../types'
 import cloneDeep from 'lodash/cloneDeep'
+import { Day, Module } from 'twinte-parser'
 
 @Component({
   components: {
@@ -123,11 +124,12 @@ export default class DisplaySettings extends Vue {
     lecture_name: '科目名',
     instructor: '担当教員',
     year: 2019,
-    module: '秋C',
-    day: '木',
+    module: '秋C' as Module,
+    day: '木' as Day,
     period: 4,
     room: '0A000',
     user_lecture_id: 'sampledata',
+    formats: [],
   }
 
   setSbj() {

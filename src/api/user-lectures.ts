@@ -1,6 +1,6 @@
-import { BASE_URL, axios, YEAR } from '@/common/config'
+import { BASE_URL, axios, YEAR } from '../../common/config'
 const url = BASE_URL + '/user-lectures'
-import { UserLectureEntity } from '@/types/server'
+import { UserLectureEntity } from '../../types/server'
 import union from 'lodash/union'
 
 /**

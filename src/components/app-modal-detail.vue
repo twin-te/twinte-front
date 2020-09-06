@@ -51,7 +51,7 @@
           v-for="n in 3"
           :key="n"
           :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
-          style="width: 30%;"
+          style="width: 30%"
         >
           <span class="counter-name"
             >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
@@ -152,10 +152,7 @@ export default class Index extends Vue {
         break
     }
     const userData: UserLectureEntity = {
-      twinte_lecture_id: this.userData.twinte_lecture_id,
-      user_lecture_id: this.userData.user_lecture_id,
-      lecture_name: this.userData.lecture_name,
-      instructor: this.userData.instructor,
+      ...this.userData,
       memo: this.localMemo,
       attendance,
       absence,
@@ -204,6 +201,9 @@ export default class Index extends Vue {
       attendance: this.userData.attendance,
       absence: this.userData.absence,
       late: this.userData.late,
+      // TODO
+      credits: 0,
+      formats: [],
     }
     await this.$store.dispatch('table/updatePeriod', { userData })
     // → メモの変更
