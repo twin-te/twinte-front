@@ -166,7 +166,7 @@ export default class ModalInfomation extends Vue {
   &__topic-title {
     @include elipsis;
 
-    color: $info-topic-title-color;
+    color: $yellow-orange;
     font-size: 1.4rem;
     margin: 0 0 4%;
   }
@@ -217,7 +217,7 @@ export default class ModalInfomation extends Vue {
     display: inline-block;
     width: 1.7rem;
     height: 1.7rem;
-    border: 0.14rem solid $unselected-element-color;
+    border: 0.14rem solid $element-gray;
     border-radius: 20% 20%;
     margin-right: 0.8rem;
     cursor: pointer;
@@ -228,7 +228,7 @@ export default class ModalInfomation extends Vue {
       transform: translateY(-50%) translateX(-50%);
       font-size: 100%;
       font-weight: 600;
-      color: $unselected-element-color;
+      color: $element-gray;
       cursor: pointer;
       user-select: none;
     }

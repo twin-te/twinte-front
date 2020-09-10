@@ -48,7 +48,7 @@ export default class Index extends Vue {
   line-height: 8vh;
   background-color: $primary-color;
   font-size: 2em;
-  // border-bottom: 2px solid $form-border-color;
+  // border-bottom: 2px solid $element-gray;
   box-shadow: $toolber-shadow;
 }
 .top .title-logo {
@@ -64,7 +64,7 @@ export default class Index extends Vue {
 .btn {
   &--add {
     font-size: 5.5vh;
-    color: #fff;
+    color: $white;
     position: absolute;
     right: 0;
     top: 50%;
@@ -75,7 +75,7 @@ export default class Index extends Vue {
   }
   &--setting {
     font-size: 4.3vh;
-    color: #fff;
+    color: $white;
     left: 0;
     position: absolute;
     top: 50%;

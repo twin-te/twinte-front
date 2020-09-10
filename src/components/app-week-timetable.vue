@@ -130,7 +130,7 @@ export default class Index extends Vue {
     font-size: 1.9vh;
     line-height: 3vh;
     text-align: center;
-    color: #9a9a9a;
+    color: $sub-text-color;
     padding: 1vmin 1vw;
     p {
       font-size: 1.65vh;

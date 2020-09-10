@@ -205,6 +205,8 @@ h3 {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   -ms-wrap-margin: 0;
+  width: 12vw;
+  height: calc(14vh - 3vmin);
 }
 
 .display-check {
@@ -213,7 +215,7 @@ h3 {
   width: 1.9rem;
   height: 1.9rem;
   vertical-align: middle;
-  border: 0.14rem solid $unselected-element-color;
+  border: 0.14rem solid $element-gray;
   border-radius: 20% 20%;
   margin-right: 7%;
   cursor: pointer;
@@ -223,7 +225,7 @@ h3 {
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     font-size: 100%;
-    color: $unselected-element-color;
+    color: $element-gray;
     cursor: pointer;
     user-select: none;
   }
@@ -233,7 +235,7 @@ h3 {
   border: 0.14rem solid $primary-color;
   background-color: $primary-color;
   span {
-    color: #fff;
+    color: $white;
     font-weight: bold;
   }
 }
@@ -259,10 +261,10 @@ input {
     margin-top: 1vh;
     margin-right: 3vh;
     background-color: white;
-    color: $unselected-element-color;
+    color: $element-gray;
     text-align: center;
     line-height: 3rem;
-    border: $unselected-element-color 0.14rem solid;
+    border: $element-gray 0.14rem solid;
     border-radius: 3rem;
     user-select: none;
   }

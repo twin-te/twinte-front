@@ -285,7 +285,7 @@ h2 {
   .assign-btn {
     position: absolute;
     font-size: 1.2rem;
-    color: #c0c0c0;
+    color: $sub-text-color;
     font-weight: 400;
     line-height: 1.5rem;
     padding-left: 1rem;
@@ -321,7 +321,7 @@ h2 {
   height: 100%;
   min-height: 10vh;
   color: $main-text-color;
-  border: 0.2vh solid $form-border-color;
+  border: 0.2vh solid $element-gray;
   border-radius: 0.5rem;
   flex-basis: 20vh;
   flex-shrink: 2;
@@ -389,7 +389,7 @@ h2 {
 }
 .delete-btn {
   font-size: 1.3rem;
-  color: $denger-element-color;
+  color: $element-denger;
   margin: 2vh 0 0;
   /* stylelint-disable-next-line no-descending-specificity */
   i {

@@ -110,7 +110,7 @@ export default class AppTimeTable extends Vue {
     font-size: 1.9vh;
     line-height: 3vh;
     text-align: center;
-    color: #9a9a9a;
+    color: $sub-text-color;
     p {
       font-size: 1.65vh;
       line-height: 1vh;
