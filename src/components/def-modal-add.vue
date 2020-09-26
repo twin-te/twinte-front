@@ -313,11 +313,11 @@ article {
     position: relative;
     height: 100%;
     width: 100%;
-    background-color: #fff;
+    background-color: $white;
     font-size: 16px;
     color: $main-text-color;
     box-sizing: border-box;
-    border: 0.1rem solid $form-border-color;
+    border: 0.1rem solid $element-gray;
     border-radius: 3rem;
     padding: 0;
     padding-left: 4%;
@@ -358,7 +358,7 @@ article {
 
 //++++++++++++++++++++++++// 検索以外の追加方法 //++++++++++++++++++++++++//
 .others-form {
-  border-top: 1px solid #adadad;
+  border-top: 1px solid $element-gray;
   width: 100%;
   &__content {
     font-size: 1.2rem;
@@ -400,7 +400,7 @@ article {
     display: inline-block;
     width: 1.7rem;
     height: 1.7rem;
-    border: 0.14rem solid $unselected-element-color;
+    border: 0.14rem solid $element-gray;
     border-radius: 20% 20%;
     margin-right: 0.8rem;
     cursor: pointer;
@@ -411,7 +411,7 @@ article {
       transform: translateY(-50%) translateX(-50%);
       font-size: 100%;
       font-weight: 600;
-      color: $unselected-element-color;
+      color: $element-gray;
       cursor: pointer;
       user-select: none;
     }
@@ -441,7 +441,7 @@ article {
     background-color: $primary-color;
     opacity: 1;
     span {
-      color: #fff;
+      color: $white;
       font-weight: 600;
       opacity: 1;
     }

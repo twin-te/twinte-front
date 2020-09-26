@@ -1,28 +1,30 @@
 <template>
   <Dialog class="info" :show="show" @close="close()">
-    <h1 class="info__title">Twin:teからの新着お知らせ</h1>
-    <div class="info__body">
-      <section class="info__post" v-for="info in information" :key="info.id">
-        <div class="info__date">{{ info.date }}</div>
-        <h2 class="info__topic-title">{{ info.title }}</h2>
-        <div class="info__content" v-html="info.content" />
-        <hr class="info__divider" v-if="information.slice(-1)[0] !== info" />
-      </section>
-    </div>
-    <Button class="info__button" @button-click="close()">OK</Button>
+    <article class="info__layout">
+      <h1 class="info__title">Twin:teからの新着お知らせ</h1>
+      <div class="info__body">
+        <section class="info__post" v-for="info in information" :key="info.id">
+          <div class="info__date">{{ info.date }}</div>
+          <h2 class="info__topic-title">{{ info.title }}</h2>
+          <div class="info__content" v-html="info.content" />
+          <hr class="info__divider" v-if="information.slice(-1)[0] !== info" />
+        </section>
+      </div>
+      <Button class="info__button" @button-click="close()">OK</Button>
 
-    <div class="check-display">
-      <input
-        type="checkbox"
-        id="DisplayInfo"
-        v-model="displayInfo"
-        name="DisplayInfo"
-        class="check-display__input"
-      />
-      <label class="check-display__checkbox" for="DisplayInfo"
-        ><span class="material-icons">check</span></label
-      >次回のTwin:te起動時に表示する
-    </div>
+      <div class="check-display">
+        <input
+          type="checkbox"
+          id="DisplayInfo"
+          v-model="displayInfo"
+          name="DisplayInfo"
+          class="check-display__input"
+        />
+        <label class="check-display__checkbox" for="DisplayInfo"
+          ><span class="material-icons">check</span></label
+        >次回のTwin:te起動時に表示する
+      </div>
+    </article>
   </Dialog>
 </template>
 
@@ -132,6 +134,13 @@ export default class ModalInfomation extends Vue {
 .info {
   width: 100%;
 
+  &__layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
   &__title {
     margin-top: 0;
     color: $primary-color;
@@ -148,13 +157,14 @@ export default class ModalInfomation extends Vue {
   }
 
   &__body {
-    height: 73%;
+    position: relative;
+    height: 100%;
     overflow-y: scroll;
     margin-bottom: 5%;
   }
 
   &__post {
-    padding: 3% 5% 0;
+    padding: 4% 3% 0;
   }
 
   &__date {
@@ -166,9 +176,9 @@ export default class ModalInfomation extends Vue {
   &__topic-title {
     @include elipsis;
 
-    color: $info-topic-title-color;
+    color: $yellow-orange;
     font-size: 1.4rem;
-    margin: 0 0 4%;
+    margin: 0 0 3%;
   }
 
   &__content {
@@ -184,9 +194,13 @@ export default class ModalInfomation extends Vue {
       font-size: 1.3rem;
     }
     /deep/ p {
-      margin: 0 0 5%;
+      margin: 0;
       padding: 0;
       line-height: 140%;
+    }
+    /deep/ a {
+      text-decoration: none;
+      color: $link-text-color;
     }
   }
 
@@ -194,7 +208,7 @@ export default class ModalInfomation extends Vue {
     margin: 0;
     padding: 0;
     border: none;
-    border-bottom: 0.1rem solid $element-gray;
+    border-bottom: 0.05rem solid $element-gray;
   }
 }
 
@@ -217,7 +231,7 @@ export default class ModalInfomation extends Vue {
     display: inline-block;
     width: 1.7rem;
     height: 1.7rem;
-    border: 0.14rem solid $unselected-element-color;
+    border: 0.14rem solid $element-gray;
     border-radius: 20% 20%;
     margin-right: 0.8rem;
     cursor: pointer;
@@ -228,7 +242,7 @@ export default class ModalInfomation extends Vue {
       transform: translateY(-50%) translateX(-50%);
       font-size: 100%;
       font-weight: 600;
-      color: $unselected-element-color;
+      color: $element-gray;
       cursor: pointer;
       user-select: none;
     }
@@ -238,7 +252,7 @@ export default class ModalInfomation extends Vue {
     background-color: $primary-color;
     opacity: 1;
     span {
-      color: #fff;
+      color: $white;
       font-weight: 600;
       opacity: 1;
     }

@@ -46,7 +46,7 @@ export default class Index extends Vue {
 
   &__month {
     background: $primary-color;
-    color: #fff;
+    color: $white;
     font-size: 1.5vh;
     text-align: center;
     line-height: 2vh;

@@ -73,15 +73,15 @@ export default class Info extends Vue {
     &__topic-title {
       @include elipsis;
 
-      color: $info-topic-title-color;
+      color: $yellow-orange;
       font-size: 1.4rem;
-      margin: 0 0 4%;
+      margin: 0 0 3%;
     }
     &__content {
       display: inline-block;
       color: $main-text-color;
       font-size: 1.2rem;
-      margin: 0 0 6%;
+      margin: 0;
 
       /deep/ h2 {
         font-size: 1.35rem;
@@ -93,6 +93,10 @@ export default class Info extends Vue {
         margin: 0 0 5%;
         padding: 0;
         line-height: 140%;
+      }
+      /deep/ a {
+        text-decoration: none;
+        color: $link-text-color;
       }
     }
   }
