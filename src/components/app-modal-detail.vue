@@ -30,18 +30,18 @@
           授業形式
           <span>
             <i
-              class="material-icons icon"
-              :class="{ icon__on: userData.formats.includes('FaceToFace') }"
+              class="material-icons icon --format"
+              :class="{ '--on': userData.formats.includes('FaceToFace') }"
               >people_alt</i
             >
             <i
-              class="material-icons icon"
-              :class="{ icon__on: userData.formats.includes('Synchronous') }"
+              class="material-icons icon --format"
+              :class="{ '--on': userData.formats.includes('Synchronous') }"
               >switch_video</i
             >
             <i
-              class="material-icons icon"
-              :class="{ icon__on: userData.formats.includes('Asynchronous') }"
+              class="material-icons icon --format"
+              :class="{ '--on': userData.formats.includes('Asynchronous') }"
               >video_library</i
             >
             <i
@@ -302,12 +302,21 @@ article {
 
 /* ボタン・アイコン */
 .icon {
+  user-select: none;
   display: inline-flex;
   vertical-align: middle;
   padding-bottom: 0.4vh;
 
-  &__on {
-    color: $yellow-orange-light;
+  &.--format {
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 50%;
+    color: $element-pale-gray;
+    background: $element-light-gray;
+  }
+
+  &.--on {
+    background: $yellow-orange-light;
   }
 }
 

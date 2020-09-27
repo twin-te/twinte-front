@@ -1,53 +1,56 @@
 <template>
-  <div class="card">
-    <div class="card__title">手動で設定する</div>
+  <transition name="bound">
+    <div class="card">
+      <div class="card__title">手動で設定する</div>
 
-    <div class="checkbox">
-      <input
-        id="FaceToFace"
-        type="checkbox"
-        v-model="FaceToFace"
-        class="checkbox__input"
-      />
-      <label class="checkbox__checkbox" for="FaceToFace">
-        <span class="material-icons">check</span>
-      </label>
-      <div class="checkbox__contents">対面</div>
+      <div class="checkbox">
+        <input
+          id="FaceToFace"
+          type="checkbox"
+          v-model="FaceToFace"
+          class="checkbox__input"
+        />
+        <label class="checkbox__checkbox" for="FaceToFace">
+          <span class="material-icons">check</span>
+        </label>
+        <div class="checkbox__contents">対面</div>
+      </div>
+
+      <div class="checkbox">
+        <input
+          id="Synchronous"
+          type="checkbox"
+          v-model="Synchronous"
+          class="checkbox__input"
+        />
+        <label class="checkbox__checkbox" for="Synchronous">
+          <span class="material-icons">check</span>
+        </label>
+        <div class="checkbox__contents">オンライン（同時双方向）</div>
+      </div>
+
+      <div class="checkbox">
+        <input
+          id="Asynchronous"
+          type="checkbox"
+          v-model="Asynchronous"
+          class="checkbox__input"
+        />
+        <label class="checkbox__checkbox" for="Asynchronous">
+          <span class="material-icons">check</span>
+        </label>
+        <div class="checkbox__contents">オンライン（オンデマンド）</div>
+      </div>
+
+      <hr />
+
+      <div class="reacquisition">
+        <i @click="reacquisition" class="material-icons icon --refresh"
+          >refresh</i
+        >シラバスから再取得する
+      </div>
     </div>
-
-    <div class="checkbox">
-      <input
-        id="Synchronous"
-        type="checkbox"
-        v-model="Synchronous"
-        class="checkbox__input"
-      />
-      <label class="checkbox__checkbox" for="Synchronous">
-        <span class="material-icons">check</span>
-      </label>
-      <div class="checkbox__contents">オンライン（同時双方向）</div>
-    </div>
-
-    <div class="checkbox">
-      <input
-        id="Asynchronous"
-        type="checkbox"
-        v-model="Asynchronous"
-        class="checkbox__input"
-      />
-      <label class="checkbox__checkbox" for="Asynchronous">
-        <span class="material-icons">check</span>
-      </label>
-      <div class="checkbox__contents">オンライン（オンデマンド）</div>
-    </div>
-
-    <hr />
-
-    <div>
-      <i @click="reacquisition" class="material-icons icon">refresh</i
-      >シラバスから再取得する
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -91,7 +94,24 @@ export default class FormatsPanel extends Vue {
 .card {
   position: absolute;
   background: white;
-  border: 1px solid gray;
+  border: 1px solid $element-light-gray;
+  border-radius: 0.4rem;
+
+  & > * {
+    margin: 1rem;
+  }
+}
+
+.icon {
+  user-select: none;
+  display: inline-flex;
+  vertical-align: middle;
+  padding-bottom: 0.4vh;
+
+  &.--refresh {
+    font-size: 1.7rem;
+    margin-right: 0.8rem;
+  }
 }
 
 .checkbox {
@@ -134,5 +154,24 @@ export default class FormatsPanel extends Vue {
   &__contents {
     line-height: 1.7rem;
   }
+
+  .reacquisition {
+    line-height: 1.7rem;
+
+    &__sub {
+      color: $sub-text-color;
+    }
+  }
+}
+
+.bound-enter-active,
+.bound-leave-active {
+  transition: all 0.1s ease-in;
+}
+
+.bound-enter,
+.bound-leave-to {
+  transform: scale(0.9);
+  opacity: 0;
 }
 </style>
