@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card__title">手動で設定する</div>
 
-      <div class="checkbox">
+      <div class="card__section checkbox">
         <input
           id="FaceToFace"
           type="checkbox"
@@ -16,7 +16,7 @@
         <div class="checkbox__contents">対面</div>
       </div>
 
-      <div class="checkbox">
+      <div class="card__section checkbox">
         <input
           id="Synchronous"
           type="checkbox"
@@ -29,7 +29,7 @@
         <div class="checkbox__contents">オンライン（同時双方向）</div>
       </div>
 
-      <div class="checkbox">
+      <div class="card__section checkbox">
         <input
           id="Asynchronous"
           type="checkbox"
@@ -42,12 +42,16 @@
         <div class="checkbox__contents">オンライン（オンデマンド）</div>
       </div>
 
-      <hr />
+      <div class="card__section card__divider" />
 
-      <div class="reacquisition">
-        <i @click="reacquisition" class="material-icons icon --refresh"
-          >refresh</i
-        >シラバスから再取得する
+      <div class="card__section reacquisition" @click="reacquisition">
+        <div class="reacquisition__title">
+          <i class="material-icons icon --refresh">refresh</i
+          >シラバスから再取得する
+        </div>
+        <div class="reacquisition__sub-title">
+          手動で行った設定がリセットされます
+        </div>
       </div>
     </div>
   </transition>
@@ -94,11 +98,21 @@ export default class FormatsPanel extends Vue {
 .card {
   position: absolute;
   background: white;
-  border: 1px solid $element-light-gray;
+  border: 0.14rem solid $element-light-gray;
   border-radius: 0.4rem;
+  padding: 1rem;
 
-  & > * {
-    margin: 1rem;
+  &__section {
+    margin-top: 1.2rem;
+  }
+
+  &__title {
+    font-size: 1.4rem;
+    color: $sub-text-color;
+  }
+
+  &__divider {
+    border-top: 0.14rem solid $element-light-gray;
   }
 }
 
@@ -154,13 +168,15 @@ export default class FormatsPanel extends Vue {
   &__contents {
     line-height: 1.7rem;
   }
+}
 
-  .reacquisition {
-    line-height: 1.7rem;
+.reacquisition {
+  line-height: 1.7rem;
 
-    &__sub {
-      color: $sub-text-color;
-    }
+  &__sub-title {
+    margin-left: 2.5rem;
+    font-size: 0.9rem;
+    color: $sub-text-color;
   }
 }
 

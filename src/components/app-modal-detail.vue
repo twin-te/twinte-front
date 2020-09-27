@@ -45,7 +45,7 @@
               >video_library</i
             >
             <i
-              @click="displayFormatPanel = !displayFormatPanel"
+              @click="closeDisplayFormatPanel"
               class="edit-btn material-icons icon"
               >expand_more</i
             >
@@ -150,6 +150,9 @@ export default class Index extends Vue {
     return this.$store.getters['visible/detail']
   }
 
+  closeDisplayFormatPanel() {
+    this.displayFormatPanel = !this.displayFormatPanel
+  }
   syllabus() {
     openUrl(
       `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/0/`
@@ -213,6 +216,7 @@ export default class Index extends Vue {
   async close() {
     this.localMemo = ''
     this.editableLecture = null
+    this.closeDisplayFormatPanel()
     this.$store.commit('visible/chDetail', { display: false })
     this.$store.commit('table/setUserData', { userData: null })
     this.$store.commit('table/setLooking', { period: null })
