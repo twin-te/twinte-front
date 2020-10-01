@@ -97,6 +97,7 @@ export default class FormatsPanel extends Vue {
 @import '~/assets/css/variable.scss';
 .card {
   position: absolute;
+  z-index: 1;
   background: white;
   border: 0.14rem solid $element-light-gray;
   border-radius: 0.4rem;
