@@ -26,11 +26,37 @@
           <i @click="edit()" class="edit-btn material-icons icon">edit</i>
           <!-- → 教室変更 -->
         </p>
-        <!--
-        <p class="subject-item">
-          単位数
-          <span>{{userData.credits}}</span>
-        </p>-->
+        <p class="subject-item" v-if="userData !== null">
+          授業形式
+          <span>
+            <i
+              class="material-icons icon --format"
+              :class="{ '--on': userData.formats.includes('FaceToFace') }"
+              >people_alt</i
+            >
+            <i
+              class="material-icons icon --format"
+              :class="{ '--on': userData.formats.includes('Synchronous') }"
+              >switch_video</i
+            >
+            <i
+              class="material-icons icon --format"
+              :class="{ '--on': userData.formats.includes('Asynchronous') }"
+              >video_library</i
+            >
+            <i
+              @click="closeDisplayFormatPanel"
+              class="edit-btn material-icons icon"
+              >expand_more</i
+            >
+          </span>
+        </p>
+        <FormatsPanel
+          v-show="displayFormatPanel"
+          :formats="localFormats"
+          @change-formats="changeFormats"
+          @reacquisition="reacquisition"
+        />
       </section>
 
       <!-- メモ -->
@@ -87,14 +113,16 @@ import cloneDeep from 'lodash/cloneDeep'
 import Swal from 'sweetalert2'
 
 import { Period } from '../types'
-import { UserLectureEntity } from '../types/server'
+import { LectureFormat, UserLectureEntity } from '../types/server'
 import { updateLecture } from '../store/api/timetables'
 import { YEAR } from '../common/config'
 import { openUrl } from './utils/openUrl'
+import { searchLectures } from '~/store/api/lectures'
 
 @Component({
   components: {
     Dialog: () => import('~/components/global/dialog.vue'),
+    FormatsPanel: () => import('~/components/global/FormatsPanel.vue'),
   },
 })
 export default class Index extends Vue {
@@ -103,6 +131,8 @@ export default class Index extends Vue {
   atmnb = ['出席', '欠席', '遅刻']
   moduleNum = this.$store.getters['table/moduleNum']
   localMemo = ''
+  localFormats: Array<LectureFormat> = []
+  displayFormatPanel = false
   editableLecture: Period | null = null
 
   get atmnbCount() {
@@ -120,6 +150,9 @@ export default class Index extends Vue {
     return this.$store.getters['visible/detail']
   }
 
+  closeDisplayFormatPanel() {
+    this.displayFormatPanel = !this.displayFormatPanel
+  }
   syllabus() {
     openUrl(
       `https://kdb.tsukuba.ac.jp/syllabi/${YEAR}/${this.table?.lecture_code}/jpn/0/`
@@ -183,9 +216,30 @@ export default class Index extends Vue {
   async close() {
     this.localMemo = ''
     this.editableLecture = null
+    this.closeDisplayFormatPanel()
     this.$store.commit('visible/chDetail', { display: false })
     this.$store.commit('table/setUserData', { userData: null })
     this.$store.commit('table/setLooking', { period: null })
+  }
+
+  async reacquisition() {
+    if (!this.table?.lecture_code) return
+
+    const initialValue = await searchLectures(this.table.lecture_code)
+    this.localFormats = initialValue[0].formats
+
+    await this.save()
+  }
+
+  async changeFormats(format: LectureFormat, value: boolean) {
+    if (value) {
+      this.localFormats = [...this.localFormats, format]
+    } else {
+      // formatを配列から取り除きたい
+      this.localFormats = this.localFormats.filter((f) => f !== format)
+    }
+
+    await this.save()
   }
 
   async save() {
@@ -201,9 +255,8 @@ export default class Index extends Vue {
       attendance: this.userData.attendance,
       absence: this.userData.absence,
       late: this.userData.late,
-      // TODO
-      credits: 0,
-      formats: [],
+      credits: this.userData.credits,
+      formats: this.localFormats,
     }
     await this.$store.dispatch('table/updatePeriod', { userData })
     // → メモの変更
@@ -213,18 +266,24 @@ export default class Index extends Vue {
     }
     // → 教室の変更
 
-    this.$store.dispatch('api/login')
-    // → 反映
-
     this.editableLecture = null // 編集モードをオフに
-    this.close() // 閉じさせる
-    Swal.fire('完了', 'メモを保存しました', 'success')
+
+    Swal.fire({
+      title: '完了',
+      text: 'メモを保存しました',
+      icon: 'success',
+      toast: true,
+      showConfirmButton: false,
+      position: 'bottom-left',
+      timer: 6000,
+    })
   }
 
   @Watch('userData')
   onUserDataChange() {
     if (this.userData) {
       this.localMemo = this.userData.memo
+      this.localFormats = this.userData.formats
     }
   }
 }
@@ -247,9 +306,22 @@ article {
 
 /* ボタン・アイコン */
 .icon {
+  user-select: none;
   display: inline-flex;
   vertical-align: middle;
   padding-bottom: 0.4vh;
+
+  &.--format {
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 50%;
+    color: $element-pale-gray;
+    background: $element-light-gray;
+  }
+
+  &.--on {
+    background: $yellow-orange-light;
+  }
 }
 
 /* 科目の情報 */
