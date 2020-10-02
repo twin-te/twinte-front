@@ -13,6 +13,7 @@
         <label class="checkbox__checkbox" for="FaceToFace">
           <span class="material-icons">check</span>
         </label>
+        <i class="material-icons icon --format --on">people_alt</i>
         <div class="checkbox__contents">対面</div>
       </div>
 
@@ -26,6 +27,7 @@
         <label class="checkbox__checkbox" for="Synchronous">
           <span class="material-icons">check</span>
         </label>
+        <i class="material-icons icon --format --on">switch_video</i>
         <div class="checkbox__contents">オンライン（同時双方向）</div>
       </div>
 
@@ -39,6 +41,7 @@
         <label class="checkbox__checkbox" for="Asynchronous">
           <span class="material-icons">check</span>
         </label>
+        <i class="material-icons icon --format --on">video_library</i>
         <div class="checkbox__contents">オンライン（オンデマンド）</div>
       </div>
 
@@ -127,6 +130,18 @@ export default class FormatsPanel extends Vue {
     font-size: 1.7rem;
     margin-right: 0.8rem;
   }
+
+  &.--format {
+    font-size: 14px;
+    padding: 3px;
+    border-radius: 50%;
+    color: $element-pale-gray;
+    background: $element-light-gray;
+  }
+
+  &.--on {
+    background: $yellow-orange-light;
+  }
 }
 
 .checkbox {
@@ -142,7 +157,7 @@ export default class FormatsPanel extends Vue {
     height: 1.7rem;
     border: 0.14rem solid $element-gray;
     border-radius: 20% 20%;
-    margin-right: 0.8rem;
+    margin-right: 0.9rem;
     cursor: pointer;
     span {
       position: absolute;
@@ -169,6 +184,7 @@ export default class FormatsPanel extends Vue {
   &__contents {
     line-height: 1.7rem;
     font-size: 1rem;
+    margin-left: 0.4rem;
   }
 }
 
