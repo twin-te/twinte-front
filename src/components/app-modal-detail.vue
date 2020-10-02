@@ -45,7 +45,7 @@
               >video_library</i
             >
             <i
-              @click="closeDisplayFormatPanel"
+              @click="changeDisplayFormatPanel"
               class="edit-btn material-icons icon"
               >expand_more</i
             >
@@ -150,7 +150,7 @@ export default class Index extends Vue {
     return this.$store.getters['visible/detail']
   }
 
-  closeDisplayFormatPanel() {
+  changeDisplayFormatPanel() {
     this.displayFormatPanel = !this.displayFormatPanel
   }
   syllabus() {
@@ -216,7 +216,7 @@ export default class Index extends Vue {
   async close() {
     this.localMemo = ''
     this.editableLecture = null
-    this.closeDisplayFormatPanel()
+    this.displayFormatPanel = false
     this.$store.commit('visible/chDetail', { display: false })
     this.$store.commit('table/setUserData', { userData: null })
     this.$store.commit('table/setLooking', { period: null })
