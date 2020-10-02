@@ -108,7 +108,7 @@ export default class FormatsPanel extends Vue {
   }
 
   &__title {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     color: $sub-text-color;
   }
 
@@ -168,11 +168,13 @@ export default class FormatsPanel extends Vue {
   }
   &__contents {
     line-height: 1.7rem;
+    font-size: 1rem;
   }
 }
 
 .reacquisition {
   line-height: 1.7rem;
+  font-size: 1.2rem;
 
   &__sub-title {
     margin-left: 2.5rem;
