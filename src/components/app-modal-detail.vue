@@ -117,7 +117,7 @@ import { LectureFormat, UserLectureEntity } from '../types/server'
 import { updateLecture } from '../store/api/timetables'
 import { YEAR } from '../common/config'
 import { openUrl } from './utils/openUrl'
-import { searchLectures } from '~/store/api/lectures'
+import { getReacquision } from '~/usecase/get-reacquisition'
 
 @Component({
   components: {
@@ -225,8 +225,8 @@ export default class Index extends Vue {
   async reacquisition() {
     if (!this.table?.lecture_code) return
 
-    const initialValue = await searchLectures(this.table.lecture_code)
-    this.localFormats = initialValue[0].formats
+    const formats = await getReacquision(this.table.lecture_code)
+    this.localFormats = formats
 
     await this.save()
   }
