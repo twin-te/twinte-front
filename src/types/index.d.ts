@@ -2,7 +2,7 @@ import './shims-vuex-impl'
 import './shims-vuex-type'
 
 // twinte-parser
-import { TimetableEntity } from './server'
+import { LectureFormat, TimetableEntity } from './server'
 import { Day, Module } from './parser'
 
 /** 時間割 */
@@ -27,6 +27,7 @@ type OutputSearchData = {
   twinte_lecture_id: string
   year: number
   standardYear: number[]
+  formats: LectureFormat[]
 }[]
 
 type SubjectSettings = {

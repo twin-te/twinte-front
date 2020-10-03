@@ -31,12 +31,11 @@ export interface PeriodEntity {
   user_lecture_id: string
 }
 
-export enum LectureFormat {
-  OnlineAsynchronous = 'Asynchronous',
-  OnlineSynchronous = 'Synchronous',
-  FaceToFace = 'FaceToFace',
-  Others = 'Others',
-}
+export type LectureFormat =
+  | 'Asynchronous'
+  | 'Synchronous'
+  | 'FaceToFace'
+  | 'Others'
 
 /**
  * 授業データ構造
