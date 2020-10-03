@@ -102,7 +102,7 @@ export default class FormatsPanel extends Vue {
   position: absolute;
   z-index: 1;
   background: white;
-  border: 0.14rem solid $element-light-gray;
+  border: 0.14rem solid $element-gray;
   border-radius: 0.4rem;
   padding: 1rem;
 
@@ -116,7 +116,7 @@ export default class FormatsPanel extends Vue {
   }
 
   &__divider {
-    border-top: 0.14rem solid $element-light-gray;
+    border-top: 0.14rem solid $element-gray;
   }
 }
 
@@ -125,6 +125,8 @@ export default class FormatsPanel extends Vue {
   display: inline-flex;
   vertical-align: middle;
   padding-bottom: 0.4vh;
+  height: 1.4rem;
+  width: 1.4rem;
 
   &.--refresh {
     font-size: 1.7rem;
@@ -132,8 +134,8 @@ export default class FormatsPanel extends Vue {
   }
 
   &.--format {
-    font-size: 14px;
-    padding: 3px;
+    font-size: 1.4rem;
+    padding: 0.3rem;
     border-radius: 50%;
     color: $element-pale-gray;
     background: $element-light-gray;

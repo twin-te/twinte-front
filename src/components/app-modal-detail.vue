@@ -46,8 +46,8 @@
             >
             <i
               @click="changeDisplayFormatPanel"
-              class="edit-btn material-icons icon"
-              >expand_more</i
+              class="material-icons icon --expand"
+              >{{ displayFormatPanel ? 'expand_less' : 'expand_more' }}</i
             >
           </span>
         </p>
@@ -312,11 +312,16 @@ article {
   padding-bottom: 0.4vh;
 
   &.--format {
-    font-size: 14px;
-    padding: 3px;
+    font-size: 1.8rem;
+    padding: 0.3rem;
     border-radius: 50%;
     color: $element-pale-gray;
     background: $element-light-gray;
+  }
+
+  &.--expand {
+    color: $sub-text-color;
+    font-size: 2rem;
   }
 
   &.--on {
