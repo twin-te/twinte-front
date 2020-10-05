@@ -98,10 +98,10 @@ export default class Index extends Vue {
     if (cal.data.substituteDay) {
       Swal.fire({
         toast: true,
-        text: `今日は${cal.data.substituteDay?.change_to}曜日課です`,
+        text: `今日は${cal.data.substituteDay.change_to}曜日課です`,
         position: 'bottom-left',
         showConfirmButton: false,
-        type: 'info',
+        icon: 'info',
         timer: 6000,
       })
     }
