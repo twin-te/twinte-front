@@ -3,7 +3,7 @@ name: dev-Deploy
 on:
   push:
     branches:
-      - takonasu/devDeploy # devブランチにpushされた場合に起動
+      - dev # devブランチにpushされた場合に起動
 
 jobs:
   deploy:
