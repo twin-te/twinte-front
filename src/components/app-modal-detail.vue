@@ -247,28 +247,25 @@ export default class Index extends Vue {
       return
     }
     const userData: UserLectureEntity = {
-      twinte_lecture_id: this.userData.twinte_lecture_id,
-      user_lecture_id: this.userData.user_lecture_id,
-      lecture_name: this.userData.lecture_name,
-      instructor: this.userData.instructor,
+      ...this.userData,
       memo: this.localMemo,
-      attendance: this.userData.attendance,
-      absence: this.userData.absence,
-      late: this.userData.late,
-      credits: this.userData.credits,
       formats: this.localFormats,
     }
     await this.$store.dispatch('table/updatePeriod', { userData })
-    // → メモの変更
+    // → メモ、形式の変更
 
     if (this.editableLecture) {
       await updateLecture(this.editableLecture)
+      await this.$store.dispatch('table/setPeriod', {
+        period: this.editableLecture,
+      })
     }
     // → 教室の変更
 
     this.editableLecture = null // 編集モードをオフに
+    await this.$store.dispatch('api/fetch') // 最新のデータを反映
 
-    Swal.fire({
+    await Swal.fire({
       title: '完了',
       text: 'メモを保存しました',
       icon: 'success',
