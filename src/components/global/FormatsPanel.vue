@@ -13,6 +13,7 @@
         <label class="checkbox__checkbox" for="FaceToFace">
           <span class="material-icons">check</span>
         </label>
+        <i class="material-icons icon --format --on">people_alt</i>
         <div class="checkbox__contents">対面</div>
       </div>
 
@@ -26,6 +27,7 @@
         <label class="checkbox__checkbox" for="Synchronous">
           <span class="material-icons">check</span>
         </label>
+        <i class="material-icons icon --format --on">switch_video</i>
         <div class="checkbox__contents">オンライン（同時双方向）</div>
       </div>
 
@@ -39,6 +41,7 @@
         <label class="checkbox__checkbox" for="Asynchronous">
           <span class="material-icons">check</span>
         </label>
+        <i class="material-icons icon --format --on">video_library</i>
         <div class="checkbox__contents">オンライン（オンデマンド）</div>
       </div>
 
@@ -99,7 +102,7 @@ export default class FormatsPanel extends Vue {
   position: absolute;
   z-index: 1;
   background: white;
-  border: 0.14rem solid $element-light-gray;
+  border: 0.14rem solid $element-gray;
   border-radius: 0.4rem;
   padding: 1rem;
 
@@ -108,12 +111,12 @@ export default class FormatsPanel extends Vue {
   }
 
   &__title {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     color: $sub-text-color;
   }
 
   &__divider {
-    border-top: 0.14rem solid $element-light-gray;
+    border-top: 0.14rem solid $element-gray;
   }
 }
 
@@ -122,10 +125,24 @@ export default class FormatsPanel extends Vue {
   display: inline-flex;
   vertical-align: middle;
   padding-bottom: 0.4vh;
+  height: 1.4rem;
+  width: 1.4rem;
 
   &.--refresh {
     font-size: 1.7rem;
     margin-right: 0.8rem;
+  }
+
+  &.--format {
+    font-size: 1.4rem;
+    padding: 0.3rem;
+    border-radius: 50%;
+    color: $element-pale-gray;
+    background: $element-light-gray;
+  }
+
+  &.--on {
+    background: $yellow-orange-light;
   }
 }
 
@@ -142,7 +159,7 @@ export default class FormatsPanel extends Vue {
     height: 1.7rem;
     border: 0.14rem solid $element-gray;
     border-radius: 20% 20%;
-    margin-right: 0.8rem;
+    margin-right: 0.9rem;
     cursor: pointer;
     span {
       position: absolute;
@@ -168,11 +185,14 @@ export default class FormatsPanel extends Vue {
   }
   &__contents {
     line-height: 1.7rem;
+    font-size: 1rem;
+    margin-left: 0.4rem;
   }
 }
 
 .reacquisition {
   line-height: 1.7rem;
+  font-size: 1.2rem;
 
   &__sub-title {
     margin-left: 2.5rem;

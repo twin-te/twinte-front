@@ -45,9 +45,9 @@
               >video_library</i
             >
             <i
-              @click="closeDisplayFormatPanel"
-              class="edit-btn material-icons icon"
-              >expand_more</i
+              @click="changeDisplayFormatPanel"
+              class="material-icons icon --expand"
+              >{{ displayFormatPanel ? 'expand_less' : 'expand_more' }}</i
             >
           </span>
         </p>
@@ -117,7 +117,7 @@ import { LectureFormat, UserLectureEntity } from '../types/server'
 import { updateLecture } from '../store/api/timetables'
 import { YEAR } from '../common/config'
 import { openUrl } from './utils/openUrl'
-import { searchLectures } from '~/store/api/lectures'
+import { getReacquision } from '~/usecase/get-reacquisition'
 
 @Component({
   components: {
@@ -150,7 +150,7 @@ export default class Index extends Vue {
     return this.$store.getters['visible/detail']
   }
 
-  closeDisplayFormatPanel() {
+  changeDisplayFormatPanel() {
     this.displayFormatPanel = !this.displayFormatPanel
   }
   syllabus() {
@@ -216,7 +216,7 @@ export default class Index extends Vue {
   async close() {
     this.localMemo = ''
     this.editableLecture = null
-    this.closeDisplayFormatPanel()
+    this.displayFormatPanel = false
     this.$store.commit('visible/chDetail', { display: false })
     this.$store.commit('table/setUserData', { userData: null })
     this.$store.commit('table/setLooking', { period: null })
@@ -225,8 +225,8 @@ export default class Index extends Vue {
   async reacquisition() {
     if (!this.table?.lecture_code) return
 
-    const initialValue = await searchLectures(this.table.lecture_code)
-    this.localFormats = initialValue[0].formats
+    const formats = await getReacquision(this.table.lecture_code)
+    this.localFormats = formats
 
     await this.save()
   }
@@ -312,11 +312,16 @@ article {
   padding-bottom: 0.4vh;
 
   &.--format {
-    font-size: 14px;
-    padding: 3px;
+    font-size: 1.8rem;
+    padding: 0.3rem;
     border-radius: 50%;
     color: $element-pale-gray;
     background: $element-light-gray;
+  }
+
+  &.--expand {
+    color: $sub-text-color;
+    font-size: 2rem;
   }
 
   &.--on {

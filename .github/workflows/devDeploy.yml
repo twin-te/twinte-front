@@ -1,0 +1,27 @@
+name: dev-Deploy
+
+on:
+  push:
+    branches:
+      - dev # devブランチにpushされた場合に起動
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v1.6.1
+      with: # shimataro/ssh-key-actionに渡すパラメーター
+        private-key: ${{ secrets.SSH_KEY }} # 必須
+        public-key: ${{ secrets.SSH_KEY_PUBLIC }} # 必須
+        name: id_rsa # 省略可
+        known-hosts: ${{ secrets.KNOWN_DEV_HOSTS }} # 省略可
+    - name: run deploy script
+      run: ${{ secrets.SSH_DEV_SCRIPT }}
+    - name: Slack Notification
+      uses: homoluctus/slatify@v2.1.0
+      if: always()
+      with:
+        type: ${{ job.status }}
+        job_name: 'DEVサーバーへのデプロイ'
+        url: ${{ secrets.SLACK_WEBHOOK }}
