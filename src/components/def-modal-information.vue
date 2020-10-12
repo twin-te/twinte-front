@@ -10,6 +10,7 @@
           <hr class="info__divider" v-if="information.slice(-1)[0] !== info" />
         </section>
       </div>
+      <hr class="footer-divider" />
       <Button class="info__button" @button-click="close()">OK</Button>
 
       <div class="check-display">
@@ -160,7 +161,6 @@ export default class ModalInfomation extends Vue {
     position: relative;
     height: 100%;
     overflow-y: scroll;
-    margin-bottom: 5%;
   }
 
   &__post {
@@ -210,6 +210,15 @@ export default class ModalInfomation extends Vue {
     border: none;
     border-bottom: 0.05rem solid $element-gray;
   }
+}
+
+.footer-divider {
+  width: calc(100% + 8vh - 2px);
+  display: block;
+  border: 0.05rem solid $element-gray;
+  box-shadow: 0 -0.5rem 1rem $element-gray;
+  margin: 0 0 1.5rem -4vh;
+  padding: 0;
 }
 
 .check-display {

@@ -71,6 +71,7 @@
         </p>
       </section>
       <!-- → その他オプション -->
+      <hr class="footer-divider" />
       <section class="register-btn" @click="submitByNumber()">
         時間割に追加
       </section>
@@ -451,5 +452,13 @@ article {
     color: $primary-color;
     font-size: 1.9rem;
   }
+}
+.footer-divider {
+  width: calc(100% + 8vh - 2px);
+  display: block;
+  border: 0.05rem solid $element-gray;
+  box-shadow: 0 -0.5rem 1rem $element-gray;
+  margin: 0 0 1.5rem -4vh;
+  padding: 0;
 }
 </style>

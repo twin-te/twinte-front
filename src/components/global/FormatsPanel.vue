@@ -105,13 +105,15 @@ export default class FormatsPanel extends Vue {
   border: 0.14rem solid $element-gray;
   border-radius: 0.4rem;
   padding: 1rem;
+  margin-top: -1rem;
+  left: 0;
 
   &__section {
     margin-top: 1.2rem;
   }
 
   &__title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: $sub-text-color;
   }
 
@@ -125,8 +127,6 @@ export default class FormatsPanel extends Vue {
   display: inline-flex;
   vertical-align: middle;
   padding-bottom: 0.4vh;
-  height: 1.4rem;
-  width: 1.4rem;
 
   &.--refresh {
     font-size: 1.7rem;
@@ -134,7 +134,7 @@ export default class FormatsPanel extends Vue {
   }
 
   &.--format {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     padding: 0.3rem;
     border-radius: 50%;
     color: $element-pale-gray;
@@ -148,6 +148,8 @@ export default class FormatsPanel extends Vue {
 
 .checkbox {
   display: flex;
+  vertical-align: middle;
+  align-items: center;
 
   &__input {
     display: none;
@@ -185,18 +187,18 @@ export default class FormatsPanel extends Vue {
   }
   &__contents {
     line-height: 1.7rem;
-    font-size: 1rem;
-    margin-left: 0.4rem;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
   }
 }
 
 .reacquisition {
   line-height: 1.7rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 
   &__sub-title {
     margin-left: 2.5rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: $sub-text-color;
   }
 }
