@@ -9,90 +9,93 @@
         <p class="sbj-number">科目番号 {{ table.lecture_code }}</p>
       </h1>
 
-      <!-- 科目詳細 -->
-      <section class="sbj-detail-wrapper">
-        <p class="subject-item">
-          担当教員
-          <span>{{ table.instructor }}</span>
-        </p>
-        <p class="subject-item">
-          開講時限
-          <span>{{ table.module }} {{ table.day }}{{ table.period }}</span>
-        </p>
-        <p class="subject-item">
-          授業教室
-          <span v-if="!editableLecture">{{ table.room }}</span>
-          <input v-else class="sbj-detail" v-model="editableLecture.room" />
-          <i @click="edit()" class="edit-btn material-icons icon">edit</i>
-          <!-- → 教室変更 -->
-        </p>
-        <p class="subject-item" v-if="userData !== null">
-          授業形式
-          <span>
-            <i
-              class="material-icons icon --format"
-              :class="{ '--on': userData.formats.includes('FaceToFace') }"
-              >people_alt</i
-            >
-            <i
-              class="material-icons icon --format"
-              :class="{ '--on': userData.formats.includes('Synchronous') }"
-              >switch_video</i
-            >
-            <i
-              class="material-icons icon --format"
-              :class="{ '--on': userData.formats.includes('Asynchronous') }"
-              >video_library</i
-            >
-            <i
-              @click="changeDisplayFormatPanel"
-              class="material-icons icon --expand"
-              >{{ displayFormatPanel ? 'expand_less' : 'expand_more' }}</i
-            >
-          </span>
-        </p>
-        <FormatsPanel
-          v-show="displayFormatPanel"
-          :formats="localFormats"
-          @change-formats="changeFormats"
-          @reacquisition="reacquisition"
-        />
-      </section>
+      <div class="scroll-area">
+        <!-- 科目詳細 -->
+        <section class="sbj-detail-wrapper">
+          <p class="subject-item">
+            担当教員
+            <span>{{ table.instructor }}</span>
+          </p>
+          <p class="subject-item">
+            開講時限
+            <span>{{ table.module }} {{ table.day }}{{ table.period }}</span>
+          </p>
+          <p class="subject-item">
+            授業教室
+            <span v-if="!editableLecture">{{ table.room }}</span>
+            <input v-else class="sbj-detail" v-model="editableLecture.room" />
+            <i @click="edit()" class="edit-btn material-icons icon">edit</i>
+            <!-- → 教室変更 -->
+          </p>
+          <p class="subject-item" v-if="userData !== null">
+            授業形式
+            <span>
+              <i
+                class="material-icons icon --format"
+                :class="{ '--on': userData.formats.includes('FaceToFace') }"
+                >people_alt</i
+              >
+              <i
+                class="material-icons icon --format"
+                :class="{ '--on': userData.formats.includes('Synchronous') }"
+                >switch_video</i
+              >
+              <i
+                class="material-icons icon --format"
+                :class="{ '--on': userData.formats.includes('Asynchronous') }"
+                >video_library</i
+              >
+              <i
+                @click="changeDisplayFormatPanel"
+                class="material-icons icon --expand"
+                >{{ displayFormatPanel ? 'expand_less' : 'expand_more' }}</i
+              >
+            </span>
+          </p>
+          <FormatsPanel
+            v-show="displayFormatPanel"
+            :formats="localFormats"
+            @change-formats="changeFormats"
+            @reacquisition="reacquisition"
+          />
+        </section>
 
-      <!-- メモ -->
-      <h2>
-        <!-- <i class="material-icons icon">description</i> -->
-        メモ
-      </h2>
-      <textarea class="memo" type="text" v-model="localMemo"></textarea>
-      <h2>
-        出欠管理
-        <span class="assign-btn" @click="attend()">
-          出席する(responへ)
-          <i class="material-icons icon">chevron_right</i>
-        </span>
-      </h2>
-      <section class="counters-wrapper">
-        <div
-          v-for="n in 3"
-          :key="n"
-          :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
-          style="width: 30%"
-        >
-          <span class="counter-name"
-            >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
+        <!-- メモ -->
+        <h2>
+          <!-- <i class="material-icons icon">description</i> -->
+          メモ
+        </h2>
+        <textarea class="memo" type="text" v-model="localMemo"></textarea>
+        <h2>
+          出欠管理
+          <span class="assign-btn" @click="attend()">
+            出席する(responへ)
+            <i class="material-icons icon">chevron_right</i>
+          </span>
+        </h2>
+        <section class="counters-wrapper">
+          <div
+            v-for="n in 3"
+            :key="n"
+            :class="{ attend: n === 1, absent: n === 2, late: n === 3 }"
+            style="width: 30%"
           >
-          <!-- <+|-> -->
-          <div class="counter">
-            <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
-              >+</span
+            <span class="counter-name"
+              >{{ atmnb[n - 1] }} {{ atmnbCount[n - 1] }}回</span
             >
-            <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
-              >&#8211;</span
-            >
+            <!-- <+|-> -->
+            <div class="counter">
+              <span @click="counter(atmnb[n - 1], +1)" class="counter-left"
+                >+</span
+              >
+              <span @click="counter(atmnb[n - 1], -1)" class="counter-right"
+                >&#8211;</span
+              >
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+      <hr class="footer-divider" />
       <div @click="save()" class="register-btn">変更を保存</div>
       <div class="flex">
         <p @click="deleteItem()" class="delete-btn">
@@ -301,7 +304,6 @@ article {
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
 }
 
 /* ボタン・アイコン */
@@ -312,6 +314,7 @@ article {
   padding-bottom: 0.4vh;
 
   &.--format {
+    margin-top: -0.7rem;
     font-size: 1.8rem;
     padding: 0.3rem;
     border-radius: 50%;
@@ -320,8 +323,9 @@ article {
   }
 
   &.--expand {
+    margin-top: -0.7rem;
     color: $sub-text-color;
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
   &.--on {
@@ -331,23 +335,25 @@ article {
 
 /* 科目の情報 */
 h1 {
-  height: 6rem;
+  display: block;
+  width: 95%;
   font-size: 1.7rem;
-  line-height: 3.4rem;
+  line-height: 2.5rem;
   font-weight: 500;
   text-overflow: ellipsis;
   border-left: 0.5rem solid $primary-color;
-  white-space: nowrap;
+  padding-top: 0.4rem;
   padding-left: 0.8rem;
-  margin: 0;
+  margin: 0 0 1rem;
   .sbj-number {
     font-size: 1.2rem;
     color: $sub-text-color;
     font-weight: 400;
     line-height: 2rem;
-    margin: 0 0 0.7rem;
+    margin: 0.4rem 0;
   }
 }
+
 h2 {
   width: 100%;
   font-size: 1.4rem;
@@ -360,7 +366,7 @@ h2 {
     margin-right: 1%;
   }
   .assign-btn {
-    position: absolute;
+    // position: absolute;
     font-size: 1.2rem;
     color: $sub-text-color;
     font-weight: 400;
@@ -372,22 +378,35 @@ h2 {
     }
   }
 }
+
+.scroll-area {
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
+}
 .sbj-detail-wrapper {
   font-size: 1.4rem;
   padding: 0 0.3rem;
-  margin: 0.5rem 0;
 }
 .subject-item {
+  display: flex;
   font-weight: 500;
-  margin: 1.2rem 0;
+  line-height: 1.5rem;
   .edit-btn {
     padding-left: 0.5rem;
     font-size: 1.7rem;
     color: $sub-text-color;
   }
   span {
-    padding-left: 5%;
+    margin-left: 5%;
     font-weight: 400;
+    max-width: 70%;
+  }
+  .sbj-detail {
+    margin-left: 5%;
+    height: 1.8rem;
+    line-height: 1.5rem;
+    max-width: 60%;
   }
 }
 
@@ -395,7 +414,7 @@ h2 {
 
 .memo {
   width: 100%;
-  height: 100%;
+  height: 25%;
   min-height: 10vh;
   color: $main-text-color;
   border: 0.2vh solid $element-gray;
@@ -459,24 +478,33 @@ h2 {
   color: white;
 }
 
+.footer-divider {
+  width: calc(100% + 8vh - 2px);
+  display: block;
+  border: 0.05rem solid $element-gray;
+  box-shadow: 0 -0.5rem 1rem $element-gray;
+  margin: 0 0 1.5rem -4vh;
+  padding: 0;
+}
+
 //++++++++++++++++++++++++// 編集・削除ボタン //++++++++++++++++++++++++//
 .flex {
+  font-size: 1.3rem;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 0;
 }
 .delete-btn {
-  font-size: 1.3rem;
   color: $element-denger;
-  margin: 2vh 0 0;
   /* stylelint-disable-next-line no-descending-specificity */
   i {
     font-size: 2rem;
   }
 }
 .syllabus-btn {
-  font-size: 1.3rem;
+  position: absolute;
+  right: 0;
   color: $primary-color;
-  margin: 2vh 0 0;
   /* stylelint-disable-next-line no-descending-specificity */
   i {
     font-size: 2rem;
