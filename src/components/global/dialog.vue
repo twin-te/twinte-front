@@ -40,7 +40,7 @@ export default class Dialog extends Vue {
    * @keyup.escではなく、EventListenerを使用
    */
   @Watch('show')
-  onESC() {
+  onToggleDisplay() {
     if (this.show === false) {
       window.removeEventListener('keyup', this.onEscKeyUp)
     } else {

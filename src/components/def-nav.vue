@@ -202,7 +202,7 @@ export default class Index extends Vue {
    * @keyup.escではなく、EventListenerを使用
    */
   @Watch('drawer')
-  onESC() {
+  onToggleDisplay() {
     if (this.drawer === false) {
       window.removeEventListener('keyup', this.onEscKeyUp)
     } else {
