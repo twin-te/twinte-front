@@ -5,14 +5,14 @@
   -->
   <Dialog :show="show" @close="close()">
     <article>
-      <h1 class="title">授業の追加</h1>
+      <h1 class="title"><i class="title--icon material-icons">add</i> 授業の追加</h1>
 
       <!-- 検索フォーム -->
       <form class="search-form" @submit.prevent>
         <input
           v-model="input"
           type="text"
-          placeholder="授業名や科目番号で検索"
+          placeholder="授業名/科目番号で検索"
           class="search-form__form"
           @keyup.enter="search(input, 'input')"
         />
@@ -322,10 +322,15 @@ article {
 
 /* 授業の追加 */
 .title {
+  display: flex;
+  align-items: center;
   font-size: 1.8rem;
   color: $primary-color;
   font-weight: 400;
   margin: 0 0 1.5vh;
+  &--icon {
+    font-size: 30px;
+  }
 }
 
 /* 検索フォーム */
@@ -410,9 +415,21 @@ article {
   scrollbar-width: thin;
   box-sizing: border-box;
   .result-wrap {
-    padding: 0.8rem 1rem;
+    position: relative;
+    padding: 11px 1rem;
     display: flex;
     align-items: center;
+    &::after {
+      $w: 1rem;
+
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: $w;
+      width: calc(100% - (#{$w} * 2));
+      height: 0.5px;
+      background-color: $element-gray;
+    }
   }
   &__label {
     display: inline-block;
@@ -491,7 +508,7 @@ article {
     }
   }
   .syllabus-btn {
-    margin: 0 -0.4rem 0 -2px;
+    margin: 0 -10px 0 -3px;
     color: $sub-text-color;
     font-size: 24px;
   }
