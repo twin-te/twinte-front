@@ -448,23 +448,6 @@ article {
     display: flex;
     flex-direction: column;
   }
-  .result-formats {
-    height: 100%;
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    &__icon {
-      font-size: 1.8rem;
-      margin-left: 5px;
-      padding: 0.3rem;
-      border-radius: 50%;
-      color: $element-pale-gray;
-      background: $element-light-gray;
-      &--on {
-        background: $yellow-orange-light;
-      }
-    }
-  }
   &__lecture-name {
     color: $emphasis-text-color;
     font-size: 1.35rem;
@@ -490,10 +473,27 @@ article {
       opacity: 1;
     }
   }
+  .result-formats {
+    height: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    &__icon {
+      font-size: 14px;
+      margin-left: 5px;
+      padding: 0.3rem;
+      border-radius: 50%;
+      color: $element-pale-gray;
+      background: $element-light-gray;
+      &--on {
+        background: $yellow-orange-light;
+      }
+    }
+  }
   .syllabus-btn {
     margin: 0 -0.4rem 0 -2px;
     color: $sub-text-color;
-    font-size: 3rem;
+    font-size: 24px;
   }
 }
 .footer-divider {
