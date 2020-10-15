@@ -49,8 +49,31 @@
               n.lecture_name
             }}</label>
           </div>
+          <div class="result-formats">
+            <i
+              class="material-icons icon result-formats__icon"
+              :class="{
+                'result-formats__icon--on': n.formats.includes('FaceToFace'),
+              }"
+              >people_alt</i
+            >
+            <i
+              class="material-icons icon result-formats__icon"
+              :class="{
+                'result-formats__icon--on': n.formats.includes('Synchronous'),
+              }"
+              >switch_video</i
+            >
+            <i
+              class="material-icons icon result-formats__icon"
+              :class="{
+                'result-formats__icon--on': n.formats.includes('Asynchronous'),
+              }"
+              >video_library</i
+            >
+          </div>
           <span @click="syllabus(n)" class="syllabus-btn material-icons"
-            >menu_book</span
+            >chevron_right</span
           >
         </div>
       </section>
@@ -98,6 +121,7 @@ type miniLecture = {
   day: string
   period: number
   checked: boolean
+  formats: string[]
 }
 
 @Component({
@@ -180,6 +204,7 @@ export default class Index extends Vue {
         module: l.details[0]?.module || '',
         day: l.details[0]?.day || '',
         period: l.details[0]?.period || 0,
+        formats: l.formats,
         checked: type === 'csv',
       }
     })
@@ -397,6 +422,7 @@ article {
     display: none;
   }
   &__checkbox {
+    flex: 0 0 auto;
     position: relative;
     display: inline-block;
     width: 1.7rem;
@@ -418,9 +444,26 @@ article {
     }
   }
   .result-content {
-    width: 90%;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
+  }
+  .result-formats {
+    height: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    &__icon {
+      font-size: 1.8rem;
+      margin-left: 5px;
+      padding: 0.3rem;
+      border-radius: 50%;
+      color: $element-pale-gray;
+      background: $element-light-gray;
+      &--on {
+        background: $yellow-orange-light;
+      }
+    }
   }
   &__lecture-name {
     color: $emphasis-text-color;
@@ -448,9 +491,9 @@ article {
     }
   }
   .syllabus-btn {
-    padding-left: 0.3rem;
-    color: $primary-color;
-    font-size: 1.9rem;
+    margin: 0 -0.4rem 0 -2px;
+    color: $sub-text-color;
+    font-size: 3rem;
   }
 }
 .footer-divider {
