@@ -508,7 +508,7 @@ article {
     }
   }
   .syllabus-btn {
-    margin: 0 -10px 0 -3px;
+    margin: 0 -8px 0 -3px;
     color: $sub-text-color;
     font-size: 24px;
   }
