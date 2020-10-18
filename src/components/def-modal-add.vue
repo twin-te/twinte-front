@@ -53,21 +53,21 @@
             <i
               class="material-icons icon result-formats__icon"
               :class="{
-                'result-formats__icon--on': n.formats.includes('FaceToFace'),
+                '--on': n.formats.includes('FaceToFace'),
               }"
               >people_alt</i
             >
             <i
               class="material-icons icon result-formats__icon"
               :class="{
-                'result-formats__icon--on': n.formats.includes('Synchronous'),
+                '--on': n.formats.includes('Synchronous'),
               }"
               >switch_video</i
             >
             <i
               class="material-icons icon result-formats__icon"
               :class="{
-                'result-formats__icon--on': n.formats.includes('Asynchronous'),
+                '--on': n.formats.includes('Asynchronous'),
               }"
               >video_library</i
             >
@@ -502,7 +502,7 @@ article {
       border-radius: 50%;
       color: $element-pale-gray;
       background: $element-light-gray;
-      &--on {
+      &.--on {
         background: $yellow-orange-light;
       }
     }
