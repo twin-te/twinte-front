@@ -28,31 +28,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({})
 export default class Dialog extends Vue {
   @Prop({ required: true })
   show!: boolean
-
-  /**
-   * windwos全体にキーイベントを適応するため
-   * @keyup.escではなく、EventListenerを使用
-   */
-  @Watch('show')
-  onToggleDisplay() {
-    if (this.show === false) {
-      window.removeEventListener('keyup', this.onEscKeyUp)
-    } else {
-      window.addEventListener('keyup', this.onEscKeyUp)
-    }
-  }
-
-  onEscKeyUp(e: KeyboardEvent) {
-    if (e.key === 'Escape' || e.key === 'Esc') {
-      this.$emit('close')
-    }
-  }
 }
 </script>
 

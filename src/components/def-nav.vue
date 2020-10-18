@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
@@ -194,25 +194,6 @@ export default class Index extends Vue {
           name: '時間割のシェア',
           link: 'func:iPhone-share',
         })
-    }
-  }
-
-  /**
-   * windwos全体にキーイベントを適応するため
-   * @keyup.escではなく、EventListenerを使用
-   */
-  @Watch('drawer')
-  onToggleDisplay() {
-    if (this.drawer === false) {
-      window.removeEventListener('keyup', this.onEscKeyUp)
-    } else {
-      window.addEventListener('keyup', this.onEscKeyUp)
-    }
-  }
-
-  onEscKeyUp(e: KeyboardEvent) {
-    if (e.key === 'Escape' || e.key === 'Esc') {
-      this.closeDrawer()
     }
   }
 }

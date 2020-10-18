@@ -1,5 +1,5 @@
 <template ontouchstart="">
-  <div>
+  <div @keyup.esc="closeAll()" tabindex="0">
     <Toolbar />
     <Navigation />
     <ModalAdd />
@@ -110,6 +110,13 @@ export default class Index extends Vue {
       '--outer-height',
       `${window.outerHeight}px`
     )
+  }
+
+  closeAll () {
+    this.$store.commit('visible/chDrawer', { display: false })
+    this.$store.commit('visible/chDetail', { display: false })
+    this.$store.commit('visible/chAdd', { display: false })
+    this.$store.commit('visible/chInfo', { display: false })
   }
 }
 </script>
