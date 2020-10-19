@@ -195,7 +195,8 @@ export default class Index extends Vue {
   }
 
   async parse(input: string, type: 'csv' | 'input'): Promise<miniLecture[]> {
-    const le = await searchLectures(input)
+    const le = (await searchLectures(input)) as any[]
+    console.log(le)
 
     return le.map((l) => {
       return {

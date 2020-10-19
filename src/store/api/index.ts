@@ -9,7 +9,7 @@
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
 
-import { deleteLecture, postAllLectures, getTimeTables } from './timetables'
+import { deleteLecture, postAllLectures } from './timetables'
 import { YEAR } from '@/common/config'
 import { deleteUserData } from './user-lectures'
 
@@ -59,7 +59,9 @@ export const actions: Actions<S, A, G, M> = {
   },
 
   async fetch(ctx) {
-    const periodDatas = await getTimeTables(YEAR)
+    const periodDatas = await $nuxt.$api.timetables.$get({
+      query: { year: YEAR },
+    })
     // → サーバーから時間割の取得
 
     ctx.commit('SET_TABLE', { periodDatas })
@@ -68,10 +70,8 @@ export const actions: Actions<S, A, G, M> = {
   },
 
   async login(ctx) {
-    const periodDatas = await getTimeTables(YEAR)
-    ctx.commit('SET_TABLE', { periodDatas })
+    ctx.dispatch('fetch')
     ctx.commit('LOGIN')
-    localStorage.setItem('table', JSON.stringify(ctx.state.timeTables))
   },
 
   logout(ctx) {

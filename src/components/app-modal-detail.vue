@@ -115,12 +115,11 @@ import * as Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import Swal from 'sweetalert2'
 
-import { Period } from '../types'
-import { LectureFormat, UserLectureEntity } from '../types/server'
-import { updateLecture } from '../store/api/timetables'
+import { LectureFormat } from '../types/server'
 import { YEAR } from '../common/config'
 import { openUrl } from './utils/openUrl'
 import { getReacquision } from '~/usecase/get-reacquisition'
+import { TimetableEntity, UserLectureEntity } from '~/api/@types'
 
 @Component({
   components: {
@@ -136,7 +135,7 @@ export default class Index extends Vue {
   localMemo = ''
   localFormats: Array<LectureFormat> = []
   displayFormatPanel = false
-  editableLecture: Period | null = null
+  editableLecture: TimetableEntity | null = null
 
   get atmnbCount() {
     return this.userData
@@ -146,7 +145,7 @@ export default class Index extends Vue {
   get userData() {
     return this.$store.getters['table/userData']
   }
-  get table(): Period | null {
+  get table(): TimetableEntity | null {
     return this.$store.getters['table/looking']
   }
   get show(): boolean {
@@ -258,7 +257,20 @@ export default class Index extends Vue {
     // → メモ、形式の変更
 
     if (this.editableLecture) {
-      await updateLecture(this.editableLecture)
+      const {
+        year,
+        module,
+        day,
+        period,
+        room,
+        user_lecture_id,
+      } = this.editableLecture
+      await this.$nuxt.$api.timetables
+        ._year(year)
+        ._module(module)
+        ._day(day)
+        ._period(period)
+        .$put({ body: { room, user_lecture_id } })
       await this.$store.dispatch('table/setPeriod', {
         period: this.editableLecture,
       })

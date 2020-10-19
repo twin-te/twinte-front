@@ -7,15 +7,21 @@ import union from 'lodash/union'
  * 指定した講義のユーザーデータを追加
  * 取得された `user_lecture_id` はとっても大事
  */
-async function postUserData(lecture_name: string, instructor: string) {
+async function postUserData(
+  lecture_name: string,
+  instructor: string,
+  credits = 0,
+  formats = []
+) {
   try {
-    const { data } = await axios.post<UserLectureEntity>(`${url}`, {
-      year: YEAR,
-      lecture_name,
-      instructor,
-      // TODO
-      credits: 0,
-      formats: [],
+    const data = await $nuxt.$api.user_lectures.$post({
+      body: {
+        year: YEAR,
+        lecture_name,
+        instructor,
+        credits,
+        formats,
+      },
     })
     return data
   } catch (error) {

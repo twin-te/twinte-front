@@ -1,13 +1,13 @@
-import { TimeTables, Period } from '../../types/index'
+import type { TimetableEntity } from '~/api/@types'
 import { UserLectureEntity } from '@/types/server'
 
 export interface S {
-  timeTables: TimeTables
+  timeTables: TimetableEntity[]
   isLogin: boolean
 }
 
 export interface G {
-  table: TimeTables
+  table: TimetableEntity[]
   isLogin: boolean
 }
 export interface RG {
@@ -16,7 +16,7 @@ export interface RG {
 }
 
 export interface M {
-  SET_TABLE: { periodDatas: TimeTables }
+  SET_TABLE: { periodDatas: TimetableEntity[] }
 
   LOGIN: null
   LOGOUT: null
@@ -30,7 +30,7 @@ export interface RM {
 export interface A {
   addTable: { lectureCodes: string[] }
   deleteTable: {
-    table: Period
+    table: TimetableEntity
     UserLecture: UserLectureEntity
   }
   fetch: null

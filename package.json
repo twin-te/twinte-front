@@ -10,7 +10,8 @@
     "dev": "nuxt-ts",
     "generate": "nuxt-ts generate",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "apigen": "npx openapi2aspida -i swagger.json"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.4",
@@ -35,11 +36,14 @@
     "vue-eslint-parser": "^7.1.0"
   },
   "dependencies": {
+    "@aspida/axios": "^0.12.1",
     "@nuxt/typescript-runtime": "^2.0.0",
+    "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dayjs": "^1.1.7",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "@nuxtjs/sentry": "^4.1.2",
     "@vuex-orm/core": "^0.36.3",
+    "aspida": "^0.22.1",
     "axios": "^0.20.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.union": "^4.6.0",

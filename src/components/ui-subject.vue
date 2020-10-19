@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { Period } from '../types'
+import { TimetableEntity } from '~/api/@types'
 import { YEAR } from '../common/config'
 
 @Component({})
@@ -34,7 +34,7 @@ export default class Index extends Vue {
   // 時限
   @Prop() period!: number
   // day, period 指定の他にdataを直接入力できる仕様
-  @Prop() data?: Period
+  @Prop() data?: TimetableEntity
   // クリックして詳細が開かないように disableオプションを用意
   @Prop() click?: 'disable'
   @Prop() moduleProp?: string
@@ -104,7 +104,7 @@ export default class Index extends Vue {
   }
 
   // この授業の詳細モーダルを開く
-  chDetail(period: Period) {
+  chDetail(period: TimetableEntity) {
     this.$store.dispatch('table/setPeriod', { period })
     this.$store.commit('visible/chDetail', { display: true })
   }
