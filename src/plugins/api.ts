@@ -1,6 +1,7 @@
 import { Plugin } from '@nuxt/types'
 import axiosClient from '@aspida/axios'
 import api, { ApiInstance } from '~/api/$api'
+import { AxiosInstance } from 'axios'
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -9,6 +10,9 @@ declare module 'vue/types/vue' {
 }
 
 const plugin: Plugin = ({ $axios }, inject) =>
-  inject('api', api(axiosClient($axios, { withCredentials: true })))
+  inject(
+    'api',
+    api(axiosClient($axios as AxiosInstance, { withCredentials: true }))
+  )
 
 export default plugin

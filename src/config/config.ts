@@ -3,8 +3,3 @@ export const BASE_URL: string =
 const date = new Date()
 export const YEAR: number =
   date.getMonth() + 1 < 4 ? date.getFullYear() - 1 : date.getFullYear()
-
-import _axios from 'axios'
-export const axios = _axios.create({
-  withCredentials: true,
-})

@@ -1,4 +1,4 @@
-import { YEAR } from '@/common/config'
+import { YEAR } from '~/config'
 import { UserLectureEntity } from '~/api/@types'
 
 /**

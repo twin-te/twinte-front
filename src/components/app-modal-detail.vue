@@ -116,7 +116,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import Swal from 'sweetalert2'
 
 import { LectureFormat } from '../types/server'
-import { YEAR } from '../common/config'
+import { YEAR } from '~/config'
 import { openUrl } from './utils/openUrl'
 import { getReacquision } from '~/usecase/get-reacquisition'
 import { TimetableEntity, UserLectureEntity } from '~/api/@types'

@@ -1,4 +1,4 @@
-import { isMobile } from '../../common/ua'
+import { isMobile } from '../../config'
 
 export const openUrl = (url: string) => {
   if (isMobile()) {

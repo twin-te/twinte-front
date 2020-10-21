@@ -23,7 +23,7 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import { TimetableEntity } from '~/api/@types'
-import { YEAR } from '../common/config'
+import { YEAR } from '~/config'
 
 @Component({})
 export default class Index extends Vue {

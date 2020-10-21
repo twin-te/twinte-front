@@ -60,8 +60,7 @@ import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert, loginAlert } from './utils/swal'
 import { sleep } from './utils/sleep'
-import { BASE_URL } from '../common/config'
-import { isMobile } from '../common/ua'
+import { BASE_URL, isMobile } from '~/config'
 
 declare global {
   interface Window {

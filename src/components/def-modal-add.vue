@@ -5,7 +5,9 @@
   -->
   <Dialog :show="show" @close="close()">
     <article>
-      <h1 class="title"><i class="title--icon material-icons">add</i> 授業の追加</h1>
+      <h1 class="title">
+        <i class="title--icon material-icons">add</i> 授業の追加
+      </h1>
 
       <!-- 検索フォーム -->
       <form class="search-form" @submit.prevent>
@@ -109,9 +111,8 @@ import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert } from './utils/swal'
 import { addCustomLecture } from './utils/addCustomLecture'
-import { isMobile } from '../common/ua'
 import { searchLectures } from '../store/api/lectures'
-import { YEAR } from '../common/config'
+import { YEAR, isMobile } from '~/config'
 import { openUrl } from './utils/openUrl'
 
 type miniLecture = {
@@ -423,7 +424,7 @@ article {
     &::after {
       $w: 1rem;
 
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       left: $w;
