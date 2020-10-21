@@ -1,5 +1,5 @@
 <template ontouchstart="">
-  <div @keyup.esc="closeAll()" tabindex="0">
+  <div class="main" @keyup.esc="closeAll()" tabindex="0">
     <Toolbar />
     <Navigation />
     <ModalAdd />
@@ -112,7 +112,7 @@ export default class Index extends Vue {
     )
   }
 
-  closeAll () {
+  closeAll() {
     this.$store.commit('visible/chDrawer', { display: false })
     this.$store.commit('visible/chDetail', { display: false })
     this.$store.commit('visible/chAdd', { display: false })
@@ -123,4 +123,8 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
+
+.main:focus {
+  outline: none;
+}
 </style>
