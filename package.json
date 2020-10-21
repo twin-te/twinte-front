@@ -7,7 +7,7 @@
   "scripts": {
     "build": "nuxt-ts build",
     "start": "nuxt-ts build && nuxt-ts start",
-    "dev": "nuxt-ts",
+    "dev": "concurrently \"nuxt-ts\" \"aspida -w\"",
     "generate": "nuxt-ts generate",
     "format": "prettier --write .",
     "test": "jest",
@@ -21,6 +21,7 @@
     "@types/jest": "^26.0.13",
     "@types/lodash": "^4.14.149",
     "@types/marked": "^1.1.0",
+    "concurrently": "^5.3.0",
     "husky": "^4.2.3",
     "jest": "^26.4.2",
     "lint-staged": "^10.1.2",
