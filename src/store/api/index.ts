@@ -48,10 +48,10 @@ export const actions: Actions<S, A, G, M> = {
     await ctx.dispatch('fetch')
   },
 
-  async deleteTable(ctx, { table, UserLecture }) {
+  async deleteTable(ctx, { table, userLecture }) {
     // サーバーから削除
     await deleteLecture(YEAR, table.module, table.day, table.period)
-    await deleteUserData(UserLecture.user_lecture_id)
+    await deleteUserData(userLecture.user_lecture_id)
 
     await ctx.dispatch('fetch')
   },

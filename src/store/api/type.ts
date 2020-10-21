@@ -31,7 +31,7 @@ export interface A {
   addTable: { lectureCodes: string[] }
   deleteTable: {
     table: TimetableEntity
-    UserLecture: UserLectureEntity
+    userLecture: UserLectureEntity
   }
   fetch: null
 

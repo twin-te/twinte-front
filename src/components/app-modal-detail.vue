@@ -206,7 +206,7 @@ export default class Index extends Vue {
       if (result.value && this.table && this.userData) {
         await this.$store.dispatch('api/deleteTable', {
           table: this.table,
-          UserLecture: this.userData,
+          userLecture: this.userData,
         })
 
         this.close()
