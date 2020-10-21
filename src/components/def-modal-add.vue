@@ -5,14 +5,14 @@
   -->
   <Dialog :show="show" @close="close()">
     <article>
-      <h1 class="title">授業の追加</h1>
+      <h1 class="title"><i class="title--icon material-icons">add</i> 授業の追加</h1>
 
       <!-- 検索フォーム -->
       <form class="search-form" @submit.prevent>
         <input
           v-model="input"
           type="text"
-          placeholder="授業名や科目番号で検索"
+          placeholder="授業名/科目番号で検索"
           class="search-form__form"
           @keyup.enter="search(input, 'input')"
         />
@@ -49,8 +49,31 @@
               n.lecture_name
             }}</label>
           </div>
+          <div class="result-formats">
+            <i
+              class="material-icons icon result-formats__icon"
+              :class="{
+                '--on': n.formats.includes('FaceToFace'),
+              }"
+              >people_alt</i
+            >
+            <i
+              class="material-icons icon result-formats__icon"
+              :class="{
+                '--on': n.formats.includes('Synchronous'),
+              }"
+              >switch_video</i
+            >
+            <i
+              class="material-icons icon result-formats__icon"
+              :class="{
+                '--on': n.formats.includes('Asynchronous'),
+              }"
+              >video_library</i
+            >
+          </div>
           <span @click="syllabus(n)" class="syllabus-btn material-icons"
-            >menu_book</span
+            >chevron_right</span
           >
         </div>
       </section>
@@ -98,6 +121,7 @@ type miniLecture = {
   day: string
   period: number
   checked: boolean
+  formats: string[]
 }
 
 @Component({
@@ -180,6 +204,7 @@ export default class Index extends Vue {
         module: l.details[0]?.module || '',
         day: l.details[0]?.day || '',
         period: l.details[0]?.period || 0,
+        formats: l.formats,
         checked: type === 'csv',
       }
     })
@@ -297,10 +322,15 @@ article {
 
 /* 授業の追加 */
 .title {
+  display: flex;
+  align-items: center;
   font-size: 1.8rem;
   color: $primary-color;
   font-weight: 400;
   margin: 0 0 1.5vh;
+  &--icon {
+    font-size: 30px;
+  }
 }
 
 /* 検索フォーム */
@@ -385,9 +415,21 @@ article {
   scrollbar-width: thin;
   box-sizing: border-box;
   .result-wrap {
-    padding: 0.8rem 1rem;
+    position: relative;
+    padding: 11px 1rem;
     display: flex;
     align-items: center;
+    &::after {
+      $w: 1rem;
+
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: $w;
+      width: calc(100% - (#{$w} * 2));
+      height: 0.5px;
+      background-color: $element-gray;
+    }
   }
   &__label {
     display: inline-block;
@@ -397,6 +439,7 @@ article {
     display: none;
   }
   &__checkbox {
+    flex: 0 0 auto;
     position: relative;
     display: inline-block;
     width: 1.7rem;
@@ -418,7 +461,7 @@ article {
     }
   }
   .result-content {
-    width: 90%;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
   }
@@ -447,10 +490,27 @@ article {
       opacity: 1;
     }
   }
+  .result-formats {
+    height: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    &__icon {
+      font-size: 14px;
+      margin-left: 5px;
+      padding: 0.3rem;
+      border-radius: 50%;
+      color: $element-pale-gray;
+      background: $element-light-gray;
+      &.--on {
+        background: $yellow-orange-light;
+      }
+    }
+  }
   .syllabus-btn {
-    padding-left: 0.3rem;
-    color: $primary-color;
-    font-size: 1.9rem;
+    margin: 0 -8px 0 -3px;
+    color: $sub-text-color;
+    font-size: 24px;
   }
 }
 .footer-divider {
