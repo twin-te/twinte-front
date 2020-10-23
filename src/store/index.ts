@@ -1,3 +1,4 @@
+// 使ってない
 import VuexORM from '@vuex-orm/core'
 import database from '@/database'
 

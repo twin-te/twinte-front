@@ -41,7 +41,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { getSchoolCalender } from '../api/school-calender'
 
 @Component({
   components: {
@@ -82,11 +81,15 @@ export default class Index extends Vue {
     //   period: 3 ← 3限
     // }
     // fixme
-    const calender = await Promise.all(weeks.map(getSchoolCalender))
+    const calender = await Promise.all(
+      weeks.map(async (week) => {
+        return await this.$api.school_calender._date(week).$get()
+      })
+    )
     this.weekCalender = calender
-      .map(({ data: d }, i) => ({
-        module: d.module,
-        day: d.substituteDay ? this.week2num(d.substituteDay.change_to) : i,
+      .map((cal, i) => ({
+        module: cal.module,
+        day: cal.substituteDay ? this.week2num(cal.substituteDay.change_to) : i,
         date: weeks[i],
       }))
       .slice(1, 6)

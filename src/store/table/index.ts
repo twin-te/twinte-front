@@ -8,20 +8,13 @@
  */
 
 import { Getters, Mutations, Actions } from 'vuex'
-import { S, G, M, A, Module } from './type'
-import { getUserData, updateUserData } from '../api/user-lectures'
+import { S, G, M, A } from './type'
+import { updateUserData } from '../api/user-lectures'
 // ______________________________________________________
 //
 export const state = (): S => ({
-  moduleList: [
-    Module.SpringA,
-    Module.SpringB,
-    Module.SpringC,
-    Module.FallA,
-    Module.FallB,
-    Module.FallC,
-  ],
-  module: Module.SpringA,
+  moduleList: ['春A', '春B', '春C', '秋A', '秋B', '秋C'],
+  module: '春A',
   looking: null,
   userData: null,
 })
@@ -38,12 +31,12 @@ export const getters: Getters<S, G> = {
 
   prevModule(state) {
     const num: number = state.moduleList.indexOf(state.module) - 1
-    return num === -1 ? Module.FallC : state.moduleList[num]
+    return num === -1 ? '秋C' : state.moduleList[num]
   },
 
   nextModule(state) {
     const num: number = state.moduleList.indexOf(state.module) + 1
-    return num === 6 ? Module.SpringA : state.moduleList[num]
+    return num === 6 ? '春A' : state.moduleList[num]
   },
 
   looking(state) {
@@ -64,13 +57,13 @@ export const mutations: Mutations<S, M> = {
 
   prevModule(state) {
     const num: number = state.moduleList.indexOf(state.module) - 1
-    state.module = num === -1 ? Module.FallC : state.moduleList[num]
+    state.module = num === -1 ? '秋C' : state.moduleList[num]
     localStorage.setItem('module', state.module)
   },
 
   nextModule(state) {
     const num: number = state.moduleList.indexOf(state.module) + 1
-    state.module = num === 6 ? Module.SpringA : state.moduleList[num]
+    state.module = num === 6 ? '春A' : state.moduleList[num]
     localStorage.setItem('module', state.module)
   },
 
@@ -85,10 +78,9 @@ export const mutations: Mutations<S, M> = {
 
 export const actions: Actions<S, A, G, M> = {
   async setPeriod(ctx, { period }) {
-    const userData = await getUserData(period.user_lecture_id)
-    if (!userData) {
-      return
-    }
+    const userData = await $nuxt.$api.user_lectures
+      ._user_lecture_id(period.user_lecture_id)
+      .$get()
     ctx.commit('setLooking', { period })
     ctx.dispatch('updatePeriod', { userData })
   },

@@ -85,3 +85,4 @@ sw.*
 
 .vscode
 .DS_Store
+$api.ts

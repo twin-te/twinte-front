@@ -2,8 +2,7 @@ import Swal from 'sweetalert2'
 import union from 'lodash/union'
 
 import { Period } from '../../types'
-import { BASE_URL, axios, YEAR } from '../../common/config'
-const url = BASE_URL + '/timetables'
+import { YEAR } from '../../config'
 
 export enum Module {
   SpringA = '春A',
@@ -34,11 +33,7 @@ export enum Day {
  */
 async function getTimeTables(year = YEAR) {
   try {
-    const { data } = await axios.get<Period[]>(`${url}`, {
-      params: {
-        year,
-      },
-    })
+    const data = await $nuxt.$api.timetables.$get({ query: { year } })
     return data
   } catch (error) {
     const { status, statusText } = error.response
@@ -54,13 +49,13 @@ async function getTimeTables(year = YEAR) {
  */
 async function postLecture(lectureCode: string, year = YEAR) {
   try {
-    const { data } = await axios.post<any>(`${url}`, {
-      year,
-      lectureCode,
+    const data = await $nuxt.$api.timetables.$post({
+      body: { year, lectureCode },
     })
-    return data // 重複する時限が存在します or 時間割データ
+
+    return data
   } catch (error) {
-    const { status, statusText, data } = error.response
+    const { data } = error.response
     if (data?.msg === '重複する時限が存在します') {
       await Swal.fire(
         '重複する時限が存在します',
@@ -68,7 +63,6 @@ async function postLecture(lectureCode: string, year = YEAR) {
         'info'
       )
     }
-    console.log(`Error! HTTP Status: ${status} ${statusText}`)
     return null
   }
 }
@@ -77,11 +71,8 @@ async function postLecture(lectureCode: string, year = YEAR) {
  * @param lectureCodes 授業番号の配列
  * @returns 授業詳細配列
  */
-async function postAllLectures(
-  lectureCodes: string[],
-  year = YEAR
-): Promise<void> {
-  await Promise.all(
+async function postAllLectures(lectureCodes: string[], year = YEAR) {
+  return await Promise.all(
     union(lectureCodes).map(async (lectureCode) => {
       return await postLecture(lectureCode, year)
     })
@@ -94,13 +85,17 @@ async function postAllLectures(
 async function updateLecture(lecture: Period) {
   try {
     const { year, module, day, period, user_lecture_id, room } = lecture
-    const { data } = await axios.put(
-      `${url}/${year}/${module}/${day}/${period}`,
-      {
-        room,
-        user_lecture_id,
-      }
-    )
+    const data = await $nuxt.$api.timetables
+      ._year(year)
+      ._module(module)
+      ._day(day)
+      ._period(period)
+      .$put({
+        body: {
+          room,
+          user_lecture_id,
+        },
+      })
     return data
   } catch (error) {
     const { status, statusText } = error.response
@@ -123,9 +118,12 @@ async function deleteLecture(
   period: number
 ) {
   try {
-    const { data } = await axios.delete(
-      `${url}/${year}/${module}/${day}/${period}`
-    )
+    const data = await $nuxt.$api.timetables
+      ._year(year)
+      ._module(module)
+      ._day(day)
+      ._period(period)
+      .$delete()
     return data
   } catch (error) {
     const { status, statusText } = error.response
