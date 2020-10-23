@@ -5,10 +5,10 @@
   "author": "Twin:te <twinte.net@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "nuxt-ts build",
+    "build": "aspida && nuxt-ts build",
     "start": "nuxt-ts build && nuxt-ts start",
     "dev": "concurrently \"nuxt-ts\" \"aspida -w\"",
-    "generate": "nuxt-ts generate",
+    "generate": "aspida && nuxt-ts generate",
     "format": "prettier --write .",
     "test": "jest",
     "apigen": "npx openapi2aspida -i swagger.json"
