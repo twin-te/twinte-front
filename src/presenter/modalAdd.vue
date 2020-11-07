@@ -45,7 +45,7 @@
           <div class="result-content">
             <label class="result-list__lecture-code" for="n.lecture_code">
               {{ n.lecture_code }}
-              <span>{{ n.module }}{{ n.day }}{{ n.period }}</span>
+              <span>{{ n.lecture_time }}</span>
             </label>
             <label class="result-list__lecture-name" for="n.lecture_code">{{
               n.lecture_name
@@ -119,9 +119,7 @@ import { FetchLatestData } from '~/usecase/fetchLatestData'
 type miniLecture = {
   lecture_code: string
   lecture_name: string
-  module: string
-  day: string
-  period: number
+  lecture_time: string
   checked: boolean
   formats: string[]
 }
@@ -206,9 +204,7 @@ export default class Index extends Vue {
       return {
         lecture_code: l.lectureCode,
         lecture_name: l.name,
-        module: l.details[0]?.module || '',
-        day: l.details[0]?.day || '',
-        period: l.details[0]?.period || 0,
+        lecture_time: getLectureTimeAsStr(l.details),
         formats: l.formats,
         checked: type === 'csv',
       }
