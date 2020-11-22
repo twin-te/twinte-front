@@ -12,8 +12,9 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { isLogin } from '../store/api/auth'
 import Swal from 'sweetalert2'
+import { isLogin } from '~/store/api/auth'
+import { getToday } from '~/store/api/school-calendar'
 import { Module } from '~/store/table/type'
 
 @Component({
@@ -93,8 +94,7 @@ export default class Index extends Vue {
     }
     // → lectureパラメータがあればそのダイアログを表示
 
-    const today = this.$dayjs().format('YYYY-MM-DD')
-    const cal = await this.$api.school_calender._date(today).$get()
+    const cal = await getToday()
     if (cal.substituteDay) {
       Swal.fire({
         toast: true,

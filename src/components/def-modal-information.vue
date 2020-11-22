@@ -3,11 +3,11 @@
     <article class="info__layout">
       <h1 class="info__title">Twin:teからの新着お知らせ</h1>
       <div class="info__body">
-        <section class="info__post" v-for="info in information" :key="info.id">
-          <div class="info__date">{{ info.date }}</div>
-          <h2 class="info__topic-title">{{ info.title }}</h2>
-          <div class="info__content" v-html="info.content" />
-          <hr class="info__divider" v-if="information.slice(-1)[0] !== info" />
+        <section class="info__post" v-for="nthInfo in info" :key="nthInfo.id">
+          <div class="info__date">{{ nthInfo.date }}</div>
+          <h2 class="info__topic-title">{{ nthInfo.title }}</h2>
+          <div class="info__content" v-html="nthInfo.content" />
+          <hr class="info__divider" v-if="info.slice(-1)[0] !== nthInfo" />
         </section>
       </div>
       <hr class="footer-divider" />
@@ -31,9 +31,9 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
-import type { OutputInformationData as Information } from '~/api/@types'
-import marked from 'marked'
+import type { OutputInformationData } from '~/api/@types'
 import * as Vuex from 'vuex'
+import { Information } from '~/store/api/information'
 
 @Component({
   components: {
@@ -44,7 +44,8 @@ import * as Vuex from 'vuex'
 export default class ModalInfomation extends Vue {
   $store!: Vuex.ExStore
 
-  information: Information[] = []
+  information = new Information()
+  info: OutputInformationData[] = []
   displayInfo = true
 
   /**
@@ -62,27 +63,13 @@ export default class ModalInfomation extends Vue {
   }
 
   async mounted() {
-    await this.fetchInfo()
+    this.info = await this.information.getInfo()
 
     // 起動時にお知らせを表示するかどうか
     const displayInfo = this.getDisplayInfo()
     const existInfo = this.existInfo()
     this.updateDisplayInfo(displayInfo || existInfo)
     this.saveLatestInfo()
-  }
-
-  /**
-   * infoを取得する
-   *
-   * fetchにしていたけどライフサイクルがうまく非同期にならなかったのでmount時に実行
-   */
-  async fetchInfo() {
-    const info = await this.$api.information.$get()
-    this.information = this.parse(info)
-  }
-
-  parse(infos: Information[]): Information[] {
-    return infos.map((info) => ({ ...info, content: marked(info.content) }))
   }
 
   /**
@@ -112,7 +99,7 @@ export default class ModalInfomation extends Vue {
    * 最新のinfoのidをLocalStrageに保存する
    */
   saveLatestInfo() {
-    localStorage.setItem('LatestInfo', this.information[0]?.id)
+    localStorage.setItem('LatestInfo', this.info[0]?.id)
   }
 
   /**
@@ -120,7 +107,7 @@ export default class ModalInfomation extends Vue {
    */
   existInfo() {
     const id = localStorage.getItem('LatestInfo')
-    const latestId = this.information[0]?.id
+    const latestId = this.info[0]?.id
     return id !== latestId
   }
 }

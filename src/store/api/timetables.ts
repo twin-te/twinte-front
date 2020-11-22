@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import union from 'lodash/union'
 
-import { Period } from '../../types'
+import { TimetableEntity } from '~/api/@types'
 import { YEAR } from '../../config'
 
 export enum Module {
@@ -82,7 +82,7 @@ async function postAllLectures(lectureCodes: string[], year = YEAR) {
 /**
  * 講義を追加/更新
  */
-async function updateLecture(lecture: Period) {
+async function updateLecture(lecture: TimetableEntity) {
   try {
     const { year, module, day, period, user_lecture_id, room } = lecture
     const data = await $nuxt.$api.timetables

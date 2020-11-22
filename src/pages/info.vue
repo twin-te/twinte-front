@@ -16,8 +16,8 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import type { OutputInformationData as Information } from '~/api/@types'
-import marked from 'marked'
+import type { OutputInformationData } from '~/api/@types'
+import { Information } from '~/store/api/information'
 
 @Component({
   components: {
@@ -28,15 +28,10 @@ import marked from 'marked'
 export default class Info extends Vue {
   $store!: Vuex.ExStore
 
-  information: Information[] = []
+  information: OutputInformationData[] = []
 
-  async fetch() {
-    const info = await this.$api.information.$get()
-    this.information = this.parse(info)
-  }
-
-  parse(infos: Information[]): Information[] {
-    return infos.map((info) => ({ ...info, content: marked(info.content) }))
+  async mounted() {
+    this.information = await new Information().getInfo()
   }
 }
 </script>

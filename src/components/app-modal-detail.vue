@@ -120,6 +120,7 @@ import { YEAR } from '~/config'
 import { openUrl } from './utils/openUrl'
 import { getReacquision } from '~/usecase/get-reacquisition'
 import { TimetableEntity, UserLectureEntity } from '~/api/@types'
+import { updateLecture } from '~/store/api/timetables'
 
 @Component({
   components: {
@@ -257,20 +258,7 @@ export default class Index extends Vue {
     // → メモ、形式の変更
 
     if (this.editableLecture) {
-      const {
-        year,
-        module,
-        day,
-        period,
-        room,
-        user_lecture_id,
-      } = this.editableLecture
-      await this.$nuxt.$api.timetables
-        ._year(year)
-        ._module(module)
-        ._day(day)
-        ._period(period)
-        .$put({ body: { room, user_lecture_id } })
+      updateLecture(this.editableLecture)
       await this.$store.dispatch('table/setPeriod', {
         period: this.editableLecture,
       })
