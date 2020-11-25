@@ -98,9 +98,10 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-import { Period, SubjectSettings } from '../types'
+import type { SubjectSettings } from '~/types'
 import cloneDeep from 'lodash/cloneDeep'
 import { Day, Module } from 'twinte-parser'
+import { TimetableEntity } from '~/api/@types'
 
 @Component({
   components: {
@@ -119,7 +120,7 @@ export default class DisplaySettings extends Vue {
     font_size: 'medium',
   }
 
-  sampleData: Period = {
+  sampleData: TimetableEntity = {
     lecture_code: '0A00000',
     lecture_name: '科目名',
     instructor: '担当教員',

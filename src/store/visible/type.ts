@@ -9,7 +9,7 @@
  * - table: 時間割。アニメーション時に状態を変えます
  *
  */
-import { SubjectSettings } from '../../types'
+import type { SubjectSettings } from '~/types'
 
 export interface S {
   drawer: boolean

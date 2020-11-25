@@ -9,7 +9,7 @@
 
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
-import { updateUserData } from '../api/user-lectures'
+import { UserLectures } from '~/Infrastructure/user-lectures'
 // ______________________________________________________
 //
 export const state = (): S => ({
@@ -78,15 +78,15 @@ export const mutations: Mutations<S, M> = {
 
 export const actions: Actions<S, A, G, M> = {
   async setPeriod(ctx, { period }) {
-    const userData = await $nuxt.$api.user_lectures
-      ._user_lecture_id(period.user_lecture_id)
-      .$get()
+    const userData = await new UserLectures().getUserData(
+      period.user_lecture_id
+    )
     ctx.commit('setLooking', { period })
     ctx.dispatch('updatePeriod', { userData })
   },
 
   async updatePeriod(ctx, { userData }) {
-    await updateUserData(userData)
+    await new UserLectures().updateUserData(userData)
     ctx.commit('setUserData', { userData })
   },
 }

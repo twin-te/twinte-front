@@ -1,5 +1,5 @@
 import type { TimetableEntity } from '~/api/@types'
-import { UserLectureEntity } from '@/types/server'
+import { UserLectureEntity } from '~/api/@types'
 
 export interface S {
   timeTables: TimetableEntity[]

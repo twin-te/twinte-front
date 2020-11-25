@@ -1,10 +1,16 @@
-import { isLogin } from '@/store/api/auth'
+import { Auth } from '~/Infrastructure/auth'
 
 jest.setTimeout(30000)
 
+let AuthRepository: Auth
+
+beforeAll(() => {
+  AuthRepository = new Auth()
+})
+
 describe('isLogin', () => {
   it('isLogin is false', async () => {
-    const data = await isLogin()
+    const data = await AuthRepository.isLogin()
     expect(data).not.toBeTruthy()
   })
 })

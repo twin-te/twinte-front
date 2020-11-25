@@ -1,35 +1,10 @@
 import './shims-vuex-impl'
 import './shims-vuex-type'
 
-// twinte-parser
-import { LectureFormat, TimetableEntity } from './server'
-import { Day, Module } from './parser'
-
-/** 時間割 */
-type TimeTables = TimetableEntity[]
-type Period = TimetableEntity
-
-type OutputSearchData = {
-  lectureCode: string
-  name: string
-  credits: number
-  overview: string
-  remarks: string
-  type: number
-  details: {
-    id: number
-    module: Module
-    day: Day
-    period: number
-    room: string
-  }[]
-  instructor: string
-  twinte_lecture_id: string
-  year: number
-  standardYear: number[]
-  formats: LectureFormat[]
-}[]
-
+/**
+ * 表示設定
+ * 現状ユーザーデータとしてサーバーで管理せず、端末ごとに管理してる
+ */
 type SubjectSettings = {
   lecture_name: boolean
   lecture_code: boolean
@@ -38,4 +13,6 @@ type SubjectSettings = {
   font_size: 'small' | 'medium' | 'large'
 }
 
-export { Day, Module, TimeTables, Period, OutputSearchData, SubjectSettings }
+type LectureFormat = 'Asynchronous' | 'Synchronous' | 'FaceToFace' | 'Others'
+
+export { SubjectSettings, LectureFormat }

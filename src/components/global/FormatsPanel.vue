@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { LectureFormat } from '@/types/server'
+import { LectureFormat } from '~/types'
 
 @Component({})
 export default class FormatsPanel extends Vue {

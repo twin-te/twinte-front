@@ -115,12 +115,12 @@ import * as Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import Swal from 'sweetalert2'
 
-import { LectureFormat } from '../types/server'
+import { LectureFormat } from '~/types'
 import { YEAR } from '~/config'
 import { openUrl } from './utils/openUrl'
 import { getReacquision } from '~/usecase/get-reacquisition'
 import { TimetableEntity, UserLectureEntity } from '~/api/@types'
-import { updateLecture } from '~/store/api/timetables'
+import { TimeTable } from '~/Infrastructure/timetables'
 
 @Component({
   components: {
@@ -131,6 +131,7 @@ import { updateLecture } from '~/store/api/timetables'
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
+  timeTable = new TimeTable()
   atmnb = ['出席', '欠席', '遅刻']
   moduleNum = this.$store.getters['table/moduleNum']
   localMemo = ''
@@ -258,7 +259,7 @@ export default class Index extends Vue {
     // → メモ、形式の変更
 
     if (this.editableLecture) {
-      updateLecture(this.editableLecture)
+      this.timeTable.updateLecture(this.editableLecture)
       await this.$store.dispatch('table/setPeriod', {
         period: this.editableLecture,
       })

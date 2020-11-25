@@ -33,7 +33,7 @@
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import type { OutputInformationData } from '~/api/@types'
 import * as Vuex from 'vuex'
-import { Information } from '~/store/api/information'
+import { Information } from '~/Infrastructure/information'
 
 @Component({
   components: {

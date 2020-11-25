@@ -1,6 +1,7 @@
-import { searchLectures } from '~/store/api/lectures'
-import { LectureFormat } from '~/types/server'
+import { Lecture } from '~/Infrastructure/lectures'
 import { LazyUseCase } from './usecase'
+
+type LectureFormat = 'Asynchronous' | 'Synchronous' | 'FaceToFace' | 'Others'
 
 /** @type TimetableEntity.lecture_code */
 type I = string
@@ -9,7 +10,10 @@ type E = never
 
 type GetReacquisition = LazyUseCase<I, O, E>
 
-export const getReacquision: GetReacquisition = async (lecture_code) => {
-  const initialValue = await searchLectures(lecture_code)
+export const getReacquision: GetReacquisition = async (
+  lecture_code,
+  lectureRepository: Lecture = new Lecture()
+) => {
+  const initialValue = await lectureRepository.searchLectures(lecture_code)
   return initialValue[0].formats
 }

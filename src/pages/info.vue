@@ -3,12 +3,12 @@
     <h1>Twin:teからのお知らせ一覧</h1>
     <section
       class="infomations__post infomations__card"
-      v-for="info in information"
-      :key="info.id"
+      v-for="nthInfo in info"
+      :key="nthInfo.id"
     >
-      <div class="infomations__card__date">{{ info.date }}</div>
-      <h2 class="infomations__card__topic-title">{{ info.title }}</h2>
-      <div class="infomations__card__content" v-html="info.content" />
+      <div class="infomations__card__date">{{ nthInfo.date }}</div>
+      <h2 class="infomations__card__topic-title">{{ nthInfo.title }}</h2>
+      <div class="infomations__card__content" v-html="nthInfo.content" />
     </section>
   </main>
 </template>
@@ -17,7 +17,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import type { OutputInformationData } from '~/api/@types'
-import { Information } from '~/store/api/information'
+import { Information } from '~/Infrastructure/information'
 
 @Component({
   components: {
@@ -28,10 +28,11 @@ import { Information } from '~/store/api/information'
 export default class Info extends Vue {
   $store!: Vuex.ExStore
 
-  information: OutputInformationData[] = []
+  information = new Information()
+  info: OutputInformationData[] = []
 
   async mounted() {
-    this.information = await new Information().getInfo()
+    this.info = await this.information.getInfo()
   }
 }
 </script>

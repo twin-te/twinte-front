@@ -1,9 +1,9 @@
 import Swal from 'sweetalert2'
 
-import { postUserData } from '../../store/api/user-lectures'
-import { updateLecture } from '../../store/api/timetables'
+import { UserLectures } from '~/Infrastructure/user-lectures'
+import { TimeTable } from '~/Infrastructure/timetables'
 
-import type { Period } from '../../types'
+import type { TimetableEntity } from '~/api/@types'
 import { YEAR, BASE_URL } from '../../config'
 import type { Day, Module } from 'twinte-parser'
 
@@ -137,7 +137,10 @@ const makeForm = async (): Promise<Form> => {
   return form
 }
 
-export const addCustomLecture = async () => {
+export const addCustomLecture = async (
+  timeTableRepository = new TimeTable(),
+  userLecturesRepository = new UserLectures()
+) => {
   const form = await makeForm()
   const { value: allowAdd } = await Swal.fire(
     '注意',
@@ -149,12 +152,15 @@ export const addCustomLecture = async () => {
   // 有効な授業で、確認に同意した場合
   if (validForm && allowAdd) {
     // 時間割の作成
-    const userData = await postUserData(form.lecture_name, form.instructor)
+    const userData = await userLecturesRepository.postUserData(
+      form.lecture_name,
+      form.instructor
+    )
     if (!userData) {
       Swal.fire('原因不明のエラー', '', 'error')
       return
     }
-    const lecture: Period = {
+    const lecture: TimetableEntity = {
       lecture_code: '',
       lecture_name: form.lecture_name,
       instructor: form.instructor,
@@ -168,7 +174,7 @@ export const addCustomLecture = async () => {
     }
 
     // 時間割の追加
-    await updateLecture(lecture)
+    await timeTableRepository.updateLecture(lecture)
     Swal.fire('追加が完了しました', '', 'success')
   } else {
     Swal.fire(

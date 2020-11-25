@@ -62,7 +62,7 @@
       "js"
     ],
     "moduleNameMapper": {
-      "^@/(.+)": "<rootDir>/src/$1"
+      "^~/(.+)": "<rootDir>/src/$1"
     },
     "transform": {
       "^.+\\.ts$": "ts-jest"
