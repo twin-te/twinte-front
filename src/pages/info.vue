@@ -17,7 +17,6 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import type { OutputInformationData } from '~/api/@types'
-import { Information } from '~/Infrastructure/information'
 
 @Component({
   components: {
@@ -28,11 +27,10 @@ import { Information } from '~/Infrastructure/information'
 export default class Info extends Vue {
   $store!: Vuex.ExStore
 
-  information = new Information()
   info: OutputInformationData[] = []
 
   async mounted() {
-    this.info = await this.information.getInfo()
+    this.info = await this.$deps.information.getInfo()
   }
 }
 </script>

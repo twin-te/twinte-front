@@ -1,16 +1,5 @@
 import type { UserLectureEntity, TimetableEntity } from '~/api/@types'
-
-export type Module =
-  | '春A'
-  | '春B'
-  | '春C'
-  | '秋A'
-  | '秋B'
-  | '秋C'
-  | '夏季休業中'
-  | '春季休業中'
-  | '通年'
-  | '不明'
+import type { Module } from '~/types'
 
 export interface S {
   moduleList: Module[]

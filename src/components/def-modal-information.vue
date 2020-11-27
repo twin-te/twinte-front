@@ -33,7 +33,6 @@
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import type { OutputInformationData } from '~/api/@types'
 import * as Vuex from 'vuex'
-import { Information } from '~/Infrastructure/information'
 
 @Component({
   components: {
@@ -44,7 +43,6 @@ import { Information } from '~/Infrastructure/information'
 export default class ModalInfomation extends Vue {
   $store!: Vuex.ExStore
 
-  information = new Information()
   info: OutputInformationData[] = []
   displayInfo = true
 
@@ -63,7 +61,7 @@ export default class ModalInfomation extends Vue {
   }
 
   async mounted() {
-    this.info = await this.information.getInfo()
+    this.info = await this.$deps.information.getInfo()
 
     // 起動時にお知らせを表示するかどうか
     const displayInfo = this.getDisplayInfo()

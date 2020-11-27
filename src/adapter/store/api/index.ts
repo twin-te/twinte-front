@@ -9,8 +9,7 @@
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
 
-import { TimeTable } from '~/Infrastructure/timetables'
-import { UserLectures } from '~/Infrastructure/user-lectures'
+import { TimeTable, UserLectures } from '~/adapter'
 import { YEAR } from '~/config'
 
 export const state = (): S => ({

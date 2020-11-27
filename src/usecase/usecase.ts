@@ -1,2 +1,5 @@
-export type UseCase<I, O, E = never> = (i: I) => O | E
-export type LazyUseCase<I, O, E = never> = (i: I) => Promise<O | E>
+import { Ports } from '../adapter'
+
+export interface UseCase<R extends Partial<Ports>, A> {
+  run(ports: R): Promise<A>
+}

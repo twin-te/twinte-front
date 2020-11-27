@@ -57,6 +57,7 @@
     "vue-sweetalert2": "^3.0.8"
   },
   "jest": {
+    "automock": true,
     "moduleFileExtensions": [
       "ts",
       "js"

@@ -73,7 +73,11 @@ const nuxtConfig: Configuration = {
     fix: true,
     formatter: 'prettier-stylelint',
   },
-  plugins: [{ src: '@/plugins/ga.js', mode: 'client' }, '@/plugins/api'],
+  plugins: [
+    { src: '@/plugins/ga.js', mode: 'client' },
+    '@/plugins/api',
+    '@/plugins/dependencies',
+  ],
   modules: ['@nuxtjs/pwa', '@nuxtjs/sentry', '@nuxtjs/dayjs', '@nuxtjs/axios'],
   axios: {
     baseURL: process.env.API_URL || 'https://api.twinte.net/v1',
@@ -136,6 +140,15 @@ const nuxtConfig: Configuration = {
     clientUseUrl: true,
     componentAliases: true,
     componentClientOnly: true,
+  },
+  dir: {
+    assets: 'assets',
+    app: 'app',
+    layouts: 'layouts',
+    middleware: 'middleware',
+    pages: 'pages',
+    static: 'static',
+    store: 'adapter/store',
   },
 }
 

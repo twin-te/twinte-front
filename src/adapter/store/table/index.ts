@@ -9,7 +9,7 @@
 
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
-import { UserLectures } from '~/Infrastructure/user-lectures'
+import { UserLectures } from '~/adapter'
 // ______________________________________________________
 //
 export const state = (): S => ({

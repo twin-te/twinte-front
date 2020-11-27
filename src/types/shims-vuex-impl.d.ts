@@ -1,7 +1,7 @@
 import 'vuex'
-import * as Visible from '../store/visible/type'
-import * as Table from '../store/table/type'
-import * as Api from '../store/api/type'
+import * as Visible from '../adapter/store/visible/type'
+import * as Table from '../adapter/store/table/type'
+import * as Api from '../adapter/store/api/type'
 
 declare module 'vuex' {
   type RootState = {

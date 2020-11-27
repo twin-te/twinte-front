@@ -118,9 +118,8 @@ import Swal from 'sweetalert2'
 import { LectureFormat } from '~/types'
 import { YEAR } from '~/config'
 import { openUrl } from './utils/openUrl'
-import { getReacquision } from '~/usecase/get-reacquisition'
+import { GetReacquision } from '~/usecase/getReacquisition'
 import { TimetableEntity, UserLectureEntity } from '~/api/@types'
-import { TimeTable } from '~/Infrastructure/timetables'
 
 @Component({
   components: {
@@ -131,7 +130,6 @@ import { TimeTable } from '~/Infrastructure/timetables'
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
-  timeTable = new TimeTable()
   atmnb = ['出席', '欠席', '遅刻']
   moduleNum = this.$store.getters['table/moduleNum']
   localMemo = ''
@@ -229,7 +227,9 @@ export default class Index extends Vue {
   async reacquisition() {
     if (!this.table?.lecture_code) return
 
-    const formats = await getReacquision(this.table.lecture_code)
+    const formats = await new GetReacquision(this.table.lecture_code).run({
+      lecture: this.$deps.lecture,
+    })
     this.localFormats = formats
 
     await this.save()
@@ -259,7 +259,7 @@ export default class Index extends Vue {
     // → メモ、形式の変更
 
     if (this.editableLecture) {
-      this.timeTable.updateLecture(this.editableLecture)
+      this.$deps.timeTable.updateLecture(this.editableLecture)
       await this.$store.dispatch('table/setPeriod', {
         period: this.editableLecture,
       })

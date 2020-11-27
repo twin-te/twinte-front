@@ -1,7 +1,6 @@
 import Swal from 'sweetalert2'
 
-import { UserLectures } from '~/Infrastructure/user-lectures'
-import { TimeTable } from '~/Infrastructure/timetables'
+import { UserLectures, TimeTable } from '~/adapter'
 
 import type { TimetableEntity } from '~/api/@types'
 import { YEAR, BASE_URL } from '../../config'

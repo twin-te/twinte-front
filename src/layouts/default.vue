@@ -13,9 +13,8 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
-import { Auth } from '~/Infrastructure/auth'
-import { SchoolCalendar } from '~/Infrastructure/school-calendar'
-import { Module } from '~/store/table/type'
+import { Auth, SchoolCalendar } from '~/adapter'
+import type { Module } from '~/types'
 
 @Component({
   components: {

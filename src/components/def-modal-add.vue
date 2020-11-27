@@ -111,7 +111,6 @@ import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert } from './utils/swal'
 import { addCustomLecture } from './utils/addCustomLecture'
-import { Lecture } from '~/Infrastructure/lectures'
 import { YEAR, isMobile } from '~/config'
 import { openUrl } from './utils/openUrl'
 
@@ -136,7 +135,6 @@ export default class Index extends Vue {
   // data___________________________________________________________________________________
   //
   input: string = ''
-  lecture = new Lecture()
   lectures: miniLecture[] = []
 
   // computed___________________________________________________________________________________
@@ -197,7 +195,7 @@ export default class Index extends Vue {
   }
 
   async parse(input: string, type: 'csv' | 'input'): Promise<miniLecture[]> {
-    const le = (await this.lecture.searchLectures(input)) as any[]
+    const le = (await this.$deps.lecture.searchLectures(input)) as any[]
     console.log(le)
 
     return le.map((l) => {

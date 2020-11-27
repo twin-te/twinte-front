@@ -4,11 +4,7 @@ export class Auth {
    * ネートワークエラーもfalse
    */
   async isLogin(): Promise<boolean> {
-    try {
-      await $nuxt.$api.users.me.$get()
-      return true
-    } catch (error) {
-      return false
-    }
+    const res = await $nuxt.$api.users.me.get()
+    return res.status === 200
   }
 }
