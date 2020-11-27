@@ -106,7 +106,7 @@ import { TimetableEntity } from '~/api/@types'
 @Component({
   components: {
     Subject: () => import('~/components/ui-subject.vue'),
-    TButton: () => import('~/components/global/button.vue'),
+    TButton: () => import('~/components/button.vue'),
   },
 })
 export default class DisplaySettings extends Vue {

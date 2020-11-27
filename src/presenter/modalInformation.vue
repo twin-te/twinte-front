@@ -36,8 +36,8 @@ import * as Vuex from 'vuex'
 
 @Component({
   components: {
-    Dialog: () => import('~/components/global/dialog.vue'),
-    Button: () => import('~/components/global/button.vue'),
+    Dialog: () => import('~/components/dialog.vue'),
+    Button: () => import('~/components/button.vue'),
   },
 })
 export default class ModalInfomation extends Vue {

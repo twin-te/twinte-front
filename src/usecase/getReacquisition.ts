@@ -1,7 +1,6 @@
+import { UseCase } from '.'
 import { PortsPick } from '~/adapter'
-import { UseCase } from './usecase'
-
-type LectureFormat = 'Asynchronous' | 'Synchronous' | 'FaceToFace' | 'Others'
+import { LectureFormat } from '~/types'
 
 type R = PortsPick<'lecture'>
 type A = LectureFormat[]

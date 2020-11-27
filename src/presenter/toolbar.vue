@@ -24,7 +24,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 
-@Component
+@Component({})
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 

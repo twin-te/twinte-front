@@ -17,11 +17,11 @@ import type { Module } from '~/types'
 
 @Component({
   components: {
-    Toolbar: () => import('~/components/def-toolbar.vue'),
-    Navigation: () => import('~/components/def-nav.vue'),
-    ModalAdd: () => import('~/components/def-modal-add.vue'),
-    ModalAddCustom: () => import('~/components/def-modal-add-custom.vue'),
-    Information: () => import('~/components/def-modal-information.vue'),
+    Toolbar: () => import('~/presenter/toolbar.vue'),
+    Navigation: () => import('~/presenter/nav.vue'),
+    ModalAdd: () => import('~/presenter/modalAdd.vue'),
+    ModalAddCustom: () => import('~/presenter/modalAddCustom.vue'),
+    Information: () => import('~/presenter/modalInformation.vue'),
   },
 })
 export default class Index extends Vue {

@@ -18,7 +18,7 @@ import * as Vuex from 'vuex'
 
 @Component({
   components: {
-    Dialog: () => import('~/components/global/dialog.vue'),
+    Dialog: () => import('~/components/dialog.vue'),
   },
 })
 export default class Index extends Vue {

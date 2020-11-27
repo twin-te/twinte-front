@@ -109,10 +109,10 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
-import { twinsToTwinteAlert } from './utils/swal'
-import { addCustomLecture } from './utils/addCustomLecture'
+import { twinsToTwinteAlert } from '~/components/utils/swal'
+import { addCustomLecture } from '~/components/utils/addCustomLecture'
+import { openUrl } from '~/components/utils/openUrl'
 import { YEAR, isMobile } from '~/config'
-import { openUrl } from './utils/openUrl'
 
 type miniLecture = {
   lecture_code: string
@@ -126,7 +126,7 @@ type miniLecture = {
 
 @Component({
   components: {
-    Dialog: () => import('~/components/global/dialog.vue'),
+    Dialog: () => import('~/components/dialog.vue'),
   },
 })
 export default class Index extends Vue {

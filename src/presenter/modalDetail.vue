@@ -117,14 +117,14 @@ import Swal from 'sweetalert2'
 
 import { LectureFormat } from '~/types'
 import { YEAR } from '~/config'
-import { openUrl } from './utils/openUrl'
+import { openUrl } from '~/components/utils/openUrl'
 import { GetReacquision } from '~/usecase/getReacquisition'
 import { TimetableEntity, UserLectureEntity } from '~/api/@types'
 
 @Component({
   components: {
-    Dialog: () => import('~/components/global/dialog.vue'),
-    FormatsPanel: () => import('~/components/global/FormatsPanel.vue'),
+    Dialog: () => import('~/components/dialog.vue'),
+    FormatsPanel: () => import('~/components/FormatsPanel.vue'),
   },
 })
 export default class Index extends Vue {
