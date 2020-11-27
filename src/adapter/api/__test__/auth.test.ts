@@ -1,4 +1,4 @@
-import { Auth } from '~/adapter'
+import { Auth } from '../auth'
 
 jest.setTimeout(30000)
 

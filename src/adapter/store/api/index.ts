@@ -9,7 +9,6 @@
 import { Getters, Mutations, Actions } from 'vuex'
 import { S, G, M, A } from './type'
 
-import { TimeTable, UserLectures } from '~/adapter'
 import { YEAR } from '~/config'
 
 export const state = (): S => ({
@@ -42,22 +41,22 @@ export const mutations: Mutations<S, M> = {
 export const actions: Actions<S, A, G, M> = {
   async addTable(ctx, { lectureCodes }) {
     // サーバーへ時間割の登録
-    await new TimeTable().postAllLectures(lectureCodes, YEAR)
+    await $nuxt.$deps.timeTable.postAllLectures(lectureCodes, YEAR)
 
     await ctx.dispatch('fetch')
   },
 
   async deleteTable(ctx, { table, userLecture }) {
     // サーバーから削除
-    await new TimeTable().deleteLecture(YEAR, table)
-    await new UserLectures().deleteUserData(userLecture.user_lecture_id)
+    await $nuxt.$deps.timeTable.deleteLecture(YEAR, table)
+    await $nuxt.$deps.userLectures.deleteUserData(userLecture.user_lecture_id)
 
     await ctx.dispatch('fetch')
   },
 
   async fetch(ctx) {
     // サーバーから時間割の取得
-    const periodDatas = await new TimeTable().getTimeTables(YEAR)
+    const periodDatas = await $nuxt.$deps.timeTable.getTimeTables(YEAR)
 
     // ローカルデータへの追加
     ctx.commit('SET_TABLE', { periodDatas })

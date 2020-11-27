@@ -144,9 +144,9 @@ const nuxtConfig: Configuration = {
   dir: {
     assets: 'assets',
     app: 'app',
-    layouts: 'layouts',
+    layouts: 'web/layouts',
+    pages: 'web/pages',
     middleware: 'middleware',
-    pages: 'pages',
     static: 'static',
     store: 'adapter/store',
   },

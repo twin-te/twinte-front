@@ -172,7 +172,7 @@ export default class Index extends Vue {
   }
 
   async custom() {
-    await addCustomLecture()
+    await addCustomLecture({ ...this.$deps })
     await this.$store.commit('visible/chAdd', { display: false })
     await // this.$store.commit('visible/chCustom', { display: true })
     await this.$store.dispatch('api/fetch')

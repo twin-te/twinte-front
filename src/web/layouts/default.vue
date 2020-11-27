@@ -13,7 +13,6 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
-import { Auth, SchoolCalendar } from '~/adapter'
 import type { Module } from '~/types'
 
 @Component({
@@ -28,8 +27,6 @@ import type { Module } from '~/types'
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
-  auth = new Auth()
-  schoolCalendar = new SchoolCalendar()
   async mounted() {
     /**
      * ローカルデータの読み込み
@@ -42,7 +39,7 @@ export default class Index extends Vue {
      *
      */
 
-    const loginState = await this.auth.isLogin()
+    const loginState = await this.$deps.auth.isLogin()
     if (loginState) {
       await this.$store.dispatch('api/login')
     } else {
@@ -96,7 +93,7 @@ export default class Index extends Vue {
     }
     // → lectureパラメータがあればそのダイアログを表示
 
-    const cal = await this.schoolCalendar.getToday()
+    const cal = await this.$deps.schoolCalendar.getToday()
     if (cal.substituteDay) {
       Swal.fire({
         toast: true,
