@@ -15,6 +15,7 @@ import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 import type { Module } from '~/types'
 import { FetchLatestData } from '~/usecase/fetchLatestData'
+import { Login } from '~/usecase/login'
 
 @Component({
   components: {
@@ -40,9 +41,9 @@ export default class Index extends Vue {
      *
      */
 
-    const loginState = await this.$deps.auth.isLogin()
+    const loginState = await new Login().run({ ...this.$deps })
+
     if (loginState) {
-      await this.$store.dispatch('tableData/login')
       new FetchLatestData().run({ ...this.$deps })
     } else {
       Swal.fire(

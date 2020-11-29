@@ -32,7 +32,6 @@ export const mutations: Mutations<S, M> = {
   },
   LOGOUT(state) {
     state.isLogin = false
-    state.timeTables = []
   },
 }
 
@@ -49,6 +48,7 @@ export const actions: Actions<S, A, G, M> = {
 
   logout(ctx) {
     ctx.commit('LOGOUT')
+    ctx.commit('SET_TABLE', [])
     localStorage.removeItem('table')
     localStorage.removeItem('login')
   },
