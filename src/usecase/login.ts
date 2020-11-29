@@ -9,6 +9,7 @@ export class Login implements UseCase<R, A> {
       store.dispatch('tableData/login')
       return true
     } else {
+      store.dispatch('tableData/logout')
       return false
     }
   }

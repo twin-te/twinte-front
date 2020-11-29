@@ -50,7 +50,7 @@ export default class Index extends Vue {
   prevModule() {
     this.$store.commit('visible/chTable', { display: false, move: 'left' })
     setTimeout(() => {
-      this.$store.commit('pageState/prevModule')
+      this.$store.commit('tableData/prevModule')
       this.$store.commit('visible/chTable', { display: true, move: 'left' })
     }, 250)
   }
@@ -58,13 +58,13 @@ export default class Index extends Vue {
   nextModule() {
     this.$store.commit('visible/chTable', { display: false, move: 'right' })
     setTimeout(() => {
-      this.$store.commit('pageState/nextModule')
+      this.$store.commit('tableData/nextModule')
       this.$store.commit('visible/chTable', { display: true, move: 'right' })
     }, 250)
   }
 
   get module(): string {
-    return this.$store.getters['pageState/module']
+    return this.$store.getters['tableData/module']
   }
 }
 </script>

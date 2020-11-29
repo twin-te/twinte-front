@@ -110,7 +110,7 @@ import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert } from '~/usecase/swal'
-import { addCustomLecture } from '~/usecase/addCustomLecture'
+import { AddCustomLecture } from '~/usecase/addCustomLecture'
 import { openUrl } from '~/usecase/openUrl'
 import { YEAR, isMobile } from '~/config'
 import { AddTable } from '~/usecase/addTable'
@@ -142,13 +142,13 @@ export default class Index extends Vue {
   // computed___________________________________________________________________________________
   //
   get moduleMessage(): string {
-    return `${this.$store.getters['pageState/module']}のCSVファイルを入力してください`
+    return `${this.$store.getters['tableData/module']}のCSVファイルを入力してください`
   }
   get show(): boolean {
     return this.$store.getters['visible/add']
   }
   get moduleNum(): number {
-    return this.$store.getters['pageState/moduleNum']
+    return this.$store.getters['tableData/moduleNum']
   }
 
   // method___________________________________________________________________________________
@@ -174,9 +174,8 @@ export default class Index extends Vue {
   }
 
   async custom() {
-    await addCustomLecture({ ...this.$deps })
+    await new AddCustomLecture().run({ ...this.$deps })
     await this.$store.commit('visible/chAdd', { display: false })
-    await // this.$store.commit('visible/chCustom', { display: true })
     await new FetchLatestData().run({
       ...this.$deps,
       store: this.$store,

@@ -75,7 +75,7 @@ export default class Index extends Vue {
 
   // 学期を返す ex.春B
   get module() {
-    return this.moduleProp ?? this.$store.getters['pageState/module']
+    return this.moduleProp ?? this.$store.getters['tableData/module']
   }
 
   // 表示設定オプションから適切な文字の大きさを返す
@@ -105,7 +105,7 @@ export default class Index extends Vue {
 
   // この授業の詳細モーダルを開く
   chDetail(period: TimetableEntity) {
-    this.$store.dispatch('pageState/setPeriod', { period })
+    this.$store.dispatch('tableData/setPeriod', { period })
     this.$store.commit('visible/chDetail', { display: true })
   }
 

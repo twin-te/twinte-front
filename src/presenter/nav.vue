@@ -60,7 +60,7 @@ import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert, loginAlert } from '~/usecase/swal'
 import { sleep } from '~/usecase/sleep'
-import { BASE_URL, isMobile } from '~/config'
+import { isMobile } from '~/config'
 import { Logout } from '~/usecase/logout'
 
 declare global {
@@ -151,7 +151,6 @@ export default class Index extends Vue {
     }).then(async (result) => {
       if (result.value) {
         await new Logout().run({ ...this.$deps })
-        location.href = `${BASE_URL}/auth/logout`
       }
     })
   }

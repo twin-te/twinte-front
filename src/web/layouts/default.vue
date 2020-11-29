@@ -63,7 +63,7 @@ export default class Index extends Vue {
 
     const module = localStorage.getItem('module') as Module
     if (module) {
-      this.$store.commit('pageState/setModule', { module })
+      this.$store.commit('tableData/setModule', { module })
     }
     // → 前回見ていた学期
 
@@ -91,7 +91,7 @@ export default class Index extends Vue {
         }
       )
       if (validPeriod) {
-        await this.$store.dispatch('pageState/setPeriod', {
+        await this.$store.dispatch('tableData/setPeriod', {
           period: validPeriod,
         })
         this.$store.commit('visible/chDetail', { display: true })

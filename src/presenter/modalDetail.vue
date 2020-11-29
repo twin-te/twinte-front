@@ -133,7 +133,7 @@ export default class Index extends Vue {
   $store!: Vuex.ExStore
 
   atmnb = ['出席', '欠席', '遅刻']
-  moduleNum = this.$store.getters['pageState/moduleNum']
+  moduleNum = this.$store.getters['tableData/moduleNum']
   localMemo = ''
   localFormats: Array<LectureFormat> = []
   displayFormatPanel = false
@@ -145,10 +145,10 @@ export default class Index extends Vue {
       : [0, 0, 0]
   }
   get userData() {
-    return this.$store.getters['pageState/userData']
+    return this.$store.getters['tableData/userData']
   }
   get table(): TimetableEntity | null {
-    return this.$store.getters['pageState/looking']
+    return this.$store.getters['tableData/looking']
   }
   get show(): boolean {
     return this.$store.getters['visible/detail']
@@ -195,7 +195,7 @@ export default class Index extends Vue {
       absence,
       late,
     }
-    this.$store.dispatch('pageState/updatePeriod', { userData })
+    this.$store.dispatch('tableData/updatePeriod', { userData })
   }
 
   async deleteItem() {
@@ -219,8 +219,8 @@ export default class Index extends Vue {
     this.editableLecture = null
     this.displayFormatPanel = false
     this.$store.commit('visible/chDetail', { display: false })
-    this.$store.commit('pageState/setUserData', { userData: null })
-    this.$store.commit('pageState/setLooking', { period: null })
+    this.$store.commit('tableData/setUserData', { userData: null })
+    this.$store.commit('tableData/setLooking', { period: null })
   }
 
   async reacquisition() {
@@ -254,12 +254,12 @@ export default class Index extends Vue {
       memo: this.localMemo,
       formats: this.localFormats,
     }
-    await this.$store.dispatch('pageState/updatePeriod', { userData })
+    await this.$store.dispatch('tableData/updatePeriod', { userData })
     // → メモ、形式の変更
 
     if (this.editableLecture) {
       this.$deps.timeTable.updateLecture(this.editableLecture)
-      await this.$store.dispatch('pageState/setPeriod', {
+      await this.$store.dispatch('tableData/setPeriod', {
         period: this.editableLecture,
       })
     }
