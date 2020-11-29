@@ -97,7 +97,6 @@ export default class FormatsPanel extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
 .card {
   position: absolute;
   z-index: 1;

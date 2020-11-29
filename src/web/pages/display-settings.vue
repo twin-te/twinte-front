@@ -100,12 +100,11 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import type { SubjectSettings } from '~/types'
 import cloneDeep from 'lodash/cloneDeep'
-import { Day, Module } from 'twinte-parser'
 import { TimetableEntity } from '~/api/@types'
 
 @Component({
   components: {
-    Subject: () => import('~/components/ui-subject.vue'),
+    Subject: () => import('~/components/subject.vue'),
     TButton: () => import('~/components/button.vue'),
   },
 })
@@ -125,8 +124,8 @@ export default class DisplaySettings extends Vue {
     lecture_name: '科目名',
     instructor: '担当教員',
     year: 2019,
-    module: '秋C' as Module,
-    day: '木' as Day,
+    module: '秋C',
+    day: '木',
     period: 4,
     room: '0A000',
     user_lecture_id: 'sampledata',
@@ -146,8 +145,6 @@ export default class DisplaySettings extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/css/variable.scss';
-
 .display-settings {
   padding: 1vh 6vw;
   max-width: 70vh;

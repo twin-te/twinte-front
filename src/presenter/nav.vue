@@ -58,8 +58,8 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
-import { twinsToTwinteAlert, loginAlert } from '~/components/utils/swal'
-import { sleep } from '~/components/utils/sleep'
+import { twinsToTwinteAlert, loginAlert } from '~/usecase/swal'
+import { sleep } from '~/usecase/sleep'
 import { BASE_URL, isMobile } from '~/config'
 
 declare global {
@@ -130,7 +130,7 @@ export default class Index extends Vue {
   }
 
   get isLogin(): boolean {
-    return this.$store.getters['api/isLogin']
+    return this.$store.getters['tableData/isLogin']
   }
 
   closeDrawer() {
@@ -149,7 +149,7 @@ export default class Index extends Vue {
       cancelButtonText: 'いいえ',
     }).then(async (result) => {
       if (result.value) {
-        await this.$store.dispatch('api/logout')
+        await this.$store.dispatch('tableData/logout')
         location.href = `${BASE_URL}/auth/logout`
       }
     })
@@ -227,8 +227,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 //++++++++++++++++++++++++// ドロワーメニューの枠 //++++++++++++++++++++++++//
 .main {
   position: absolute;

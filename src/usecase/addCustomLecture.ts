@@ -1,9 +1,8 @@
 import Swal from 'sweetalert2'
 
 import { UserLectures, TimeTable } from '~/adapter'
-import type { TimetableEntity } from '~/api/@types'
+import type { Day, Module, TimetableEntity } from '~/api/@types'
 import { YEAR, BASE_URL } from '~/config'
-import type { Day, Module } from 'twinte-parser'
 
 type Form = {
   lecture_name: string

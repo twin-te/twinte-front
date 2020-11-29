@@ -23,8 +23,7 @@ export default class Index extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/css/variable.scss';
-@import '~/assets/css/main.scss';
+@import '~/web/assets/css/main.scss';
 button {
   background-color: transparent;
   border: none;

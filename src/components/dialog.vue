@@ -38,6 +38,5 @@ export default class Dialog extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/css/variable.scss';
-@import '~/assets/css/modal.scss';
+@import '~/web/assets/css/modal.scss';
 </style>

@@ -14,6 +14,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 import type { Module } from '~/types'
+import { FetchLatestData } from '~/usecase/fetchLatestData'
 
 @Component({
   components: {
@@ -41,7 +42,8 @@ export default class Index extends Vue {
 
     const loginState = await this.$deps.auth.isLogin()
     if (loginState) {
-      await this.$store.dispatch('api/login')
+      await this.$store.dispatch('tableData/login')
+      new FetchLatestData().run({ ...this.$deps })
     } else {
       Swal.fire(
         'ようこそTwin:teへ',
@@ -53,14 +55,14 @@ export default class Index extends Vue {
     const table = localStorage.getItem('table')
     if (table) {
       // const periodDatas: TimeTables = JSON.parse(table);
-      // this.$store.commit("API/SET_TABLE", { periodDatas });
-      // this.$store.commit("API/LOGIN");
+      // this.$store.commit("tableData/SET_TABLE", { periodDatas });
+      // this.$store.commit("tableData/LOGIN");
     }
     // → 時間割データ
 
     const module = localStorage.getItem('module') as Module
     if (module) {
-      this.$store.commit('table/setModule', { module })
+      this.$store.commit('pageState/setModule', { module })
     }
     // → 前回見ていた学期
 
@@ -77,17 +79,20 @@ export default class Index extends Vue {
         'ようこそTwin:teへ！➕ボタンをタップして時間割を登録してみましょう！',
         'success'
       )
-      localStorage.setItem('login', 'true')
     }
     // → はじめてログインしたときのみ
 
     const query: any = this.$route.query
     if (query) {
-      const validPeriod = this.$store.getters['api/table'].find((lecture) => {
-        return lecture.user_lecture_id === query.user_lecture_id
-      })
+      const validPeriod = this.$store.getters['tableData/table'].find(
+        (lecture) => {
+          return lecture.user_lecture_id === query.user_lecture_id
+        }
+      )
       if (validPeriod) {
-        await this.$store.dispatch('table/setPeriod', { period: validPeriod })
+        await this.$store.dispatch('pageState/setPeriod', {
+          period: validPeriod,
+        })
         this.$store.commit('visible/chDetail', { display: true })
       }
     }
@@ -121,8 +126,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 .main:focus {
   outline: none;
 }

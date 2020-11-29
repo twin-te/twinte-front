@@ -1,13 +1,18 @@
-import { Configuration } from '@nuxt/types'
+import { NuxtConfig } from '@nuxt/types'
+
 const baseName = process.env.BASE_NAME || 'Twin:te'
 const baseDesc =
   process.env.BASE_DISC || '筑波大学専用の時間割アプリケーションです'
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
 const baseDir = process.env.BASE_DIR || '/'
 
-const nuxtConfig: Configuration = {
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
-  mode: 'universal',
+const nuxtConfig: NuxtConfig = {
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/stylelint-module',
+  ],
+  ssr: true,
   srcDir: 'src',
   fetchOnServer: false,
   env: {
@@ -68,7 +73,10 @@ const nuxtConfig: Configuration = {
     color: 'teal',
     height: '5px',
   },
-  css: ['@/assets/css/main.scss'],
+  css: ['@/web/assets/css/main'],
+  styleResources: {
+    scss: ['@/web/assets/css/variable.scss'],
+  },
   stylelint: {
     fix: true,
     formatter: 'prettier-stylelint',
@@ -88,6 +96,10 @@ const nuxtConfig: Configuration = {
   },
   dayjs: {
     locales: ['ja'],
+  },
+  storybook: {
+    addons: ['@storybook/preset-scss'],
+    stories: ['~/src/components/**/*.stories.@(ts|tsx|mdx)'],
   },
   workbox: {
     dev: false,
@@ -142,13 +154,13 @@ const nuxtConfig: Configuration = {
     componentClientOnly: true,
   },
   dir: {
-    assets: 'assets',
     app: 'app',
+    middleware: 'middleware',
+    store: 'adapter/store',
+    assets: 'web/assets',
     layouts: 'web/layouts',
     pages: 'web/pages',
-    middleware: 'middleware',
-    static: 'static',
-    store: 'adapter/store',
+    static: 'web/static',
   },
 }
 

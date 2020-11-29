@@ -39,7 +39,7 @@ enum Day {
 
 @Component({
   components: {
-    Day: () => import('~/components/ui-day.vue'),
+    Day: () => import('~/components/day.vue'),
   },
 })
 export default class Index extends Vue {
@@ -50,7 +50,7 @@ export default class Index extends Vue {
   prevModule() {
     this.$store.commit('visible/chTable', { display: false, move: 'left' })
     setTimeout(() => {
-      this.$store.commit('table/prevModule')
+      this.$store.commit('pageState/prevModule')
       this.$store.commit('visible/chTable', { display: true, move: 'left' })
     }, 250)
   }
@@ -58,20 +58,18 @@ export default class Index extends Vue {
   nextModule() {
     this.$store.commit('visible/chTable', { display: false, move: 'right' })
     setTimeout(() => {
-      this.$store.commit('table/nextModule')
+      this.$store.commit('pageState/nextModule')
       this.$store.commit('visible/chTable', { display: true, move: 'right' })
     }, 250)
   }
 
   get module(): string {
-    return this.$store.getters['table/module']
+    return this.$store.getters['pageState/module']
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 $week-width: calc(100vw - 8vmin - 11vw);
 
 .table-header {

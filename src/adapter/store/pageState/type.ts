@@ -33,12 +33,12 @@ export interface G {
   userData: UserLectureEntity | null
 }
 export interface RG {
-  'table/module': G['module']
-  'table/prevModule': G['prevModule']
-  'table/nextModule': G['prevModule']
-  'table/moduleNum': G['moduleNum']
-  'table/looking': G['looking']
-  'table/userData': G['userData']
+  'pageState/module': G['module']
+  'pageState/prevModule': G['prevModule']
+  'pageState/nextModule': G['prevModule']
+  'pageState/moduleNum': G['moduleNum']
+  'pageState/looking': G['looking']
+  'pageState/userData': G['userData']
 }
 export interface M {
   setModule: { module: Module }
@@ -57,11 +57,11 @@ export interface M {
   setUserData: { userData: UserLectureEntity | null }
 }
 export interface RM {
-  'table/setModule': M['setModule']
-  'table/prevModule': M['prevModule']
-  'table/nextModule': M['nextModule']
-  'table/setLooking': M['setLooking']
-  'table/setUserData': M['setUserData']
+  'pageState/setModule': M['setModule']
+  'pageState/prevModule': M['prevModule']
+  'pageState/nextModule': M['nextModule']
+  'pageState/setLooking': M['setLooking']
+  'pageState/setUserData': M['setUserData']
 }
 
 export interface A {
@@ -69,6 +69,6 @@ export interface A {
   updatePeriod: { userData: UserLectureEntity }
 }
 export interface RA {
-  'table/setPeriod': A['setPeriod']
-  'table/updatePeriod': A['updatePeriod']
+  'pageState/setPeriod': A['setPeriod']
+  'pageState/updatePeriod': A['updatePeriod']
 }

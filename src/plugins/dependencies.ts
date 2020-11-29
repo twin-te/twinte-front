@@ -18,7 +18,7 @@ declare module 'vue/types/vue' {
 /**
  * DI
  */
-const plugin: Plugin = ({}, inject) => {
+const plugin: Plugin = ({ store }, inject) => {
   const deps: Ports = {
     auth: new Auth(),
     information: new Information(),
@@ -26,6 +26,7 @@ const plugin: Plugin = ({}, inject) => {
     schoolCalendar: new SchoolCalendar(),
     timeTable: new TimeTable(),
     userLectures: new UserLectures(),
+    store,
   }
 
   inject('deps', deps)

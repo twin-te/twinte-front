@@ -20,7 +20,6 @@ import type { OutputInformationData } from '~/api/@types'
 
 @Component({
   components: {
-    Subject: () => import('~/components/ui-subject.vue'),
     TButton: () => import('~/components/button.vue'),
   },
 })
@@ -35,8 +34,6 @@ export default class Info extends Vue {
 }
 </script>
 <style scoped lang="scss">
-@import '~/assets/css/variable.scss';
-
 @mixin elipsis {
   width: 100%;
   line-height: 140%;
@@ -82,18 +79,18 @@ export default class Info extends Vue {
       font-size: 1.2rem;
       margin: 0;
 
-      /deep/ h2 {
+      ::v-deep h2 {
         font-size: 1.35rem;
       }
-      /deep/ h3 {
+      ::v-deep h3 {
         font-size: 1.3rem;
       }
-      /deep/ p {
+      ::v-deep p {
         margin: 0 0 5%;
         padding: 0;
         line-height: 140%;
       }
-      /deep/ a {
+      ::v-deep a {
         text-decoration: none;
         color: $link-text-color;
       }

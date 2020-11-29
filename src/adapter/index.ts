@@ -1,3 +1,4 @@
+import Vuex from 'vuex'
 import { Auth } from './api/auth'
 import { Information } from './api/information'
 import { Lecture } from './api/lectures'
@@ -14,6 +15,7 @@ export interface Ports {
   schoolCalendar: SchoolCalendar
   timeTable: TimeTable
   userLectures: UserLectures
+  store: Vuex.ExStore
 }
 
 export type PortsPick<T extends keyof Ports> = Pick<Ports, T>

@@ -60,7 +60,7 @@ export default class Index extends Vue {
       return undefined
     }
 
-    const periods = this.$store.getters['api/table']
+    const periods = this.$store.getters['tableData/table']
 
     const validPeriod = periods.find((lecture) => {
       return (
@@ -75,7 +75,7 @@ export default class Index extends Vue {
 
   // 学期を返す ex.春B
   get module() {
-    return this.moduleProp ?? this.$store.getters['table/module']
+    return this.moduleProp ?? this.$store.getters['pageState/module']
   }
 
   // 表示設定オプションから適切な文字の大きさを返す
@@ -105,7 +105,7 @@ export default class Index extends Vue {
 
   // この授業の詳細モーダルを開く
   chDetail(period: TimetableEntity) {
-    this.$store.dispatch('table/setPeriod', { period })
+    this.$store.dispatch('pageState/setPeriod', { period })
     this.$store.commit('visible/chDetail', { display: true })
   }
 
@@ -147,8 +147,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 /* 科目 */
 .subject {
   height: 100%;

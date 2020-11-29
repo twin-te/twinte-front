@@ -42,6 +42,7 @@ export interface G {
    */
   info: boolean
   /**
+   * @deprecated 消す
    * 時間割 アニメーション実装するため、どちら遷移するかmoveで記述
    */
   table: { display: boolean; move: 'left' | 'right' }

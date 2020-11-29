@@ -109,10 +109,12 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
 import Swal from 'sweetalert2'
 
-import { twinsToTwinteAlert } from '~/components/utils/swal'
-import { addCustomLecture } from '~/components/utils/addCustomLecture'
-import { openUrl } from '~/components/utils/openUrl'
+import { twinsToTwinteAlert } from '~/usecase/swal'
+import { addCustomLecture } from '~/usecase/addCustomLecture'
+import { openUrl } from '~/usecase/openUrl'
 import { YEAR, isMobile } from '~/config'
+import { AddTable } from '~/usecase/addTable'
+import { FetchLatestData } from '~/usecase/fetchLatestData'
 
 type miniLecture = {
   lecture_code: string
@@ -140,13 +142,13 @@ export default class Index extends Vue {
   // computed___________________________________________________________________________________
   //
   get moduleMessage(): string {
-    return `${this.$store.getters['table/module']}のCSVファイルを入力してください`
+    return `${this.$store.getters['pageState/module']}のCSVファイルを入力してください`
   }
   get show(): boolean {
     return this.$store.getters['visible/add']
   }
   get moduleNum(): number {
-    return this.$store.getters['table/moduleNum']
+    return this.$store.getters['pageState/moduleNum']
   }
 
   // method___________________________________________________________________________________
@@ -175,7 +177,10 @@ export default class Index extends Vue {
     await addCustomLecture({ ...this.$deps })
     await this.$store.commit('visible/chAdd', { display: false })
     await // this.$store.commit('visible/chCustom', { display: true })
-    await this.$store.dispatch('api/fetch')
+    await new FetchLatestData().run({
+      ...this.$deps,
+      store: this.$store,
+    })
   }
 
   async search(input: string, type: 'csv' | 'input') {
@@ -254,7 +259,7 @@ export default class Index extends Vue {
   }
 
   async submitByNumber() {
-    if (!this.$store.getters['api/isLogin']) {
+    if (!this.$store.getters['tableData/isLogin']) {
       Swal.fire(
         'まだログインしていません',
         '歯車⚙からログインしてください',
@@ -287,22 +292,23 @@ export default class Index extends Vue {
         return
       }
 
-      await this.$store.dispatch('api/addTable', { lectureCodes })
-      // → 追加
+      await new AddTable(lectureCodes).run({ ...this.$deps })
+      await new FetchLatestData().run({
+        ...this.$deps,
+        store: this.$store,
+      })
 
       Swal.fire('完了', '時間割が更新されました。', 'success')
 
       this.lectures = []
       this.close()
-      // → ダイアログを閉じる
     })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-@import '~/assets/css/modal.scss';
+@import '~/web/assets/css/modal.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {

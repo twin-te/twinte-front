@@ -9,7 +9,7 @@
       <!-- Twin:te -->
       <router-link to="/">
         <img
-          src="~/assets/img/title-logo.png"
+          src="~/web/assets/img/title-logo.png"
           class="title-logo"
           alt="Twin:te"
         />
@@ -38,8 +38,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 .top {
   position: relative;
   display: flex;

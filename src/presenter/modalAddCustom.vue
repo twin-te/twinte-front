@@ -41,8 +41,6 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 .custom-form {
   position: relative;

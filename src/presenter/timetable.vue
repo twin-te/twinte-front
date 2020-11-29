@@ -48,7 +48,7 @@ type Subject = {
 
 @Component({
   components: {
-    Subject: () => import('~/components/ui-subject.vue'),
+    Subject: () => import('~/components/subject.vue'),
   },
 })
 export default class AppTimeTable extends Vue {
@@ -85,8 +85,6 @@ export default class AppTimeTable extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-
 .timetable-panel {
   box-sizing: border-box;
   height: 82vh;

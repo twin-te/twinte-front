@@ -117,21 +117,23 @@ import Swal from 'sweetalert2'
 
 import { LectureFormat } from '~/types'
 import { YEAR } from '~/config'
-import { openUrl } from '~/components/utils/openUrl'
-import { GetReacquision } from '~/usecase/getReacquisition'
+import { openUrl } from '~/usecase/openUrl'
 import { TimetableEntity, UserLectureEntity } from '~/api/@types'
+import { GetReacquision } from '~/usecase/getReacquisition'
+import { DeleteTable } from '~/usecase/deleteTable'
+import { FetchLatestData } from '~/usecase/fetchLatestData'
 
 @Component({
   components: {
     Dialog: () => import('~/components/dialog.vue'),
-    FormatsPanel: () => import('~/components/FormatsPanel.vue'),
+    FormatsPanel: () => import('~/components/formatsPanel.vue'),
   },
 })
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
   atmnb = ['出席', '欠席', '遅刻']
-  moduleNum = this.$store.getters['table/moduleNum']
+  moduleNum = this.$store.getters['pageState/moduleNum']
   localMemo = ''
   localFormats: Array<LectureFormat> = []
   displayFormatPanel = false
@@ -143,10 +145,10 @@ export default class Index extends Vue {
       : [0, 0, 0]
   }
   get userData() {
-    return this.$store.getters['table/userData']
+    return this.$store.getters['pageState/userData']
   }
   get table(): TimetableEntity | null {
-    return this.$store.getters['table/looking']
+    return this.$store.getters['pageState/looking']
   }
   get show(): boolean {
     return this.$store.getters['visible/detail']
@@ -193,7 +195,7 @@ export default class Index extends Vue {
       absence,
       late,
     }
-    this.$store.dispatch('table/updatePeriod', { userData })
+    this.$store.dispatch('pageState/updatePeriod', { userData })
   }
 
   async deleteItem() {
@@ -204,11 +206,8 @@ export default class Index extends Vue {
       cancelButtonText: 'いいえ',
     }).then(async (result) => {
       if (result.value && this.table && this.userData) {
-        await this.$store.dispatch('api/deleteTable', {
-          table: this.table,
-          userLecture: this.userData,
-        })
-
+        await new DeleteTable(this.table, this.userData).run({ ...this.$deps })
+        await new FetchLatestData().run({ ...this.$deps })
         this.close()
         // → ダイアログを閉じる
       }
@@ -220,8 +219,8 @@ export default class Index extends Vue {
     this.editableLecture = null
     this.displayFormatPanel = false
     this.$store.commit('visible/chDetail', { display: false })
-    this.$store.commit('table/setUserData', { userData: null })
-    this.$store.commit('table/setLooking', { period: null })
+    this.$store.commit('pageState/setUserData', { userData: null })
+    this.$store.commit('pageState/setLooking', { period: null })
   }
 
   async reacquisition() {
@@ -255,19 +254,19 @@ export default class Index extends Vue {
       memo: this.localMemo,
       formats: this.localFormats,
     }
-    await this.$store.dispatch('table/updatePeriod', { userData })
+    await this.$store.dispatch('pageState/updatePeriod', { userData })
     // → メモ、形式の変更
 
     if (this.editableLecture) {
       this.$deps.timeTable.updateLecture(this.editableLecture)
-      await this.$store.dispatch('table/setPeriod', {
+      await this.$store.dispatch('pageState/setPeriod', {
         period: this.editableLecture,
       })
     }
     // → 教室の変更
 
     this.editableLecture = null // 編集モードをオフに
-    await this.$store.dispatch('api/fetch') // 最新のデータを反映
+    await new FetchLatestData().run({ ...this.$deps }) // 最新のデータを反映
 
     await Swal.fire({
       title: '完了',
@@ -291,8 +290,7 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/css/variable.scss';
-@import '~/assets/css/modal.scss';
+@import '~/web/assets/css/modal.scss';
 
 //++++++++++++++++++// 以下ダイアログの内容（中身） //+++++++++++++++++//
 article {
