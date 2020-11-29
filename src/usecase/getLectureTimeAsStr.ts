@@ -54,11 +54,8 @@ const genTreeStrucStr = function (
       nextStart = i + 1
     }
   }
-  console.log(letters)
   const reducedArr = reduceArr(letters)
-  console.log(reducedArr)
   const str = convArrToStr(reducedArr)
-  console.log(str)
   return str
 }
 
@@ -83,7 +80,6 @@ export const getLectureTimeAsStr = function (details: details): string {
     )
     return txt
   } else {
-    console.info(details)
     return ''
   }
 }
