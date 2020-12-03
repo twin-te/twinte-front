@@ -1,15 +1,13 @@
 import 'vuex'
-import * as Visible from '../store/visible/type'
-import * as Table from '../store/table/type'
-import * as Api from '../store/api/type'
+import * as Visible from '../adapter/store/visible/type'
+import * as TableData from '../adapter/store/tableData/type'
 
 declare module 'vuex' {
   type RootState = {
     Visible: Visible.S
-    Table: Table.S
-    Api: Api.S
+    TableData: TableData.S
   }
-  type RootGetters = Visible.RG & Table.RG & Api.RG
-  type RootMutations = Visible.RM & Table.RM & Api.RM
-  type RootActions = Table.RA & Api.RA
+  type RootGetters = Visible.RG & TableData.RG
+  type RootMutations = Visible.RM & TableData.RM
+  type RootActions = TableData.RA
 }

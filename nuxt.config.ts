@@ -1,13 +1,18 @@
-import { Configuration } from '@nuxt/types'
+import { NuxtConfig } from '@nuxt/types'
+
 const baseName = process.env.BASE_NAME || 'Twin:te'
 const baseDesc =
   process.env.BASE_DISC || '筑波大学専用の時間割アプリケーションです'
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
 const baseDir = process.env.BASE_DIR || '/'
 
-const nuxtConfig: Configuration = {
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
-  mode: 'universal',
+const nuxtConfig: NuxtConfig = {
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/stylelint-module',
+  ],
+  ssr: true,
   srcDir: 'src',
   fetchOnServer: false,
   env: {
@@ -68,12 +73,19 @@ const nuxtConfig: Configuration = {
     color: 'teal',
     height: '5px',
   },
-  css: ['@/assets/css/main.scss'],
+  css: ['@/web/assets/css/main'],
+  styleResources: {
+    scss: ['@/web/assets/css/variable.scss'],
+  },
   stylelint: {
     fix: true,
     formatter: 'prettier-stylelint',
   },
-  plugins: [{ src: '@/plugins/ga.js', mode: 'client' }, '@/plugins/api'],
+  plugins: [
+    { src: '@/plugins/ga.js', mode: 'client' },
+    '@/plugins/api',
+    '@/plugins/dependencies',
+  ],
   modules: ['@nuxtjs/pwa', '@nuxtjs/sentry', '@nuxtjs/dayjs', '@nuxtjs/axios'],
   axios: {
     baseURL: process.env.API_URL || 'https://api.twinte.net/v1',
@@ -136,6 +148,15 @@ const nuxtConfig: Configuration = {
     clientUseUrl: true,
     componentAliases: true,
     componentClientOnly: true,
+  },
+  dir: {
+    app: 'app',
+    middleware: 'middleware',
+    store: 'adapter/store',
+    assets: 'web/assets',
+    layouts: 'web/layouts',
+    pages: 'web/pages',
+    static: 'web/static',
   },
 }
 
