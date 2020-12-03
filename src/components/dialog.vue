@@ -38,5 +38,36 @@ export default class Dialog extends Vue {
 </script>
 
 <style scoped lang="scss">
-@import '~/web/assets/css/modal.scss';
+// モーダルのスタイル
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 92vw;
+  max-width: 70vh;
+  height: 80vh;
+  background: $white;
+  box-shadow: $large-shadow;
+  border-radius: 1vh;
+  z-index: 6;
+  padding: 4vh;
+  box-sizing: border-box;
+}
+.back {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background: rgba(100, 100, 100, 0.5);
+  z-index: 5;
+}
+.close-btn {
+  position: absolute;
+  top: 2.2vh;
+  right: 2.1vh;
+  font-size: 3.1rem;
+  color: $main-text-color;
+}
 </style>

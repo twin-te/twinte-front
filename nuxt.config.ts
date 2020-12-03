@@ -97,10 +97,6 @@ const nuxtConfig: NuxtConfig = {
   dayjs: {
     locales: ['ja'],
   },
-  storybook: {
-    addons: ['@storybook/preset-scss'],
-    stories: ['~/src/components/**/*.stories.@(ts|tsx|mdx)'],
-  },
   workbox: {
     dev: false,
     runtimeCaching: [

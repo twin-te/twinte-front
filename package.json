@@ -12,16 +12,13 @@
     "generate": "aspida && nuxt-ts generate",
     "format": "prettier --write .",
     "aspida": "aspida",
-    "apigen": "npx openapi2aspida -i swagger.json",
-    "storybook": "nuxt-ts storybook"
+    "apigen": "npx openapi2aspida -i swagger.json"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.4",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/eslint-config-typescript": "5.0.0",
-    "@nuxtjs/storybook": "^3.2.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
-    "@storybook/preset-scss": "^1.0.3",
     "@types/jest": "^26.0.13",
     "@types/lodash": "^4.14.149",
     "@types/marked": "^1.1.0",
