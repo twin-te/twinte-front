@@ -31,7 +31,8 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
-import { getInformation, parse, Information } from '../api/information'
+import type { OutputInformationData as Information } from '~/api/@types'
+import marked from 'marked'
 import * as Vuex from 'vuex'
 
 @Component({
@@ -43,7 +44,7 @@ import * as Vuex from 'vuex'
 export default class ModalInfomation extends Vue {
   $store!: Vuex.ExStore
 
-  information: Information = []
+  information: Information[] = []
   displayInfo = true
 
   /**
@@ -76,8 +77,12 @@ export default class ModalInfomation extends Vue {
    * fetchにしていたけどライフサイクルがうまく非同期にならなかったのでmount時に実行
    */
   async fetchInfo() {
-    const { data: info } = await getInformation()
-    this.information = parse(info)
+    const info = await this.$api.information.$get()
+    this.information = this.parse(info)
+  }
+
+  parse(infos: Information[]): Information[] {
+    return infos.map((info) => ({ ...info, content: marked(info.content) }))
   }
 
   /**

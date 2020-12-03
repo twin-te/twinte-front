@@ -73,8 +73,11 @@ const nuxtConfig: Configuration = {
     fix: true,
     formatter: 'prettier-stylelint',
   },
-  plugins: [{ src: '@/plugins/ga.js', mode: 'client' }],
-  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry', '@nuxtjs/dayjs'],
+  plugins: [{ src: '@/plugins/ga.js', mode: 'client' }, '@/plugins/api'],
+  modules: ['@nuxtjs/pwa', '@nuxtjs/sentry', '@nuxtjs/dayjs', '@nuxtjs/axios'],
+  axios: {
+    baseURL: process.env.API_URL || 'https://api.twinte.net/v1',
+  },
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
     disabled: process.env.NODE_ENV != 'production',

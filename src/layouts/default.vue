@@ -1,5 +1,5 @@
 <template ontouchstart="">
-  <div>
+  <div class="main" @keyup.esc="closeAll()" tabindex="0">
     <Toolbar />
     <Navigation />
     <ModalAdd />
@@ -12,10 +12,9 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import * as Vuex from 'vuex'
-// import { TimeTables } from "../types";
 import { isLogin } from '../store/api/auth'
 import Swal from 'sweetalert2'
-import { getSchoolCalender } from '../api/school-calender'
+import { Module } from '~/store/table/type'
 
 @Component({
   components: {
@@ -59,7 +58,7 @@ export default class Index extends Vue {
     }
     // → 時間割データ
 
-    const module = localStorage.getItem('module')
+    const module = localStorage.getItem('module') as Module
     if (module) {
       this.$store.commit('table/setModule', { module })
     }
@@ -94,11 +93,12 @@ export default class Index extends Vue {
     }
     // → lectureパラメータがあればそのダイアログを表示
 
-    const cal = await getSchoolCalender(this.$dayjs().format('YYYY-MM-DD'))
-    if (cal.data.substituteDay) {
+    const today = this.$dayjs().format('YYYY-MM-DD')
+    const cal = await this.$api.school_calender._date(today).$get()
+    if (cal.substituteDay) {
       Swal.fire({
         toast: true,
-        text: `今日は${cal.data.substituteDay.change_to}曜日課です`,
+        text: `今日は${cal.substituteDay.change_to}曜日課です`,
         position: 'bottom-left',
         showConfirmButton: false,
         icon: 'info',
@@ -111,9 +111,20 @@ export default class Index extends Vue {
       `${window.outerHeight}px`
     )
   }
+
+  closeAll() {
+    this.$store.commit('visible/chDrawer', { display: false })
+    this.$store.commit('visible/chDetail', { display: false })
+    this.$store.commit('visible/chAdd', { display: false })
+    this.$store.commit('visible/chInfo', { display: false })
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '~/assets/css/variable.scss';
+
+.main:focus {
+  outline: none;
+}
 </style>

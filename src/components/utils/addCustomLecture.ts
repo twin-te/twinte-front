@@ -4,7 +4,7 @@ import { postUserData } from '../../store/api/user-lectures'
 import { updateLecture } from '../../store/api/timetables'
 
 import type { Period } from '../../types'
-import { YEAR, axios, BASE_URL } from '../../common/config'
+import { YEAR, BASE_URL } from '../../config'
 import type { Day, Module } from 'twinte-parser'
 
 type Form = {
@@ -63,7 +63,7 @@ const validator = async (form: Form): Promise<boolean> => {
   if (form.module === '' || form.day === '' || form.period === '') {
     return false
   }
-  const response = await axios.get(
+  const response = await $nuxt.$axios.get(
     `${BASE_URL}/timetables/${YEAR}/${form.module}/${form.day}/${form.period}`
   )
   // TODO かぶってるエラー

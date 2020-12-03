@@ -25,10 +25,15 @@
         </div>
         <div class="register-btn" @click="login()" v-else>ログイン</div>
 
-        <section class="menu-contents-wrap">
+        <section
+          class="menu-contents-wrap"
+          v-for="group in groups"
+          :key="group.title"
+        >
+          <h2>{{ group.title }}</h2>
           <div
             class="menu-content"
-            v-for="(l, id) in list"
+            v-for="(l, id) in group.list"
             :key="id"
             :id="l.icon"
             @click="navigateHandler(l.link)"
@@ -55,8 +60,7 @@ import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert, loginAlert } from './utils/swal'
 import { sleep } from './utils/sleep'
-import { BASE_URL } from '../common/config'
-import { isMobile } from '../common/ua'
+import { BASE_URL, isMobile } from '~/config'
 
 declare global {
   interface Window {
@@ -81,19 +85,42 @@ declare global {
 export default class Index extends Vue {
   $store!: Vuex.ExStore
 
-  list = [
-    { icon: 'home', name: 'ホームへ戻る', link: '/' },
-    { icon: 'help', name: '使い方', link: 'https://www.twinte.net/#usages' },
-    { icon: 'view_quilt', name: '表示設定', link: '/display-settings' },
+  groups = [
     {
-      icon: 'announcement',
-      name: 'Twin:teからのお知らせ',
-      link: '/info',
+      list: [
+        { icon: 'home', name: 'ホームへ戻る', link: '/' },
+
+        {
+          icon: 'announcement',
+          name: 'Twin:teからのお知らせ',
+          link: '/info',
+        },
+      ],
     },
     {
-      icon: 'group',
-      name: '寄付者一覧',
-      link: 'https://www.twinte.net/sponsorship/index.html',
+      title: '設定',
+      list: [
+        {
+          icon: 'view_quilt',
+          name: '表示設定',
+          link: '/display-settings',
+        },
+      ],
+    },
+    {
+      title: 'リンク',
+      list: [
+        {
+          icon: 'help',
+          name: '使い方',
+          link: 'https://www.twinte.net/#usages',
+        },
+        {
+          icon: 'group',
+          name: '寄付者一覧',
+          link: 'https://www.twinte.net/sponsorship/index.html',
+        },
+      ],
     },
     // , { icon: "share", name: "時間割の共有", link: "/" }
   ]
@@ -161,7 +188,7 @@ export default class Index extends Vue {
 
   mounted() {
     if (isMobile()) {
-      this.list.push({
+      this.groups[0].list.push({
         icon: 'vertical_align_bottom',
         name: 'Twinsからインポート',
         link: 'func:twins',
@@ -169,13 +196,13 @@ export default class Index extends Vue {
     }
     if (window.android) {
       if (window.android?.openSettings)
-        this.list.push({
+        this.groups[1].list.push({
           icon: 'settings',
-          name: 'Androidアプリの設定',
+          name: '通知設定',
           link: 'func:android-settings',
         })
       if (window.android?.share)
-        this.list.push({
+        this.groups[0].list.push({
           icon: 'share',
           name: '時間割のシェア',
           link: 'func:android-share',
@@ -183,13 +210,13 @@ export default class Index extends Vue {
     }
     if (window.webkit) {
       if (window.webkit.messageHandlers?.iPhoneSettings)
-        this.list.push({
+        this.groups[1].list.push({
           icon: 'settings',
-          name: 'iPhoneアプリの設定',
+          name: '通知設定',
           link: 'func:iPhone-settings',
         })
       if (window.webkit.messageHandlers?.share)
-        this.list.push({
+        this.groups[0].list.push({
           icon: 'share',
           name: '時間割のシェア',
           link: 'func:iPhone-share',
@@ -222,6 +249,12 @@ h1 {
   font-weight: 400;
   margin: 0 auto 10% 0;
 }
+h2 {
+  color: $sub-text-color;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+}
 .close-btn {
   position: absolute;
   color: $main-text-color;
@@ -231,8 +264,11 @@ h1 {
 }
 
 /* メニュー項目 */
-.main .menu-contents-wrap {
-  margin-top: 4%;
+.menu-contents-wrap:nth-of-type(1) {
+  margin-top: 1rem;
+}
+.menu-contents-wrap:nth-of-type(n + 2) {
+  margin-top: 2rem;
 }
 .menu-content {
   position: relative;
@@ -251,7 +287,6 @@ h1 {
 }
 .menu-content p {
   margin: 0;
-  padding-left: 1vh;
   font-size: 1.5rem;
   color: $main-text-color;
   font-weight: 300;
