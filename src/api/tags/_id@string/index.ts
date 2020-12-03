@@ -2,8 +2,16 @@
 import * as Types from '../../@types'
 
 export type Methods = {
-  get: {
+  put: {
     status: 200
-    resBody: Types.User
+    resBody: Types.Tag
+
+    reqBody: {
+      name: string
+    }
+  }
+
+  delete: {
+    status: 204
   }
 }

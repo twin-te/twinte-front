@@ -1,9 +1,9 @@
 /* eslint-disable */
-import * as Types from '../../@types'
+import * as Types from '../../../@types'
 
 export type Methods = {
   get: {
     status: 200
-    resBody: Types.User
+    resBody: Types.Course
   }
 }

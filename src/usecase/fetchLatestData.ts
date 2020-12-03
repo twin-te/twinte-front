@@ -1,22 +1,14 @@
 import { UseCase } from '.'
-import { PortsPick } from '~/adapter'
-import { YEAR } from '~/config'
-import { TimetableEntity } from '~/api/@types'
+import { PortsPick } from 'adapter'
+import { RegisteredCourse } from 'entity'
 
-type R = PortsPick<'timeTable' | 'store'>
-type A = TimetableEntity[]
+type R = PortsPick<'registeredCourses' | 'store'>
+type A = RegisteredCourse[]
 
 export class FetchLatestData implements UseCase<R, A> {
-  year: number
-
-  constructor(year = YEAR) {
-    this.year = year
-  }
-
-  async run({ timeTable, store }: R) {
-    const periodDatas = await timeTable.getTimeTables(YEAR)
-    store.dispatch('tableData/setTable', periodDatas)
-    // localStorage.setItem('table', JSON.stringify(periodDatas))
-    return periodDatas
+  async run({ registeredCourses, store }: R) {
+    const courses = await registeredCourses.getRegisteredCourses()
+    store.dispatch('tableData/setTable', courses)
+    return courses
   }
 }

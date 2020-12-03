@@ -1,28 +1,23 @@
 import { UseCase } from '.'
 import { PortsPick } from '~/adapter'
-import { YEAR } from '~/config'
-import { TimetableEntity, UserLectureEntity } from '~/api/@types'
+import { FetchLatestData } from './fetchLatestData'
+import { RegisteredCourse } from 'entity'
 
-type R = PortsPick<'timeTable' | 'userLectures'>
-type A = void
+type R = PortsPick<'registeredCourses' | 'store'>
+type A = RegisteredCourse[]
 
 export class DeleteTable implements UseCase<R, A> {
-  timeTable: TimetableEntity
-  userLecture: UserLectureEntity
-  year: number
+  id: string
 
-  constructor(
-    timeTable: TimetableEntity,
-    userLecture: UserLectureEntity,
-    year = YEAR
-  ) {
-    this.timeTable = timeTable
-    this.userLecture = userLecture
-    this.year = year
+  constructor(id: string) {
+    this.id = id
   }
 
-  async run({ timeTable, userLectures }: R) {
-    await timeTable.deleteLecture(this.year, this.timeTable)
-    await userLectures.deleteUserData(this.userLecture.user_lecture_id)
+  async run({ registeredCourses, store }: R) {
+    await registeredCourses.deleteRegisteredCourse(this.id)
+    return new FetchLatestData().run({
+      registeredCourses: registeredCourses,
+      store: store,
+    })
   }
 }

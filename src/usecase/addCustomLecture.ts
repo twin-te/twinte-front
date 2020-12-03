@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 
 import { PortsPick } from '~/adapter'
-import type { Day, Module, TimetableEntity } from '~/api/@types'
+import type { Day, CourseModule, Course } from 'entity'
 import { YEAR, BASE_URL } from '~/config'
 import { UseCase } from '.'
 
@@ -56,11 +56,11 @@ const initFormValue = {
   room: '',
 }
 
-type R = PortsPick<'timeTable' | 'userLectures'>
+type R = PortsPick<'registeredCourses'>
 type A = void
 
 export class AddCustomLecture implements UseCase<R, A> {
-  async run({ timeTable, userLectures }: R) {
+  async run({ registeredCourses }: R) {
     const form = await this.makeForm()
     const { value: allowAdd } = await Swal.fire(
       '注意',
@@ -72,22 +72,19 @@ export class AddCustomLecture implements UseCase<R, A> {
     // 有効な授業で、確認に同意した場合
     if (validForm && allowAdd) {
       // 時間割の作成
-      const userData = await userLectures.postUserData(
-        form.lecture_name,
-        form.instructor
-      )
+      const userData = await registeredCourses.postRegisteredCourse()
 
       if (!userData) {
         Swal.fire('原因不明のエラー', '', 'error')
         return
       }
 
-      const lecture: TimetableEntity = {
+      const lecture: Course = {
         lecture_code: '',
         lecture_name: form.lecture_name,
         instructor: form.instructor,
         year: YEAR,
-        module: form.module as Module,
+        module: form.module as CourseModule,
         day: form.day as Day,
         period: parseInt(form.period),
         room: form.room,
@@ -96,7 +93,7 @@ export class AddCustomLecture implements UseCase<R, A> {
       }
 
       // 時間割の追加
-      await timeTable.updateLecture(lecture)
+      await registeredCourses.updateRegisteredCourse()
       Swal.fire('追加が完了しました', '', 'success')
     } else {
       Swal.fire(

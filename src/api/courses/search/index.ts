@@ -2,8 +2,8 @@
 import * as Types from '../../@types'
 
 export type Methods = {
-  get: {
+  post: {
     status: 200
-    resBody: Types.User
+    resBody: Types.Course[]
   }
 }

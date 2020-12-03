@@ -1,13 +1,12 @@
 import { Plugin } from '@nuxt/types'
 import {
-  Auth,
-  Information,
-  Lecture,
+  Courses,
   Ports,
+  RegisteredCourses,
   SchoolCalendar,
-  TimeTable,
-  UserLectures,
+  Users,
 } from '~/adapter'
+import { Tags } from '~/adapter/api/tags'
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -20,12 +19,11 @@ declare module 'vue/types/vue' {
  */
 const plugin: Plugin = ({ store }, inject) => {
   const deps: Ports = {
-    auth: new Auth(),
-    information: new Information(),
-    lecture: new Lecture(),
+    courses: new Courses(),
+    registeredCourses: new RegisteredCourses(),
     schoolCalendar: new SchoolCalendar(),
-    timeTable: new TimeTable(),
-    userLectures: new UserLectures(),
+    users: new Users(),
+    tags: new Tags(),
     store,
   }
 

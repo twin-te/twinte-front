@@ -1,22 +1,26 @@
 import { UseCase } from '.'
 import { PortsPick } from '~/adapter'
 import { YEAR } from '~/config'
-import { UserLectureEntity } from '~/api/@types'
+import { RegisteredCourse } from 'entity'
+import { FetchLatestData } from './fetchLatestData'
 
-type R = PortsPick<'timeTable'>
-type A = (UserLectureEntity | null)[]
+type R = PortsPick<'registeredCourses' | 'store'>
+type A = (RegisteredCourse | null)[]
 
 export class AddTable implements UseCase<R, A> {
-  /** @type TimetableEntity.lecture_code */
-  lecture_codes: string[]
+  codes: string[]
   year: number
 
-  constructor(lecture_codes: string[], year = YEAR) {
-    this.lecture_codes = lecture_codes
+  constructor(codes: string[], year = YEAR) {
+    this.codes = codes
     this.year = year
   }
 
-  async run({ timeTable }: R) {
-    return await timeTable.postAllLectures(this.lecture_codes, this.year)
+  async run({ registeredCourses, store }: R) {
+    await registeredCourses.postRegisteredCourses(this.codes, this.year)
+    return new FetchLatestData().run({
+      registeredCourses: registeredCourses,
+      store: store,
+    })
   }
 }

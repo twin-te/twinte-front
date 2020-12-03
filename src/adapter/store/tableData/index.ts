@@ -15,7 +15,6 @@ export const state = (): S => ({
   moduleList: ['春A', '春B', '春C', '秋A', '秋B', '秋C'],
   module: '春A',
   looking: null,
-  userData: null,
 })
 
 export const getters: Getters<S, G> = {
@@ -47,10 +46,6 @@ export const getters: Getters<S, G> = {
 
   looking(state) {
     return state.looking
-  },
-
-  userData(state) {
-    return state.userData
   },
 }
 
@@ -87,10 +82,6 @@ export const mutations: Mutations<S, M> = {
   setLooking(state, { period }) {
     state.looking = period
   },
-
-  setUserData(state, { userData }) {
-    state.userData = userData
-  },
 }
 
 export const actions: Actions<S, A, G, M> = {
@@ -108,18 +99,5 @@ export const actions: Actions<S, A, G, M> = {
     ctx.commit('LOGOUT')
     ctx.commit('SET_TABLE', [])
     localStorage.clear()
-  },
-
-  async setPeriod(ctx, { period }) {
-    const userData = await $nuxt.$deps.userLectures.getUserData(
-      period.user_lecture_id
-    )
-    ctx.commit('setLooking', { period })
-    ctx.dispatch('updatePeriod', { userData })
-  },
-
-  async updatePeriod(ctx, { userData }) {
-    await $nuxt.$deps.userLectures.updateUserData(userData)
-    ctx.commit('setUserData', { userData })
   },
 }

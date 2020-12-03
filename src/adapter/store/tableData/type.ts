@@ -1,30 +1,29 @@
-import type { Module, TimetableEntity, UserLectureEntity } from '~/api/@types'
+import type { CourseModule, RegisteredCourse } from 'entity'
 
 export interface S {
-  timeTables: TimetableEntity[]
+  timeTables: RegisteredCourse[]
   isLogin: boolean
-  moduleList: Module[]
-  module: Module
-  looking: TimetableEntity | null
-  userData: UserLectureEntity | null
+  moduleList: CourseModule[]
+  module: CourseModule
+  looking: RegisteredCourse | null
 }
 
 export interface G {
-  table: TimetableEntity[]
+  table: RegisteredCourse[]
   isLogin: boolean
   /**
    * 現在の学期を返す
    * @returns Module.SpringA etc...
    */
-  module: Module
+  module: CourseModule
   /**
    * 前の学期を返す
    */
-  prevModule: Module
+  prevModule: CourseModule
   /**
    * 次の学期を返す
    */
-  nextModule: Module
+  nextModule: CourseModule
   /**
    * 現在の学期の配列番号を返す、空の場合は0を返す
    */
@@ -32,8 +31,7 @@ export interface G {
   /**
    * 直前にクリックした授業の座標を保持する
    */
-  looking: TimetableEntity | null
-  userData: UserLectureEntity | null
+  looking: RegisteredCourse | null
 }
 export interface RG {
   'tableData/table': G['table']
@@ -43,14 +41,13 @@ export interface RG {
   'tableData/nextModule': G['prevModule']
   'tableData/moduleNum': G['moduleNum']
   'tableData/looking': G['looking']
-  'tableData/userData': G['userData']
 }
 
 export interface M {
-  SET_TABLE: TimetableEntity[]
+  SET_TABLE: RegisteredCourse[]
   LOGIN: null
   LOGOUT: null
-  setModule: { module: Module }
+  setModule: { module: CourseModule }
   /**
    * @description 前の学期を返す
    */
@@ -62,8 +59,7 @@ export interface M {
   /**
    * 直前にクリックした授業の内容を更新
    */
-  setLooking: { period: TimetableEntity | null }
-  setUserData: { userData: UserLectureEntity | null }
+  setLooking: { period: RegisteredCourse | null }
 }
 export interface RM {
   'TABLE_DATA/SET_TABLE': M['SET_TABLE']
@@ -73,20 +69,15 @@ export interface RM {
   'tableData/prevModule': M['prevModule']
   'tableData/nextModule': M['nextModule']
   'tableData/setLooking': M['setLooking']
-  'tableData/setUserData': M['setUserData']
 }
 
 export interface A {
-  setTable: TimetableEntity[]
+  setTable: RegisteredCourse[]
   login: null
   logout: null
-  setPeriod: { period: TimetableEntity }
-  updatePeriod: { userData: UserLectureEntity }
 }
 export interface RA {
   'tableData/setTable': A['setTable']
   'tableData/login': A['login']
   'tableData/logout': A['logout']
-  'tableData/setPeriod': A['setPeriod']
-  'tableData/updatePeriod': A['updatePeriod']
 }

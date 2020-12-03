@@ -1,20 +1,18 @@
 import Vuex from 'vuex'
-import { Auth } from './api/auth'
-import { Information } from './api/information'
-import { Lecture } from './api/lectures'
+import { Users } from './api/users'
+import { Courses } from './api/courses'
+import { RegisteredCourses } from './api/registered-courses'
 import { SchoolCalendar } from './api/school-calendar'
-import { TimeTable } from './api/timetables'
-import { UserLectures } from './api/user-lectures'
+import { Tags } from './api/tags'
 
-export { Auth, Information, Lecture, SchoolCalendar, TimeTable, UserLectures }
+export { Courses, RegisteredCourses, Users, SchoolCalendar }
 
 export interface Ports {
-  auth: Auth
-  information: Information
-  lecture: Lecture
+  users: Users
+  courses: Courses
+  registeredCourses: RegisteredCourses
   schoolCalendar: SchoolCalendar
-  timeTable: TimeTable
-  userLectures: UserLectures
+  tags: Tags
   store: Vuex.ExStore
 }
 

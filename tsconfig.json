@@ -27,12 +27,23 @@
     "resolveJsonModule": true,
     "paths": {
       "~/*": [
-        "./src/*"
+        "src/*"
       ],
       "@/*": [
-        "./src/*"
+        "src/*"
       ],
-      "vuex": ["src/types/index.d.ts"]
+      "entity": [
+        "src/types/index.d.ts"
+      ],
+      "adapter/*": [
+        "src/adapter/*"
+      ],
+      "adapter": [
+        "src/adapter"
+      ],
+      "vuex": [
+        "src/types/vuex.d.ts"
+      ],
     },
     "types": [
       "@nuxt/types",
