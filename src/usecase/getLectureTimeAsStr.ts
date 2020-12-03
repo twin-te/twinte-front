@@ -62,13 +62,8 @@ const genTreeStrucStr = (
 export const getLectureTimeAsStr = (details: Details): string => {
   if (details.length > 0) {
     const li = details.map((x: Detail): string[] => {
-      let period: string
       // 0時限目は''と扱う
-      if (x.period === 0) {
-        period = ''
-      } else {
-        period = String(x.period)
-      }
+      const period = x.period === 0 ? '' : String(x.period)
       return [x.module[0], x.module[1], x.day, period]
     })
     const translocation = transpose(li)
