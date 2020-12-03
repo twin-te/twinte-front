@@ -1,4 +1,4 @@
-type detail = {
+type Detail = {
   id: number
   module: string
   day: string
@@ -6,7 +6,7 @@ type detail = {
   room: string
 }
 
-type details = detail[]
+type Details = Detail[]
 
 // 2次元配列を転置
 const transpose = (matrix: string[][]) =>
@@ -59,9 +59,9 @@ const genTreeStrucStr = function (
   return str
 }
 
-export const getLectureTimeAsStr = function (details: details): string {
+export const getLectureTimeAsStr = function (details: Details): string {
   if (details.length > 0) {
-    const li = details.map((x: detail): string[] => {
+    const li = details.map((x: Detail): string[] => {
       let period: string
       // 0時限目は''と扱う
       if (x.period === 0) {
