@@ -1,4 +1,4 @@
-type Detail = {
+type detail = {
   id: number
   module: string
   day: string
@@ -6,17 +6,17 @@ type Detail = {
   room: string
 }
 
-type Details = Detail[]
+type details = detail[]
 
 // 2次元配列を転置
 const transpose = (matrix: string[][]) =>
   matrix[0].map((_, i) => matrix.map((r) => r[i]))
 
-// 1. string[][1]の重複した要素を取り除く
+// 1.string[][1]の重複した要素を取り除く
 // Ex) [['月', '56'], ['火', '56']] -> [['月', ''], ['火', '56']]
-// 2. string[][]の要素を結合して文字列に変換する
+// 2.string[][]の要素を結合して文字列に変換する
 // Ex) [['月', ''], ['火', '56']] -> '月火56'
-const reduceArr = (arr: string[][]) => {
+const reduceArr = function (arr: string[][]) {
   for (let i = 1; i < arr.length; i++) {
     if (arr[i - 1][1] == arr[i][1]) {
       arr[i - 1][1] = ''
@@ -27,12 +27,12 @@ const reduceArr = (arr: string[][]) => {
   }, '')
 }
 
-const genTreeStrucStr = (
+const genTreeStrucStr = function (
   startIdx: number,
   endIdx: number,
   rows: string[][],
   level: number
-): string => {
+): string {
   if (level == 4) {
     return ''
   }
@@ -50,14 +50,20 @@ const genTreeStrucStr = (
       nextStart = i + 1
     }
   }
+
   return reduceArr(letters)
 }
 
-export const getLectureTimeAsStr = (details: Details): string => {
+export const getLectureTimeAsStr = function (details: details): string {
   if (details.length > 0) {
-    const li = details.map((x: Detail): string[] => {
+    const li = details.map((x: detail): string[] => {
+      let period: string
       // 0時限目は''と扱う
-      const period = x.period === 0 ? '' : String(x.period)
+      if (x.period === 0) {
+        period = ''
+      } else {
+        period = String(x.period)
+      }
       return [x.module[0], x.module[1], x.day, period]
     })
     const translocation = transpose(li)
