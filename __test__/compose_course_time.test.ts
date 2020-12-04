@@ -1,4 +1,4 @@
-import { getLectureTimeAsStr } from '@/components/utils/getLectureTimeAsStr'
+import { getLectureTimeAsStr } from '~/usecase/getLectureTimeAsStr'
 
 describe('講義時間を文字列に逆パースするテスト', () => {
   test('授業データが空のとき', () => {
