@@ -12,20 +12,16 @@ type Details = Detail[]
 const transpose = (matrix: string[][]) =>
   matrix[0].map((_, i) => matrix.map((r) => r[i]))
 
-// string[][1]の重複した要素を取り除く
+// 1. string[][1]の重複した要素を取り除く
 // Ex) [['月', '56'], ['火', '56']] -> [['月', ''], ['火', '56']]
+// 2. string[][]の要素を結合して文字列に変換する
+// Ex) [['月', ''], ['火', '56']] -> '月火56'
 const reduceArr = (arr: string[][]) => {
   for (let i = 1; i < arr.length; i++) {
     if (arr[i - 1][1] == arr[i][1]) {
       arr[i - 1][1] = ''
     }
   }
-  return arr
-}
-
-// string[][]の要素を結合して文字列に変換する
-// Ex) [['月', ''], ['火', '56']] -> '月火56'
-const convArrToStr = (arr: string[][]) => {
   return arr.reduce((acc, cur) => {
     return acc + cur[0] + cur[1]
   }, '')
@@ -54,9 +50,7 @@ const genTreeStrucStr = (
       nextStart = i + 1
     }
   }
-  const reducedArr = reduceArr(letters)
-  const str = convArrToStr(reducedArr)
-  return str
+  return reduceArr(letters)
 }
 
 export const getLectureTimeAsStr = (details: Details): string => {
