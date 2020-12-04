@@ -115,6 +115,7 @@ import { openUrl } from '~/usecase/openUrl'
 import { YEAR, isMobile } from '~/config'
 import { AddTable } from '~/usecase/addTable'
 import { FetchLatestData } from '~/usecase/fetchLatestData'
+import { getLectureTimeAsStr } from '~/usecase/getLectureTimeAsStr'
 
 type miniLecture = {
   lecture_code: string
