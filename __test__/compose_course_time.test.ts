@@ -1,4 +1,5 @@
 import { getLectureTimeAsStr } from '~/usecase/getLectureTimeAsStr'
+jest.unmock('~/usecase/getLectureTimeAsStr')
 
 describe('講義時間を文字列に逆パースするテスト', () => {
   test('授業データが空のとき', () => {
