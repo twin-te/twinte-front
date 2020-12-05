@@ -111,7 +111,6 @@ import Swal from 'sweetalert2'
 
 import { twinsToTwinteAlert } from '~/usecase/swal'
 import { AddCustomLecture } from '~/usecase/addCustomLecture'
-import { getLectureTimeAsStr } from '~/usecase/getLectureTimeAsStr'
 import { openUrl } from '~/usecase/openUrl'
 import { YEAR, isMobile } from '~/config'
 import { AddTable } from '~/usecase/addTable'
