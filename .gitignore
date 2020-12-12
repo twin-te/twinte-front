@@ -86,3 +86,5 @@ sw.*
 .vscode
 .DS_Store
 $api.ts
+.nuxt-storybook
+storybook-static
