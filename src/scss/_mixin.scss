@@ -74,13 +74,15 @@
 }
 
 // Media Queries
-@mixin pc {
-  @media only screen and (min-width: $pc-width) {
+@mixin tab-and-pc {
+  @media only screen and (min-height: $pc-and-tab-height) {
     @content;
   }
 }
-@mixin tablet-and-pc {
-  @media only screen and (min-width: $sp-width) {
+
+@mixin landscape {
+  @media screen and (orientation: landscape) {
+    // 画面が横向きの場合(tab-and-pcサイズにしか適用しない)
     @content;
   }
 }

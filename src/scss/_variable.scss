@@ -2,48 +2,41 @@
 $base: #eff1f6;
 $base-liner: linear-gradient(158.17deg, #f3f5fa -1.94%, #ebedf2 102.24%);
 $primary: #00c0c0;
-$primary-liner: linear-gradient(
-  119.06deg,
-  #3fdfd6 10.71%,
-  #44d8e1 60.37%,
-  #46dfd6 103.14%
-);
-$primary-liner-large: linear-gradient(
-  91.58deg,
-  #6bcedc -8.01%,
-  #71e2dc 105.39%
-);
-$primary-liner-light: linear-gradient(180deg, #dbf2f3 0%, #d2f3f3 100%);
+$primary-liner: linear-gradient(91.58deg, #6bcedc -8.01%, #71e2dc 105.39%);
+$primary-light: #c8efef99;
 $text-main: #626a76;
 $text-sub: #838e95;
-$text-emphasis: #59616d;
 $button-gray: #889396;
-$unselected: #b8c1c7;
-$disabled: #adadad;
-$border: #c6d6df;
 $danger: #ed7f93;
+$disabled: #adadad;
+$unselected: #b8c1c7;
 $white: #ffffff;
-$filter-gray: #eff1f633;
+$filter-gray: #eff1f680;
+$subject-none: #e4ebef66;
+$filter-darken: #546e9533;
+$text-link: #5a93e8;
+$primary-dull: #66a0b9;
 
 /* Effect styles */
-$shadow-drop: 0.2rem 0.2rem 0.3rem #a1a7aa99;
-$shadow-concave: inset 0.1rem 0.2rem 0.4rem #a5bac773,
-  inset -0.2rem -0.2rem 0.3rem #ffffffcc;
-$shadow-base: 0.2rem 0.4rem 1rem #a5bac766, -0.1rem -0.1rem 0.2rem #ffffffb3,
+$shadow-base: 0.2rem 0.4rem 1rem #a5bac74d, -0.1rem -0.1rem 0.2rem #ffffffb3,
   inset -0.6rem -0.8rem 1.2rem #ffffff73, inset 0.2rem 0.3rem 0.4rem #cbd5df66;
-$shadow-convex: 0.2rem 0.3rem 0.8rem #a5bac78c, -0.5rem -0.5rem 1rem #ffffff99;
-$shadow-convex-hover: 0.1rem 0.2rem 0.4rem #a5bac78c,
-  -0.3rem -0.3rem 0.5rem #ffffff99;
-$shadow-convex-large: 0.3rem 0.5rem 0.12rem #a5bac773,
-  -0.5rem -5rem 0.1rem #ffffffcc;
+$shadow-convex: 0.2rem 0.3rem 0.8rem #a5bac773, -0.5rem -0.5rem 1rem #ffffff99;
+$shadow-convex-large: 0.3rem 0.5rem 1.2rem #a5bac773,
+  -0.5rem -0.5rem 1rem #ffffffcc;
+$shadow-concave: inset 0.2rem 0.3rem 0.8rem #a5bac759,
+  inset -0.2rem -0.4rem 0.8rem #ffffffcc;
+$shadow-input-concave: inset 0.1rem 0.1rem 0.4rem #a5bac773,
+  inset -0.2rem -0.2rem 0.3rem #ffffffcc;
+$shadow-liner-concave: inset 0.1rem 0.2rem 0.2rem #86e1dc40,
+  inset -0.1rem -0.2rem 0.1rem #aaf0df40;
+$shadow-primary-concave: inset 0.3rem 0.3rem 0.6rem #52bdccb3;
+$shadow-danger-concave: inset 0.3rem 0.3rem 0.4rem #c0555b99;
+$shadow-unselected-concave: inset 0.2rem 0.3rem 0.4rem #8e9da673,
+  inset -0.2rem -0.2rem 0.3rem #ffffff59;
 $shadow-icon: 0.1rem 0.3rem 0.3rem #43afb640, -0.1rem -0.1rem 0.2rem #ffffff33;
-$shadow-primary-concave: inset 0.2rem 0.3rem 0.4rem #55b3c099;
-$danger-shadow-concave: inset 0.1rem 0.2rem 0.3rem #c0545999;
-$liner-shadow-concave: inset 0.1rem 0.2rem 0.2rem #86e1dc40;
-$shadow-unselected-concave: 0.2rem 0.3rem 0.4rem hsla(203, 12%, 60%, 0.45) inset,
-  -0.2rem -0.2rem 0.3rem #ffffff59 inset;
+$shadow-drop: 0.2rem 0.2rem 0.3rem #a1a7aa8c;
 
-$blur: blur(0.1rem);
+$blur: blur(1rem);
 
 // padding&margin
 $spacing-0: 0;
@@ -58,7 +51,7 @@ $spacing-8: 3.2rem;
 
 // font-size
 $font-small: 1.2rem;
-$font-medium: 1.4rem;
+$font-medium: 1.4rem; //これがメイン
 $font-large: 1.6rem;
 $font-maximum: 1.8rem;
 
@@ -68,12 +61,12 @@ $radius-1: 0.4rem;
 $radius-2: 0.8rem;
 $radius-3: 1.2rem;
 $radius-4: 1.6rem;
-$radius-button: 5rem;
+$radius-button: 5rem; //側面が完全に丸いボタンに使う
 $circle: 50% 50%;
 
 // line-height
-$single-line: 135%;
-$multi-line: 140%;
+$single-line: 140%;
+$multi-line: 160%;
 $fit: 100%;
 
 // transition
@@ -82,5 +75,4 @@ $transition-transform: transform 0.25s ease-in-out;
 $transition-box-shadow: box-shadow 0.18s ease;
 
 // Media Queries
-$pc-width: 768px;
-$sp-width: 480px;
+$pc-and-tab-height: 768px;
