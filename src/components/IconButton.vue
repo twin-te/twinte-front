@@ -17,9 +17,9 @@ export default defineComponent({
     },
     color: {
       type: String,
-      default: "nomal",
+      default: "normal",
       varidator: function (value: string) {
-        return ["nomal", "danger"].includes(value);
+        return ["normal", "danger"].includes(value);
       },
     },
     iconName: {
@@ -86,7 +86,7 @@ export default defineComponent({
     height: 2.5rem;
     font-size: 1.5rem;
   }
-  &--nomal {
+  &--normal {
     color: $button-gray;
     transition: $transition-box-shadow;
     &:active {

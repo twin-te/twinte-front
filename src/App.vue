@@ -1,8 +1,8 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
-  <Icon-Button @click="clickHandler" size="small" color="nomal" iconName="expand_more"></Icon-Button>
-  <Icon-Button @click="clickHandler" size="medium" color="nomal" iconName="edit"></Icon-Button>
-  <Icon-Button @click="clickHandler" size="large" color="nomal" iconName="menu"></Icon-Button>
+  <Icon-Button @click="clickHandler" size="small" color="normal" iconName="expand_more"></Icon-Button>
+  <Icon-Button @click="clickHandler" size="medium" color="normal" iconName="edit"></Icon-Button>
+  <Icon-Button @click="clickHandler" size="large" color="normal" iconName="menu"></Icon-Button>
   <Icon-Button @click="clickHandler" size="large" color="danger" iconName="delete"></Icon-Button>
 </template>
 
