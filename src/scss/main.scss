@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+@import "tailwindcss/base";
+
+@import "variable", "mixin", "reset";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,600&display=swap&subset=japanese");
+
+html {
+  font-size: 62.5%;
+  font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  color: $text-main;
+}
+@include tablet-and-pc {
+  html {
+    font-size: 100%;
+  }
+}
+body {
+  padding: 0 1.6rem;
+  font-size: 1.4em;
+}
+.material-icons {
+  font-family: Material Icons;
+  @include iconlayout;
+}
