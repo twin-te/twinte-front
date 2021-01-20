@@ -4,18 +4,18 @@ $base-liner: linear-gradient(158.17deg, #f3f5fa -1.94%, #ebedf2 102.24%);
 $primary: #00c0c0;
 $primary-liner: linear-gradient(91.58deg, #6bcedc -8.01%, #71e2dc 105.39%);
 $primary-light: #c8efef99;
+$primary-dull: #66a0b9;
 $text-main: #626a76;
 $text-sub: #838e95;
 $button-gray: #889396;
 $danger: #ed7f93;
 $disabled: #adadad;
 $unselected: #b8c1c7;
-$white: #ffffff;
+$undefined: #e4ebef66;
 $filter-gray: #eff1f680;
-$subject-none: #e4ebef66;
 $filter-darken: #546e9533;
 $text-link: #5a93e8;
-$primary-dull: #66a0b9;
+$white: #ffffff;
 
 /* Effect styles */
 $shadow-base: 0.2rem 0.4rem 1rem #a5bac74d, -0.1rem -0.1rem 0.2rem #ffffffb3,
@@ -23,13 +23,15 @@ $shadow-base: 0.2rem 0.4rem 1rem #a5bac74d, -0.1rem -0.1rem 0.2rem #ffffffb3,
 $shadow-convex: 0.2rem 0.3rem 0.8rem #a5bac773, -0.5rem -0.5rem 1rem #ffffff99;
 $shadow-convex-large: 0.3rem 0.5rem 1.2rem #a5bac773,
   -0.5rem -0.5rem 1rem #ffffffcc;
+$shadow-convex-hover: 0.1rem 0.2rem 0.4rem #a5bac78c,
+  -0.3rem -0.3rem 0.5rem #ffffff99;
 $shadow-concave: inset 0.2rem 0.3rem 0.8rem #a5bac759,
   inset -0.2rem -0.4rem 0.8rem #ffffffcc;
 $shadow-input-concave: inset 0.1rem 0.1rem 0.4rem #a5bac773,
   inset -0.2rem -0.2rem 0.3rem #ffffffcc;
-$shadow-liner-concave: inset 0.1rem 0.2rem 0.2rem #86e1dc40,
-  inset -0.1rem -0.2rem 0.1rem #aaf0df40;
 $shadow-primary-concave: inset 0.3rem 0.3rem 0.6rem #52bdccb3;
+$shadow-p-light-concave: inset 0.1rem 0.2rem 0.2rem #86e1dc40,
+  inset -0.1rem -0.2rem 0.1rem #aaf0df40;
 $shadow-danger-concave: inset 0.3rem 0.3rem 0.4rem #c0555b99;
 $shadow-unselected-concave: inset 0.2rem 0.3rem 0.4rem #8e9da673,
   inset -0.2rem -0.2rem 0.3rem #ffffff59;
