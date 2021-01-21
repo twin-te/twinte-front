@@ -72,19 +72,19 @@ export default defineComponent({
     outline: none;
   }
   &--small {
-    width: 1.75rem;
-    height: 1.75rem;
-    font-size: 1rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    font-size: 1.6rem;
   }
   &--medium {
-    width: 2.0625rem;
-    height: 2.0625rem;
-    font-size: 1.125rem;
+    width: 3.3rem;
+    height: 3.3rem;
+    font-size: 1.8rem;
   }
   &--large {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.5rem;
+    width: 4rem;
+    height: 4rem;
+    font-size: 2.4rem;
   }
   &--normal {
     color: $button-gray;
