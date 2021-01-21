@@ -1,5 +1,13 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, Prop, ref } from "vue";
+
+type Props = {
+  onClick: Function;
+  size: string;
+  color: string;
+  iconName: string;
+  pauseActiveStyle: boolean;
+};
 
 export default defineComponent({
   name: "IconButton",
@@ -26,13 +34,20 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    pauseActiveStyle: {
+      type: Boolean,
+      default: true,
+    },
   },
-  setup: ({}, { emit }) => {
+  setup: (props: Props, { emit }) => {
+    const isActive = ref(false);
+
     const handleClick = (e: any) => {
+      isActive.value = props.pauseActiveStyle ? !isActive.value : false;
       emit("click", e.target.value);
     };
 
-    return { handleClick };
+    return { handleClick, isActive };
   },
 });
 </script>
@@ -42,6 +57,7 @@ export default defineComponent({
     @click="handleClick"
     :class="{
       'icon-button': true,
+      '--active': isActive,
       [`icon-button--${size}`]: true,
       [`icon-button--${color}`]: true,
     }"
@@ -89,6 +105,7 @@ export default defineComponent({
   &--normal {
     color: $button-gray;
     transition: $transition-box-shadow;
+    &.--active,
     &:active {
       color: $white;
       @include button-active;
@@ -100,6 +117,7 @@ export default defineComponent({
   &--danger {
     color: $danger;
     transition: $transition-box-shadow;
+    &.--active,
     &:active {
       color: $white;
       @include button-active-danger;

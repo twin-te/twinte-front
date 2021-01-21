@@ -1,9 +1,30 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
-  <Icon-Button @click="clickHandler" size="small" color="normal" iconName="expand_more"></Icon-Button>
-  <Icon-Button @click="clickHandler" size="medium" color="normal" iconName="edit"></Icon-Button>
-  <Icon-Button @click="clickHandler" size="large" color="normal" iconName="menu"></Icon-Button>
-  <Icon-Button @click="clickHandler" size="large" color="danger" iconName="delete"></Icon-Button>
+  <Icon-Button
+    @click="clickHandler"
+    size="small"
+    color="normal"
+    iconName="expand_more"
+  ></Icon-Button>
+  <Icon-Button
+    @click="clickHandler"
+    size="medium"
+    color="normal"
+    iconName="edit"
+  ></Icon-Button>
+  <Icon-Button
+    @click="clickHandler"
+    size="large"
+    color="normal"
+    iconName="menu"
+  ></Icon-Button>
+  <Icon-Button
+    @click="clickHandler"
+    size="large"
+    color="danger"
+    iconName="delete"
+    :pauseActiveStyle="false"
+  ></Icon-Button>
 </template>
 
 <script lang="ts">
@@ -15,7 +36,7 @@ export default defineComponent({
   name: "App",
   components: {
     Button,
-    IconButton
+    IconButton,
   },
   setup: () => {
     const clickHandler = () => {
