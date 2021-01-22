@@ -37,7 +37,6 @@
   user-select: none;
   cursor: pointer;
 }
-
 @mixin button-active($negative-shadow-convex: 0 0 0 #00000000) {
   background: $primary-liner;
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,

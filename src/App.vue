@@ -1,18 +1,21 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
   <Checkbox @change="clickHandler"></Checkbox>
+  <ToggleSwitch @change="clickHandler"></ToggleSwitch>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Button from "./components/Button.vue";
 import Checkbox from "./components/Checkbox.vue";
+import ToggleSwitch from "./components/ToggleSwitch.vue";
 
 export default defineComponent({
   name: "App",
   components: {
     Button,
     Checkbox,
+    ToggleSwitch,
   },
   setup: () => {
     const clickHandler = () => {
