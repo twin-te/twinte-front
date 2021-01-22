@@ -1,15 +1,18 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
+  <Checkbox @change="clickHandler"></Checkbox>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Button from "./components/Button.vue";
+import Checkbox from "./components/Checkbox.vue";
 
 export default defineComponent({
   name: "App",
   components: {
     Button,
+    Checkbox,
   },
   setup: () => {
     const clickHandler = () => {
