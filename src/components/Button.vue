@@ -111,7 +111,7 @@ export default defineComponent({
     color: $text-main;
   }
   &--primary {
-    background: $primary-liner-large;
+    background: $primary-liner;
     color: $white;
   }
   &--flexible {
