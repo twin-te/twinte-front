@@ -2,6 +2,15 @@
   <Button @click="clickHandler" size="small">Button</Button>
   <Checkbox @change="clickHandler"></Checkbox>
   <ToggleSwitch @change="clickHandler"></ToggleSwitch>
+  <ToggleButton
+    @change="clickHandler"
+    :labels="{ left: '通常', right: '特殊' }"
+  ></ToggleButton>
+  <ToggleButton
+    @change="clickHandler"
+    :labels="{ left: '通常', right: '特殊' }"
+    whichSelected="right"
+  ></ToggleButton>
 </template>
 
 <script lang="ts">
@@ -9,6 +18,7 @@ import { defineComponent } from "vue";
 import Button from "./components/Button.vue";
 import Checkbox from "./components/Checkbox.vue";
 import ToggleSwitch from "./components/ToggleSwitch.vue";
+import ToggleButton from "./components/ToggleButton.vue";
 
 export default defineComponent({
   name: "App",
@@ -16,6 +26,7 @@ export default defineComponent({
     Button,
     Checkbox,
     ToggleSwitch,
+    ToggleButton,
   },
   setup: () => {
     const clickHandler = () => {
