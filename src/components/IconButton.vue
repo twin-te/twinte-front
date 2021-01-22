@@ -43,7 +43,7 @@ export default defineComponent({
     const isActive = ref(false);
 
     const handleClick = (e: any) => {
-      isActive.value = props.pauseActiveStyle ? !isActive.value : false;
+      isActive.value = props.pauseActiveStyle && !isActive.value;
       emit("click", e.target.value);
     };
 
