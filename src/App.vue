@@ -1,11 +1,18 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
-  <Checkbox @change="clickHandler"></Checkbox>
+
+  <Checkbox
+    @change="btnsState.checkbox = !btnsState.checkbox"
+    :isChecked="btnsState.checkbox"
+  ></Checkbox>
+
   <ToggleSwitch @change="clickHandler"></ToggleSwitch>
+
   <ToggleButton
     @change="clickHandler"
     :labels="{ left: '通常', right: '特殊' }"
   ></ToggleButton>
+
   <ToggleButton
     @change="clickHandler"
     :labels="{ left: '通常', right: '特殊' }"
@@ -14,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import Button from "./components/Button.vue";
 import Checkbox from "./components/Checkbox.vue";
 import ToggleSwitch from "./components/ToggleSwitch.vue";
@@ -29,11 +36,17 @@ export default defineComponent({
     ToggleButton,
   },
   setup: () => {
+    const btnsState = ref({
+      checkbox: false,
+      toggleBtn: false,
+      toggleSwitch: false,
+    });
+
     const clickHandler = () => {
       console.log("click");
     };
 
-    return { clickHandler };
+    return { clickHandler, btnsState };
   },
 });
 </script>

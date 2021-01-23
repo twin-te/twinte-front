@@ -30,14 +30,9 @@ export default defineComponent({
     },
   },
   setup: (props: Props, { emit }) => {
-    const isChecked = ref(props.isChecked);
+    const handleChange = () => {};
 
-    const handleChange = () => {
-      isChecked.value = !props.isDisable && !isChecked.value;
-      emit("change", isChecked.value);
-    };
-
-    return { handleChange, isChecked };
+    return { handleChange };
   },
 });
 </script>
