@@ -1,12 +1,11 @@
 <script lang="ts">
-import { defineComponent, Prop, ref } from "vue";
+import { defineComponent } from "vue";
 
 type Props = {
   onClick: Function;
   size: string;
   color: string;
   iconName: string;
-  pauseActiveStyle: boolean;
 };
 
 export default defineComponent({
@@ -34,20 +33,13 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    pauseActiveStyle: {
-      type: Boolean,
-      default: true,
-    },
   },
-  setup: (props: Props, { emit }) => {
-    const isActive = ref(false);
-
-    const handleClick = (e: any) => {
-      isActive.value = props.pauseActiveStyle && !isActive.value;
-      emit("click", e.target.value);
+  setup: (_props: Props, { emit }) => {
+    const handleClick = (e: MouseEvent) => {
+      emit("click", e);
     };
 
-    return { handleClick, isActive };
+    return { handleClick };
   },
 });
 </script>
@@ -57,7 +49,6 @@ export default defineComponent({
     @click="handleClick"
     :class="{
       'icon-button': true,
-      '--active': isActive,
       [`icon-button--${size}`]: true,
       [`icon-button--${color}`]: true,
     }"
@@ -105,25 +96,17 @@ export default defineComponent({
   &--normal {
     color: $button-gray;
     transition: $transition-box-shadow;
-    &.--active,
     &:active {
       color: $white;
       @include button-active;
-      &:hover {
-        @include button-active;
-      }
     }
   }
   &--danger {
     color: $danger;
     transition: $transition-box-shadow;
-    &.--active,
     &:active {
       color: $white;
       @include button-active-danger;
-      &:hover {
-        @include button-active-danger;
-      }
     }
   }
 }

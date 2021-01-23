@@ -1,49 +1,63 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
-  <Icon-Button
-    @click="clickHandler"
+
+  <ToggleIconButton
+    @click="isBtnActive.expand_more = !isBtnActive.expand_more"
     size="small"
     color="normal"
     iconName="expand_more"
-  ></Icon-Button>
-  <Icon-Button
-    @click="clickHandler"
+    :isActive="isBtnActive.expand_more"
+  ></ToggleIconButton>
+
+  <ToggleIconButton
+    @click="isBtnActive.edit = !isBtnActive.edit"
     size="medium"
     color="normal"
     iconName="edit"
-  ></Icon-Button>
-  <Icon-Button
-    @click="clickHandler"
+    :isActive="isBtnActive.edit"
+  ></ToggleIconButton>
+
+  <ToggleIconButton
+    @click="isBtnActive.menu = !isBtnActive.menu"
     size="large"
     color="normal"
     iconName="menu"
-  ></Icon-Button>
-  <Icon-Button
+    :isActive="isBtnActive.menu"
+  ></ToggleIconButton>
+
+  <IconButton
     @click="clickHandler"
     size="large"
     color="danger"
     iconName="delete"
-    :pauseActiveStyle="false"
-  ></Icon-Button>
+  ></IconButton>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import Button from "./components/Button.vue";
 import IconButton from "./components/IconButton.vue";
+import ToggleIconButton from "./components/ToggleIconButton.vue";
 
 export default defineComponent({
   name: "App",
   components: {
     Button,
     IconButton,
+    ToggleIconButton,
   },
   setup: () => {
+    const isBtnActive = ref({
+      expand_more: false,
+      edit: false,
+      menu: false,
+    });
+
     const clickHandler = () => {
       console.log("click");
     };
 
-    return { clickHandler };
+    return { clickHandler, isBtnActive };
   },
 });
 </script>
