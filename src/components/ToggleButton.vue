@@ -96,6 +96,7 @@ input[type="checkbox"] {
 
   &__label {
     width: 100%;
+    line-height: 2.8rem;
   }
 
   &__slider {
