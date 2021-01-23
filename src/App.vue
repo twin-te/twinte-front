@@ -12,14 +12,11 @@
   ></ToggleSwitch>
 
   <ToggleButton
-    @change="clickHandler"
+    @click-toggle-button="
+      btnsState.toggleBtn = btnsState.toggleBtn == 'left' ? 'right' : 'left'
+    "
     :labels="{ left: '通常', right: '特殊' }"
-  ></ToggleButton>
-
-  <ToggleButton
-    @change="clickHandler"
-    :labels="{ left: '通常', right: '特殊' }"
-    whichSelected="right"
+    :whichSelected="btnsState.toggleBtn"
   ></ToggleButton>
 </template>
 
@@ -41,8 +38,8 @@ export default defineComponent({
   setup: () => {
     const btnsState = ref({
       checkbox: false,
-      toggleBtn: false,
       toggleSwitch: false,
+      toggleBtn: "left",
     });
 
     const clickHandler = (e: MouseEvent) => {

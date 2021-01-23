@@ -1,25 +1,13 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 type Props = {
-  onChange: Function;
-  value: string;
   isChecked: boolean;
   isDisable: boolean;
 };
 
 export default defineComponent({
-  name: "Checkbox",
   props: {
-    onChange: {
-      type: Function,
-      required: true,
-    },
-    value: {
-      type: String,
-      required: false,
-      default: "",
-    },
     isChecked: {
       type: Boolean,
       default: false,
@@ -30,39 +18,32 @@ export default defineComponent({
     },
   },
   setup: (props: Props, { emit }) => {
-    const handleChange = () => {};
+    const handleClick = (e: MouseEvent) => {
+      emit("click-checkbox", e);
+    };
 
-    return { handleChange };
+    return { handleClick };
   },
 });
 </script>
 
 <template>
-  <label
+  <div
+    @click="handleClick"
     :class="{
-      wrapper: true,
+      checkbox: true,
       '--checked': isChecked,
       '--unchecked': !isChecked,
     }"
   >
-    <input
-      type="checkbox"
-      :checked="isChecked"
-      :value="value"
-      @change="handleChange"
-    />
-    <span class="material-icons">done</span>
-  </label>
+    <div class="material-icons">done</div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @import "../scss/main.scss";
 
-input[type="checkbox"] {
-  display: none;
-}
-
-.wrapper {
+.checkbox {
   display: flex;
   justify-content: center;
   align-items: center;
