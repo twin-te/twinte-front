@@ -1,8 +1,7 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent } from "vue";
 
 type Props = {
-  onChange: Function;
   labels: { left: string; right: string };
   whichSelected: string;
   isDisable: boolean;
@@ -16,10 +15,6 @@ interface Label {
 export default defineComponent({
   name: "ToggleButton",
   props: {
-    onChange: {
-      type: Function,
-      required: true,
-    },
     labels: {
       type: Object as () => Label,
       required: true,
@@ -37,15 +32,15 @@ export default defineComponent({
     },
   },
   setup: (props: Props, { emit }) => {
-    const isLeftSelected = ref(props.whichSelected == "left");
-    const labels = ref(props.labels);
-
-    const handleChange = (_isLeftSelected: boolean) => {
-      isLeftSelected.value = !props.isDisable && _isLeftSelected;
-      emit("change", isLeftSelected.value);
+    const handleChange = (select: "left" | "right", e: MouseEvent) => {
+      emit("click-toggle-button", select, e);
     };
 
-    return { handleChange, isLeftSelected, labels };
+    const isSelectLeft = computed(() => {
+      return props.whichSelected == "left";
+    });
+
+    return { handleChange, isSelectLeft };
   },
 });
 </script>
@@ -56,20 +51,20 @@ export default defineComponent({
       'toggle-button': true,
     }"
   >
-    <div @click="handleChange(true)" class="toggle-button__label">
+    <div @click="handleChange('left', $event)" class="toggle-button__label">
       {{ labels.left }}
     </div>
-    <div @click="handleChange(false)" class="toggle-button__label">
+    <div @click="handleChange('right', $event)" class="toggle-button__label">
       {{ labels.right }}
     </div>
     <div
       :class="{
         'toggle-button__slider': true,
-        '--left': isLeftSelected,
-        '--right': !isLeftSelected,
+        '--left': isSelectLeft,
+        '--right': !isSelectLeft,
       }"
     >
-      {{ isLeftSelected ? labels.left : labels.right }}
+      {{ isSelectLeft ? labels.left : labels.right }}
     </div>
   </div>
 </template>
