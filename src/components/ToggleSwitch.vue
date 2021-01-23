@@ -58,7 +58,7 @@ export default defineComponent({
   width: 4.8rem;
   height: 2.8rem;
   border: solid 0.1rem $base;
-  border-radius: $radius-5;
+  border-radius: $radius-button;
 
   @include button-cursor;
   &.--unchecked {
