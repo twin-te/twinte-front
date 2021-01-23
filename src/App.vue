@@ -2,11 +2,14 @@
   <Button @click="clickHandler" size="small">Button</Button>
 
   <Checkbox
-    @change="btnsState.checkbox = !btnsState.checkbox"
+    @click-checkbox="btnsState.checkbox = !btnsState.checkbox"
     :isChecked="btnsState.checkbox"
   ></Checkbox>
 
-  <ToggleSwitch @change="clickHandler"></ToggleSwitch>
+  <ToggleSwitch
+    @click-toggle-switch="btnsState.toggleSwitch = !btnsState.toggleSwitch"
+    :isChecked="btnsState.toggleSwitch"
+  ></ToggleSwitch>
 
   <ToggleButton
     @change="clickHandler"
@@ -42,8 +45,8 @@ export default defineComponent({
       toggleSwitch: false,
     });
 
-    const clickHandler = () => {
-      console.log("click");
+    const clickHandler = (e: MouseEvent) => {
+      console.log(e);
     };
 
     return { clickHandler, btnsState };

@@ -1,9 +1,7 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 type Props = {
-  onChange: Function;
-  value: string;
   isChecked: boolean;
   isDisable: boolean;
 };
@@ -11,15 +9,6 @@ type Props = {
 export default defineComponent({
   name: "ToggleSwitch",
   props: {
-    onChange: {
-      type: Function,
-      required: true,
-    },
-    value: {
-      type: String,
-      required: false,
-      default: "",
-    },
     isChecked: {
       type: Boolean,
       default: false,
@@ -30,32 +19,24 @@ export default defineComponent({
     },
   },
   setup: (props: Props, { emit }) => {
-    const isChecked = ref(props.isChecked);
-
-    const handleChange = () => {
-      isChecked.value = !props.isDisable && !isChecked.value;
-      emit("change", isChecked.value);
+    const handleChange = (e: MouseEvent) => {
+      emit("click-toggle-switch", e);
     };
 
-    return { handleChange, isChecked };
+    return { handleChange };
   },
 });
 </script>
 
 <template>
-  <label
+  <div
+    @click="handleChange"
     :class="{
       'toggle-switch': true,
       '--checked': isChecked,
       '--unchecked': !isChecked,
     }"
   >
-    <input
-      type="checkbox"
-      :checked="isChecked"
-      :value="value"
-      @change="handleChange"
-    />
     <div
       :class="{
         'toggle-switch__slider': true,
@@ -63,15 +44,11 @@ export default defineComponent({
         '--unchecked': !isChecked,
       }"
     ></div>
-  </label>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @import "../scss/main.scss";
-
-input[type="checkbox"] {
-  display: none;
-}
 
 .toggle-switch {
   position: relative;
