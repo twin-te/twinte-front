@@ -1,5 +1,6 @@
 <template>
   <Button @click="clickHandler" size="small">Button</Button>
+
   <TextFieldSingleLine
     v-model="text1"
     @enter-text-field="enterHandler(text1)"
@@ -7,6 +8,7 @@
     iconName="search"
   ></TextFieldSingleLine>
   {{ text1 }}
+
   <TextFieldSingleLine
     v-model="text2"
     @enter-text-field="enterHandler(text2)"
@@ -15,32 +17,43 @@
     :height="3"
   ></TextFieldSingleLine>
   {{ text2 }}
+
+  <TextFieldMultilines
+    v-model="text3"
+    placeholder="メモを入力"
+    :width="40"
+    :height="20"
+  ></TextFieldMultilines>
+  {{ text3 }}
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Button from "./components/Button.vue";
 import TextFieldSingleLine from "./components/TextFieldSingleLine.vue";
+import TextFieldMultilines from "./components/TextFieldMultilines.vue";
 
 export default defineComponent({
   name: "App",
   components: {
     Button,
     TextFieldSingleLine,
+    TextFieldMultilines,
   },
   setup: () => {
     const text1 = ref("");
     const text2 = ref("");
+    const text3 = ref("");
 
     const clickHandler = () => {
       console.log("click");
     };
 
     const enterHandler = (text: string) => {
-      console.log('enter ! ', text);
+      console.log("enter ! ", text);
     };
 
-    return { clickHandler, enterHandler, text1, text2 };
+    return { clickHandler, enterHandler, text1, text2, text3 };
   },
 });
 </script>
