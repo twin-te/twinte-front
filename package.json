@@ -6,7 +6,8 @@
     "build": "vuedx-typecheck . && vite build"
   },
   "dependencies": {
-    "vue": "^3.0.5"
+    "vue": "^3.0.5",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.0.4",
