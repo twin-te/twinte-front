@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, Prop, ref } from "vue";
+import { defineComponent, ref } from "vue";
 
 type Props = {
   onClick: Function;
@@ -47,6 +47,7 @@ export default defineComponent({
       default: true,
     },
   },
+  emits: ["click"],
   setup: (props: Props, { emit }) => {
     const isActive = ref(false);
 

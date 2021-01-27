@@ -39,6 +39,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ["click"],
   setup: (_props: Props, { emit }) => {
     const handleClick = (e: MouseEvent) => {
       emit("click", e);
