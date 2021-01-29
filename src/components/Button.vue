@@ -153,7 +153,8 @@ export default defineComponent({
       @include iconlayout;
     }
   }
-  &.--active, &:active {
+  &.--active,
+  &:active {
     color: $white;
     @include button-active;
     &:hover {
