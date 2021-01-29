@@ -5,31 +5,31 @@
     @click="isBtnActive.expand_more = !isBtnActive.expand_more"
     size="small"
     color="normal"
-    iconName="expand_more"
-    :isActive="isBtnActive.expand_more"
+    icon-name="expand_more"
+    :is-active="isBtnActive.expand_more"
   ></ToggleIconButton>
 
   <ToggleIconButton
     @click="isBtnActive.edit = !isBtnActive.edit"
     size="medium"
     color="normal"
-    iconName="edit"
-    :isActive="isBtnActive.edit"
+    icon-name="edit"
+    :is-active="isBtnActive.edit"
   ></ToggleIconButton>
 
   <ToggleIconButton
     @click="isBtnActive.menu = !isBtnActive.menu"
     size="large"
     color="normal"
-    iconName="menu"
-    :isActive="isBtnActive.menu"
+    icon-name="menu"
+    :is-active="isBtnActive.menu"
   ></ToggleIconButton>
 
   <IconButton
     @click="clickHandler"
     size="large"
     color="danger"
-    iconName="delete"
+    icon-name="delete"
   ></IconButton>
 </template>
 
