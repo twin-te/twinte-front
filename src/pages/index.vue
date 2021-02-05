@@ -1,4 +1,7 @@
 <template>
+  <div v-if="ready">{{ state ? "logined" : "not login" }}</div>
+  <div v-else>loading...</div>
+
   <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
 
   <ToggleIconButton
@@ -35,6 +38,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useUsecase } from "~/usecases";
+import { authCheck } from "~/usecases/authCheck";
 import Button from "../components/Button.vue";
 import IconButton from "../components/IconButton.vue";
 import ToggleIconButton from "../components/ToggleIconButton.vue";
@@ -47,6 +52,7 @@ export default defineComponent({
     ToggleIconButton,
   },
   setup: () => {
+    const { ready, state } = useUsecase(authCheck, true);
     const isBtnActive = ref({
       expand_more: false,
       edit: false,
@@ -57,7 +63,7 @@ export default defineComponent({
       console.log("click");
     };
 
-    return { clickHandler, isBtnActive };
+    return { clickHandler, isBtnActive, ready, state };
   },
 });
 </script>
