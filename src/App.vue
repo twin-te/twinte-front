@@ -1,53 +1,14 @@
 <template>
-  <Button @click="clickHandler" size="small">Button</Button>
-
-  <Checkbox
-    @click-checkbox="btnsState.checkbox = !btnsState.checkbox"
-    :isChecked="btnsState.checkbox"
-  ></Checkbox>
-
-  <ToggleSwitch
-    @click-toggle-switch="btnsState.toggleSwitch = !btnsState.toggleSwitch"
-    :isChecked="btnsState.toggleSwitch"
-  ></ToggleSwitch>
-
-  <ToggleButton
-    @click-toggle-button="
-      btnsState.toggleBtn = btnsState.toggleBtn == 'left' ? 'right' : 'left'
-    "
-    :labels="{ left: '通常', right: '特殊' }"
-    :whichSelected="btnsState.toggleBtn"
-  ></ToggleButton>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import Button from "./components/Button.vue";
-import Checkbox from "./components/Checkbox.vue";
-import ToggleSwitch from "./components/ToggleSwitch.vue";
-import ToggleButton from "./components/ToggleButton.vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "App",
-  components: {
-    Button,
-    Checkbox,
-    ToggleSwitch,
-    ToggleButton,
-  },
-  setup: () => {
-    const btnsState = ref({
-      checkbox: false,
-      toggleSwitch: false,
-      toggleBtn: "left" as "left" | "right",
-    });
-
-    const clickHandler = (e: MouseEvent) => {
-      console.log(e);
-    };
-
-    return { clickHandler, btnsState };
-  },
 });
 </script>
 

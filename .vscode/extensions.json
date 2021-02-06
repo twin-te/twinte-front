@@ -1,3 +1,7 @@
 {
-  "recommendations": ["znck.vue-language-features"]
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "znck.vue-language-features",
+    "octref.vetur"
+  ]
 }

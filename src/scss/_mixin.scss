@@ -45,7 +45,7 @@
 @mixin button-active-danger($negative-shadow-convex: 0 0 0 #00000000) {
   background: $danger;
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,
-    $danger-shadow-concave;
+    $shadow-danger-concave;
 }
 @mixin button-inactive($negative-shadow-concave: inset 0 0 0 #00000000) {
   box-shadow: $shadow-convex, $negative-shadow-concave;
