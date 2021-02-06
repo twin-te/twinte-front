@@ -39,18 +39,43 @@
       course-name="学校を考える"
       course-id="1A101"
     ></CourseTile>
+
     <CourseTile
       state="active"
       course-name="学校を考える"
       course-id="1A101"
     ></CourseTile>
+
     <CourseTile state="none"></CourseTile>
+
     <CourseTile
       state="default"
       course-name="学校を考える"
       course-id="1A101"
       caution="他1件"
     ></CourseTile>
+  </div>
+
+  <div class="course-details">
+    <CourseDetail
+      icon-name="schedule"
+      item="開講時限"
+      value="春AB 木2"
+    ></CourseDetail>
+
+    <CourseDetail
+      icon-name="person"
+      item="担当教員"
+      value="山本早里"
+    ></CourseDetail>
+
+    <CourseDetail icon-name="room" item="授業場所" value="6A508"></CourseDetail>
+
+    <CourseDetail
+      icon-name="category"
+      item="授業形式"
+      value="対面"
+    ></CourseDetail>
   </div>
 </template>
 
@@ -60,6 +85,7 @@ import Button from "../components/Button.vue";
 import IconButton from "../components/IconButton.vue";
 import ToggleIconButton from "../components/ToggleIconButton.vue";
 import CourseTile from "../components/CourseTile.vue";
+import CourseDetail from "../components/CourseDetail.vue";
 
 export default defineComponent({
   name: "App",
@@ -68,6 +94,7 @@ export default defineComponent({
     IconButton,
     ToggleIconButton,
     CourseTile,
+    CourseDetail,
   },
   setup: () => {
     const isBtnActive = ref({
@@ -95,5 +122,11 @@ export default defineComponent({
   gap: 0.2rem;
   width: 220px;
   height: 300px;
+}
+
+.course-details {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
 }
 </style>
