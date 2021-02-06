@@ -39,7 +39,7 @@ export default defineComponent({
     const btnsState = ref({
       checkbox: false,
       toggleSwitch: false,
-      toggleBtn: "left",
+      toggleBtn: "left" as "left" | "right",
     });
 
     const clickHandler = (e: MouseEvent) => {

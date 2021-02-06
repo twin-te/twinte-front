@@ -1,26 +1,26 @@
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
+type Labels = { left: string; right: string };
+type Select = "left" | "right";
 type Props = {
-  labels: { left: string; right: string };
-  whichSelected: string;
+  labels: Labels;
+  whichSelected: Select;
   isDisable: boolean;
 };
 
-interface Label {
-  left: string;
-  right: string;
-}
-
 export default defineComponent({
-  name: "ToggleButton",
   props: {
+    onClickToggleButton: {
+      type: Function,
+      required: true,
+    },
     labels: {
-      type: Object as () => Label,
+      type: Object as PropType<Labels>,
       required: true,
     },
     whichSelected: {
-      type: String,
+      type: String as PropType<Select>,
       default: "left",
       validator: function (value: string) {
         return ["left", "right"].includes(value);
@@ -32,7 +32,9 @@ export default defineComponent({
     },
   },
   setup: (props: Props, { emit }) => {
-    const handleChange = (select: "left" | "right", e: MouseEvent) => {
+    const labels = props.labels;
+
+    const handleChange = (select: Select, e: MouseEvent) => {
       emit("click-toggle-button", select, e);
     };
 
@@ -40,7 +42,7 @@ export default defineComponent({
       return props.whichSelected == "left";
     });
 
-    return { handleChange, isSelectLeft };
+    return { handleChange, isSelectLeft, labels };
   },
 });
 </script>

@@ -1,14 +1,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-type Props = {
-  isChecked: boolean;
-  isDisable: boolean;
-};
-
 export default defineComponent({
-  name: "ToggleSwitch",
   props: {
+    onClickToggleSwitch: {
+      type: Function,
+      required: true,
+    },
     isChecked: {
       type: Boolean,
       default: false,
@@ -18,7 +16,7 @@ export default defineComponent({
       default: false,
     },
   },
-  setup: (props: Props, { emit }) => {
+  setup: (_, { emit }) => {
     const handleChange = (e: MouseEvent) => {
       emit("click-toggle-switch", e);
     };
