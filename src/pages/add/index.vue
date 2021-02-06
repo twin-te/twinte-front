@@ -67,7 +67,7 @@ export default defineComponent({
   &--large {
     .contents {
       height: calc(56.7rem - 20.8rem);
-      @include tab-and-pc {
+      @include large-screen {
         height: calc(51.58334rem - 20.8rem);
       }
     }
@@ -75,7 +75,7 @@ export default defineComponent({
   &--small {
     .contents {
       height: calc(39.5rem - 20.8rem);
-      @include tab-and-pc {
+      @include large-screen {
         height: calc(30.33334rem - 20.8rem);
       }
     }

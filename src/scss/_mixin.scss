@@ -85,3 +85,9 @@
     @content;
   }
 }
+
+@mixin large-screen {
+  @media only screen and (min-height: $pc-and-tab-height), (orientation: landscape) {
+    @content;
+  }
+}

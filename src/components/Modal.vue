@@ -60,7 +60,7 @@ export default defineComponent({
 @import "../scss/main.scss";
 
 .modal {
-  padding: 3.5rem 3.1rem 3.1rem 3.1rem; //borderを考慮
+  padding: 3.6rem 3.2rem 3.2rem 3.2rem;
   background: $base-liner;
   box-sizing: border-box;
   border: 0.1rem solid $base;
@@ -76,8 +76,8 @@ export default defineComponent({
     // スマホ
     width: 34.4rem;
     height: 56.7rem;
-    // タブレット、PC
-    @include tab-and-pc {
+    // タブレット、PC、横向き
+    @include large-screen {
       width: 40rem;
       height: 51.58334rem;
     }
@@ -86,8 +86,8 @@ export default defineComponent({
     // スマホ
     width: 34.3rem;
     height: 39.5rem;
-    // タブレット、PC
-    @include tab-and-pc {
+    // タブレット、PC、横向き
+    @include large-screen {
       width: 40rem;
       height: 30.33334rem;
     }
