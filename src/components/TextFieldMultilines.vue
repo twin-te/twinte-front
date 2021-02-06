@@ -1,12 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-type Props = {
-  placeholder: string;
-  width: number;
-  height: number;
-};
-
 export default defineComponent({
   props: {
     modelValue: {
@@ -27,7 +21,7 @@ export default defineComponent({
     },
   },
   emits: ["update:modelValue", "enter-text-field"],
-  setup: (props: Props, { emit }) => {
+  setup: (_, { emit }) => {
     const handleInput = (e: Event) => {
       if (!(e.target instanceof HTMLTextAreaElement)) {
         return;
