@@ -58,21 +58,21 @@
 
   <div class="course-details">
     <CourseDetail
-      icon-name="schedule"
+      iconName="schedule"
       item="開講時限"
       value="春AB 木2"
     ></CourseDetail>
 
     <CourseDetail
-      icon-name="person"
+      iconName="person"
       item="担当教員"
       value="山本早里"
     ></CourseDetail>
 
-    <CourseDetail icon-name="room" item="授業場所" value="6A508"></CourseDetail>
+    <CourseDetail iconName="room" item="授業場所" value="6A508"></CourseDetail>
 
     <CourseDetail
-      icon-name="category"
+      iconName="category"
       item="授業形式"
       value="対面"
     ></CourseDetail>
