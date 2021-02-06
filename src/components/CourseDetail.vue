@@ -57,6 +57,7 @@ export default defineComponent({
       background: $primary-liner;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: $shadow-icon;
     }
   }
   &__item {
