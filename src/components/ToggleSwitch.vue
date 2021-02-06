@@ -16,6 +16,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ["click-toggle-switch"],
   setup: (_, { emit }) => {
     const handleChange = (e: MouseEvent) => {
       emit("click-toggle-switch", e);

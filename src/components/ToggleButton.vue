@@ -31,9 +31,8 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ["click-toggle-button"],
   setup: (props: Props, { emit }) => {
-    const labels = props.labels;
-
     const handleChange = (select: Select, e: MouseEvent) => {
       emit("click-toggle-button", select, e);
     };
@@ -42,7 +41,7 @@ export default defineComponent({
       return props.whichSelected == "left";
     });
 
-    return { handleChange, isSelectLeft, labels };
+    return { handleChange, isSelectLeft };
   },
 });
 </script>

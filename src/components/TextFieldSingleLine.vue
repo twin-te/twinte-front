@@ -17,6 +17,7 @@ export default defineComponent({
     },
     onEnterTextField: {
       type: Function,
+      default: () => {},
     },
     placeholder: {
       type: String,

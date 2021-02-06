@@ -16,6 +16,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ["click-checkbox"],
   setup: (_, { emit }) => {
     const handleClick = (e: MouseEvent) => {
       emit("click-checkbox", e);
