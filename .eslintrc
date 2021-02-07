@@ -13,6 +13,6 @@
   },
   "ignorePatterns": "**/*.js",
   "rules": {
-    "vue/attribute-hyphenation": "never"
+    "vue/attribute-hyphenation": 0
   }
 }
