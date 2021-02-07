@@ -56,7 +56,7 @@ export default defineComponent({
       emit("click", e.target.value);
     };
 
-    return { handleClick };
+    return { handleClick, isActive };
   },
 });
 </script>
