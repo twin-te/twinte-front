@@ -104,13 +104,13 @@ export default defineComponent({
     background-color: $filter-darken;
   }
   &__course-name {
-    line-height: 1.4rem;
-    font-size: 1rem;
+    line-height: $single-line;
+    font-size: $font-minimum;
     font-weight: 500;
     color: $text-main;
   }
   &__course-id {
-    line-height: 1.3rem;
+    line-height: $single-line;
     font-size: 0.9rem;
     font-weight: 400;
     color: $text-sub;
@@ -118,15 +118,15 @@ export default defineComponent({
   &__caution {
     position: absolute;
     z-index: 10;
-    left: 0.4rem;
-    bottom: 0.4rem;
-    width: calc(100% - 0.8rem);
-    padding: 0.4rem 0;
+    left: $spacing-1;
+    bottom: $spacing-1;
+    width: calc(100% - ($spacing-1 * 2));
+    padding: $spacing-1 $spacing-0;
     border-radius: $radius-1;
     background-color: $base;
     text-align: center;
-    line-height: 1;
-    font-size: 1rem;
+    line-height: $fit;
+    font-size: $font-minimum;
     font-weight: 500;
     color: $primary-dull;
   }

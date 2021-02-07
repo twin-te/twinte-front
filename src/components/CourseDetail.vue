@@ -38,7 +38,7 @@ export default defineComponent({
     "icon ... item " auto
     "icon ... ...  " auto
     "icon ... value" auto
-    / 4rem 1.6rem auto;
+    / 4rem $spacing-4 auto;
   text-align: left;
   &__icon {
     grid-area: icon;
@@ -51,7 +51,7 @@ export default defineComponent({
     box-shadow: $shadow-p-light-concave;
     background-color: $primary-light;
     span {
-      line-height: 1;
+      line-height: $fit;
       font-size: 2.6rem;
       color: #6bcedc;
       background: $primary-liner;
@@ -63,13 +63,13 @@ export default defineComponent({
   &__item {
     grid-area: item;
     line-height: $single-line;
-    font-size: 1.2rem;
+    font-size: $font-small;
     color: $text-sub;
   }
   &__value {
     grid-area: value;
     line-height: $single-line;
-    font-size: 1.4rem;
+    font-size: $font-medium;
     font-weight: 500;
     color: $text-main;
   }
