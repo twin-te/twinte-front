@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 
-type State = "default" | "active" | "none";
+export type State = "default" | "active" | "none";
 
 type Props = {
   courseName: string;
@@ -18,15 +18,15 @@ export default defineComponent({
     },
     courseName: {
       type: String,
-      default: "",
+      required: true,
     },
     courseId: {
       type: String,
-      default: "",
+      required: true,
     },
     state: {
       type: String as PropType<State>,
-      default: "false",
+      required: true,
       validator: function (value: string) {
         return ["default", "active", "none"].includes(value);
       },
@@ -63,9 +63,9 @@ export default defineComponent({
     <div class="tile__course-name">{{ courseName }}</div>
     <div class="tile__course-id">{{ courseId }}</div>
     <div
+      v-show="hasCaution"
       :class="{
         tile__caution: true,
-        [`--show`]: hasCaution,
       }"
     >
       {{ caution }}
@@ -116,7 +116,6 @@ export default defineComponent({
     color: $text-sub;
   }
   &__caution {
-    display: none;
     position: absolute;
     z-index: 10;
     left: 0.4rem;
@@ -130,9 +129,6 @@ export default defineComponent({
     font-size: 1rem;
     font-weight: 500;
     color: $primary-dull;
-    &.--show {
-      display: block;
-    }
   }
 }
 </style>

@@ -36,22 +36,22 @@
     <CourseTile
       @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
       :state="tileStat"
-      course-name="学校を考える"
-      course-id="1A101"
+      courseName="学校を考える"
+      courseId="1A101"
     ></CourseTile>
 
     <CourseTile
       state="active"
-      course-name="学校を考える"
-      course-id="1A101"
+      courseName="学校を考える"
+      courseId="1A101"
     ></CourseTile>
 
-    <CourseTile state="none"></CourseTile>
+    <CourseTile state="none" courseName="" courseId=""></CourseTile>
 
     <CourseTile
       state="default"
-      course-name="学校を考える"
-      course-id="1A101"
+      courseName="学校を考える"
+      courseId="1A101"
       caution="他1件"
     ></CourseTile>
   </div>
@@ -84,7 +84,9 @@ import { defineComponent, ref } from "vue";
 import Button from "../components/Button.vue";
 import IconButton from "../components/IconButton.vue";
 import ToggleIconButton from "../components/ToggleIconButton.vue";
-import CourseTile from "../components/CourseTile.vue";
+import CourseTile, {
+  State as CourseTileState,
+} from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
 
 export default defineComponent({
@@ -103,7 +105,7 @@ export default defineComponent({
       menu: false,
     });
 
-    const tileStat = ref("default" as "default" | "active" | "none");
+    const tileStat = ref<CourseTileState>("default");
 
     const clickHandler = () => {
       console.log("click");
