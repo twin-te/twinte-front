@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import App from "./pages/index.vue";
 import Add from "./pages/add/index.vue";
@@ -8,7 +8,7 @@ const history = createWebHistory();
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: "/", component: App },
   { path: "/add", component: Add },
 ];
