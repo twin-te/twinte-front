@@ -1,0 +1,3 @@
+[submodule "twinte-openapi-spec"]
+	path = twinte-openapi-spec
+	url = https://github.com/twin-te/twinte-openapi-spec.git
