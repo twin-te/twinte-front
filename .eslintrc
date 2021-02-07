@@ -11,8 +11,5 @@
   "parserOptions": {
     "parser": "@typescript-eslint/parser"
   },
-  "ignorePatterns": "**/*.js",
-  "rules": {
-    "vue/attribute-hyphenation": 0
-  }
+  "ignorePatterns": "**/*.js"
 }
