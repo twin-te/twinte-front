@@ -110,10 +110,7 @@ export default defineComponent({
     color: $text-main;
   }
   &__course-id {
-    line-height: $single-line;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: $text-sub;
+    @include text-course-tile-id;
   }
   &__caution {
     position: absolute;

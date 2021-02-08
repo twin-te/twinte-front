@@ -27,6 +27,12 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+@mixin text-course-tile-id {
+  color: $text-sub;
+  font-size: 0.9rem;
+  font-weight: normal;
+  line-height: $single-line;
+}
 @mixin void-text-liner {
   background-clip: none;
   -webkit-text-fill-color: inherit;
