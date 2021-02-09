@@ -15,8 +15,8 @@ export default defineComponent({
   },
   emits: ["click"],
   setup: (props: Props, { emit }) => {
-    const handleClick = (e: any) => {
-      emit("click", e.target.value);
+    const handleClick = () => {
+      emit("click");
     };
     return { handleClick };
   },
