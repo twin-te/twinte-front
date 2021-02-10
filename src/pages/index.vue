@@ -60,24 +60,24 @@
   </div>
 
   <div class="course-details">
-    <CourseDetail
-      iconName="schedule"
-      item="開講時限"
-      value="春AB 木2"
+    <CourseDetail item="開講時限" value="春AB 木2"
+      ><template #icon>
+        <DecoratedIcon iconName="schedule"></DecoratedIcon> </template
     ></CourseDetail>
 
-    <CourseDetail
-      iconName="person"
-      item="担当教員"
-      value="山本早里"
+    <CourseDetail item="担当教員" value="山本早里"
+      ><template #icon>
+        <DecoratedIcon iconName="person"></DecoratedIcon> </template
     ></CourseDetail>
 
-    <CourseDetail iconName="room" item="授業場所" value="6A508"></CourseDetail>
+    <CourseDetail item="授業場所" value="6A508"
+      ><template #icon>
+        <DecoratedIcon iconName="room"></DecoratedIcon> </template
+    ></CourseDetail>
 
-    <CourseDetail
-      iconName="category"
-      item="授業形式"
-      value="対面"
+    <CourseDetail item="授業形式" value="対面"
+      ><template #icon>
+        <DecoratedIcon iconName="category"></DecoratedIcon> </template
     ></CourseDetail>
   </div>
 
