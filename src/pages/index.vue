@@ -89,6 +89,15 @@
       text="ワードや条件を指定して授業を検索・追加します。"
     ></CardAdd>
   </div>
+
+  <div class="card-course-wrapper">
+    <CardCourse
+      @click-checkbox="isCourseCheked = !isCourseCheked"
+      @click-syllabus-link="displayLog"
+      :isChecked="isCourseCheked"
+      :course="courseInfo"
+    ></CardCourse>
+  </div>
 </template>
 
 <script lang="ts">
@@ -103,6 +112,7 @@ import CourseTile, {
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
 import CardAdd from "../components/CardAdd.vue";
+import CardCourse, { Course } from "../components/CardCourse.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 
 export default defineComponent({
@@ -114,6 +124,7 @@ export default defineComponent({
     CourseTile,
     CourseDetail,
     CardAdd,
+    CardCourse,
     DecoratedIcon,
   },
   setup: () => {
@@ -123,14 +134,28 @@ export default defineComponent({
       edit: false,
       menu: false,
     });
-
+    const courseInfo = ref<Course>({
+      id: "01EB512",
+      name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
+      period: "春A 水2",
+      room: "6A203",
+      url: "https://example.com",
+    });
     const tileStat = ref<CourseTileState>("default");
-
+    const isCourseCheked = ref(false);
     const displayLog = () => {
       console.log("click");
     };
 
-    return { displayLog, isBtnActive, ready, state, tileStat };
+    return {
+      displayLog,
+      isBtnActive,
+      ready,
+      state,
+      tileStat,
+      isCourseCheked,
+      courseInfo,
+    };
   },
 });
 </script>
@@ -152,6 +177,10 @@ export default defineComponent({
 }
 
 .card-add-wrapper {
+  width: 40rem;
+}
+
+.card-course-wrapper {
   width: 40rem;
 }
 </style>
