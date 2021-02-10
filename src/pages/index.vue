@@ -80,6 +80,8 @@
       value="対面"
     ></CourseDetail>
   </div>
+
+  <Card width="80%">aaaa</Card>
 </template>
 
 <script lang="ts">
@@ -93,6 +95,7 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
+import Card from "../components/Card.vue";
 
 export default defineComponent({
   name: "App",
@@ -102,6 +105,7 @@ export default defineComponent({
     ToggleIconButton,
     CourseTile,
     CourseDetail,
+    Card,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
