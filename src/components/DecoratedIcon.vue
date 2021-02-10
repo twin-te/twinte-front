@@ -21,7 +21,7 @@ export default defineComponent({
 @import "../scss/main.scss";
 
 .icon {
-  @include button-cursor;
+  @include icon-cursor;
   display: flex;
   align-items: center;
   justify-content: center;

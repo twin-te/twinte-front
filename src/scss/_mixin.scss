@@ -61,6 +61,12 @@
   box-shadow: $shadow-convex-hover;
 }
 
+// icon
+@mixin icon-cursor {
+  user-select: none;
+  cursor: default;
+}
+
 // layout
 @mixin flexible() {
   display: inline-block;
