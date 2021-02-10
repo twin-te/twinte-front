@@ -23,6 +23,7 @@
   font-weight: regular;
 }
 @mixin text-liner {
+  color: #6bcedc; // baakground-clip に対応していない場合の色
   background: $primary-liner;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

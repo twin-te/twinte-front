@@ -82,6 +82,8 @@
   </div>
 
   <Card width="80%">aaaa</Card>
+
+  <DecoratedIcon iconName="schedule"></DecoratedIcon>
 </template>
 
 <script lang="ts">
@@ -96,6 +98,7 @@ import CourseTile, {
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
 import Card from "../components/Card.vue";
+import DecoratedIcon from "../components/DecoratedIcon.vue";
 
 export default defineComponent({
   name: "App",
@@ -106,6 +109,7 @@ export default defineComponent({
     CourseTile,
     CourseDetail,
     Card,
+    DecoratedIcon,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
