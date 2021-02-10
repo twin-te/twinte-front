@@ -29,7 +29,7 @@
   ></ToggleIconButton>
 
   <IconButton
-    @click="clickHandler"
+    @click="displayLog"
     size="large"
     color="danger"
     icon-name="delete"
@@ -81,9 +81,14 @@
     ></CourseDetail>
   </div>
 
-  <Card width="80%">aaaa</Card>
-
-  <DecoratedIcon iconName="schedule"></DecoratedIcon>
+  <div class="card-add-wrapper">
+    <CardAdd
+      @click-next-button="displayLog"
+      iconName="search"
+      heading="授業の検索"
+      text="ワードや条件を指定して授業を検索・追加します。"
+    ></CardAdd>
+  </div>
 </template>
 
 <script lang="ts">
@@ -97,7 +102,7 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
-import Card from "../components/Card.vue";
+import CardAdd from "../components/CardAdd.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 
 export default defineComponent({
@@ -108,7 +113,7 @@ export default defineComponent({
     ToggleIconButton,
     CourseTile,
     CourseDetail,
-    Card,
+    CardAdd,
     DecoratedIcon,
   },
   setup: () => {
@@ -121,11 +126,11 @@ export default defineComponent({
 
     const tileStat = ref<CourseTileState>("default");
 
-    const clickHandler = () => {
+    const displayLog = () => {
       console.log("click");
     };
 
-    return { clickHandler, isBtnActive, ready, state, tileStat };
+    return { displayLog, isBtnActive, ready, state, tileStat };
   },
 });
 </script>
@@ -144,5 +149,9 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   gap: 1rem;
+}
+
+.card-add-wrapper {
+  width: 40rem;
 }
 </style>
