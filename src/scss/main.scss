@@ -11,6 +11,7 @@ html {
   font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: $text-main;
+  background: $base-liner;
 }
 @include tab-and-pc {
   html {
@@ -23,4 +24,21 @@ body {
 .material-icons {
   font-family: Material Icons;
   @include iconlayout;
+}
+.preview {
+  width: 375px;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  flex-shrink: 1;
+  &__content {
+    margin: 2rem;
+    &--flex {
+      margin: 2rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
 }
