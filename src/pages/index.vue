@@ -1,85 +1,100 @@
 <template>
-  <div v-if="ready">{{ state ? "logined" : "not login" }}</div>
-  <div v-else>loading...</div>
+  <article class="preview">
+    <div v-if="ready">
+      {{ state ? "logined" : "not login" }}
+    </div>
+    <div v-else>loading...</div>
 
-  <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
+    <section class="preview__content">
+      <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
+    </section>
+    <section class="preview__content--flex">
+      <ToggleIconButton
+        @click="isBtnActive.expand_more = !isBtnActive.expand_more"
+        size="small"
+        color="normal"
+        icon-name="expand_more"
+        :is-active="isBtnActive.expand_more"
+      ></ToggleIconButton>
 
-  <ToggleIconButton
-    @click="isBtnActive.expand_more = !isBtnActive.expand_more"
-    size="small"
-    color="normal"
-    icon-name="expand_more"
-    :is-active="isBtnActive.expand_more"
-  ></ToggleIconButton>
+      <ToggleIconButton
+        @click="isBtnActive.edit = !isBtnActive.edit"
+        size="medium"
+        color="normal"
+        icon-name="edit"
+        :is-active="isBtnActive.edit"
+      ></ToggleIconButton>
 
-  <ToggleIconButton
-    @click="isBtnActive.edit = !isBtnActive.edit"
-    size="medium"
-    color="normal"
-    icon-name="edit"
-    :is-active="isBtnActive.edit"
-  ></ToggleIconButton>
+      <ToggleIconButton
+        @click="isBtnActive.menu = !isBtnActive.menu"
+        size="large"
+        color="normal"
+        icon-name="menu"
+        :is-active="isBtnActive.menu"
+      ></ToggleIconButton>
 
-  <ToggleIconButton
-    @click="isBtnActive.menu = !isBtnActive.menu"
-    size="large"
-    color="normal"
-    icon-name="menu"
-    :is-active="isBtnActive.menu"
-  ></ToggleIconButton>
+      <IconButton
+        @click="clickHandler"
+        size="large"
+        color="danger"
+        icon-name="delete"
+      ></IconButton>
+    </section>
 
-  <IconButton
-    @click="clickHandler"
-    size="large"
-    color="danger"
-    icon-name="delete"
-  ></IconButton>
+    <section class="preview__content">
+      <div class="course-grid">
+        <CourseTile
+          @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
+          :state="tileStat"
+          courseName="学校を考える"
+          courseId="1A101"
+        ></CourseTile>
 
-  <div class="course-grid">
-    <CourseTile
-      @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
-      :state="tileStat"
-      courseName="学校を考える"
-      courseId="1A101"
-    ></CourseTile>
+        <CourseTile
+          state="active"
+          courseName="学校を考える"
+          courseId="1A101"
+        ></CourseTile>
 
-    <CourseTile
-      state="active"
-      courseName="学校を考える"
-      courseId="1A101"
-    ></CourseTile>
+        <CourseTile state="none" courseName="" courseId=""></CourseTile>
 
-    <CourseTile state="none" courseName="" courseId=""></CourseTile>
+        <CourseTile
+          state="default"
+          courseName="学校を考える"
+          courseId="1A101"
+          caution="他1件"
+        ></CourseTile>
+      </div>
+    </section>
 
-    <CourseTile
-      state="default"
-      courseName="学校を考える"
-      courseId="1A101"
-      caution="他1件"
-    ></CourseTile>
-  </div>
+    <section class="preview__content">
+      <div class="course-details">
+        <CourseDetail
+          iconName="schedule"
+          item="開講時限"
+          value="春AB 木2"
+        ></CourseDetail>
 
-  <div class="course-details">
-    <CourseDetail
-      iconName="schedule"
-      item="開講時限"
-      value="春AB 木2"
-    ></CourseDetail>
+        <CourseDetail
+          iconName="person"
+          item="担当教員"
+          value="山本早里"
+        ></CourseDetail>
 
-    <CourseDetail
-      iconName="person"
-      item="担当教員"
-      value="山本早里"
-    ></CourseDetail>
+        <CourseDetail
+          iconName="room"
+          item="授業場所"
+          value="6A508"
+        ></CourseDetail>
 
-    <CourseDetail iconName="room" item="授業場所" value="6A508"></CourseDetail>
-
-    <CourseDetail
-      iconName="category"
-      item="授業形式"
-      value="対面"
-    ></CourseDetail>
-  </div>
+        <CourseDetail
+          iconName="category"
+          item="授業形式"
+          value="対面"
+        ></CourseDetail>
+      </div>
+    </section>
+  </article>
 </template>
 
 <script lang="ts">
