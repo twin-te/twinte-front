@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import SidebarContent from "./SidebarContent.vue";
 import Button from "./Button.vue";
+import { ref } from "vue";
 
 export default defineComponent({
   name: "Sidebar",
@@ -21,6 +22,24 @@ export default defineComponent({
     const handleClick = () => {
       emit("click");
     };
+
+    const menu = ref([
+      { iconName: "home", item: "ホーム" },
+      { iconName: "add", item: "授業の追加" },
+      { iconName: "event_note", item: "学年暦" },
+      { iconName: "campaign", item: "お知らせ" },
+    ]);
+    const settings = ref([
+      { iconName: "view_compact", item: "表示設定" },
+      { iconName: "notifications", item: "通知設定" },
+    ]);
+    const links = ref([
+      { iconName: "help", item: "使い方" },
+      { iconName: "people", item: "寄付者一覧" },
+      { iconName: "share", item: "時間割のシェア" },
+    ]);
+
+    return { handleClick, menu, settings, links };
   },
 });
 </script>
@@ -35,7 +54,7 @@ export default defineComponent({
         color="primary"
         :pauseActiveStyle="false"
       >
-        {{ state ? "ログアウト" : "ログイン" }}</Button
+        {{ isLogin ? "ログアウト" : "ログイン" }}</Button
       >
     </section>
 
@@ -46,7 +65,7 @@ export default defineComponent({
           v-for="value in menu"
           :iconName="value.iconName"
           :item="value.item"
-          :key="value.a"
+          :key="value.item"
         ></SidebarContent>
       </ul>
 
@@ -56,7 +75,7 @@ export default defineComponent({
           v-for="value in settings"
           :iconName="value.iconName"
           :item="value.item"
-          :key="value.b"
+          :key="value.item"
         ></SidebarContent>
       </ul>
 
@@ -66,7 +85,7 @@ export default defineComponent({
           v-for="value in links"
           :iconName="value.iconName"
           :item="value.item"
-          :key="value.c"
+          :key="value.item"
         ></SidebarContent>
       </ul>
     </section>
@@ -80,7 +99,7 @@ export default defineComponent({
   width: 20.8rem;
   height: 100vh;
   background: $base-liner;
-  border-radius: 0 1.6rem 1.6rem 0;
+  border-radius: 0 $radius-4 $radius-4 0;
   box-shadow: $shadow-convex;
   z-index: 100;
   &__head {
@@ -90,7 +109,7 @@ export default defineComponent({
     margin: 0;
   }
   &__listgroup {
-    padding-bottom: 2.4rem;
+    padding-bottom: $spacing-6;
   }
 }
 </style>

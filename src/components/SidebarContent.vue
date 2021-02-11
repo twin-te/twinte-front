@@ -63,7 +63,7 @@ export default defineComponent({
     position: relative;
     align-items: center;
     width: 20.8rem;
-    padding: 0.4rem 2rem 0.4rem;
+    padding: $spacing-1 $spacing-5 $spacing-1;
     transition: $transition-box-shadow;
     color: $button-gray;
     &--selected {
@@ -85,7 +85,7 @@ export default defineComponent({
   &__name {
     font-weight: medium;
     vertical-align: bottom;
-    margin-left: 1.6rem;
+    margin-left: $spacing-4;
     font-size: $font-medium;
 
     &--link {
@@ -94,7 +94,7 @@ export default defineComponent({
         @include iconlayout;
         @include text-liner;
         content: "launch";
-        padding-left: 0.8rem;
+        padding-left: $spacing-2;
         margin-top: -0.1rem; //アイコンのずれ用
       }
     }
