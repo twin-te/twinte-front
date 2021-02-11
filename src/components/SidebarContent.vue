@@ -27,8 +27,8 @@ export default defineComponent({
   },
   emits: ["click"],
   setup: (_, { emit }) => {
-    const handleClick = (e: any) => {
-      emit("click", e);
+    const handleClick = () => {
+      emit("click");
     };
     return { handleClick };
   },
