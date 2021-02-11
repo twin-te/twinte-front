@@ -1,11 +1,19 @@
 <template>
-  <Button @click="clickHandler" size="small">Back to Home</Button>
-  <Button @click="openModal" size="small">Open Modal</Button>
-  <Modal v-if="modal" @click="closeModal" size="large">
-    <div class="title">title</div>
-    <div class="contents">contents</div>
-    <Button @click="closeModal" layout="fill" size="medium">OK</Button>
-  </Modal>
+  <article class="preview">
+    <section class="preview__content">
+      <Button @click="clickHandler" size="small">Back to Home</Button>
+    </section>
+    <section class="preview__content">
+      <Button @click="openModal" size="small">Open Modal</Button>
+    </section>
+    <section class="preview__content">
+      <Modal v-if="modal" @click="closeModal" size="large">
+        <div class="title">title</div>
+        <div class="contents">contents</div>
+        <Button @click="closeModal" layout="fill" size="medium">OK</Button>
+      </Modal>
+    </section>
+  </article>
 </template>
 
 <script lang="ts">
