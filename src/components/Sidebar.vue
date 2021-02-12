@@ -1,8 +1,7 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import SidebarContent from "./SidebarContent.vue";
 import Button from "./Button.vue";
-import { ref } from "vue";
 
 export default defineComponent({
   name: "Sidebar",
