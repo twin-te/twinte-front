@@ -1,103 +1,116 @@
 <template>
-  <div v-if="ready">{{ state ? "logined" : "not login" }}</div>
-  <div v-else>loading...</div>
+  <article class="preview">
+    <div v-if="ready">
+      {{ state ? "logined" : "not login" }}
+    </div>
+    <div v-else>loading...</div>
 
-  <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
+    <section class="preview__content">
+      <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
+    </section>
+    <section class="preview__content--flex">
+      <ToggleIconButton
+        @click="isBtnActive.expand_more = !isBtnActive.expand_more"
+        size="small"
+        color="normal"
+        icon-name="expand_more"
+        :is-active="isBtnActive.expand_more"
+      ></ToggleIconButton>
 
-  <ToggleIconButton
-    @click="isBtnActive.expand_more = !isBtnActive.expand_more"
-    size="small"
-    color="normal"
-    icon-name="expand_more"
-    :is-active="isBtnActive.expand_more"
-  ></ToggleIconButton>
+      <ToggleIconButton
+        @click="isBtnActive.edit = !isBtnActive.edit"
+        size="medium"
+        color="normal"
+        icon-name="edit"
+        :is-active="isBtnActive.edit"
+      ></ToggleIconButton>
 
-  <ToggleIconButton
-    @click="isBtnActive.edit = !isBtnActive.edit"
-    size="medium"
-    color="normal"
-    icon-name="edit"
-    :is-active="isBtnActive.edit"
-  ></ToggleIconButton>
+      <ToggleIconButton
+        @click="isBtnActive.menu = !isBtnActive.menu"
+        size="large"
+        color="normal"
+        icon-name="menu"
+        :is-active="isBtnActive.menu"
+      ></ToggleIconButton>
 
-  <ToggleIconButton
-    @click="isBtnActive.menu = !isBtnActive.menu"
-    size="large"
-    color="normal"
-    icon-name="menu"
-    :is-active="isBtnActive.menu"
-  ></ToggleIconButton>
+      <IconButton
+        @click="displayLog"
+        size="large"
+        color="danger"
+        icon-name="delete"
+      ></IconButton>
+    </section>
 
-  <IconButton
-    @click="displayLog"
-    size="large"
-    color="danger"
-    icon-name="delete"
-  ></IconButton>
+    <section class="preview__content">
+      <div class="course-grid">
+        <CourseTile
+          @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
+          :state="tileStat"
+          courseName="学校を考える"
+          courseId="1A101"
+        ></CourseTile>
 
-  <div class="course-grid">
-    <CourseTile
-      @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
-      :state="tileStat"
-      courseName="学校を考える"
-      courseId="1A101"
-    ></CourseTile>
+        <CourseTile
+          state="active"
+          courseName="学校を考える"
+          courseId="1A101"
+        ></CourseTile>
 
-    <CourseTile
-      state="active"
-      courseName="学校を考える"
-      courseId="1A101"
-    ></CourseTile>
+        <CourseTile state="none" courseName="" courseId=""></CourseTile>
 
-    <CourseTile state="none" courseName="" courseId=""></CourseTile>
+        <CourseTile
+          state="default"
+          courseName="学校を考える"
+          courseId="1A101"
+          caution="他1件"
+        ></CourseTile>
+      </div>
+    </section>
 
-    <CourseTile
-      state="default"
-      courseName="学校を考える"
-      courseId="1A101"
-      caution="他1件"
-    ></CourseTile>
-  </div>
+    <section class="preview__content">
+      <div class="course-details">
+        <CourseDetail item="開講時限" value="春AB 木2"
+          ><template #icon>
+            <DecoratedIcon iconName="schedule"></DecoratedIcon></template
+        ></CourseDetail>
 
-  <div class="course-details">
-    <CourseDetail item="開講時限" value="春AB 木2"
-      ><template #icon>
-        <DecoratedIcon iconName="schedule"></DecoratedIcon> </template
-    ></CourseDetail>
+        <CourseDetail item="担当教員" value="山本早里"
+          ><template #icon>
+            <DecoratedIcon iconName="person"></DecoratedIcon></template
+        ></CourseDetail>
 
-    <CourseDetail item="担当教員" value="山本早里"
-      ><template #icon>
-        <DecoratedIcon iconName="person"></DecoratedIcon> </template
-    ></CourseDetail>
+        <CourseDetail item="授業場所" value="6A508"
+          ><template #icon>
+            <DecoratedIcon iconName="room"></DecoratedIcon></template
+        ></CourseDetail>
 
-    <CourseDetail item="授業場所" value="6A508"
-      ><template #icon>
-        <DecoratedIcon iconName="room"></DecoratedIcon> </template
-    ></CourseDetail>
+        <CourseDetail item="授業形式" value="対面"
+          ><template #icon>
+            <DecoratedIcon iconName="category"></DecoratedIcon></template
+        ></CourseDetail>
+      </div>
+    </section>
 
-    <CourseDetail item="授業形式" value="対面"
-      ><template #icon>
-        <DecoratedIcon iconName="category"></DecoratedIcon> </template
-    ></CourseDetail>
-  </div>
+    <section>
+      <div class="card-add-wrapper">
+        <CardAdd
+          @click-next-button="displayLog"
+          iconName="search"
+          heading="授業の検索"
+          text="ワードや条件を指定して授業を検索・追加します。"
+        ></CardAdd>
+      </div>
 
-  <div class="card-add-wrapper">
-    <CardAdd
-      @click-next-button="displayLog"
-      iconName="search"
-      heading="授業の検索"
-      text="ワードや条件を指定して授業を検索・追加します。"
-    ></CardAdd>
-  </div>
-
-  <div class="card-course-wrapper">
-    <CardCourse
-      @click-checkbox="isCourseCheked = !isCourseCheked"
-      @click-syllabus-link="displayLog"
-      :isChecked="isCourseCheked"
-      :course="courseInfo"
-    ></CardCourse>
-  </div>
+      <div class="card-course-wrapper">
+        <CardCourse
+          @click-checkbox="isCourseCheked = !isCourseCheked"
+          @click-syllabus-link="displayLog"
+          :isChecked="isCourseCheked"
+          :course="courseInfo"
+        ></CardCourse>
+      </div>
+    </section>
+  </article>
 </template>
 
 <script lang="ts">
@@ -111,9 +124,9 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
+import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
-import DecoratedIcon from "../components/DecoratedIcon.vue";
 
 export default defineComponent({
   name: "App",
@@ -123,9 +136,9 @@ export default defineComponent({
     ToggleIconButton,
     CourseTile,
     CourseDetail,
+    DecoratedIcon,
     CardAdd,
     CardCourse,
-    DecoratedIcon,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
