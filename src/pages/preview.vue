@@ -213,7 +213,16 @@
         ></ToggleIconButton>
       </template>
     </PageHeader>
+
+    <section class="preview__content preview__dropdown">
+      <ScheduleEditer
+        v-model:schedules="schedules"
+        @click-add-button="addScheduleRow"
+        @click-remove-button="removeScheduleRow"
+      ></ScheduleEditer>
+    </section>
   </article>
+
 </template>
 
 <script lang="ts">
@@ -238,6 +247,10 @@ import PopupContent, {
 } from "../components/PopupContent.vue";
 import Modal from "../components/Modal.vue";
 import PageHeader from "../components/PageHeader.vue";
+import ScheduleEditer, {
+  Schedule,
+  Schedules,
+} from "../components/ScheduleEditer.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -256,6 +269,7 @@ export default defineComponent({
     PopupContent,
     Modal,
     PageHeader,
+    ScheduleEditer
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -274,7 +288,10 @@ export default defineComponent({
     });
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);
-    const displayLog = () => {
+    const schedules = ref<Schedules>([
+      { id: 0, semester: "", date: "", period: "" },
+    ]);
+const displayLog = () => {
       console.log("click");
     };
 
@@ -348,20 +365,38 @@ export default defineComponent({
       console.log("click");
     };
 
+
+    const addScheduleRow = () => {
+      schedules.value.push({
+        id: schedules.value.slice(-1)[0].id + 1,
+        semester: "",
+        date: "",
+        period: "",
+      });
+    };
+    const removeScheduleRow = (id: number) => {
+      const index = schedules.value.findIndex(
+        (el: Schedule): boolean => el.id == id
+      );
+      schedules.value.splice(index, 1);
+    };
+
     return {
+      clickHandler,
+      closeModal,
+      courseInfo,
       displayLog,
       isBtnActive,
+      isCourseCheked,
+      modal,
+      openModal,
+      popupData,
+      popupModuleData,
       ready,
       state,
       tileStat,
-      isCourseCheked,
-      courseInfo,
-      popupData,
-      popupModuleData,
-      modal,
-      openModal,
-      closeModal,
-      clickHandler,
+      addScheduleRow,
+      removeScheduleRow
     };
   },
 });
