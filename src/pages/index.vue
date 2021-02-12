@@ -8,6 +8,7 @@
     <section class="preview__content">
       <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
     </section>
+
     <section class="preview__content--flex">
       <ToggleIconButton
         @click="isBtnActive.expand_more = !isBtnActive.expand_more"
@@ -94,6 +95,16 @@
         ></CourseDetail>
       </div>
     </section>
+
+    <section class="preview__content preview__dropdown">
+      <Dropdown
+        :options="dropdownOptions"
+        :selectedOption="selectedOption"
+        @update:selectedOption="selectedOption = $event"
+        label="学期"
+      ></Dropdown>
+      選択されている値: {{ selectedOption }}
+    </section>
   </article>
 </template>
 
@@ -108,6 +119,9 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
+import Dropdown, {
+  Options as DropdownOptions,
+} from "../components/Dropdown.vue";
 
 export default defineComponent({
   name: "App",
@@ -117,6 +131,7 @@ export default defineComponent({
     ToggleIconButton,
     CourseTile,
     CourseDetail,
+    Dropdown,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -127,12 +142,25 @@ export default defineComponent({
     });
 
     const tileStat = ref<CourseTileState>("default");
-
+    const dropdownOptions = ref<DropdownOptions>(["春A", "春B", "春C"]);
+    const selectedOption = ref<string>("");
     const clickHandler = () => {
       console.log("click");
     };
+    // const test = (e: string) => {
+    //   console.log(e);
 
-    return { clickHandler, isBtnActive, ready, state, tileStat };
+    // }
+    return {
+      clickHandler,
+      isBtnActive,
+      ready,
+      state,
+      tileStat,
+      dropdownOptions,
+      selectedOption,
+      // test
+    };
   },
 });
 </script>
@@ -151,5 +179,9 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   gap: 1rem;
+}
+
+.preview__dropdown {
+  padding-bottom: 10rem;
 }
 </style>
