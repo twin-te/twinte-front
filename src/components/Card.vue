@@ -12,7 +12,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card" :style="{ width: width }"><slot></slot></div>
+  <div class="card" :style="{ width }"><slot></slot></div>
 </template>
 
 <style scoped lang="scss">
