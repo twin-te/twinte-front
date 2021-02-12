@@ -52,6 +52,7 @@ export default defineComponent({
     };
 
     const emitSelectedEvent = (option: string) => {
+      // option は「春A」などの文字
       emit("update:selectedOption", option);
     };
 
