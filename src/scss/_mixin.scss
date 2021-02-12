@@ -23,6 +23,7 @@
   font-weight: regular;
 }
 @mixin text-liner {
+  color: #6bcedc; // baakground-clip に対応していない場合の色
   background: $primary-liner;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -60,6 +61,12 @@
   box-shadow: $shadow-convex-hover;
 }
 
+// icon
+@mixin icon-cursor {
+  user-select: none;
+  cursor: default;
+}
+
 // layout
 @mixin flexible() {
   display: inline-block;
@@ -72,6 +79,12 @@
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
+}
+@mixin center-flex($direction: "row") {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
 }
 @mixin iconlayout {
   display: inline-flex;
