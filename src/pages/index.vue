@@ -34,7 +34,7 @@
       ></ToggleIconButton>
 
       <IconButton
-        @click="clickHandler"
+        @click="displayLog"
         size="large"
         color="danger"
         icon-name="delete"
@@ -69,28 +69,24 @@
 
     <section class="preview__content">
       <div class="course-details">
-        <CourseDetail
-          iconName="schedule"
-          item="開講時限"
-          value="春AB 木2"
+        <CourseDetail item="開講時限" value="春AB 木2"
+          ><template #icon>
+            <DecoratedIcon iconName="schedule"></DecoratedIcon></template
         ></CourseDetail>
 
-        <CourseDetail
-          iconName="person"
-          item="担当教員"
-          value="山本早里"
+        <CourseDetail item="担当教員" value="山本早里"
+          ><template #icon>
+            <DecoratedIcon iconName="person"></DecoratedIcon></template
         ></CourseDetail>
 
-        <CourseDetail
-          iconName="room"
-          item="授業場所"
-          value="6A508"
+        <CourseDetail item="授業場所" value="6A508"
+          ><template #icon>
+            <DecoratedIcon iconName="room"></DecoratedIcon></template
         ></CourseDetail>
 
-        <CourseDetail
-          iconName="category"
-          item="授業形式"
-          value="対面"
+        <CourseDetail item="授業形式" value="対面"
+          ><template #icon>
+            <DecoratedIcon iconName="category"></DecoratedIcon></template
         ></CourseDetail>
       </div>
     </section>
@@ -119,6 +115,25 @@
         ></SidebarContent>
       </section>
     </section>
+    <section>
+      <div class="card-add-wrapper">
+        <CardAdd
+          @click-next-button="displayLog"
+          iconName="search"
+          heading="授業の検索"
+          text="ワードや条件を指定して授業を検索・追加します。"
+        ></CardAdd>
+      </div>
+
+      <div class="card-course-wrapper">
+        <CardCourse
+          @click-checkbox="isCourseCheked = !isCourseCheked"
+          @click-syllabus-link="displayLog"
+          :isChecked="isCourseCheked"
+          :course="courseInfo"
+        ></CardCourse>
+      </div>
+    </section>
   </article>
 </template>
 
@@ -135,6 +150,9 @@ import CourseTile, {
 import CourseDetail from "../components/CourseDetail.vue";
 import Sidebar from "../components/Sidebar.vue";
 import SidebarContent from "../components/SidebarContent.vue";
+import DecoratedIcon from "../components/DecoratedIcon.vue";
+import CardAdd from "../components/CardAdd.vue";
+import CardCourse, { Course } from "../components/CardCourse.vue";
 
 export default defineComponent({
   name: "App",
@@ -146,6 +164,9 @@ export default defineComponent({
     CourseDetail,
     Sidebar,
     SidebarContent,
+    DecoratedIcon,
+    CardAdd,
+    CardCourse,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -154,14 +175,28 @@ export default defineComponent({
       edit: false,
       menu: false,
     });
-
+    const courseInfo = ref<Course>({
+      id: "01EB512",
+      name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
+      period: "春A 水2",
+      room: "6A203",
+      url: "https://example.com",
+    });
     const tileStat = ref<CourseTileState>("default");
-
-    const clickHandler = () => {
+    const isCourseCheked = ref(false);
+    const displayLog = () => {
       console.log("click");
     };
 
-    return { clickHandler, isBtnActive, ready, state, tileStat };
+    return {
+      displayLog,
+      isBtnActive,
+      ready,
+      state,
+      tileStat,
+      isCourseCheked,
+      courseInfo,
+    };
   },
 });
 </script>
@@ -180,5 +215,13 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   gap: 1rem;
+}
+
+.card-add-wrapper {
+  width: 40rem;
+}
+
+.card-course-wrapper {
+  width: 40rem;
 }
 </style>

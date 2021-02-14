@@ -3,10 +3,6 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    iconName: {
-      type: String,
-      required: true,
-    },
     item: {
       type: String,
       required: true,
@@ -22,7 +18,7 @@ export default defineComponent({
 <template>
   <div class="course-detail">
     <div class="course-detail__icon">
-      <span class="material-icons">{{ iconName }}</span>
+      <slot name="icon"></slot>
     </div>
     <div class="course-detail__item">{{ item }}</div>
     <div class="course-detail__value">{{ value }}</div>
@@ -36,29 +32,12 @@ export default defineComponent({
   display: grid;
   grid-template:
     "icon ... item " auto
-    "icon ... ...  " auto
+    "icon ... ...  " 1fr
     "icon ... value" auto
-    / 4rem $spacing-4 auto;
+    / auto $spacing-4 1fr;
   text-align: left;
   &__icon {
     grid-area: icon;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-    border-radius: $circle;
-    box-shadow: $shadow-p-light-concave;
-    background-color: $primary-light;
-    span {
-      line-height: $fit;
-      font-size: 2.6rem;
-      color: #6bcedc;
-      background: $primary-liner;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: $shadow-icon;
-    }
   }
   &__item {
     grid-area: item;
