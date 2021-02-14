@@ -126,7 +126,7 @@ export default defineComponent({
   }
   &--base {
     background: $base;
-    color: $text-main;
+    color: $button-gray;
   }
   &--primary {
     background: $primary-liner;

@@ -91,6 +91,30 @@
       </div>
     </section>
 
+    <section class="preview__content--flex">
+      <section class="preview__content">
+        <Sidebar :isLogin="true"></Sidebar>
+      </section>
+      <section class="preview__content">
+        <SidebarContent
+          @click="clickHandler"
+          iconName="home"
+          item="ホーム"
+        ></SidebarContent>
+        <SidebarContent
+          @click="clickHandler"
+          :link="true"
+          iconName="home"
+          item="ホーム"
+        ></SidebarContent>
+        <SidebarContent
+          @click="clickHandler"
+          iconName="home"
+          item="ホーム"
+          :selected="true"
+        ></SidebarContent>
+      </section>
+    </section>
     <section>
       <div class="card-add-wrapper">
         <CardAdd
@@ -124,6 +148,8 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
+import Sidebar from "../components/Sidebar.vue";
+import SidebarContent from "../components/SidebarContent.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
@@ -136,6 +162,8 @@ export default defineComponent({
     ToggleIconButton,
     CourseTile,
     CourseDetail,
+    Sidebar,
+    SidebarContent,
     DecoratedIcon,
     CardAdd,
     CardCourse,
