@@ -96,36 +96,10 @@
       </div>
     </section>
 
-    <!-- 本当はこうしたい -->
     <section class="preview__content preview__dropdown">
       <Dropdown
         :options="dropdownOptions"
         v-model:selectedOption="selectedOption"
-        label="学期"
-      ></Dropdown>
-      選択されている値: {{ selectedOption }}
-    </section>
-
-    <!-- 上記の v-model は以下の糖衣構文であり、上の例と下の例は同じ？ -->
-    <!-- このエラーを解決できれば上も解決するかもしれない？ -->
-    <!-- $event には「春A」などが入ってる。 -->
-    <!-- $event as string なども考えたが selectedOption="" の中は typescript が使えない -->
-    <section class="preview__content preview__dropdown">
-      <Dropdown
-        :options="dropdownOptions"
-        :selectedOption="selectedOption"
-        @update:selectedOption="selectedOption = $event"
-        label="学期"
-      ></Dropdown>
-      選択されている値: {{ selectedOption }}
-    </section>
-
-    <!-- 本当はしたくない妥協案 -->
-    <section class="preview__content preview__dropdown">
-      <Dropdown
-        :options="dropdownOptions"
-        :selectedOption="selectedOption"
-        @update:selectedOption="test"
         label="学期"
       ></Dropdown>
       選択されている値: {{ selectedOption }}
@@ -172,9 +146,6 @@ export default defineComponent({
     const clickHandler = () => {
       console.log("click");
     };
-    const test = (e: string) => {
-      console.log(e);
-    };
 
     return {
       clickHandler,
@@ -184,7 +155,6 @@ export default defineComponent({
       tileStat,
       dropdownOptions,
       selectedOption,
-      test,
     };
   },
 });
