@@ -120,7 +120,7 @@ export default defineComponent({
   &__detail {
     @include center-flex(column);
     grid-area: detail;
-    align-items: start;
+    align-items: flex-start;
   }
   &__syllabus-link {
     @include center-flex;

@@ -96,19 +96,13 @@
         <Sidebar :isLogin="true"></Sidebar>
       </section>
       <section class="preview__content">
+        <SidebarContent iconName="home" item="ホーム"></SidebarContent>
         <SidebarContent
-          @click="clickHandler"
-          iconName="home"
-          item="ホーム"
-        ></SidebarContent>
-        <SidebarContent
-          @click="clickHandler"
           :link="true"
           iconName="home"
           item="ホーム"
         ></SidebarContent>
         <SidebarContent
-          @click="clickHandler"
           iconName="home"
           item="ホーム"
           :selected="true"
