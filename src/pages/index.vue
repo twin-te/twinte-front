@@ -134,6 +134,17 @@
         ></CardCourse>
       </div>
     </section>
+    <section class="preview__content">
+      <PageHeader :calendar="calendar">ホーム以外のページ</PageHeader>
+    </section>
+    <section class="preview__content">
+      <PageHeader :calendar="calendar" :atHome="true"></PageHeader>
+    </section>
+    <section class="preview__content">
+      <PageHeader :calendar="calendar" :dropdownMenu="true"
+        >右のDropdownMenuがあるページ</PageHeader
+      >
+    </section>
   </article>
 </template>
 
@@ -153,6 +164,7 @@ import SidebarContent from "../components/SidebarContent.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
+import PageHeader, { Calendar } from "../components/PageHeader.vue";
 
 export default defineComponent({
   name: "App",
@@ -167,6 +179,7 @@ export default defineComponent({
     DecoratedIcon,
     CardAdd,
     CardCourse,
+    PageHeader,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -187,6 +200,12 @@ export default defineComponent({
     const displayLog = () => {
       console.log("click");
     };
+    const calendar = ref<Calendar>({
+      month: 9,
+      day: 2,
+      week: "月",
+      schedule: "通常日課",
+    });
 
     return {
       displayLog,
@@ -196,6 +215,7 @@ export default defineComponent({
       tileStat,
       isCourseCheked,
       courseInfo,
+      calendar,
     };
   },
 });
