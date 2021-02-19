@@ -4,7 +4,7 @@
 
 @import "variable", "mixin", "reset";
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,600&display=swap&subset=japanese");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap&subset=japanese");
 
 html {
   font-size: 62.5%; //1rem=10px
@@ -12,9 +12,7 @@ html {
   box-sizing: border-box;
   color: $text-main;
   background: $base-liner;
-}
-@include tab-and-pc {
-  html {
+  @include tab-and-pc {
     font-size: 75%; //1rem=12px
   }
 }
