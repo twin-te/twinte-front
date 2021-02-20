@@ -8,6 +8,7 @@
     "lint": "eslint --ext .vue ./src",
     "lint:fix": "yarn lint --fix",
     "format": "prettier ./src --write",
+    "test": "jest",
     "apigen": "rm -rf src/api && npx openapi2aspida"
   },
   "dependencies": {

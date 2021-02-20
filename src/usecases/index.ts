@@ -28,6 +28,7 @@ export const useUsecase = <T>(
       })
     ) as ApiInstance,
     store: useStore(StateKey),
+    now: new Date(),
   };
 
   return useAsyncState(fn(ports), initState);

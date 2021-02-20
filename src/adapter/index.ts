@@ -5,4 +5,5 @@ import { GlobalState } from "~/store";
 export interface Ports {
   api: ApiInstance;
   store: Store<GlobalState>;
+  now: Date;
 }

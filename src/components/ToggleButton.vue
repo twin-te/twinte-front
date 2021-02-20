@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 
-type Labels = { left: string; right: string };
+export type Labels = { left: string; right: string };
 type Select = "left" | "right";
 type Props = {
   labels: Labels;
