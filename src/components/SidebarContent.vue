@@ -1,12 +1,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+type Props = {
+  onClick: Function;
+};
+
 export default defineComponent({
   name: "SidebarContent",
   props: {
     onClick: {
       type: Function,
-      required: true,
+      default: () => {},
     },
     selected: {
       type: Boolean,
@@ -26,7 +30,7 @@ export default defineComponent({
     },
   },
   emits: ["click"],
-  setup: (_, { emit }) => {
+  setup: (props: Props, { emit }) => {
     const handleClick = () => {
       emit("click");
     };

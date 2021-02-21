@@ -96,19 +96,13 @@
         <Sidebar :isLogin="true"></Sidebar>
       </section>
       <section class="preview__content">
+        <SidebarContent iconName="home" item="ホーム"></SidebarContent>
         <SidebarContent
-          @click="clickHandler"
-          iconName="home"
-          item="ホーム"
-        ></SidebarContent>
-        <SidebarContent
-          @click="clickHandler"
           :link="true"
           iconName="home"
           item="ホーム"
         ></SidebarContent>
         <SidebarContent
-          @click="clickHandler"
           iconName="home"
           item="ホーム"
           :selected="true"
@@ -133,6 +127,17 @@
           :course="courseInfo"
         ></CardCourse>
       </div>
+    </section>
+    <section class="preview__content">
+      <PageHeader :calendar="calendar">ホーム以外のページ</PageHeader>
+    </section>
+    <section class="preview__content">
+      <PageHeader :calendar="calendar" :atHome="true"></PageHeader>
+    </section>
+    <section class="preview__content">
+      <PageHeader :calendar="calendar" :dropdownMenu="true"
+        >右のDropdownMenuがあるページ</PageHeader
+      >
     </section>
     <section class="preview__content">
       <Button @click="openWelcomeModal" size="medium" :pauseActiveStyle="false"
@@ -162,6 +167,7 @@ import SidebarContent from "../components/SidebarContent.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
+import PageHeader, { Calendar } from "../components/PageHeader.vue";
 import WelcomeModal from "../components/WelcomeModal.vue";
 
 export default defineComponent({
@@ -177,6 +183,7 @@ export default defineComponent({
     DecoratedIcon,
     CardAdd,
     CardCourse,
+    PageHeader,
     WelcomeModal,
   },
   setup: () => {
@@ -198,6 +205,12 @@ export default defineComponent({
     const displayLog = () => {
       console.log("click");
     };
+    const calendar = ref<Calendar>({
+      month: 9,
+      day: 2,
+      week: "月",
+      schedule: "通常日課",
+    });
     // WelcomeModal
     const welcomeModal = ref(false);
     const openWelcomeModal = () => {
@@ -217,6 +230,7 @@ export default defineComponent({
       courseInfo,
       welcomeModal,
       openWelcomeModal,
+      calendar,
       closeWelcomeModal,
     };
   },
