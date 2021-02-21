@@ -1,5 +1,5 @@
 <template>
-  <header class="header"><!-- TODO ヘッダーコンポネント作成 --></header>
+  <PageHeader v-show="calLoading" :calendar="calendar" atHome></PageHeader>
   <article class="main">
     <ToggleButton
       class="main__toggle"
@@ -23,20 +23,20 @@
 
     <div class="main__table table">
       <div
-        v-for="n in 5"
-        :key="weeks[n - 1]"
-        :class="{ table__day: true, 'table__day--first': n == 1 }"
+        v-for="(_, d) in 5"
+        :key="weeks[d]"
+        :class="{ table__day: true, 'table__day--first': d == 0 }"
       >
-        {{ weeks[n - 1] }}
+        {{ weeks[d] }}
       </div>
       <template v-for="(y, period) in table" :key="y">
-        <div class="table__period">{{ period }}</div>
+        <div class="table__period">{{ period + 1 }}</div>
         <CourseTile
           v-for="(x, id) in y"
-          :key="`${weeks[n - 1]}-${id}`"
+          :key="id"
           class="table__course"
           @click="onClickCourseTile(x)"
-          :state="courseTileState(x)"
+          :state="x.state"
           :courseName="x.name"
           :courseId="x.id"
         />
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import CourseTile, {
   State as CourseTileState,
 } from "~/components/CourseTile.vue";
@@ -57,12 +57,20 @@ import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import Button from "~/components/Button.vue";
 import Modal from "~/components/Modal.vue";
+import PageHeader, { Calendar } from "~/components/PageHeader.vue";
 import { dayJaList } from "~/entities/day";
 import { ModuleJa, moduleToJa } from "~/entities/module";
 import { CourseModule } from "~/api/@types";
 import { tableConstructor } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
+
+type CourseState = {
+  id: string;
+  name: string;
+  state: CourseTileState;
+};
 
 export default defineComponent({
   name: "Table",
@@ -72,6 +80,7 @@ export default defineComponent({
     ToggleIconButton,
     Button,
     Modal,
+    PageHeader,
   },
   setup: () => {
     const label: Labels = { left: "通常", right: "特殊" };
@@ -81,29 +90,19 @@ export default defineComponent({
     const moduleJa = computed<ModuleJa>(() => moduleToJa(module.value));
 
     const weeks = dayJaList;
-    const activeCourseTile = ref<{ id: string; name: string } | null>(null);
-    const table = computed(() => tableConstructor({ name: "", id: "" }));
+    const activeCourseTile = ref<CourseState | null>(null);
+    const table = computed(() =>
+      tableConstructor<CourseState>({ name: "", id: "", state: "none" })
+    );
+    const { ready: calLoading, state: calendar } = useUsecase(
+      getCalendar,
+      {} as Calendar
+    );
 
     const setCurrentModule = () => {
       module.value = currentModule.value;
     };
-    watch(module, (currModule) => {
-      if (currModule == currentModule.value) {
-        setCurrentModule();
-      }
-    });
-    const courseTileState = (course: {
-      id: string;
-      name: string;
-    }): CourseTileState => {
-      const isActive =
-        activeCourseTile.value?.id == course.id &&
-        activeCourseTile.value?.name == course.name;
-      const isNone = course.id === "" && course.name === "";
-
-      return isActive ? (isNone ? "none" : "active") : "default";
-    };
-    const onClickCourseTile = (course: { id: string; name: string }) => {
+    const onClickCourseTile = (course: CourseState) => {
       activeCourseTile.value = course;
     };
     const resetCourseTileState = () => {
@@ -118,9 +117,10 @@ export default defineComponent({
       moduleJa,
       todoFn,
       table,
+      calLoading,
+      calendar,
       setCurrentModule,
       activeCourseTile,
-      courseTileState,
       onClickCourseTile,
       resetCourseTileState,
     };
@@ -131,16 +131,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "../scss/main.scss";
 
-.header {
-  height: 7.6rem;
-}
-
 .main {
   display: grid;
   border-radius: 1.6rem 1.6rem 0 0;
   box-shadow: $shadow-base;
   padding: 1.6rem 1.2rem;
-  height: calc(100vh - 7.6rem);
+  height: calc(100vh - 6rem);
   grid-template:
     "toggle module module-btn btn" 2.8rem
     "table table table table" 1fr

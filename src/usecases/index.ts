@@ -5,6 +5,7 @@ import { Ports } from "~/adapter";
 import instance, { ApiInstance } from "~/api/$api";
 import { StateKey } from "~/store";
 import { useAsyncState } from "@vueuse/core";
+import * as dayjs from "dayjs";
 
 /**
  * @example
@@ -28,7 +29,7 @@ export const useUsecase = <T>(
       })
     ) as ApiInstance,
     store: useStore(StateKey),
-    now: new Date(),
+    now: dayjs().locale("ja"),
   };
 
   return useAsyncState(fn(ports), initState);
