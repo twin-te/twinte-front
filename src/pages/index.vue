@@ -1,263 +1,134 @@
 <template>
-  <article class="preview">
-    <div v-if="ready">
-      {{ state ? "logined" : "not login" }}
-    </div>
-    <div v-else>loading...</div>
-
-    <section class="preview__content">
-      <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
-    </section>
-    <section class="preview__content--flex">
-      <ToggleIconButton
-        @click="isBtnActive.expand_more = !isBtnActive.expand_more"
-        size="small"
-        color="normal"
-        icon-name="expand_more"
-        :is-active="isBtnActive.expand_more"
-      ></ToggleIconButton>
-
-      <ToggleIconButton
-        @click="isBtnActive.edit = !isBtnActive.edit"
-        size="medium"
-        color="normal"
-        icon-name="edit"
-        :is-active="isBtnActive.edit"
-      ></ToggleIconButton>
-
-      <ToggleIconButton
-        @click="isBtnActive.menu = !isBtnActive.menu"
-        size="large"
-        color="normal"
-        icon-name="menu"
-        :is-active="isBtnActive.menu"
-      ></ToggleIconButton>
-
-      <IconButton
-        @click="displayLog"
-        size="large"
-        color="danger"
-        icon-name="delete"
-      ></IconButton>
-    </section>
-
-    <section class="preview__content">
-      <div class="course-grid">
-        <CourseTile
-          @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
-          :state="tileStat"
-          courseName="学校を考える"
-          courseId="1A101"
-        ></CourseTile>
-
-        <CourseTile
-          state="active"
-          courseName="学校を考える"
-          courseId="1A101"
-        ></CourseTile>
-
-        <CourseTile state="none" courseName="" courseId=""></CourseTile>
-
-        <CourseTile
-          state="default"
-          courseName="学校を考える"
-          courseId="1A101"
-          caution="他1件"
-        ></CourseTile>
+  <Button @click="openWelcomeModal" size="medium">Open Welcome Modal</Button>
+  <div class="welcome-modal">
+    <Modal v-if="welcomeModal" @click="closeWelcomeModal" size="large">
+      <div class="title">Twin:teへようこそ！</div>
+      <div class="contents">
+        <img class="contents__mascot" src="../assets/colon2.png" alt="colon2" />
+        <p class="contents__text">
+          こんにちは！<br />
+          筑波大生のための時間割アプリTwin:teをご利用いただきありがとうございます。<br />
+          時間割の作成や複数端末間の連携のため、ログインしてください。<br />
+          ※Twin:teにログインしたことがない場合は、自動的にアカウントが作成されます。
+        </p>
       </div>
-    </section>
-
-    <section class="preview__content">
-      <div class="course-details">
-        <CourseDetail item="開講時限" value="春AB 木2"
-          ><template #icon>
-            <DecoratedIcon iconName="schedule"></DecoratedIcon></template
-        ></CourseDetail>
-
-        <CourseDetail item="担当教員" value="山本早里"
-          ><template #icon>
-            <DecoratedIcon iconName="person"></DecoratedIcon></template
-        ></CourseDetail>
-
-        <CourseDetail item="授業場所" value="6A508"
-          ><template #icon>
-            <DecoratedIcon iconName="room"></DecoratedIcon></template
-        ></CourseDetail>
-
-        <CourseDetail item="授業形式" value="対面"
-          ><template #icon>
-            <DecoratedIcon iconName="category"></DecoratedIcon></template
-        ></CourseDetail>
+      <div class="button-container">
+        <div class="button-left">
+          <Button
+            @click="closeWelcomeModal"
+            color="base"
+            layout="fill"
+            size="medium"
+            >あとで</Button
+          >
+        </div>
+        <div class="button-right">
+          <Button
+            @click="login"
+            color="primary"
+            layout="fill"
+            size="medium"
+            style="padding: 0"
+            >ログインする</Button
+          >
+        </div>
       </div>
-    </section>
-
-    <section class="preview__content--flex">
-      <section class="preview__content">
-        <Sidebar :isLogin="true"></Sidebar>
-      </section>
-      <section class="preview__content">
-        <SidebarContent iconName="home" item="ホーム"></SidebarContent>
-        <SidebarContent
-          :link="true"
-          iconName="home"
-          item="ホーム"
-        ></SidebarContent>
-        <SidebarContent
-          iconName="home"
-          item="ホーム"
-          :selected="true"
-        ></SidebarContent>
-      </section>
-    </section>
-    <section>
-      <div class="card-add-wrapper">
-        <CardAdd
-          @click-next-button="displayLog"
-          iconName="search"
-          heading="授業の検索"
-          text="ワードや条件を指定して授業を検索・追加します。"
-        ></CardAdd>
-      </div>
-
-      <div class="card-course-wrapper">
-        <CardCourse
-          @click-checkbox="isCourseCheked = !isCourseCheked"
-          @click-syllabus-link="displayLog"
-          :isChecked="isCourseCheked"
-          :course="courseInfo"
-        ></CardCourse>
-      </div>
-    </section>
-    <section class="preview__content">
-      <PageHeader :calendar="calendar">ホーム以外のページ</PageHeader>
-    </section>
-    <section class="preview__content">
-      <PageHeader :calendar="calendar" :atHome="true"></PageHeader>
-    </section>
-    <section class="preview__content">
-      <PageHeader :calendar="calendar" :dropdownMenu="true"
-        >右のDropdownMenuがあるページ</PageHeader
-      >
-    </section>
-    <section class="preview__content">
-      <Button @click="openWelcomeModal" size="medium" :pauseActiveStyle="false"
-        >Open Welcome Modal</Button
-      >
-      <WelcomeModal
-        v-if="welcomeModal"
-        @click="closeWelcomeModal"
-      ></WelcomeModal>
-    </section>
-  </article>
+    </Modal>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useUsecase } from "~/usecases";
-import { authCheck } from "~/usecases/authCheck";
+import { useRouter } from "vue-router";
+import Modal from "../components/Modal.vue";
 import Button from "../components/Button.vue";
-import IconButton from "../components/IconButton.vue";
-import ToggleIconButton from "../components/ToggleIconButton.vue";
-import CourseTile, {
-  State as CourseTileState,
-} from "../components/CourseTile.vue";
-import CourseDetail from "../components/CourseDetail.vue";
-import Sidebar from "../components/Sidebar.vue";
-import SidebarContent from "../components/SidebarContent.vue";
-import DecoratedIcon from "../components/DecoratedIcon.vue";
-import CardAdd from "../components/CardAdd.vue";
-import CardCourse, { Course } from "../components/CardCourse.vue";
-import PageHeader, { Calendar } from "../components/PageHeader.vue";
-import WelcomeModal from "../components/WelcomeModal.vue";
 
 export default defineComponent({
   name: "App",
   components: {
+    Modal,
     Button,
-    IconButton,
-    ToggleIconButton,
-    CourseTile,
-    CourseDetail,
-    Sidebar,
-    SidebarContent,
-    DecoratedIcon,
-    CardAdd,
-    CardCourse,
-    PageHeader,
-    WelcomeModal,
   },
   setup: () => {
-    const { ready, state } = useUsecase(authCheck, true);
-    const isBtnActive = ref({
-      expand_more: false,
-      edit: false,
-      menu: false,
-    });
-    const courseInfo = ref<Course>({
-      id: "01EB512",
-      name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-      period: "春A 水2",
-      room: "6A203",
-      url: "https://example.com",
-    });
-    const tileStat = ref<CourseTileState>("default");
-    const isCourseCheked = ref(false);
-    const displayLog = () => {
-      console.log("click");
+    const router = useRouter();
+
+    // welcome modal
+    const login = async () => {
+      await router.push("/login");
     };
-    const calendar = ref<Calendar>({
-      month: 9,
-      day: 2,
-      week: "月",
-      schedule: "通常日課",
-    });
-    // WelcomeModal
+
     const welcomeModal = ref(false);
+
     const openWelcomeModal = () => {
       welcomeModal.value = true;
     };
+
     const closeWelcomeModal = () => {
       welcomeModal.value = false;
     };
 
-    return {
-      displayLog,
-      isBtnActive,
-      ready,
-      state,
-      tileStat,
-      isCourseCheked,
-      courseInfo,
-      welcomeModal,
-      openWelcomeModal,
-      calendar,
-      closeWelcomeModal,
-    };
+    return { login, welcomeModal, openWelcomeModal, closeWelcomeModal };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-.course-grid {
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.2rem;
-  width: 220px;
-  height: 300px;
-}
+<style scoped lang="scss">
+@import "../scss/main.scss";
 
-.course-details {
-  display: flex;
-  flex-flow: column;
-  gap: 1rem;
-}
-
-.card-add-wrapper {
-  width: 40rem;
-}
-
-.card-course-wrapper {
-  width: 40rem;
+.welcome-modal .modal {
+  .title {
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: $multi-line;
+    color: $text-main;
+    text-align: left;
+  }
+  .contents {
+    width: 100%;
+    margin: 4rem 0 2.8rem 0;
+    font-size: 1.4rem;
+    font-weight: normal;
+    line-height: $multi-line;
+    color: $text-main;
+    text-align: left;
+    overflow: scroll;
+    &__mascot {
+      width: 22.8rem;
+      height: 11.4rem;
+      margin: 2.7rem auto 5.4rem auto;
+    }
+    &__text {
+      margin-bottom: 1rem;
+    }
+  }
+  // コンテンツの高さ
+  &--large {
+    .contents {
+      height: calc(56.7rem - 20.8rem);
+      @include large-screen {
+        height: calc(51.58334rem - 20.8rem);
+      }
+    }
+  }
+  &--small {
+    .contents {
+      height: calc(39.5rem - 20.8rem);
+      @include large-screen {
+        height: calc(30.33334rem - 20.8rem);
+      }
+    }
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row;
+  }
+  .button-left {
+    width: calc(50% - 1.2rem);
+    margin-right: 1.2rem;
+  }
+  .button-right {
+    width: calc(50% - 1.2rem);
+    margin-left: 1.2rem;
+  }
 }
 </style>
