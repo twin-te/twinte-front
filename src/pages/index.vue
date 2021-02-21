@@ -134,6 +134,15 @@
         ></CardCourse>
       </div>
     </section>
+    <section class="preview__content">
+      <Button @click="openWelcomeModal" size="medium" :pauseActiveStyle="false"
+        >Open Welcome Modal</Button
+      >
+      <WelcomeModal
+        v-if="welcomeModal"
+        @click="closeWelcomeModal"
+      ></WelcomeModal>
+    </section>
   </article>
 </template>
 
@@ -153,6 +162,7 @@ import SidebarContent from "../components/SidebarContent.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
+import WelcomeModal from "../components/WelcomeModal.vue";
 
 export default defineComponent({
   name: "App",
@@ -167,6 +177,7 @@ export default defineComponent({
     DecoratedIcon,
     CardAdd,
     CardCourse,
+    WelcomeModal,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -187,6 +198,14 @@ export default defineComponent({
     const displayLog = () => {
       console.log("click");
     };
+    // WelcomeModal
+    const welcomeModal = ref(false);
+    const openWelcomeModal = () => {
+      welcomeModal.value = true;
+    };
+    const closeWelcomeModal = () => {
+      welcomeModal.value = false;
+    };
 
     return {
       displayLog,
@@ -196,6 +215,9 @@ export default defineComponent({
       tileStat,
       isCourseCheked,
       courseInfo,
+      welcomeModal,
+      openWelcomeModal,
+      closeWelcomeModal,
     };
   },
 });
