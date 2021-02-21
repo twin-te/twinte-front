@@ -33,11 +33,11 @@ export default defineComponent({
 .grayfilter {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: $filter-gray;
   backdrop-filter: blur(8px);
-  z-index: 3;
+  z-index: 13;
 }
 </style>

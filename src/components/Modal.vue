@@ -66,11 +66,11 @@ export default defineComponent({
   border: 0.1rem solid $base;
   box-shadow: $shadow-base;
   border-radius: 1.2rem;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 5;
+  z-index: 15;
 
   &--large {
     // スマホ
