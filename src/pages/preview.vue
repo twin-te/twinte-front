@@ -161,10 +161,23 @@
       <Button @click="openModal" size="small">Open Modal</Button>
     </section>
     <section class="preview__content">
-      <Modal v-if="modal" @click="closeModal" size="large">
-        <div class="modal__title">title</div>
-        <div class="modal__contents">contents</div>
-        <Button @click="closeModal" layout="fill" size="medium">OK</Button>
+      <Modal v-if="modal" @click="closeModal" size="small">
+        <template #title>title</template>
+        <template #contents>
+          <div class="contents">contents</div>
+        </template>
+        <template #button>
+          <Button @click="closeModal" layout="fill" size="medium"
+            >Button</Button
+          >
+          <Button
+            @click="closeModal"
+            layout="fill"
+            size="medium"
+            color="primary"
+            >Button</Button
+          >
+        </template>
       </Modal>
     </section>
   </article>
@@ -225,14 +238,6 @@ export default defineComponent({
     const isCourseCheked = ref(false);
     const displayLog = () => {
       console.log("click");
-    };
-    // WelcomeModal
-    const welcomeModal = ref(false);
-    const openWelcomeModal = () => {
-      welcomeModal.value = true;
-    };
-    const closeWelcomeModal = () => {
-      welcomeModal.value = false;
     };
 
     // popup
@@ -301,9 +306,6 @@ export default defineComponent({
       tileStat,
       isCourseCheked,
       courseInfo,
-      welcomeModal,
-      openWelcomeModal,
-      closeWelcomeModal,
       popupData,
       popupModuleData,
       modal,
@@ -342,38 +344,14 @@ export default defineComponent({
 
 // modal
 .modal {
-  &__title {
-    font-size: 2rem;
-    font-weight: 500;
-    line-height: $multi-line;
-    color: $text-main;
-    text-align: left;
-  }
-  &__contents {
-    width: 100%;
-    margin: 4rem 0 2.8rem 0;
-    font-size: 1.6rem;
-    font-weight: normal;
-    line-height: $multi-line;
-    color: $text-main;
-    text-align: left;
-    overflow: scroll;
-  }
-  // コンテンツの高さ
-  &--large {
-    .modal__contents {
-      height: calc(56.7rem - 20.8rem);
-      @include large-screen {
-        height: calc(51.58334rem - 20.8rem);
-      }
+  // buttonが2個の場合
+  .button {
+    width: calc(50% - 1.2rem);
+    &:first-child {
+      margin-right: 1.2rem;
     }
-  }
-  &--small {
-    .modal__contents {
-      height: calc(39.5rem - 20.8rem);
-      @include large-screen {
-        height: calc(30.33334rem - 20.8rem);
-      }
+    &:last-child {
+      margin-left: 1.2rem;
     }
   }
 }

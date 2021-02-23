@@ -1,10 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-type Props = {
-  onClick: Function;
-};
-
 export default defineComponent({
   name: "GrayFilter",
   props: {
@@ -14,17 +10,11 @@ export default defineComponent({
     },
   },
   emits: ["click"],
-  setup: (_: Props, { emit }) => {
-    const handleClick = () => {
-      emit("click");
-    };
-    return { handleClick };
-  },
 });
 </script>
 
 <template>
-  <div @click="handleClick" class="grayfilter"></div>
+  <div @click="$emit('click')" class="grayfilter"></div>
 </template>
 
 <style scoped lang="scss">

@@ -1,12 +1,6 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import GrayFilter from "./GrayFilter.vue";
-
-type Props = {
-  onClick: Function;
-  size: string;
-  device: string;
-};
 
 export default defineComponent({
   name: "Modal",
@@ -19,27 +13,14 @@ export default defineComponent({
       required: true,
     },
     size: {
-      type: String,
+      type: String as PropType<"small" | "large">,
       default: "large",
       validator: function (value: string) {
         return ["small", "large"].includes(value);
       },
     },
-    device: {
-      type: String,
-      default: "sp",
-      validator: function (value: string) {
-        return ["sp", "pc-tab"].includes(value);
-      },
-    },
   },
   emits: ["click"],
-  setup: (_: Props, { emit }) => {
-    const handleClick = () => {
-      emit("click");
-    };
-    return { handleClick };
-  },
 });
 </script>
 
@@ -50,27 +31,40 @@ export default defineComponent({
       [`modal--${size}`]: true,
     }"
   >
-    <span @click="handleClick" class="material-icons close-btn">close</span>
-    <slot></slot>
+    <span @click="$emit('click')" class="material-icons modal__close-btn"
+      >close</span
+    >
+    <h1 class="modal__title">
+      <slot name="title"></slot>
+    </h1>
+    <div class="modal__contents">
+      <slot name="contents"></slot>
+    </div>
+    <div class="modal__button">
+      <slot name="button"></slot>
+    </div>
   </div>
-  <GrayFilter @click="handleClick"></GrayFilter>
+  <GrayFilter @click="$emit('click')"></GrayFilter>
 </template>
 
 <style scoped lang="scss">
 @import "../scss/main.scss";
 
 .modal {
-  padding: 3.6rem 3.2rem 3.2rem 3.2rem;
-  background: $base-liner;
-  box-sizing: border-box;
-  border: 0.1rem solid $base;
-  box-shadow: $shadow-base;
-  border-radius: 1.2rem;
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 15;
+  padding: 3.6rem 3.2rem 3.2rem 3.2rem;
+  background: $base-liner;
+  box-sizing: border-box;
+  border: 0.1rem solid $base;
+  box-shadow: $shadow-base;
+  border-radius: $radius-3;
+  text-align: left;
 
   &--large {
     // スマホ
@@ -92,7 +86,20 @@ export default defineComponent({
       height: 30.33334rem;
     }
   }
-  .close-btn {
+  &__title {
+    @include modal-title;
+    margin-bottom: 4rem;
+  }
+  &__contents {
+    height: 100%;
+    overflow: scroll;
+  }
+  &__button {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2.8rem;
+  }
+  &__close-btn {
     position: absolute;
     top: 2.028rem;
     right: 2rem;
