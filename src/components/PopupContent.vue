@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "PopupContent",
@@ -17,7 +17,7 @@ export default defineComponent({
       required: true,
     },
     color: {
-      type: String,
+      type: String as PropType<"normal" | "danger">,
       default: "normal",
       validator: function (value: string) {
         return ["normal", "danger"].includes(value);
@@ -37,7 +37,7 @@ export default defineComponent({
     }"
   >
     {{ value }}
-    <span v-show="link" class="material-icons popup-content__link">launch</span>
+    <span v-if="link" class="material-icons popup-content__link">launch</span>
   </li>
 </template>
 
