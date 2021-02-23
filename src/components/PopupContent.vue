@@ -55,6 +55,7 @@ export default defineComponent({
   font-weight: 500;
   line-height: $single-line;
   transition: $transition-box-shadow;
+  @include button-cursor;
   &:active {
     box-shadow: $shadow-concave;
   }
