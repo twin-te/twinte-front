@@ -1,5 +1,4 @@
 <template>
-  <Button @click="openWelcomeModal" size="medium">Open Welcome Modal</Button>
   <div class="welcome-modal">
     <Modal v-if="welcomeModal" @click="closeWelcomeModal" size="large">
       <div class="title">Twin:teへようこそ！</div>
@@ -35,27 +34,6 @@
       </div>
     </Modal>
   </div>
-  <div class="preview__content">
-    <Popup>
-      <PopupContent
-        v-for="data in popupContentData"
-        :key="data.value"
-        @click="data.onClick"
-        :link="data.link"
-        :value="data.value"
-        :color="data.color"
-      ></PopupContent>
-    </Popup>
-    <Popup>
-      <PopupContent
-        v-for="data in moduleData"
-        :key="data.value"
-        @click="data.onClick"
-        :value="data.value"
-      >
-      </PopupContent>
-    </Popup>
-  </div>
 </template>
 
 <script lang="ts">
@@ -63,16 +41,12 @@ import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import Modal from "../components/Modal.vue";
 import Button from "../components/Button.vue";
-import Popup from "../components/Popup.vue";
-import PopupContent from "../components/PopupContent.vue";
 
 export default defineComponent({
   name: "App",
   components: {
     Modal,
     Button,
-    Popup,
-    PopupContent,
   },
   setup: () => {
     const router = useRouter();
@@ -82,7 +56,7 @@ export default defineComponent({
       await router.push("/login");
     };
 
-    const welcomeModal = ref(false);
+    const welcomeModal = ref(true);
 
     const openWelcomeModal = () => {
       welcomeModal.value = true;
@@ -92,50 +66,11 @@ export default defineComponent({
       welcomeModal.value = false;
     };
 
-    const clickHandler = (value: string) => {
-      console.log(value);
-    };
-
-    // popup
-    const popupContentData = [
-      {
-        value: "編集する",
-        link: false,
-        onClick: clickHandler,
-        color: "normal",
-      },
-      { value: "シラバス", link: true, onClick: clickHandler, color: "normal" },
-      {
-        value: "出席(respon)",
-        link: true,
-        onClick: clickHandler,
-        color: "normal",
-      },
-      { value: "地図", link: true, onClick: clickHandler, color: "normal" },
-      {
-        value: "削除する",
-        link: false,
-        onClick: clickHandler,
-        color: "danger",
-      },
-    ];
-
-    const moduleData = [
-      { value: "春A", onClick: clickHandler },
-      { value: "春B", onClick: clickHandler },
-      { value: "春C", onClick: clickHandler },
-      { value: "秋A", onClick: clickHandler },
-      { value: "秋B", onClick: clickHandler },
-      { value: "秋C", onClick: clickHandler },
-    ];
-
     return {
       login,
       welcomeModal,
       openWelcomeModal,
       closeWelcomeModal,
-      popupContentData,
-      moduleData,
     };
   },
 });
