@@ -1,13 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, PropType } from "vue";
-import IconButton from "./IconButton.vue";
-import ToggleIconButton from "./ToggleIconButton.vue";
-
-type Props = {
-  onClick: Function;
-  atHome: boolean;
-  dropdownMenu: boolean;
-};
+import { defineComponent, PropType } from "vue";
 
 export type Calendar = {
   month: number;
@@ -18,40 +10,22 @@ export type Calendar = {
 
 export default defineComponent({
   name: "PageHeader",
-  components: {
-    IconButton,
-    ToggleIconButton,
-  },
   props: {
-    onClick: {
-      type: Function,
-      default: () => {},
-    },
     atHome: {
-      type: Boolean,
-      default: false,
-    },
-    dropdownMenu: {
       type: Boolean,
       default: false,
     },
     calendar: {
       type: Object as PropType<Calendar>,
-      required: true,
+      default: {},
     },
   },
   emits: ["click"],
-  setup: (_: Props, { emit }) => {
+  setup: (_, { emit }) => {
     const handleClick = () => {
       emit("click");
     };
-    const isBtnActive = ref({
-      expand: false,
-    });
-    return {
-      isBtnActive,
-      handleClick,
-    };
+    return { handleClick };
   },
 });
 </script>
@@ -59,33 +33,23 @@ export default defineComponent({
 <template>
   <header class="header">
     <div class="header__container">
-      <IconButton
-        class="header__menu-icon"
-        @click="handleClick"
-        size="large"
-        color="normal"
-        icon-name="menu"
-      ></IconButton>
+      <div class="header__menu-icon">
+        <slot name="left-btn"></slot>
+      </div>
       <div v-if="atHome">
         <img class="header__title--logo" src="../assets/twintelogo-color.svg" />
       </div>
       <h1 class="header__title" v-else>
-        <slot />
+        <slot name="title"></slot>
       </h1>
-      <ToggleIconButton
-        class="header__dropdown-menu-icon"
-        @click="isBtnActive.expand = !isBtnActive.expand"
-        v-if="dropdownMenu"
-        size="large"
-        color="normal"
-        icon-name="more_vert"
-        :is-active="isBtnActive.expand"
-      ></ToggleIconButton>
       <div class="header__calendar" v-if="atHome">
         <p class="header__date">
           {{ calendar.month }}/{{ calendar.day }} ({{ calendar.week }})
         </p>
         <p class="header__schedule">{{ calendar.schedule }}</p>
+      </div>
+      <div class="header__dropdown-menu-icon" v-else>
+        <slot name="right-btn"></slot>
       </div>
     </div>
   </header>
