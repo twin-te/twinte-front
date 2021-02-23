@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import App from "./pages/index.vue";
 import Add from "./pages/add/index.vue";
+import Preview from "./pages/preview.vue";
 
 const history = createWebHistory();
 
@@ -11,6 +12,7 @@ const history = createWebHistory();
 const routes: RouteRecordRaw[] = [
   { path: "/", component: App },
   { path: "/add", component: Add },
+  { path: "/preview", component: Preview },
 ];
 
 // 3. Create the router instance and pass the `routes` option
