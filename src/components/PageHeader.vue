@@ -67,7 +67,7 @@ export default defineComponent({
         icon-name="menu"
       ></IconButton>
       <div v-if="atHome">
-        <img class="header__title--logo" src="../asset/twintelogo-color.svg" />
+        <img class="header__title--logo" src="../assets/twintelogo-color.svg" />
       </div>
       <h1 class="header__title" v-else>
         <slot />
