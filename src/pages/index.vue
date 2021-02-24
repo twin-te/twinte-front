@@ -97,12 +97,11 @@
     </section>
 
     <section class="preview__content preview__dropdown">
-      <Dropdown
-        :options="dropdownOptions"
-        v-model:selectedOption="selectedOption"
-        label="学期"
-      ></Dropdown>
-      選択されている値: {{ selectedOption }}
+      <ScheduleEditer
+        v-model:schedules="schedules"
+        @click-add-button="addScheduleRow"
+        @click-remove-button="removeScheduleRow"
+      ></ScheduleEditer>
     </section>
   </article>
 </template>
@@ -118,9 +117,7 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
-import Dropdown, {
-  Options as DropdownOptions,
-} from "../components/Dropdown.vue";
+import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
 
 export default defineComponent({
   name: "App",
@@ -130,7 +127,7 @@ export default defineComponent({
     ToggleIconButton,
     CourseTile,
     CourseDetail,
-    Dropdown,
+    ScheduleEditer,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -139,10 +136,24 @@ export default defineComponent({
       edit: false,
       menu: false,
     });
-
     const tileStat = ref<CourseTileState>("default");
-    const dropdownOptions = ref<DropdownOptions>(["春A", "春B", "春C"]);
     const selectedOption = ref<string>("");
+    const schedules = ref<Schedules>([
+      { id: 0, semester: "", date: "", period: "" },
+    ]);
+
+    const addScheduleRow = () => {
+      schedules.value.push({
+        id: schedules.value.slice(-1)[0] + 1,
+        semester: "",
+        date: "",
+        period: "",
+      });
+    };
+    const removeScheduleRow = (id: number) => {
+      const index = schedules.value.findIndex((n: number): boolean => n == id);
+      schedules.value.splice(index, 1);
+    };
     const clickHandler = () => {
       console.log("click");
     };
@@ -153,8 +164,10 @@ export default defineComponent({
       ready,
       state,
       tileStat,
-      dropdownOptions,
       selectedOption,
+      schedules,
+      addScheduleRow,
+      removeScheduleRow,
     };
   },
 });
