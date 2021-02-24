@@ -80,6 +80,14 @@ export default defineComponent({
     left: 50%;
     transform: translateX(-50%);
     bottom: 0.3rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: $single-line;
+    color: $text-main;
+    @include wide-screen {
+      left: 0;
+      transform: translateX(0);
+    }
     &--logo {
       position: absolute;
       left: 50%;
