@@ -134,6 +134,52 @@
         ></CardCourse>
       </div>
     </section>
+    <div class="preview__content">
+      <Popup>
+        <PopupContent
+          v-for="data in popupData"
+          :key="data.value"
+          @click="data.onClick"
+          :link="data.link"
+          :value="data.value"
+          :color="data.color"
+        ></PopupContent>
+      </Popup>
+    </div>
+    <div class="preview__content">
+      <Popup>
+        <PopupContent
+          v-for="data in popupModuleData"
+          :key="data.value"
+          @click="data.onClick"
+          :value="data.value"
+        >
+        </PopupContent>
+      </Popup>
+    </div>
+    <section class="preview__content">
+      <Button @click="openModal" size="small">Open Modal</Button>
+    </section>
+    <section class="preview__content">
+      <Modal v-if="modal" @click="closeModal" size="small">
+        <template #title>title</template>
+        <template #contents>
+          <div class="contents">contents</div>
+        </template>
+        <template #button>
+          <Button @click="closeModal" layout="fill" size="medium"
+            >Button</Button
+          >
+          <Button
+            @click="closeModal"
+            layout="fill"
+            size="medium"
+            color="primary"
+            >Button</Button
+          >
+        </template>
+      </Modal>
+    </section>
   </article>
 </template>
 
@@ -153,6 +199,11 @@ import SidebarContent from "../components/SidebarContent.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
+import Popup from "../components/Popup.vue";
+import PopupContent, {
+  Color as PopupContentColor,
+} from "../components/PopupContent.vue";
+import Modal from "../components/Modal.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -167,6 +218,9 @@ export default defineComponent({
     DecoratedIcon,
     CardAdd,
     CardCourse,
+    Popup,
+    PopupContent,
+    Modal,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -187,13 +241,71 @@ export default defineComponent({
     const displayLog = () => {
       console.log("click");
     };
-    // WelcomeModal
-    const welcomeModal = ref(false);
-    const openWelcomeModal = () => {
-      welcomeModal.value = true;
+
+    // popup
+    const popupClickHandler = (value: string) => {
+      console.log(value);
     };
-    const closeWelcomeModal = () => {
-      welcomeModal.value = false;
+
+    const popupData: {
+      onClick: Function;
+      link: boolean;
+      value: string;
+      color: PopupContentColor;
+    }[] = [
+      {
+        onClick: popupClickHandler,
+        link: false,
+        value: "編集する",
+        color: "normal",
+      },
+      {
+        onClick: popupClickHandler,
+        link: true,
+        value: "シラバス",
+        color: "normal",
+      },
+      {
+        onClick: popupClickHandler,
+        link: true,
+        value: "出席(respon)",
+        color: "normal",
+      },
+      {
+        onClick: popupClickHandler,
+        link: true,
+        value: "地図",
+        color: "normal",
+      },
+      {
+        onClick: popupClickHandler,
+        link: false,
+        value: "削除する",
+        color: "danger",
+      },
+    ];
+
+    const popupModuleData: {
+      onClick: Function;
+      value: string;
+    }[] = [
+      { onClick: popupClickHandler, value: "春A" },
+      { onClick: popupClickHandler, value: "春B" },
+      { onClick: popupClickHandler, value: "春C" },
+      { onClick: popupClickHandler, value: "秋A" },
+      { onClick: popupClickHandler, value: "秋B" },
+      { onClick: popupClickHandler, value: "秋C" },
+    ];
+
+    // modal
+    const modal = ref(false);
+
+    const openModal = () => {
+      modal.value = true;
+    };
+
+    const closeModal = () => {
+      modal.value = false;
     };
 
     return {
@@ -204,15 +316,19 @@ export default defineComponent({
       tileStat,
       isCourseCheked,
       courseInfo,
-      welcomeModal,
-      openWelcomeModal,
-      closeWelcomeModal,
+      popupData,
+      popupModuleData,
+      modal,
+      openModal,
+      closeModal,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
+@import "../scss/main.scss";
+
 .course-grid {
   display: grid;
   grid-template-rows: repeat(2, 1fr);
@@ -234,5 +350,19 @@ export default defineComponent({
 
 .card-course-wrapper {
   width: 40rem;
+}
+
+// modal
+.modal {
+  // buttonが2個の場合
+  .button {
+    width: calc(50% - 1.2rem);
+    &:first-child {
+      margin-right: 1.2rem;
+    }
+    &:last-child {
+      margin-left: 1.2rem;
+    }
+  }
 }
 </style>

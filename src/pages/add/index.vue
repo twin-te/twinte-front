@@ -3,30 +3,18 @@
     <section class="preview__content">
       <Button @click="clickHandler" size="small">Back to Home</Button>
     </section>
-    <section class="preview__content">
-      <Button @click="openModal" size="small">Open Modal</Button>
-    </section>
-    <section class="preview__content">
-      <Modal v-if="modal" @click="closeModal" size="large">
-        <div class="title">title</div>
-        <div class="contents">contents</div>
-        <Button @click="closeModal" layout="fill" size="medium">OK</Button>
-      </Modal>
-    </section>
   </article>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import Button from "../../components/Button.vue";
-import Modal from "../../components/Modal.vue";
 
 export default defineComponent({
   name: "Add",
   components: {
     Button,
-    Modal,
   },
   setup: () => {
     const router = useRouter();
@@ -35,58 +23,9 @@ export default defineComponent({
       await router.push("/");
     };
 
-    const modal = ref(false);
-
-    const openModal = () => {
-      modal.value = true;
-    };
-
-    const closeModal = () => {
-      modal.value = false;
-    };
-
-    return { clickHandler, modal, openModal, closeModal };
+    return { clickHandler };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-@import "../../scss/main.scss";
-
-.modal {
-  .title {
-    font-size: 2rem;
-    font-weight: 500;
-    line-height: $multi-line;
-    color: $text-main;
-    text-align: left;
-  }
-  .contents {
-    width: 100%;
-    margin: 4rem 0 2.8rem 0;
-    font-size: 1.6rem;
-    font-weight: normal;
-    line-height: $multi-line;
-    color: $text-main;
-    text-align: left;
-    overflow: scroll;
-  }
-  // コンテンツの高さ
-  &--large {
-    .contents {
-      height: calc(56.7rem - 20.8rem);
-      @include large-screen {
-        height: calc(51.58334rem - 20.8rem);
-      }
-    }
-  }
-  &--small {
-    .contents {
-      height: calc(39.5rem - 20.8rem);
-      @include large-screen {
-        height: calc(30.33334rem - 20.8rem);
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

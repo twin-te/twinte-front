@@ -1,5 +1,4 @@
 <template>
-  <Button @click="openWelcomeModal" size="medium">Open Welcome Modal</Button>
   <div class="welcome-modal">
     <Modal v-if="welcomeModal" @click="closeWelcomeModal" size="large">
       <div class="title">Twin:teへようこそ！</div>
@@ -57,7 +56,7 @@ export default defineComponent({
       await router.push("/login");
     };
 
-    const welcomeModal = ref(false);
+    const welcomeModal = ref(true);
 
     const openWelcomeModal = () => {
       welcomeModal.value = true;
@@ -67,7 +66,12 @@ export default defineComponent({
       welcomeModal.value = false;
     };
 
-    return { login, welcomeModal, openWelcomeModal, closeWelcomeModal };
+    return {
+      login,
+      welcomeModal,
+      openWelcomeModal,
+      closeWelcomeModal,
+    };
   },
 });
 </script>

@@ -61,6 +61,14 @@
   box-shadow: $shadow-convex-hover;
 }
 
+// modal
+@mixin modal-title {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: $multi-line;
+  color: $text-main;
+}
+
 // icon
 @mixin icon-cursor {
   user-select: none;
