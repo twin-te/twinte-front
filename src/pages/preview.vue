@@ -181,7 +181,7 @@
       </Modal>
     </section>
     <PageHeader
-      :atHome="true"
+      atHome
       :calendar="{ month: 2, day: 23, week: '火', schedule: '通常日課' }"
     >
       <template #left-btn>
@@ -193,8 +193,8 @@
         ></IconButton>
       </template>
     </PageHeader>
-    <PageHeader :atHome="false"
-      ><template #left-btn>
+    <PageHeader>
+      <template #left-btn>
         <IconButton
           @click="clickHandler"
           size="large"
@@ -210,8 +210,9 @@
           color="normal"
           icon-name="more_vert"
           :is-active="isBtnActive.more_vert"
-        ></ToggleIconButton> </template
-    ></PageHeader>
+        ></ToggleIconButton>
+      </template>
+    </PageHeader>
   </article>
 </template>
 
