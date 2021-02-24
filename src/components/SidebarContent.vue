@@ -30,7 +30,7 @@ export default defineComponent({
     },
   },
   emits: ["click"],
-  setup: (props: Props, { emit }) => {
+  setup: (_: Props, { emit }) => {
     const handleClick = () => {
       emit("click");
     };
