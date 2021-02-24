@@ -1,6 +1,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
+export type Color = "normal" | "danger";
+
 export default defineComponent({
   name: "PopupContent",
   props: {
@@ -17,7 +19,7 @@ export default defineComponent({
       required: true,
     },
     color: {
-      type: String as PropType<"normal" | "danger">,
+      type: String as PropType<Color>,
       default: "normal",
       validator: function (value: string) {
         return ["normal", "danger"].includes(value);

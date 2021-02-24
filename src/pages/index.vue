@@ -135,7 +135,4 @@ export default defineComponent({
     margin-left: 1.2rem;
   }
 }
-.popup {
-  margin: 2rem;
-}
 </style>

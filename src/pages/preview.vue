@@ -200,7 +200,9 @@ import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";
 import CardCourse, { Course } from "../components/CardCourse.vue";
 import Popup from "../components/Popup.vue";
-import PopupContent from "../components/PopupContent.vue";
+import PopupContent, {
+  Color as PopupContentColor,
+} from "../components/PopupContent.vue";
 import Modal from "../components/Modal.vue";
 
 export default defineComponent({
@@ -245,46 +247,54 @@ export default defineComponent({
       console.log(value);
     };
 
-    const popupData = [
+    const popupData: {
+      onClick: Function;
+      link: boolean;
+      value: string;
+      color: PopupContentColor;
+    }[] = [
       {
+        onClick: popupClickHandler,
+        link: false,
         value: "編集する",
-        link: false,
-        onClick: popupClickHandler,
         color: "normal",
       },
       {
+        onClick: popupClickHandler,
+        link: true,
         value: "シラバス",
-        link: true,
-        onClick: popupClickHandler,
         color: "normal",
       },
       {
+        onClick: popupClickHandler,
+        link: true,
         value: "出席(respon)",
-        link: true,
-        onClick: popupClickHandler,
         color: "normal",
       },
       {
+        onClick: popupClickHandler,
+        link: true,
         value: "地図",
-        link: true,
-        onClick: popupClickHandler,
         color: "normal",
       },
       {
-        value: "削除する",
-        link: false,
         onClick: popupClickHandler,
+        link: false,
+        value: "削除する",
         color: "danger",
       },
     ];
 
-    const popupModuleData = [
-      { value: "春A", onClick: popupClickHandler },
-      { value: "春B", onClick: popupClickHandler },
-      { value: "春C", onClick: popupClickHandler },
-      { value: "秋A", onClick: popupClickHandler },
-      { value: "秋B", onClick: popupClickHandler },
-      { value: "秋C", onClick: popupClickHandler },
+    const popupModuleData: {
+      onClick: Function;
+      value: string;
+    }[] = [
+      { onClick: popupClickHandler, value: "春A" },
+      { onClick: popupClickHandler, value: "春B" },
+      { onClick: popupClickHandler, value: "春C" },
+      { onClick: popupClickHandler, value: "秋A" },
+      { onClick: popupClickHandler, value: "秋B" },
+      { onClick: popupClickHandler, value: "秋C" },
     ];
 
     // modal
