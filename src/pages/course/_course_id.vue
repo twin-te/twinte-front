@@ -29,8 +29,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import Button from "../components/Button.vue";
-import Modal from "../components/Modal.vue";
+import Button from "../../components/Button.vue";
+import Modal from "../../components/Modal.vue";
 
 export default defineComponent({
   name: "Details",
@@ -63,7 +63,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "../scss/main.scss";
+@import "../../scss/main.scss";
 
 .delete-course-modal .modal {
   &__contents__text {

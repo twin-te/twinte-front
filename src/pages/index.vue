@@ -27,7 +27,11 @@
         color="base"
         >あとで</Button
       >
-      <Button @click="login" size="medium" layout="fill" color="primary"
+      <Button
+        @click="$router.push('/login')"
+        size="medium"
+        layout="fill"
+        color="primary"
         >ログインする</Button
       >
     </template>
@@ -36,7 +40,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
 import Modal from "../components/Modal.vue";
 import Button from "../components/Button.vue";
 
@@ -47,12 +50,7 @@ export default defineComponent({
     Button,
   },
   setup: () => {
-    const router = useRouter();
-
     // welcome-modal
-    const login = async () => {
-      await router.push("/login");
-    };
     const welcomeModal = ref(true);
     const openWelcomeModal = () => {
       welcomeModal.value = true;
@@ -62,7 +60,6 @@ export default defineComponent({
     };
 
     return {
-      login,
       welcomeModal,
       openWelcomeModal,
       closeWelcomeModal,
