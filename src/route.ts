@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import App from "./pages/index.vue";
 import Add from "./pages/add/index.vue";
 import Preview from "./pages/preview.vue";
+import Details from "./pages/details.vue";
 
 const history = createWebHistory();
 
@@ -12,6 +13,7 @@ const history = createWebHistory();
 const routes: RouteRecordRaw[] = [
   { path: "/", component: App },
   { path: "/add", component: Add },
+  { path: "/:course_id", component: Details },
   { path: "/preview", component: Preview },
 ];
 
