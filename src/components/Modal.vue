@@ -25,26 +25,28 @@ export default defineComponent({
 </script>
 
 <template>
-  <div
-    :class="{
-      modal: true,
-      [`modal--${size}`]: true,
-    }"
-  >
-    <span @click="$emit('click')" class="material-icons modal__close-btn"
-      >close</span
+  <div>
+    <div
+      :class="{
+        modal: true,
+        [`modal--${size}`]: true,
+      }"
     >
-    <h1 class="modal__title">
-      <slot name="title"></slot>
-    </h1>
-    <div class="modal__contents">
-      <slot name="contents"></slot>
+      <span @click="$emit('click')" class="material-icons modal__close-btn"
+        >close</span
+      >
+      <h1 class="modal__title">
+        <slot name="title"></slot>
+      </h1>
+      <div class="modal__contents">
+        <slot name="contents"></slot>
+      </div>
+      <div class="modal__button">
+        <slot name="button"></slot>
+      </div>
     </div>
-    <div class="modal__button">
-      <slot name="button"></slot>
-    </div>
+    <GrayFilter @click="$emit('click')"></GrayFilter>
   </div>
-  <GrayFilter @click="$emit('click')"></GrayFilter>
 </template>
 
 <style scoped lang="scss">
