@@ -7,12 +7,8 @@
   >
     <template #title>Twin:teへようこそ！</template>
     <template #contents>
-      <img
-        class="modal__contents__mascot"
-        src="../assets/colon2.png"
-        alt="colonの画像"
-      />
-      <p class="modal__contents__text">
+      <img class="modal__mascot" src="../assets/colon2.png" alt="colonの画像" />
+      <p class="modal__text">
         こんにちは！<br />
         筑波大生のための時間割アプリTwin:teをご利用いただきありがとうございます。<br />
         時間割の作成や複数端末間の連携のため、ログインしてください。<br />
@@ -72,16 +68,14 @@ export default defineComponent({
 @import "../scss/main.scss";
 
 .welcome-modal .modal {
-  &__contents {
-    &__mascot {
-      width: 22.8rem;
-      height: 11.4rem;
-      margin: 2.7rem auto 6.4rem auto;
-    }
-    &__text {
-      font-size: $font-medium;
-      line-height: $multi-line;
-    }
+  &__mascot {
+    width: 22.8rem;
+    height: 11.4rem;
+    margin: 2.7rem auto 6.4rem auto;
+  }
+  &__text {
+    font-size: $font-medium;
+    line-height: $multi-line;
   }
   .button {
     width: calc(50% - 1.2rem);

@@ -8,7 +8,7 @@
   >
     <template #title>授業の削除</template>
     <template #contents>
-      <p class="modal__contents__text">
+      <p class="modal__text">
         「色彩学」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
       </p>
     </template>
@@ -66,7 +66,7 @@ export default defineComponent({
 @import "../../scss/main.scss";
 
 .delete-course-modal .modal {
-  &__contents__text {
+  &__text {
     font-size: $font-large;
     line-height: $multi-line;
   }
