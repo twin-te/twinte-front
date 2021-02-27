@@ -7,8 +7,8 @@ import { CourseModule } from "~/api/@types";
 export const getCurrentModule = async ({
   now,
 }: Ports): Promise<CourseModule> => {
-  const month = now.getMonth() - 1;
-  const day = now.getDay();
+  const month = now.month();
+  const day = now.day();
   return (month >= 4 && month < 8) || (month == 8 && day < 8)
     ? "SpringA"
     : "FallA";

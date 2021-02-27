@@ -10,7 +10,7 @@ describe(authCheck.name, () => {
       store: { commit: () => {} } as any,
     };
 
-    const data = await authCheck(mockPort);
+    const data = await authCheck(mockPort as any);
     expect(data).not.toBeTruthy();
   });
 
@@ -25,11 +25,11 @@ describe(authCheck.name, () => {
             }),
           },
         },
-      } as any,
-      store: { commit: () => {} } as any,
+      },
+      store: { commit: () => {} },
     };
 
-    const data = await authCheck(mockPort);
+    const data = await authCheck(mockPort as any);
     expect(data).toBeTruthy();
   });
 });
