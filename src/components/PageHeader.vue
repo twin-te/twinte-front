@@ -17,7 +17,7 @@ export default defineComponent({
     },
     calendar: {
       type: Object as PropType<Calendar>,
-      default: {},
+      default: { month: 4, day: 1, week: "木", schdule: "休日" },
     },
   },
   emits: ["click"],
