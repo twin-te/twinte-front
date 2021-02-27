@@ -171,7 +171,7 @@
             >Button</Button
           >
           <Button
-            @click="closeModal"
+            @click="clickHandler"
             layout="fill"
             size="medium"
             color="primary"
@@ -180,6 +180,39 @@
         </template>
       </Modal>
     </section>
+    <PageHeader
+      atHome
+      :calendar="{ month: 2, day: 23, week: '火', schedule: '通常日課' }"
+    >
+      <template #left-btn>
+        <IconButton
+          @click="clickHandler"
+          size="large"
+          color="normal"
+          icon-name="menu"
+        ></IconButton>
+      </template>
+    </PageHeader>
+    <PageHeader>
+      <template #left-btn>
+        <IconButton
+          @click="clickHandler"
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+        ></IconButton>
+      </template>
+      <template #title>授業詳細</template>
+      <template #right-btn>
+        <ToggleIconButton
+          @click="isBtnActive.more_vert = !isBtnActive.more_vert"
+          size="large"
+          color="normal"
+          icon-name="more_vert"
+          :is-active="isBtnActive.more_vert"
+        ></ToggleIconButton>
+      </template>
+    </PageHeader>
   </article>
 </template>
 
@@ -204,6 +237,7 @@ import PopupContent, {
   Color as PopupContentColor,
 } from "../components/PopupContent.vue";
 import Modal from "../components/Modal.vue";
+import PageHeader from "../components/PageHeader.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -221,6 +255,7 @@ export default defineComponent({
     Popup,
     PopupContent,
     Modal,
+    PageHeader,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -228,6 +263,7 @@ export default defineComponent({
       expand_more: false,
       edit: false,
       menu: false,
+      more_vert: false,
     });
     const courseInfo = ref<Course>({
       id: "01EB512",
@@ -308,6 +344,10 @@ export default defineComponent({
       modal.value = false;
     };
 
+    const clickHandler = () => {
+      console.log("click");
+    };
+
     return {
       displayLog,
       isBtnActive,
@@ -321,6 +361,7 @@ export default defineComponent({
       modal,
       openModal,
       closeModal,
+      clickHandler,
     };
   },
 });
