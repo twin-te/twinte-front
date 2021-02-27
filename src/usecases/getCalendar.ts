@@ -1,6 +1,5 @@
 import { Ports } from "~/adapter";
 import { Calendar } from "~/components/PageHeader.vue";
-import { dayJaList } from "~/entities/day";
 
 /**
  * カレンダーを返す
@@ -8,8 +7,8 @@ import { dayJaList } from "~/entities/day";
 export const getCalendar = async ({ now }: Ports): Promise<Calendar> => {
   const day = now.daysInMonth();
   const month = now.month() + 1;
-  const schedule = "休日";
-  const week = dayJaList[now.day()];
+  const schedule = "通常日課";
+  const week = ["日", "月", "火", "水", "木", "金", "土"][now.day()];
   return {
     day,
     month,

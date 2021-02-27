@@ -1,10 +1,18 @@
 <template>
-  <PageHeader v-show="calLoading" :calendar="calendar" atHome></PageHeader>
-  <article class="main">
+  <Sidebar v-show="sidebar" :isLogin="true" class="sidebar__sm"></Sidebar>
+  <GrayFilter v-show="sidebar" @click="closeSidebar"></GrayFilter>
+  <PageHeader
+    v-show="calReady"
+    :calendar="calendar"
+    atHome
+    @click="openSidebar"
+  ></PageHeader>
+  <div class="main">
     <ToggleButton
       class="main__toggle"
       :labels="label"
-      :onClickToggleButton="todoFn"
+      :whichSelected="whichSelected"
+      :onClickToggleButton="onClickLabel"
     />
     <div class="main__module">
       {{ moduleJa }}
@@ -42,10 +50,7 @@
         />
       </template>
     </div>
-  </article>
-  <Modal v-if="activeCourseTile !== null" @click="resetCourseTileState">
-    <p>{{ activeCourseTile.id }}, {{ activeCourseTile.name }}</p>
-  </Modal>
+  </div>
   <Modal
     v-if="welcomeModal"
     class="welcome-modal"
@@ -86,11 +91,13 @@ import { computed, defineComponent, ref } from "vue";
 import CourseTile, {
   State as CourseTileState,
 } from "~/components/CourseTile.vue";
-import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
+import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import Button from "~/components/Button.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader, { Calendar } from "~/components/PageHeader.vue";
+import Sidebar from "~/components/Sidebar.vue";
+import GrayFilter from "~/components/GrayFilter.vue";
 import { dayJaList } from "~/entities/day";
 import { ModuleJa, moduleToJa } from "~/entities/module";
 import { CourseModule } from "~/api/@types";
@@ -115,37 +122,53 @@ export default defineComponent({
     Button,
     Modal,
     PageHeader,
+    Sidebar,
+    GrayFilter,
   },
   setup: () => {
+    const router = useRouter();
+
+    /** サブヘッダー部分 */
     const label: Labels = { left: "通常", right: "特殊" };
-
+    const whichSelected = ref<Select>("left");
     const module = ref<CourseModule>("SpringA");
-    const { state: currentModule } = useUsecase(getCurrentModule, "SpringA");
     const moduleJa = computed<ModuleJa>(() => moduleToJa(module.value));
-
-    const weeks = dayJaList;
-    const activeCourseTile = ref<CourseState | null>(null);
-    const table = computed(() =>
-      tableConstructor<CourseState>({ name: "", id: "", state: "none" })
-    );
-    const { ready: calLoading, state: calendar } = useUsecase(
+    const { state: currentModule } = useUsecase(getCurrentModule, "SpringA");
+    const { ready: calReady, state: calendar } = useUsecase(
       getCalendar,
       {} as Calendar
     );
+    const weeks = dayJaList;
+    const onClickLabel = () => {
+      whichSelected.value = whichSelected.value === "left" ? "right" : "left";
+    };
 
+    /** サイドバー */
+    const sidebar = ref(false);
+    const openSidebar = () => {
+      sidebar.value = true;
+    };
+    const closeSidebar = () => {
+      sidebar.value = false;
+    };
+
+    /** table */
+    const table = computed(() =>
+      tableConstructor<CourseState>({ name: "", id: "", state: "none" })
+    );
+    const activeCourseTile = ref<CourseState | null>(null);
     const setCurrentModule = () => {
       module.value = currentModule.value;
     };
-    const onClickCourseTile = (course: CourseState) => {
+    const onClickCourseTile = async (course: CourseState) => {
       activeCourseTile.value = course;
+      await router.push(`/course/${activeCourseTile.value.id}`);
     };
     const resetCourseTileState = () => {
       activeCourseTile.value = null;
     };
 
     const todoFn = () => console.warn("not implements");
-
-    const router = useRouter();
 
     // welcome modal
     const login = async () => {
@@ -162,10 +185,15 @@ export default defineComponent({
     return {
       weeks,
       label,
+      whichSelected,
+      onClickLabel,
       moduleJa,
       todoFn,
+      sidebar,
+      openSidebar,
+      closeSidebar,
       table,
-      calLoading,
+      calReady,
       calendar,
       setCurrentModule,
       activeCourseTile,
@@ -185,12 +213,13 @@ export default defineComponent({
 
 .main {
   display: grid;
-  border-radius: 1.6rem 1.6rem 0 0;
+  border-radius: $spacing-4 $spacing-4 0 0;
   box-shadow: $shadow-base;
-  padding: 1.6rem 1.2rem;
-  height: calc(100vh - 6rem);
+  padding: $spacing-4 $spacing-3;
+  margin: $spacing-4 0 0;
+  height: calc(100vh - 7.6rem);
   grid-template:
-    "toggle module module-btn btn" 2.8rem
+    "toggle module module-btn btn" $spacing-7
     "table table table table" 1fr
     / 12rem 1fr 1fr 10.4rem;
 
@@ -213,8 +242,14 @@ export default defineComponent({
   }
 
   &__table {
-    margin-top: 1.2rem;
+    margin-top: $spacing-3;
     grid-area: table;
+  }
+}
+
+.sidebar {
+  &__sm {
+    position: fixed;
   }
 }
 
@@ -227,6 +262,7 @@ export default defineComponent({
 
   &__day {
     color: $text-sub;
+    font-size: $font-small;
     margin: auto;
     &--first {
       grid-column-start: 2;
@@ -235,6 +271,7 @@ export default defineComponent({
 
   &__period {
     color: $text-sub;
+    font-size: $font-small;
     margin: auto auto auto 0;
   }
 
