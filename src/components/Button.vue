@@ -35,7 +35,7 @@ export default defineComponent({
       type: String,
       default: "base",
       varidator: function (value: string) {
-        return ["base", "primary"].includes(value);
+        return ["base", "primary", "danger"].includes(value);
       },
     },
     icon: {
@@ -132,6 +132,10 @@ export default defineComponent({
     background: $primary-liner;
     color: $white;
   }
+  &--danger {
+    background: $danger;
+    color: $white;
+  }
   &--flexible {
     @include flexible;
   }
@@ -139,6 +143,7 @@ export default defineComponent({
     display: block;
     width: 100%;
     max-width: 400px;
+    padding: 0;
   }
   &--half {
     width: 35%;
@@ -158,8 +163,8 @@ export default defineComponent({
   &:active {
     color: $white;
     @include button-active;
-    &:hover {
-      @include button-active;
+    &.button--danger {
+      @include button-active-danger;
     }
     &::after {
       color: white;
