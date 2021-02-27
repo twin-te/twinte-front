@@ -333,6 +333,71 @@ export default defineComponent({
   &__text {
     font-size: $font-large;
     line-height: $multi-line;
+    color: $text-main;
+  }
+  &__details {
+    display: grid;
+    gap: 1.6rem;
+    margin-top: 2rem;
+  }
+  &__memo {
+    margin: 3.2rem 0;
+  }
+  &__attendance {
+    margin-bottom: 4.1rem;
+  }
+  .attendance {
+    display: grid;
+    gap: 2rem;
+    padding: 1.6rem 2.4rem;
+    background: $base;
+    border: 0.1rem solid $base;
+    box-shadow: $shadow-base;
+    border-radius: $radius-3;
+    &__item {
+      display: grid;
+      grid-template:
+        "state ... minus-btn count plus-btn" 2.8rem
+        / auto 1fr auto 5.9rem auto;
+      justify-items: center;
+      align-items: center;
+    }
+    &__state {
+      grid-area: state;
+      font-size: $font-medium;
+      font-weight: 500;
+      color: $text-main;
+    }
+    &__plus-btn {
+      grid-area: plus-btn;
+      @include text-liner;
+      &:active {
+        color: $white;
+        background: $primary-liner;
+        @include void-text-liner;
+      }
+    }
+    &__count {
+      grid-area: count;
+      font-size: $font-maximum;
+      font-weight: 500;
+      @include text-liner;
+    }
+    &__minus-btn {
+      grid-area: minus-btn;
+      @include text-liner;
+      &:active {
+        color: $white;
+        background: $primary-liner;
+        @include void-text-liner;
+      }
+    }
+  }
+}
+.delete-course-modal .modal {
+  &__text {
+    font-size: $font-large;
+    line-height: $multi-line;
   }
   .button {
     width: calc(50% - 1.2rem);
