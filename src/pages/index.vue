@@ -1,54 +1,54 @@
 <template>
-  <Sidebar v-show="sidebar" :isLogin="true" class="sidebar__sm"></Sidebar>
-  <GrayFilter v-show="sidebar" @click="closeSidebar"></GrayFilter>
-  <PageHeader
-    v-show="calReady"
-    :calendar="calendar"
-    atHome
-    @click="openSidebar"
-  ></PageHeader>
-  <div class="main">
-    <ToggleButton
-      class="main__toggle"
-      :labels="label"
-      :whichSelected="whichSelected"
-      :onClickToggleButton="onClickLabel"
-    />
-    <div class="main__module">
-      {{ moduleJa }}
-    </div>
-    <ToggleIconButton
-      class="main__module-btn"
-      @click="todoFn"
-      size="small"
-      color="normal"
-      icon-name="expand_more"
-      :is-active="false"
-    />
-    <Button class="main__btn" @click="setCurrentModule" size="small"
-      >現在の学期</Button
-    >
-
-    <div class="main__table table">
-      <div
-        v-for="(_, d) in 5"
-        :key="weeks[d]"
-        :class="{ table__day: true, 'table__day--first': d == 0 }"
-      >
-        {{ weeks[d] }}
+  <div class="home">
+    <PageHeader
+      v-show="calReady"
+      :calendar="calendar"
+      atHome
+      @click="openSidebar"
+    ></PageHeader>
+    <div class="main">
+      <ToggleButton
+        class="main__toggle"
+        :labels="label"
+        :whichSelected="whichSelected"
+        :onClickToggleButton="onClickLabel"
+      />
+      <div class="main__module">
+        {{ moduleJa }}
       </div>
-      <template v-for="(y, period) in table" :key="y">
-        <div class="table__period">{{ period + 1 }}</div>
-        <CourseTile
-          v-for="(x, id) in y"
-          :key="id"
-          class="table__course"
-          @click="onClickCourseTile(x)"
-          :state="x.state"
-          :courseName="x.name"
-          :courseId="x.id"
-        />
-      </template>
+      <ToggleIconButton
+        class="main__module-btn"
+        @click="todoFn"
+        size="small"
+        color="normal"
+        icon-name="expand_more"
+        :is-active="false"
+      />
+      <Button class="main__btn" @click="setCurrentModule" size="small">
+        現在の学期
+      </Button>
+
+      <div class="main__table table">
+        <div
+          v-for="(_, d) in 5"
+          :key="weeks[d]"
+          :class="{ table__day: true, 'table__day--first': d == 0 }"
+        >
+          {{ weeks[d] }}
+        </div>
+        <template v-for="(y, period) in table" :key="y">
+          <div class="table__period">{{ period + 1 }}</div>
+          <CourseTile
+            v-for="(x, id) in y"
+            :key="id"
+            class="table__course"
+            @click="onClickCourseTile(x)"
+            :state="x.state"
+            :courseName="x.name"
+            :courseId="x.id"
+          />
+        </template>
+      </div>
     </div>
   </div>
   <Modal
@@ -73,15 +73,17 @@
         size="medium"
         layout="fill"
         color="base"
-        >あとで</Button
       >
+        あとで
+      </Button>
       <Button
         @click="$router.push('/login')"
         size="medium"
         layout="fill"
         color="primary"
-        >ログインする</Button
       >
+        ログインする
+      </Button>
     </template>
   </Modal>
 </template>
@@ -96,8 +98,6 @@ import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import Button from "~/components/Button.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader, { Calendar } from "~/components/PageHeader.vue";
-import Sidebar from "~/components/Sidebar.vue";
-import GrayFilter from "~/components/GrayFilter.vue";
 import { dayJaList } from "~/entities/day";
 import { ModuleJa, moduleToJa } from "~/entities/module";
 import { CourseModule } from "~/api/@types";
@@ -122,14 +122,12 @@ export default defineComponent({
     Button,
     Modal,
     PageHeader,
-    Sidebar,
-    GrayFilter,
   },
   setup: () => {
     const router = useRouter();
 
     /** サブヘッダー部分 */
-    const label: Labels = { left: "通常", right: "特殊" };
+    const label = ref<Labels>({ left: "通常", right: "特殊" });
     const whichSelected = ref<Select>("left");
     const module = ref<CourseModule>("SpringA");
     const moduleJa = computed<ModuleJa>(() => moduleToJa(module.value));
@@ -141,15 +139,6 @@ export default defineComponent({
     const weeks = dayJaList;
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
-    };
-
-    /** サイドバー */
-    const sidebar = ref(false);
-    const openSidebar = () => {
-      sidebar.value = true;
-    };
-    const closeSidebar = () => {
-      sidebar.value = false;
     };
 
     /** table */
@@ -174,7 +163,7 @@ export default defineComponent({
     const login = async () => {
       await router.push("/login");
     };
-    const welcomeModal = ref(true);
+    const welcomeModal = ref(false);
     const openWelcomeModal = () => {
       welcomeModal.value = true;
     };
@@ -189,9 +178,6 @@ export default defineComponent({
       onClickLabel,
       moduleJa,
       todoFn,
-      sidebar,
-      openSidebar,
-      closeSidebar,
       table,
       calReady,
       calendar,
@@ -223,6 +209,11 @@ export default defineComponent({
     "table table table table" 1fr
     / 12rem 1fr 1fr 10.4rem;
 
+  @include landscape {
+    border-radius: $spacing-4;
+    height: calc(100vh - 9.6rem);
+  }
+
   &__toggle {
     grid-area: toggle;
   }
@@ -253,12 +244,17 @@ export default defineComponent({
   }
 }
 
+.home {
+  @include landscape {
+    margin: 0 3.6rem $spacing-5;
+  }
+}
+
 .table {
   display: grid;
   grid-template-rows: 1.4rem repeat(6, 1fr);
   grid-template-columns: 2rem repeat(5, 1fr);
   gap: 0.2rem;
-  height: 100%;
 
   &__day {
     color: $text-sub;
