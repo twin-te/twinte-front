@@ -16,19 +16,36 @@
       <div class="main__module">
         {{ moduleJa }}
       </div>
-      <ToggleIconButton
-        class="main__module-btn"
-        @click="todoFn"
-        size="small"
-        color="normal"
-        icon-name="expand_more"
-        :is-active="false"
-      />
+      <div class="main__module-selector">
+        <ToggleIconButton
+          class="main__module-btn"
+          @click="togglePopupModule"
+          size="small"
+          color="normal"
+          icon-name="expand_more"
+          :is-active="false"
+        />
+        <Popup class="main__module-popup" v-show="popupModule">
+          <PopupContent
+            v-for="data in popupModuleData"
+            :key="data.value"
+            @click="todoFn"
+            :value="data.value"
+          >
+          </PopupContent>
+        </Popup>
+      </div>
       <Button class="main__btn" @click="setCurrentModule" size="small">
         現在の学期
       </Button>
 
-      <div class="main__table table">
+      <div
+        :class="{
+          main__table: true,
+          table: true,
+          'main__table--popup': popupModule,
+        }"
+      >
         <div
           v-for="(_, d) in 5"
           :key="weeks[d]"
@@ -98,6 +115,8 @@ import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import Button from "~/components/Button.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader, { Calendar } from "~/components/PageHeader.vue";
+import Popup from "~/components/Popup.vue";
+import PopupContent from "~/components/PopupContent.vue";
 import { dayJaList } from "~/entities/day";
 import { ModuleJa, moduleToJa } from "~/entities/module";
 import { CourseModule } from "~/api/@types";
@@ -106,6 +125,7 @@ import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
 import { useRouter } from "vue-router";
+import { useToggle } from "@vueuse/core";
 
 type CourseState = {
   id: string;
@@ -122,6 +142,8 @@ export default defineComponent({
     Button,
     Modal,
     PageHeader,
+    Popup,
+    PopupContent,
   },
   setup: () => {
     const router = useRouter();
@@ -140,6 +162,17 @@ export default defineComponent({
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
+    const [popupModule, togglePopupModule] = useToggle(false);
+    const popupModuleData: {
+      value: string;
+    }[] = [
+      { value: "春A" },
+      { value: "春B" },
+      { value: "春C" },
+      { value: "秋A" },
+      { value: "秋B" },
+      { value: "秋C" },
+    ];
 
     /** table */
     const table = computed(() =>
@@ -177,6 +210,9 @@ export default defineComponent({
       whichSelected,
       onClickLabel,
       moduleJa,
+      popupModule,
+      togglePopupModule,
+      popupModuleData,
       todoFn,
       table,
       calReady,
@@ -205,7 +241,7 @@ export default defineComponent({
   margin: $spacing-4 0 0;
   height: calc(100vh - 7.6rem);
   grid-template:
-    "toggle module module-btn btn" $spacing-7
+    "toggle module module-selector btn" $spacing-7
     "table table table table" 1fr
     / 12rem 1fr 1fr 10.4rem;
 
@@ -224,8 +260,16 @@ export default defineComponent({
     grid-area: module;
   }
 
-  &__module-btn {
-    grid-area: module-btn;
+  &__module-selector {
+    position: relative;
+    grid-area: module-selector;
+  }
+
+  &__module-popup {
+    position: absolute;
+    left: -4.9rem;
+    top: 3.6rem;
+    z-index: 10;
   }
 
   &__btn {
@@ -235,6 +279,10 @@ export default defineComponent({
   &__table {
     margin-top: $spacing-3;
     grid-area: table;
+
+    &--popup {
+      opacity: 0.2;
+    }
   }
 }
 
