@@ -117,7 +117,10 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
-import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
+import ScheduleEditer, {
+  Schedule,
+  Schedules,
+} from "../components/ScheduleEditer.vue";
 
 export default defineComponent({
   name: "App",
@@ -144,14 +147,16 @@ export default defineComponent({
 
     const addScheduleRow = () => {
       schedules.value.push({
-        id: schedules.value.slice(-1)[0] + 1,
+        id: schedules.value.slice(-1)[0].id + 1,
         semester: "",
         date: "",
         period: "",
       });
     };
     const removeScheduleRow = (id: number) => {
-      const index = schedules.value.findIndex((n: number): boolean => n == id);
+      const index = schedules.value.findIndex(
+        (el: Schedule): boolean => el.id == id
+      );
       schedules.value.splice(index, 1);
     };
     const clickHandler = () => {

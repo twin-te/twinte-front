@@ -1,5 +1,4 @@
 <script lang="ts">
-import vClickOutside from "v-click-outside";
 import { computed, defineComponent, PropType, ref } from "vue";
 import DropdownContent from "./DropdownContent.vue";
 
@@ -53,7 +52,6 @@ export default defineComponent({
     };
 
     const closeOptions = () => {
-      console.log("aa");
       isOptionsShown.value = false;
     };
 
@@ -142,6 +140,7 @@ export default defineComponent({
   }
   &__options {
     position: absolute;
+    z-index: 10;
     top: calc(100% + 0.6rem);
     left: 0;
     border-radius: $radius-1;
