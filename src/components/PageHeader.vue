@@ -71,7 +71,7 @@ export default defineComponent({
     position: absolute;
     left: 0;
     top: 0;
-    @include wide-screen {
+    @include landscape {
       display: none;
     }
   }
@@ -84,7 +84,7 @@ export default defineComponent({
     font-weight: 500;
     line-height: $single-line;
     color: $text-main;
-    @include wide-screen {
+    @include landscape {
       left: 0;
       transform: translateX(0);
     }

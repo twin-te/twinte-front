@@ -10,4 +10,7 @@ export const mutations: MutationTree<GlobalState> = {
 
     state.user = user;
   },
+  setSidebar(state, show: boolean) {
+    state.sidebar = show;
+  },
 };
