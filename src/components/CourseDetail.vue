@@ -51,6 +51,9 @@ export default defineComponent({
     font-size: $font-medium;
     font-weight: 500;
     color: $text-main;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 </style>

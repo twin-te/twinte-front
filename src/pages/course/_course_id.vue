@@ -32,12 +32,15 @@
   </PageHeader>
   <article class="course">
     <p class="course__code">1E06001</p>
-    <h1 class="course__name">色彩学</h1>
+    <h1 class="course__name">メディアアート・フィジカルコンピューティング</h1>
     <div class="course__details">
       <CourseDetail item="開講時限" value="春AB 木2">
         <DecoratedIcon iconName="schedule"></DecoratedIcon>
       </CourseDetail>
-      <CourseDetail item="担当教員" value="山本早里">
+      <CourseDetail
+        item="担当教員"
+        value="齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿"
+      >
         <DecoratedIcon iconName="person"></DecoratedIcon>
       </CourseDetail>
       <CourseDetail item="授業場所" value="6A508">
