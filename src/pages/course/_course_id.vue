@@ -50,7 +50,6 @@
     <TextFieldMultilines
       class="course__memo"
       v-model="memo"
-      update:modelValue="updateMemo"
       placeholder="メモを入力"
       :height="10.3"
       style="width: 100%"
@@ -227,15 +226,11 @@ export default defineComponent({
 
     // memo
     const memo = ref("");
-    const updateMemo = (updatedMemo: string) => {
-      memo.value = updatedMemo;
-    };
 
     return {
       clickHandler,
       showPopup,
       memo,
-      updateMemo,
       popupData,
       deleteCourseModal,
       openDeleteCourseModal,
