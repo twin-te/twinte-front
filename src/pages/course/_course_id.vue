@@ -246,11 +246,11 @@ export default defineComponent({
 .header {
   max-width: 900px;
   &__right-btn {
-    margin: 0 0 0.8rem auto;
+    margin: $spacing-0 $spacing-0 $spacing-2 auto;
   }
 }
 .course {
-  padding: 2.4rem 1.6rem 0;
+  padding: $spacing-6 $spacing-4 $spacing-0;
   overflow: scroll;
   max-width: 900px;
   &__code {
@@ -267,19 +267,19 @@ export default defineComponent({
   }
   &__details {
     display: grid;
-    gap: 1.6rem;
-    margin-top: 2rem;
+    gap: $spacing-4;
+    margin-top: $spacing-5;
   }
   &__memo {
-    margin: 3.2rem 0;
+    margin: $spacing-8 $spacing-0;
   }
   &__attendance {
     margin-bottom: 4.1rem;
   }
   .attendance {
     display: grid;
-    gap: 2rem;
-    padding: 1.6rem 2.4rem;
+    gap: $spacing-5;
+    padding: $spacing-4 $spacing-6;
     background: $base;
     border: 0.1rem solid $base;
     box-shadow: $shadow-base;
@@ -287,7 +287,7 @@ export default defineComponent({
     &__item {
       display: grid;
       grid-template:
-        "state ... minus-btn count plus-btn" 2.8rem
+        "state ... minus-btn count plus-btn" $spacing-7
         / auto 1fr auto 5.9rem auto;
       justify-items: center;
       align-items: center;
@@ -330,12 +330,12 @@ export default defineComponent({
     line-height: $multi-line;
   }
   .button {
-    width: calc(50% - 1.2rem);
+    width: calc(50% - $spacing-3);
     &:first-child {
-      margin-right: 1.2rem;
+      margin-right: $spacing-3;
     }
     &:last-child {
-      margin-left: 1.2rem;
+      margin-left: $spacing-3;
     }
   }
 }
