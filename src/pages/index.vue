@@ -1,11 +1,15 @@
 <template>
   <div class="home">
-    <PageHeader
-      v-show="calReady"
-      :calendar="calendar"
-      atHome
-      @click="openSidebar"
-    ></PageHeader>
+    <PageHeader v-show="calReady" :calendar="calendar" atHome>
+      <template #left-btn>
+        <IconButton
+          @click="todoFn"
+          size="large"
+          color="normal"
+          iconName="menu"
+        ></IconButton
+      ></template>
+    </PageHeader>
     <div class="main">
       <ToggleButton
         class="main__toggle"
@@ -14,7 +18,7 @@
         :onClickToggleButton="onClickLabel"
       />
       <div class="main__module">
-        {{ moduleJa }}
+        {{ module }}
       </div>
       <div class="main__module-selector">
         <ToggleIconButton
@@ -28,9 +32,9 @@
         <Popup class="main__module-popup" v-show="popupModule">
           <PopupContent
             v-for="data in popupModuleData"
-            :key="data.value"
-            @click="todoFn"
-            :value="data.value"
+            :key="data"
+            @click="onClickModule(data)"
+            :value="data"
           >
           </PopupContent>
         </Popup>
@@ -112,14 +116,14 @@ import CourseTile, {
 } from "~/components/CourseTile.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
+import IconButton from "~/components/IconButton.vue";
 import Button from "~/components/Button.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader, { Calendar } from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import { dayJaList } from "~/entities/day";
-import { ModuleJa, moduleToJa } from "~/entities/module";
-import { CourseModule } from "~/api/@types";
+import { ModuleJa, moduleMap } from "~/entities/module";
 import { tableConstructor } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { getCalendar } from "~/usecases/getCalendar";
@@ -139,6 +143,7 @@ export default defineComponent({
     CourseTile,
     ToggleButton,
     ToggleIconButton,
+    IconButton,
     Button,
     Modal,
     PageHeader,
@@ -151,9 +156,8 @@ export default defineComponent({
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
     const whichSelected = ref<Select>("left");
-    const module = ref<CourseModule>("SpringA");
-    const moduleJa = computed<ModuleJa>(() => moduleToJa(module.value));
-    const { state: currentModule } = useUsecase(getCurrentModule, "SpringA");
+    const module = ref<ModuleJa>("春A");
+    const { state: currentModule } = useUsecase(getCurrentModule, "春A");
     const { ready: calReady, state: calendar } = useUsecase(
       getCalendar,
       {} as Calendar
@@ -163,16 +167,11 @@ export default defineComponent({
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
     const [popupModule, togglePopupModule] = useToggle(false);
-    const popupModuleData: {
-      value: string;
-    }[] = [
-      { value: "春A" },
-      { value: "春B" },
-      { value: "春C" },
-      { value: "秋A" },
-      { value: "秋B" },
-      { value: "秋C" },
-    ];
+    const popupModuleData = moduleMap;
+    const onClickModule = (selectedModule: ModuleJa) => {
+      module.value = selectedModule;
+      togglePopupModule();
+    };
 
     /** table */
     const table = computed(() =>
@@ -209,10 +208,11 @@ export default defineComponent({
       label,
       whichSelected,
       onClickLabel,
-      moduleJa,
       popupModule,
       togglePopupModule,
       popupModuleData,
+      onClickModule,
+      module,
       todoFn,
       table,
       calReady,
@@ -231,7 +231,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/main.scss";
+@import "~/scss/main.scss";
 
 .main {
   display: grid;
@@ -281,6 +281,7 @@ export default defineComponent({
     grid-area: table;
 
     &--popup {
+      transition: $transition-all;
       opacity: 0.2;
     }
   }

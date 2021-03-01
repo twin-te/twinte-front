@@ -19,7 +19,7 @@ export const moduleJaList: ModuleJa[] = [
   "秋B",
   "秋C",
 ];
-export const moduleMap: { [key in CourseModule]?: ModuleJa } = {
+export const moduleMap: { [key in string]: ModuleJa } = {
   SpringA: "春A",
   SpringB: "春B",
   SpringC: "春C",
