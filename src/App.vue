@@ -18,4 +18,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "./scss/main.scss";
+
+#app {
+  min-height: 100vh;
+}
 </style>
