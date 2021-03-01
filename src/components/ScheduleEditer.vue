@@ -1,31 +1,35 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import Dropdown, {
   Options as DropdownOptions,
 } from "../components/Dropdown.vue";
-import ScheduleEditer from "./ScheduleEditer.vue";
 
-type Schedules = {
+export type Schedule = {
   id: number;
   semester: string;
   date: string;
   period: string;
-}[];
-
-type Props = {
-  schedules: Schedules;
 };
+export type Schedules = Schedule[];
 
 export default defineComponent({
   components: { Dropdown },
   props: {
+    onClickAddButton: {
+      type: Function,
+      required: true,
+    },
+    onClickRemoveButton: {
+      type: Function,
+      required: true,
+    },
     schedules: {
       type: Object as PropType<Schedules>,
       required: true,
     },
   },
   emits: ["update:schedule", "click-add-button", "click-remove-button"],
-  setup(props: Props, { emit }) {
+  setup(_, { emit }) {
     const semesterOptions = ref<DropdownOptions>(["春A", "春B", "春C"]);
     const dateOptions = ref<DropdownOptions>([
       "月",
@@ -86,7 +90,7 @@ export default defineComponent({
       ></Dropdown>
       <div
         v-if="index > 0"
-        @click="emitRemoveEvent(schedule.id)"
+        @click="emitRemoveEvent(schedule.id, $event)"
         class="schedule-editer__row__remove"
       >
         <span class="material-icons">close</span>
