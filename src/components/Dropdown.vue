@@ -1,4 +1,5 @@
 <script lang="ts">
+import vClickOutside from "v-click-outside";
 import { computed, defineComponent, PropType, ref } from "vue";
 import DropdownContent from "./DropdownContent.vue";
 
@@ -51,6 +52,11 @@ export default defineComponent({
       isOptionsShown.value = !isOptionsShown.value;
     };
 
+    const closeOptions = () => {
+      console.log("aa");
+      isOptionsShown.value = false;
+    };
+
     const emitSelectedEvent = (option: string) => {
       emit("update:selectedOption", option);
     };
@@ -61,6 +67,7 @@ export default defineComponent({
       isSelected,
       hasLabel,
       toggleShown,
+      closeOptions,
       emitSelectedEvent,
     };
   },
@@ -70,7 +77,12 @@ export default defineComponent({
 <template>
   <div class="dropdown">
     <div v-if="hasLabel" class="dropdown__label">{{ label }}</div>
-    <div @click="toggleShown" class="dropdown__box" :style="{ width: width }">
+    <div
+      @click="toggleShown"
+      v-click-away="closeOptions"
+      class="dropdown__box"
+      :style="{ width: width }"
+    >
       <div v-if="isDefault" class="dropdown__box__text--unselected">
         指定なし
       </div>
