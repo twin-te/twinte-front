@@ -247,7 +247,6 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .header {
-  max-width: 900px;
   &__right-btn {
     margin: $spacing-0 $spacing-0 $spacing-2 auto;
   }
@@ -255,7 +254,6 @@ export default defineComponent({
 .course {
   padding: $spacing-6 $spacing-4 $spacing-0;
   overflow: scroll;
-  max-width: 900px;
   &__code {
     font-size: $font-small;
     font-weight: normal;

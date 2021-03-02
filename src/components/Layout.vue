@@ -30,6 +30,7 @@ export default defineComponent({
   background: $base-liner;
   &__article {
     width: 100%;
+    max-width: 900px;
   }
 }
 
