@@ -30,7 +30,15 @@ export default defineComponent({
   },
   emits: ["update:schedule", "click-add-button", "click-remove-button"],
   setup(_, { emit }) {
-    const semesterOptions = ref<DropdownOptions>(["春A", "春B", "春C"]);
+    const semesterOptions = ref<DropdownOptions>([
+      "春A",
+      "春B",
+      "春C",
+      "秋A",
+      "秋B",
+      "秋C",
+      "その他",
+    ]);
     const dateOptions = ref<DropdownOptions>([
       "月",
       "火",
@@ -39,15 +47,16 @@ export default defineComponent({
       "金",
       "土",
       "日",
+      "その他",
     ]);
     const periodOptions = ref<DropdownOptions>([
-      "1時限",
-      "2時限",
-      "3時限",
-      "4時限",
-      "5時限",
-      "6時限",
-      "7時限",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
     ]);
     const emitAddEvent = (e: MouseEvent) => {
       emit("click-add-button", e);
