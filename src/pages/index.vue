@@ -308,7 +308,7 @@ export default defineComponent({
 }
 
 .sidebar {
-  &__sm {
+  &--sm {
     position: fixed;
   }
 }
