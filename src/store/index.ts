@@ -13,7 +13,7 @@ export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
 
 const initState: GlobalState = {
   user: null,
-  sidebar: true,
+  sidebar: false,
 };
 
 export const store = createStore<GlobalState>({

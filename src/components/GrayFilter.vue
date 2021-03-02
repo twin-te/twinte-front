@@ -28,6 +28,6 @@ export default defineComponent({
   left: 0;
   background: $filter-gray;
   backdrop-filter: blur(8px);
-  z-index: 13;
+  z-index: 11;
 }
 </style>
