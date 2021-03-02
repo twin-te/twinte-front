@@ -214,7 +214,7 @@
       </template>
     </PageHeader>
 
-    <section class="preview__content preview__dropdown">
+    <section class="preview__content preview__scheduleEditer">
       <ScheduleEditer
         v-model:schedules="schedules"
         @click-add-button="addScheduleRow"
@@ -256,20 +256,20 @@ export default defineComponent({
   name: "Preview",
   components: {
     Button,
-    IconButton,
-    ToggleIconButton,
-    CourseTile,
-    CourseDetail,
-    Sidebar,
-    SidebarContent,
-    DecoratedIcon,
     CardAdd,
     CardCourse,
-    Popup,
-    PopupContent,
+    CourseDetail,
+    CourseTile,
+    DecoratedIcon,
+    IconButton,
     Modal,
     PageHeader,
-    ScheduleEditer
+    Popup,
+    PopupContent,
+    ScheduleEditer,
+    Sidebar,
+    SidebarContent,
+    ToggleIconButton,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -291,7 +291,7 @@ export default defineComponent({
     const schedules = ref<Schedules>([
       { id: 0, semester: "", date: "", period: "" },
     ]);
-const displayLog = () => {
+    const displayLog = () => {
       console.log("click");
     };
 
@@ -350,7 +350,6 @@ const displayLog = () => {
       { onClick: popupClickHandler, value: "秋C" },
     ];
 
-    // modal
     const modal = ref(false);
 
     const openModal = () => {
@@ -364,7 +363,6 @@ const displayLog = () => {
     const clickHandler = () => {
       console.log("click");
     };
-
 
     const addScheduleRow = () => {
       schedules.value.push({
@@ -382,6 +380,7 @@ const displayLog = () => {
     };
 
     return {
+      addScheduleRow,
       clickHandler,
       closeModal,
       courseInfo,
@@ -393,10 +392,10 @@ const displayLog = () => {
       popupData,
       popupModuleData,
       ready,
+      removeScheduleRow,
       state,
+      schedules,
       tileStat,
-      addScheduleRow,
-      removeScheduleRow
     };
   },
 });
