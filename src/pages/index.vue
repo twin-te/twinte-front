@@ -91,4 +91,8 @@ export default defineComponent({
 .preview__dropdown {
   padding-bottom: 10rem;
 }
+
+.preview__dropdown {
+  padding-bottom: 10rem;
+}
 </style>

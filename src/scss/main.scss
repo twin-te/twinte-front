@@ -60,3 +60,22 @@ body {
     transition: $transition-all;
   }
 }
+
+// 下に広がるアニメーション
+.spread-down {
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: $transition-all;
+  }
+}
