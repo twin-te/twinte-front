@@ -33,7 +33,12 @@ export default defineComponent({
 <template>
   <header class="header">
     <div class="header__container">
-      <div class="header__menu-icon">
+      <div
+        :class="{
+          'header__menu-icon': true,
+          '--home': atHome,
+        }"
+      >
         <slot name="left-btn"></slot>
       </div>
       <div v-if="atHome">
@@ -71,8 +76,10 @@ export default defineComponent({
     position: absolute;
     left: 0;
     top: 0;
-    @include landscape {
-      display: none;
+    &.--home {
+      @include wide-screen {
+        display: none;
+      }
     }
   }
   &__title {
@@ -84,10 +91,6 @@ export default defineComponent({
     font-weight: 500;
     line-height: $single-line;
     color: $text-main;
-    @include landscape {
-      left: 0;
-      transform: translateX(0);
-    }
     &--logo {
       position: absolute;
       left: 50%;
