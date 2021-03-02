@@ -4,7 +4,7 @@ import { Ports } from "~/adapter";
 import instance, { ApiInstance } from "~/api/$api";
 import { useStore } from "~/store";
 import { useAsyncState } from "@vueuse/core";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 /**
  * @example
