@@ -3,7 +3,7 @@
     <PageHeader v-show="calReady" :calendar="calendar" atHome>
       <template #left-btn>
         <IconButton
-          @click="todoFn"
+          @click="toggleSidebar"
           size="large"
           color="normal"
           iconName="menu"
@@ -136,6 +136,7 @@ import { tableConstructor } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
+import { useStore } from "~/store";
 import { useRouter } from "vue-router";
 import { useToggle } from "@vueuse/core";
 
@@ -160,6 +161,12 @@ export default defineComponent({
   },
   setup: () => {
     const router = useRouter();
+    const store = useStore();
+
+    /** ヘッダー */
+    const toggleSidebar = () => {
+      store.commit("setSidebar", !store.state.sidebar);
+    };
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
@@ -215,6 +222,7 @@ export default defineComponent({
     };
 
     return {
+      toggleSidebar,
       weeks,
       label,
       whichSelected,

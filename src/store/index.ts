@@ -1,5 +1,5 @@
 import { InjectionKey } from "vue";
-import { createStore, Store } from "vuex";
+import { createStore, Store, useStore as useStoreAny } from "vuex";
 import { User } from "~/api/@types";
 import { mutations } from "./mutations";
 import { getters } from "./getter";
@@ -22,3 +22,7 @@ export const store = createStore<GlobalState>({
   getters,
   strict: true,
 });
+
+export const useStore = () => {
+  return useStoreAny(StateKey);
+};
