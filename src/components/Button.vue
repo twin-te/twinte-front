@@ -1,5 +1,7 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
+
+type State = "active" | "default" | "disabled";
 
 type Props = {
   onClick: Function;
@@ -8,6 +10,7 @@ type Props = {
   color: string;
   icon: boolean;
   pauseActiveStyle: boolean;
+  state: State;
 };
 
 export default defineComponent({
@@ -46,6 +49,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    state: {
+      type: String as PropType<State>,
+      default: "default",
+    },
   },
   emits: ["click"],
   setup: (props: Props, { emit }) => {
@@ -66,7 +73,7 @@ export default defineComponent({
     @click="handleClick"
     :class="{
       button: true,
-      '--active': isActive,
+      '--active': isActive || state === 'active',
       [`button--${size}`]: true,
       [`button--${color}`]: true,
       [`button--${layout}`]: true,

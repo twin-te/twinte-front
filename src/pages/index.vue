@@ -39,7 +39,13 @@
           </PopupContent>
         </Popup>
       </div>
-      <Button class="main__btn" @click="setCurrentModule" size="small">
+      <Button
+        :state="isCurrentModule ? 'active' : 'default'"
+        :pauseActiveStyle="false"
+        class="main__btn"
+        @click="setCurrentModule"
+        size="small"
+      >
         現在の学期
       </Button>
 
@@ -49,6 +55,7 @@
           table: true,
           'main__table--popup': popupModule,
         }"
+        v-if="whichSelected === 'left'"
       >
         <div
           v-for="(_, d) in 5"
@@ -70,6 +77,7 @@
           />
         </template>
       </div>
+      <div v-else>特殊</div>
     </div>
   </div>
   <Modal
@@ -158,6 +166,9 @@ export default defineComponent({
     const whichSelected = ref<Select>("left");
     const module = ref<ModuleJa>("春A");
     const { state: currentModule } = useUsecase(getCurrentModule, "春A");
+    const isCurrentModule = computed(
+      () => module.value === currentModule.value
+    );
     const { ready: calReady, state: calendar } = useUsecase(
       getCalendar,
       {} as Calendar
@@ -218,6 +229,7 @@ export default defineComponent({
       calReady,
       calendar,
       setCurrentModule,
+      isCurrentModule,
       activeCourseTile,
       onClickCourseTile,
       resetCourseTileState,
