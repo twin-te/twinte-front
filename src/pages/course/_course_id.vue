@@ -2,7 +2,7 @@
   <PageHeader :atHome="false">
     <template #left-btn>
       <IconButton
-        @click="clickHandler"
+        @click="$router.push('/')"
         size="large"
         color="normal"
         iconName="arrow_back"
