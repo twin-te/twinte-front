@@ -247,11 +247,13 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .header {
+  max-width: 900px;
   &__right-btn {
     margin: $spacing-0 $spacing-0 $spacing-2 auto;
   }
 }
 .course {
+  max-width: 900px;
   padding: $spacing-6 $spacing-4 $spacing-0;
   &__code {
     font-size: $font-small;
