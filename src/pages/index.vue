@@ -72,12 +72,24 @@
             class="table__course"
             @click="onClickCourseTile(x)"
             :state="x.state"
-            :courseName="x.name"
-            :courseId="x.id"
+            :name="x.name"
+            :room="x.id"
           />
         </template>
       </div>
-      <div v-else>特殊</div>
+      <div class="special-table" v-else>
+        <div class="special-table__label">集中</div>
+        <div class="special-table__divider"></div>
+        <div class="special-contents">
+          <div class="special-contents__module">春A</div>
+          <CourseTile
+            class="special-contents__course"
+            state="none"
+            name=""
+            room=""
+          />
+        </div>
+      </div>
     </div>
   </div>
   <Modal
@@ -342,6 +354,29 @@ export default defineComponent({
 
   /* &__course {
   } */
+}
+
+.special-table {
+  &__label {
+    color: $text-main;
+    font-size: $font-medium;
+  }
+  &__divider {
+  }
+}
+.special-contents {
+  grid-area: table;
+  display: grid;
+  grid-template-columns: 4.8rem 1fr;
+  grid-template-rows: 4.8rem;
+  gap: 0.2rem;
+  &__module {
+    color: $text-sub;
+    font-size: $font-small;
+    margin-left: 0.4rem;
+  }
+  &__course {
+  }
 }
 
 .welcome-modal .modal {
