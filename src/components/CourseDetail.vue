@@ -18,7 +18,7 @@ export default defineComponent({
 <template>
   <div class="course-detail">
     <div class="course-detail__icon">
-      <slot name="icon"></slot>
+      <slot></slot>
     </div>
     <div class="course-detail__item">{{ item }}</div>
     <div class="course-detail__value">{{ value }}</div>
@@ -51,6 +51,9 @@ export default defineComponent({
     font-size: $font-medium;
     font-weight: 500;
     color: $text-main;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 </style>
