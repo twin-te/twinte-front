@@ -94,6 +94,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "../scss/main.scss";
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  top: 0;
   left: 0;
   width: 20.8rem;
   height: 100vh;
@@ -108,7 +111,9 @@ export default defineComponent({
     padding: 6.2rem 2rem 2rem;
   }
   &__contents {
-    margin: 0;
+    margin: 0 0 $spacing-10;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   &__listgroup {
     padding-bottom: $spacing-6;
