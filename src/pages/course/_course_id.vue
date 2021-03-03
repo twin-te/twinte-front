@@ -253,7 +253,6 @@ export default defineComponent({
 }
 .course {
   padding: $spacing-6 $spacing-4 $spacing-0;
-  overflow: scroll;
   &__code {
     font-size: $font-small;
     font-weight: normal;
