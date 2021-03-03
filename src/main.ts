@@ -2,7 +2,7 @@ import { createApp } from "vue";
 
 import App from "./App.vue";
 import { router } from "./route";
-import { store } from "./store";
+import { store, StateKey } from "./store";
 import "./scss/main.scss";
 
-createApp(App).use(router).use(store).mount("#app");
+createApp(App).use(router).use(store, StateKey).mount("#app");

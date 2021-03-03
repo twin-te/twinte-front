@@ -97,10 +97,13 @@ export default defineComponent({
   left: 0;
   width: 20.8rem;
   height: 100vh;
+  min-height: 100%;
   background: $base-liner;
   border-radius: 0 $radius-4 $radius-4 0;
   box-shadow: $shadow-convex;
-  z-index: 100;
+  z-index: 12;
+  transition: $transition-all-slow;
+  transform: translateX(0);
   &__head {
     padding: 6.2rem 2rem 2rem;
   }

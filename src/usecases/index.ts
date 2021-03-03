@@ -1,10 +1,10 @@
 import axiosClient from "@aspida/axios";
 import axios from "axios";
-import { useStore } from "vuex";
 import { Ports } from "~/adapter";
 import instance, { ApiInstance } from "~/api/$api";
-import { StateKey } from "~/store";
+import { useStore } from "~/store";
 import { useAsyncState } from "@vueuse/core";
+import dayjs from "dayjs";
 
 /**
  * @example
@@ -27,7 +27,8 @@ export const useUsecase = <T>(
         validateStatus: () => true,
       })
     ) as ApiInstance,
-    store: useStore(StateKey),
+    store: useStore(),
+    now: dayjs().locale("ja"),
   };
 
   return useAsyncState(fn(ports), initState);
