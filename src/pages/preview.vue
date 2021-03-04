@@ -394,7 +394,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/main.scss";
+@import "~/scss/main.scss";
 
 .course-grid {
   display: grid;
