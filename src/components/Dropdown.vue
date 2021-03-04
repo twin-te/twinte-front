@@ -76,7 +76,7 @@ export default defineComponent({
       @click="toggleShown"
       v-click-away="closeOptions"
       class="dropdown__box"
-      :style="{ width: width }"
+      :style="{ width }"
     >
       <div v-if="isDefault" class="dropdown__box__text--unselected">
         指定なし
