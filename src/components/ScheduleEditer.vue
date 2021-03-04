@@ -2,7 +2,7 @@
 import { defineComponent, PropType, ref } from "vue";
 import Dropdown, {
   Options as DropdownOptions,
-} from "../components/Dropdown.vue";
+} from "./Dropdown.vue";
 
 export type Schedule = {
   id: number;

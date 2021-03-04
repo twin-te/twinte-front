@@ -1,11 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-type Props = {
-  value: string;
-  isSelected: boolean;
-};
-
 export default defineComponent({
   props: {
     onClick: {
@@ -25,21 +20,15 @@ export default defineComponent({
       default: "8.8rem",
     },
   },
-  emits: ["click"],
-  setup(props: Props, { emit }) {
-    const emitClickEvent = (e: MouseEvent) => {
-      emit("click", props.value, e);
-    };
-    return { emitClickEvent };
-  },
+  emits: ["click"]
 });
 </script>
 
 <template>
   <div
-    @click="emitClickEvent"
+    @click="$emit('click')"
     :class="{ option: true, '--selected': isSelected }"
-    :style="{ width: width }"
+    :style="{ width }"
   >
     {{ value }}
   </div>

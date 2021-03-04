@@ -1,5 +1,6 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { useToggle } from "@vueuse/core";
+import { computed, defineComponent, PropType } from "vue";
 import DropdownContent from "./DropdownContent.vue";
 
 export type Options = string[];
@@ -33,8 +34,8 @@ export default defineComponent({
   },
   emits: ["update:selectedOption"],
   setup(props: Props, { emit }) {
-    const isOptionsShown = ref(false);
-
+    const [isOptionsShown, toggleShown] = useToggle();
+    
     const isDefault = computed(() => {
       return ["", "指定なし"].includes(props.selectedOption);
     });
@@ -45,10 +46,6 @@ export default defineComponent({
 
     const isSelected = (value: string) => {
       return value === props.selectedOption;
-    };
-
-    const toggleShown = () => {
-      isOptionsShown.value = !isOptionsShown.value;
     };
 
     const closeOptions = () => {
@@ -111,7 +108,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "../scss/main.scss";
+@import "~/scss/main.scss";
 
 .dropdown {
   position: relative;
