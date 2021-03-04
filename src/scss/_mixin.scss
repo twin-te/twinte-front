@@ -75,6 +75,25 @@
   cursor: default;
 }
 
+// スクロール用マスク
+// (↓スクロールさせたい要素の親要素の疑似after/before要素に設定する。)
+@mixin scroll-mask {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 92.71%,
+    rgba(196, 196, 196, 0) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 92.71%,
+    rgba(196, 196, 196, 0) 100%
+  );
+}
+
 // layout
 @mixin flexible() {
   display: inline-block;
