@@ -36,7 +36,7 @@ export default defineComponent({
     const isOptionsShown = ref(false);
 
     const isDefault = computed(() => {
-      return props.selectedOption === "";
+      return ["", "指定なし"].includes(props.selectedOption);
     });
 
     const hasLabel = computed(() => {

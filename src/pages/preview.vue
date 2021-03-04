@@ -222,7 +222,6 @@
       ></ScheduleEditer>
     </section>
   </article>
-
 </template>
 
 <script lang="ts">
@@ -289,7 +288,7 @@ export default defineComponent({
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);
     const schedules = ref<Schedules>([
-      { id: 0, semester: "", date: "", period: "" },
+      { id: 0, semester: "指定なし", date: "指定なし", period: "指定なし" },
     ]);
     const displayLog = () => {
       console.log("click");
@@ -367,9 +366,9 @@ export default defineComponent({
     const addScheduleRow = () => {
       schedules.value.push({
         id: schedules.value.slice(-1)[0].id + 1,
-        semester: "",
-        date: "",
-        period: "",
+        semester: "指定なし",
+        date: "指定なし",
+        period: "指定なし",
       });
     };
     const removeScheduleRow = (id: number) => {

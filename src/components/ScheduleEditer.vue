@@ -38,6 +38,7 @@ export default defineComponent({
       "秋B",
       "秋C",
       "その他",
+      "指定なし",
     ]);
     const dateOptions = ref<DropdownOptions>([
       "月",
@@ -48,6 +49,7 @@ export default defineComponent({
       "土",
       "日",
       "その他",
+      "指定なし",
     ]);
     const periodOptions = ref<DropdownOptions>([
       "1",
@@ -57,6 +59,7 @@ export default defineComponent({
       "5",
       "6",
       "7",
+      "指定なし",
     ]);
     const emitAddEvent = (e: MouseEvent) => {
       emit("click-add-button", e);
