@@ -35,7 +35,7 @@ export default defineComponent({
   emits: ["update:selectedOption"],
   setup(props: Props, { emit }) {
     const [isOptionsShown, toggleShown] = useToggle();
-    
+
     const isDefault = computed(() => {
       return ["", "指定なし"].includes(props.selectedOption);
     });

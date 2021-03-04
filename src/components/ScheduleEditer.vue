@@ -1,11 +1,8 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
-import Dropdown, {
-  Options as DropdownOptions,
-} from "./Dropdown.vue";
+import Dropdown, { Options as DropdownOptions } from "./Dropdown.vue";
 
 export type Schedule = {
-  id: number;
   semester: string;
   date: string;
   period: string;
@@ -64,8 +61,8 @@ export default defineComponent({
     const emitAddEvent = (e: MouseEvent) => {
       emit("click-add-button", e);
     };
-    const emitRemoveEvent = (id: number, e: MouseEvent) => {
-      emit("click-remove-button", id, e);
+    const emitRemoveEvent = (index: number, e: MouseEvent) => {
+      emit("click-remove-button", index, e);
     };
     return {
       semesterOptions,
@@ -83,7 +80,7 @@ export default defineComponent({
     <div
       class="schedule-editer__row"
       v-for="(schedule, index) in schedules"
-      :key="schedule.id"
+      :key="index"
     >
       <Dropdown
         :options="semesterOptions"
@@ -102,7 +99,7 @@ export default defineComponent({
       ></Dropdown>
       <div
         v-if="index > 0"
-        @click="emitRemoveEvent(schedule.id, $event)"
+        @click="emitRemoveEvent(index, $event)"
         class="schedule-editer__row__remove"
       >
         <span class="material-icons">close</span>

@@ -246,10 +246,7 @@ import PopupContent, {
 } from "../components/PopupContent.vue";
 import Modal from "../components/Modal.vue";
 import PageHeader from "../components/PageHeader.vue";
-import ScheduleEditer, {
-  Schedule,
-  Schedules,
-} from "../components/ScheduleEditer.vue";
+import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -288,7 +285,7 @@ export default defineComponent({
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);
     const schedules = ref<Schedules>([
-      { id: 0, semester: "指定なし", date: "指定なし", period: "指定なし" },
+      { semester: "指定なし", date: "指定なし", period: "指定なし" },
     ]);
     const displayLog = () => {
       console.log("click");
@@ -365,16 +362,12 @@ export default defineComponent({
 
     const addScheduleRow = () => {
       schedules.value.push({
-        id: schedules.value.slice(-1)[0].id + 1,
         semester: "指定なし",
         date: "指定なし",
         period: "指定なし",
       });
     };
-    const removeScheduleRow = (id: number) => {
-      const index = schedules.value.findIndex(
-        (el: Schedule): boolean => el.id == id
-      );
+    const removeScheduleRow = (index: number) => {
       schedules.value.splice(index, 1);
     };
 

@@ -20,7 +20,7 @@ export default defineComponent({
       default: "8.8rem",
     },
   },
-  emits: ["click"]
+  emits: ["click"],
 });
 </script>
 
