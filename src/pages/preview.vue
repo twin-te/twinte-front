@@ -213,6 +213,14 @@
         ></ToggleIconButton>
       </template>
     </PageHeader>
+
+    <section class="preview__content preview__scheduleEditer">
+      <ScheduleEditer
+        v-model:schedules="schedules"
+        @click-add-button="addScheduleRow"
+        @click-remove-button="removeScheduleRow"
+      ></ScheduleEditer>
+    </section>
   </article>
 </template>
 
@@ -238,24 +246,26 @@ import PopupContent, {
 } from "../components/PopupContent.vue";
 import Modal from "../components/Modal.vue";
 import PageHeader from "../components/PageHeader.vue";
+import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
 
 export default defineComponent({
   name: "Preview",
   components: {
     Button,
-    IconButton,
-    ToggleIconButton,
-    CourseTile,
-    CourseDetail,
-    Sidebar,
-    SidebarContent,
-    DecoratedIcon,
     CardAdd,
     CardCourse,
-    Popup,
-    PopupContent,
+    CourseDetail,
+    CourseTile,
+    DecoratedIcon,
+    IconButton,
     Modal,
     PageHeader,
+    Popup,
+    PopupContent,
+    ScheduleEditer,
+    Sidebar,
+    SidebarContent,
+    ToggleIconButton,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -274,6 +284,9 @@ export default defineComponent({
     });
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);
+    const schedules = ref<Schedules>([
+      { semester: "指定なし", date: "指定なし", period: "指定なし" },
+    ]);
     const displayLog = () => {
       console.log("click");
     };
@@ -333,7 +346,6 @@ export default defineComponent({
       { onClick: popupClickHandler, value: "秋C" },
     ];
 
-    // modal
     const modal = ref(false);
 
     const openModal = () => {
@@ -348,27 +360,41 @@ export default defineComponent({
       console.log("click");
     };
 
+    const addScheduleRow = () => {
+      schedules.value.push({
+        semester: "指定なし",
+        date: "指定なし",
+        period: "指定なし",
+      });
+    };
+    const removeScheduleRow = (index: number) => {
+      schedules.value.splice(index, 1);
+    };
+
     return {
+      addScheduleRow,
+      clickHandler,
+      closeModal,
+      courseInfo,
       displayLog,
       isBtnActive,
-      ready,
-      state,
-      tileStat,
       isCourseCheked,
-      courseInfo,
-      popupData,
-      popupModuleData,
       modal,
       openModal,
-      closeModal,
-      clickHandler,
+      popupData,
+      popupModuleData,
+      ready,
+      removeScheduleRow,
+      state,
+      schedules,
+      tileStat,
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/main.scss";
+@import "~/scss/main.scss";
 
 .course-grid {
   display: grid;
