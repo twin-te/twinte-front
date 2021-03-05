@@ -94,18 +94,26 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "../scss/main.scss";
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  top: 0;
   left: 0;
   width: 20.8rem;
   height: 100vh;
+  min-height: 100%;
   background: $base-liner;
   border-radius: 0 $radius-4 $radius-4 0;
   box-shadow: $shadow-convex;
-  z-index: 100;
+  z-index: 12;
+  transition: $transition-all-slow;
+  transform: translateX(0);
   &__head {
     padding: 6.2rem 2rem 2rem;
   }
   &__contents {
-    margin: 0;
+    margin: 0 0 $spacing-10;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   &__listgroup {
     padding-bottom: $spacing-6;

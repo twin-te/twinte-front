@@ -108,7 +108,14 @@
 
 @mixin landscape {
   @media screen and (orientation: landscape) {
-    // 画面が横向きの場合(tab-and-pcサイズにしか適用しない)
+    // 画面が横向きの場合(tab-and-pcサイズにしか適用しない。spは横向き禁止にする。)
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media screen and (orientation: portrait) {
+    // 画面が縦向きの場合
     @content;
   }
 }

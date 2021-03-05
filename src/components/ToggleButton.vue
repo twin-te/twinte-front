@@ -1,8 +1,8 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 
-type Labels = { left: string; right: string };
-type Select = "left" | "right";
+export type Labels = { left: string; right: string };
+export type Select = "left" | "right";
 type Props = {
   labels: Labels;
   whichSelected: Select;
@@ -21,7 +21,7 @@ export default defineComponent({
     },
     whichSelected: {
       type: String as PropType<Select>,
-      default: "left",
+      required: true,
       validator: function (value: string) {
         return ["left", "right"].includes(value);
       },
