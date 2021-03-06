@@ -111,13 +111,29 @@
           <div class="special-header__label">応談</div>
           <div class="special-header__divider"></div>
         </div>
-        <div class="special-contents"></div>
+        <div class="special-contents">
+          <div class="special-contents__module">-</div>
+          <CourseTile
+            class="special-contents__course"
+            state="none"
+            name=""
+            room=""
+          />
+        </div>
 
         <div class="special-header">
           <div class="special-header__label">随時</div>
           <div class="special-header__divider"></div>
         </div>
-        <div class="special-contents"></div>
+        <div class="special-contents">
+          <div class="special-contents__module">-</div>
+          <CourseTile
+            class="special-contents__course"
+            state="none"
+            name=""
+            room=""
+          />
+        </div>
       </div>
     </div>
   </div>
