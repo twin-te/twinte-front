@@ -78,18 +78,46 @@
           />
         </template>
       </div>
-      <div class="special-table" v-else>
-        <div class="special-table__label">集中</div>
-        <div class="special-table__divider"></div>
+      <div class="special" v-else>
+        <div class="special-header">
+          <div class="special-header__label">集中</div>
+          <div class="special-header__divider"></div>
+        </div>
         <div class="special-contents">
           <div class="special-contents__module">春A</div>
           <CourseTile
             class="special-contents__course"
-            state="none"
-            name=""
-            room=""
+            state="default"
+            name="Pedagogy for a Changing World I"
+            room="1A101"
+          />
+          <div class="special-contents__module">夏休</div>
+          <CourseTile
+            class="special-contents__course"
+            state="default"
+            name="初等数学基礎"
+            room="1A101"
+          />
+          <div class="special-contents__module">秋A</div>
+          <CourseTile
+            class="special-contents__course"
+            state="default"
+            name="生物科学オムニバス特講"
+            room="-"
           />
         </div>
+
+        <div class="special-header">
+          <div class="special-header__label">応談</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-contents"></div>
+
+        <div class="special-header">
+          <div class="special-header__label">随時</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-contents"></div>
       </div>
     </div>
   </div>
@@ -361,26 +389,44 @@ export default defineComponent({
   } */
 }
 
-.special-table {
+.special {
+  grid-area: table;
+}
+
+.special-header {
+  display: flex;
+  margin: 1.2rem 0 1.6rem 0;
+  align-items: center;
+  height: 2rem;
+
   &__label {
     color: $text-main;
     font-size: $font-medium;
   }
   &__divider {
+    border-radius: 0.2rem;
+    height: 0.4rem;
+    width: calc(100% - 4rem);
+    margin-left: 1.2rem;
+    box-shadow: $shadow-input-concave;
   }
 }
+
 .special-contents {
+  width: 100%;
   grid-area: table;
   display: grid;
   grid-template-columns: 4.8rem 1fr;
   grid-template-rows: 4.8rem;
   gap: 0.2rem;
+  margin-bottom: 3.2rem;
   &__module {
     color: $text-sub;
     font-size: $font-small;
     margin-left: 0.4rem;
   }
   &__course {
+    height: 4.8rem;
   }
 }
 
