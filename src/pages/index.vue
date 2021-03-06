@@ -267,8 +267,14 @@ export default defineComponent({
       module.value = currentModule.value;
     };
     const onClickCourseTile = async (course: CourseState) => {
-      activeCourseTile.value = course;
-      await router.push(`/course/${activeCourseTile.value.id}`);
+      switch (course.state) {
+        case "default":
+          activeCourseTile.value = course;
+          await router.push(`/course/${activeCourseTile.value.id}`);
+          return;
+        default:
+          return;
+      }
     };
     const resetCourseTileState = () => {
       activeCourseTile.value = null;
