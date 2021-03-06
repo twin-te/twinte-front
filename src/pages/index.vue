@@ -17,10 +17,10 @@
         :whichSelected="whichSelected"
         :onClickToggleButton="onClickLabel"
       />
-      <div class="main__module">
+      <div class="main__module" v-if="whichSelected === 'left'">
         {{ module }}
       </div>
-      <div class="main__module-selector">
+      <div class="main__module-selector" v-if="whichSelected === 'left'">
         <ToggleIconButton
           v-click-away="closePopupModule"
           class="main__module-btn"
@@ -41,6 +41,7 @@
         </Popup>
       </div>
       <Button
+        v-if="whichSelected === 'left'"
         :state="isCurrentModule ? 'active' : 'default'"
         :pauseActiveStyle="false"
         class="main__btn"
