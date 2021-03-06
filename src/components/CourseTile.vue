@@ -4,8 +4,8 @@ import { computed, defineComponent, PropType } from "vue";
 export type State = "default" | "active" | "none";
 
 type Props = {
-  courseName: string;
-  courseId: string;
+  name: string;
+  room: string;
   state: State;
   caution: string;
 };
@@ -16,11 +16,11 @@ export default defineComponent({
       type: Function,
       default: () => {},
     },
-    courseName: {
+    name: {
       type: String,
       required: true,
     },
-    courseId: {
+    room: {
       type: String,
       required: true,
     },
@@ -60,8 +60,8 @@ export default defineComponent({
       [`--under-filter`]: hasCaution,
     }"
   >
-    <div class="tile__course-name">{{ courseName }}</div>
-    <div class="tile__course-id">{{ courseId }}</div>
+    <div class="tile__course-name">{{ name }}</div>
+    <div class="tile__course-room">{{ room }}</div>
     <div
       v-show="hasCaution"
       :class="{
@@ -109,7 +109,7 @@ export default defineComponent({
     font-weight: 500;
     color: $text-main;
   }
-  &__course-id {
+  &__course-room {
     @include text-course-tile-id;
   }
   &__caution {

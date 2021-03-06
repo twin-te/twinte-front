@@ -46,22 +46,22 @@
         <CourseTile
           @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
           :state="tileStat"
-          courseName="学校を考える"
-          courseId="1A101"
+          name="学校を考える"
+          room="1A101"
         ></CourseTile>
 
         <CourseTile
           state="active"
-          courseName="学校を考える"
-          courseId="1A101"
+          name="学校を考える"
+          room="1A101"
         ></CourseTile>
 
-        <CourseTile state="none" courseName="" courseId=""></CourseTile>
+        <CourseTile state="none" name="" room=""></CourseTile>
 
         <CourseTile
           state="default"
-          courseName="学校を考える"
-          courseId="1A101"
+          name="学校を考える"
+          room="1A101"
           caution="他1件"
         ></CourseTile>
       </div>

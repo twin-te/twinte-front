@@ -17,29 +17,36 @@
         :whichSelected="whichSelected"
         :onClickToggleButton="onClickLabel"
       />
-      <div class="main__module">
-        {{ module }}
-      </div>
-      <div class="main__module-selector">
-        <ToggleIconButton
-          class="main__module-btn"
-          @click="togglePopupModule"
-          size="small"
-          color="normal"
-          icon-name="expand_more"
-          :is-active="false"
-        />
-        <Popup class="main__module-popup" v-show="popupModule">
-          <PopupContent
-            v-for="data in popupModuleData"
-            :key="data"
-            @click="onClickModule(data)"
-            :value="data"
-          >
-          </PopupContent>
-        </Popup>
+      <div
+        class="main__module"
+        v-click-away="closePopupModule"
+        v-if="whichSelected === 'left'"
+      >
+        <div class="main__module-text">
+          {{ module }}
+        </div>
+        <div class="main__module-selector">
+          <ToggleIconButton
+            class="main__module-btn"
+            @click="togglePopupModule"
+            size="small"
+            color="normal"
+            icon-name="expand_more"
+            :is-active="false"
+          />
+          <Popup class="main__module-popup" v-show="popupModule">
+            <PopupContent
+              v-for="data in popupModuleData"
+              :key="data"
+              @click="onClickModule(data)"
+              :value="data"
+            >
+            </PopupContent>
+          </Popup>
+        </div>
       </div>
       <Button
+        v-if="whichSelected === 'left'"
         :state="isCurrentModule ? 'active' : 'default'"
         :pauseActiveStyle="false"
         class="main__btn"
@@ -58,26 +65,84 @@
         v-if="whichSelected === 'left'"
       >
         <div
-          v-for="(_, d) in 5"
-          :key="weeks[d]"
-          :class="{ table__day: true, 'table__day--first': d == 0 }"
+          v-for="period in 6"
+          :key="period"
+          :class="{ table__period: true, 'table__period--first': period == 1 }"
         >
-          {{ weeks[d] }}
+          {{ period }}
         </div>
-        <template v-for="(y, period) in table" :key="y">
-          <div class="table__period">{{ period + 1 }}</div>
+        <template v-for="(y, d) in table" :key="d">
+          <div class="table__day">
+            {{ weeks[d] }}
+          </div>
           <CourseTile
             v-for="(x, id) in y"
             :key="id"
             class="table__course"
             @click="onClickCourseTile(x)"
             :state="x.state"
-            :courseName="x.name"
-            :courseId="x.id"
+            :name="x.name"
+            :room="x.room"
           />
         </template>
       </div>
-      <div v-else>特殊</div>
+      <div class="special" v-else>
+        <div class="special-header">
+          <div class="special-header__label">集中</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-contents">
+          <div class="special-contents__module">春A</div>
+          <CourseTile
+            class="special-contents__course"
+            state="default"
+            name="Pedagogy for a Changing World I"
+            room="1A101"
+          />
+          <div class="special-contents__module">夏休</div>
+          <CourseTile
+            class="special-contents__course"
+            state="default"
+            name="初等数学基礎"
+            room="1A101"
+          />
+          <div class="special-contents__module">秋A</div>
+          <CourseTile
+            class="special-contents__course"
+            state="default"
+            name="生物科学オムニバス特講"
+            room="-"
+          />
+        </div>
+
+        <div class="special-header">
+          <div class="special-header__label">応談</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-contents">
+          <div class="special-contents__module">-</div>
+          <CourseTile
+            class="special-contents__course"
+            state="none"
+            name=""
+            room=""
+          />
+        </div>
+
+        <div class="special-header">
+          <div class="special-header__label">随時</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-contents">
+          <div class="special-contents__module">-</div>
+          <CourseTile
+            class="special-contents__course"
+            state="none"
+            name=""
+            room=""
+          />
+        </div>
+      </div>
     </div>
   </div>
   <Modal
@@ -118,10 +183,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import CourseTile, {
-  State as CourseTileState,
-} from "~/components/CourseTile.vue";
+import { computed, defineComponent, ref, watch } from "vue";
+import CourseTile from "~/components/CourseTile.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -132,19 +195,14 @@ import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import { dayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
-import { tableConstructor } from "~/entities/table";
+import { CourseState, dummyData } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
 import { useStore } from "~/store";
 import { useRouter } from "vue-router";
 import { useToggle } from "@vueuse/core";
-
-type CourseState = {
-  id: string;
-  name: string;
-  state: CourseTileState;
-};
+import { authCheck } from "~/usecases/authCheck";
 
 export default defineComponent({
   name: "Table",
@@ -185,6 +243,9 @@ export default defineComponent({
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
     const [popupModule, togglePopupModule] = useToggle(false);
+    const closePopupModule = () => {
+      popupModule.value = false;
+    };
     const popupModuleData = moduleMap;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
@@ -192,16 +253,20 @@ export default defineComponent({
     };
 
     /** table */
-    const table = computed(() =>
-      tableConstructor<CourseState>({ name: "", id: "", state: "none" })
-    );
+    const table = computed(() => dummyData.table);
     const activeCourseTile = ref<CourseState | null>(null);
     const setCurrentModule = () => {
       module.value = currentModule.value;
     };
     const onClickCourseTile = async (course: CourseState) => {
-      activeCourseTile.value = course;
-      await router.push(`/course/${activeCourseTile.value.id}`);
+      switch (course.state) {
+        case "default":
+          activeCourseTile.value = course;
+          await router.push(`/course/${activeCourseTile.value.room}`);
+          return;
+        default:
+          return;
+      }
     };
     const resetCourseTileState = () => {
       activeCourseTile.value = null;
@@ -213,7 +278,11 @@ export default defineComponent({
     const login = async () => {
       await router.push("/login");
     };
+    const { state: isLogin } = useUsecase(authCheck, true);
     const welcomeModal = ref(false);
+    watch(isLogin, (v) => {
+      welcomeModal.value = !v;
+    });
     const openWelcomeModal = () => {
       welcomeModal.value = true;
     };
@@ -229,6 +298,7 @@ export default defineComponent({
       onClickLabel,
       popupModule,
       togglePopupModule,
+      closePopupModule,
       popupModuleData,
       onClickModule,
       module,
@@ -242,6 +312,7 @@ export default defineComponent({
       onClickCourseTile,
       resetCourseTileState,
       login,
+      isLogin,
       welcomeModal,
       openWelcomeModal,
       closeWelcomeModal,
@@ -261,9 +332,9 @@ export default defineComponent({
   margin: $spacing-4 0 0;
   height: calc(100vh - 7.6rem);
   grid-template:
-    "toggle module module-selector btn" $spacing-7
-    "table table table table" 1fr
-    / 12rem 1fr 1fr 10.4rem;
+    "toggle module btn" $spacing-7
+    "table table table" 1fr
+    / 12rem 1fr 10.4rem;
 
   @include landscape {
     border-radius: $spacing-4;
@@ -275,9 +346,14 @@ export default defineComponent({
   }
 
   &__module {
-    color: $text-main;
-    margin: auto 0.6rem auto auto;
     grid-area: module;
+    display: flex;
+    margin: auto auto;
+  }
+
+  &__module-text {
+    color: $text-main;
+    margin: auto 0.6rem auto;
   }
 
   &__module-selector {
@@ -323,25 +399,64 @@ export default defineComponent({
   display: grid;
   grid-template-rows: 1.4rem repeat(6, 1fr);
   grid-template-columns: 2rem repeat(5, 1fr);
+  grid-auto-flow: column;
   gap: 0.2rem;
-
-  &__day {
-    color: $text-sub;
-    font-size: $font-small;
-    margin: auto;
-    &--first {
-      grid-column-start: 2;
-    }
-  }
 
   &__period {
     color: $text-sub;
     font-size: $font-small;
     margin: auto auto auto 0;
+    &--first {
+      grid-row-start: 2;
+    }
   }
 
-  /* &__course {
-  } */
+  &__day {
+    color: $text-sub;
+    font-size: $font-small;
+    margin: auto;
+  }
+}
+
+.special {
+  grid-area: table;
+}
+
+.special-header {
+  display: flex;
+  margin: 1.2rem 0 1.6rem 0;
+  align-items: center;
+  height: 2rem;
+
+  &__label {
+    color: $text-main;
+    font-size: $font-medium;
+  }
+  &__divider {
+    border-radius: 0.2rem;
+    height: 0.4rem;
+    width: calc(100% - 4rem);
+    margin-left: 1.2rem;
+    box-shadow: $shadow-input-concave;
+  }
+}
+
+.special-contents {
+  width: 100%;
+  grid-area: table;
+  display: grid;
+  grid-template-columns: 4.8rem 1fr;
+  grid-template-rows: 4.8rem;
+  gap: 0.2rem;
+  margin-bottom: 3.2rem;
+  &__module {
+    color: $text-sub;
+    font-size: $font-small;
+    margin-left: 0.4rem;
+  }
+  &__course {
+    height: 4.8rem;
+  }
 }
 
 .welcome-modal .modal {
