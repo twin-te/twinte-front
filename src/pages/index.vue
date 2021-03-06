@@ -176,7 +176,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 import CourseTile, {
   State as CourseTileState,
 } from "~/components/CourseTile.vue";
@@ -197,6 +197,7 @@ import { useUsecase } from "~/usecases";
 import { useStore } from "~/store";
 import { useRouter } from "vue-router";
 import { useToggle } from "@vueuse/core";
+import { authCheck } from "~/usecases/authCheck";
 
 type CourseState = {
   id: string;
@@ -274,7 +275,11 @@ export default defineComponent({
     const login = async () => {
       await router.push("/login");
     };
+    const { state: isLogin } = useUsecase(authCheck, true);
     const welcomeModal = ref(false);
+    watch(isLogin, (v) => {
+      welcomeModal.value = !v;
+    });
     const openWelcomeModal = () => {
       welcomeModal.value = true;
     };
@@ -304,6 +309,7 @@ export default defineComponent({
       onClickCourseTile,
       resetCourseTileState,
       login,
+      isLogin,
       welcomeModal,
       openWelcomeModal,
       closeWelcomeModal,
