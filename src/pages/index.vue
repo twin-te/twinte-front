@@ -80,7 +80,7 @@
             @click="onClickCourseTile(x)"
             :state="x.state"
             :name="x.name"
-            :room="x.id"
+            :room="x.room"
           />
         </template>
       </div>
@@ -182,9 +182,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
-import CourseTile, {
-  State as CourseTileState,
-} from "~/components/CourseTile.vue";
+import CourseTile from "~/components/CourseTile.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -195,7 +193,7 @@ import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import { dayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
-import { tableConstructor } from "~/entities/table";
+import { CourseState, dummyData } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
@@ -203,12 +201,6 @@ import { useStore } from "~/store";
 import { useRouter } from "vue-router";
 import { useToggle } from "@vueuse/core";
 import { authCheck } from "~/usecases/authCheck";
-
-type CourseState = {
-  id: string;
-  name: string;
-  state: CourseTileState;
-};
 
 export default defineComponent({
   name: "Table",
@@ -259,9 +251,7 @@ export default defineComponent({
     };
 
     /** table */
-    const table = computed(() =>
-      tableConstructor<CourseState>({ name: "", id: "", state: "none" })
-    );
+    const table = computed(() => dummyData.table);
     const activeCourseTile = ref<CourseState | null>(null);
     const setCurrentModule = () => {
       module.value = currentModule.value;
@@ -270,7 +260,7 @@ export default defineComponent({
       switch (course.state) {
         case "default":
           activeCourseTile.value = course;
-          await router.push(`/course/${activeCourseTile.value.id}`);
+          await router.push(`/course/${activeCourseTile.value.room}`);
           return;
         default:
           return;
