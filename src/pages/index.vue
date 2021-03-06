@@ -17,28 +17,33 @@
         :whichSelected="whichSelected"
         :onClickToggleButton="onClickLabel"
       />
-      <div class="main__module" v-if="whichSelected === 'left'">
-        {{ module }}
-      </div>
-      <div class="main__module-selector" v-if="whichSelected === 'left'">
-        <ToggleIconButton
-          v-click-away="closePopupModule"
-          class="main__module-btn"
-          @click="togglePopupModule"
-          size="small"
-          color="normal"
-          icon-name="expand_more"
-          :is-active="false"
-        />
-        <Popup class="main__module-popup" v-show="popupModule">
-          <PopupContent
-            v-for="data in popupModuleData"
-            :key="data"
-            @click="onClickModule(data)"
-            :value="data"
-          >
-          </PopupContent>
-        </Popup>
+      <div
+        class="main__module"
+        v-click-away="closePopupModule"
+        v-if="whichSelected === 'left'"
+      >
+        <div class="main__module-text">
+          {{ module }}
+        </div>
+        <div class="main__module-selector">
+          <ToggleIconButton
+            class="main__module-btn"
+            @click="togglePopupModule"
+            size="small"
+            color="normal"
+            icon-name="expand_more"
+            :is-active="false"
+          />
+          <Popup class="main__module-popup" v-show="popupModule">
+            <PopupContent
+              v-for="data in popupModuleData"
+              :key="data"
+              @click="onClickModule(data)"
+              :value="data"
+            >
+            </PopupContent>
+          </Popup>
+        </div>
       </div>
       <Button
         v-if="whichSelected === 'left'"
@@ -329,9 +334,9 @@ export default defineComponent({
   margin: $spacing-4 0 0;
   height: calc(100vh - 7.6rem);
   grid-template:
-    "toggle module module-selector btn" $spacing-7
-    "table table table table" 1fr
-    / 12rem 1fr 1fr 10.4rem;
+    "toggle module btn" $spacing-7
+    "table table table" 1fr
+    / 12rem 1fr 10.4rem;
 
   @include landscape {
     border-radius: $spacing-4;
@@ -343,9 +348,14 @@ export default defineComponent({
   }
 
   &__module {
-    color: $text-main;
-    margin: auto 0.6rem auto auto;
     grid-area: module;
+    display: flex;
+    margin: auto auto;
+  }
+
+  &__module-text {
+    color: $text-main;
+    margin: auto 0.6rem auto;
   }
 
   &__module-selector {
