@@ -65,14 +65,16 @@
         v-if="whichSelected === 'left'"
       >
         <div
-          v-for="(_, d) in 5"
-          :key="weeks[d]"
-          :class="{ table__day: true, 'table__day--first': d == 0 }"
+          v-for="period in 6"
+          :key="period"
+          :class="{ table__period: true, 'table__period--first': period == 1 }"
         >
-          {{ weeks[d] }}
+          {{ period }}
         </div>
-        <template v-for="(y, period) in table" :key="y">
-          <div class="table__period">{{ period + 1 }}</div>
+        <template v-for="(y, d) in table" :key="d">
+          <div class="table__day">
+            {{ weeks[d] }}
+          </div>
           <CourseTile
             v-for="(x, id) in y"
             :key="id"
@@ -397,25 +399,23 @@ export default defineComponent({
   display: grid;
   grid-template-rows: 1.4rem repeat(6, 1fr);
   grid-template-columns: 2rem repeat(5, 1fr);
+  grid-auto-flow: column;
   gap: 0.2rem;
-
-  &__day {
-    color: $text-sub;
-    font-size: $font-small;
-    margin: auto;
-    &--first {
-      grid-column-start: 2;
-    }
-  }
 
   &__period {
     color: $text-sub;
     font-size: $font-small;
     margin: auto auto auto 0;
+    &--first {
+      grid-row-start: 2;
+    }
   }
 
-  /* &__course {
-  } */
+  &__day {
+    color: $text-sub;
+    font-size: $font-small;
+    margin: auto;
+  }
 }
 
 .special {
