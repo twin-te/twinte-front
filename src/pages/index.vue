@@ -22,6 +22,7 @@
       </div>
       <div class="main__module-selector">
         <ToggleIconButton
+          v-click-away="closePopupModule"
           class="main__module-btn"
           @click="togglePopupModule"
           size="small"
@@ -197,6 +198,9 @@ export default defineComponent({
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
     const [popupModule, togglePopupModule] = useToggle(false);
+    const closePopupModule = () => {
+      popupModule.value = false;
+    };
     const popupModuleData = moduleMap;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
@@ -241,6 +245,7 @@ export default defineComponent({
       onClickLabel,
       popupModule,
       togglePopupModule,
+      closePopupModule,
       popupModuleData,
       onClickModule,
       module,

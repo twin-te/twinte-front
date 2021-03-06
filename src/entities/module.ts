@@ -15,7 +15,6 @@ export const moduleJaList: ModuleJa[] = [
   "春B",
   "春C",
   "秋A",
-  "秋A",
   "秋B",
   "秋C",
 ];
