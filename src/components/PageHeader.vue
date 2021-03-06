@@ -16,8 +16,8 @@ export default defineComponent({
       default: false,
     },
     calendar: {
-      type: Object as PropType<Calendar>,
-      default: { month: 4, day: 1, week: "木", schdule: "休日" },
+      type: Object as PropType<Calendar | null>,
+      default: null,
     },
   },
   emits: ["click"],
@@ -47,7 +47,7 @@ export default defineComponent({
       <h1 class="header__title" v-else>
         <slot name="title"></slot>
       </h1>
-      <div class="header__calendar" v-if="atHome">
+      <div class="header__calendar" v-if="atHome && calendar">
         <p class="header__date">
           {{ calendar.month }}/{{ calendar.day }} ({{ calendar.week }})
         </p>
