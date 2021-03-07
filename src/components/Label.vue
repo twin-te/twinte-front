@@ -1,0 +1,47 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "Label",
+  props: {
+    value: {
+      type: String,
+      required: true,
+    },
+    mandatory: {
+      type: Boolean,
+      default: false,
+    },
+  },
+});
+</script>
+
+<template>
+  <div class="label">
+    {{ value }}
+    <span v-if="mandatory" class="label__mandatory">必須</span>
+  </div>
+</template>
+
+<style scoped lang="scss">
+@import "~/scss/main.scss";
+
+.label {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  font-size: $font-medium;
+  font-weight: 500;
+  line-height: $single-line;
+  &__mandatory {
+    font-size: $font-minimum;
+    font-weight: normal;
+    line-height: $single-line;
+    color: $white;
+    background: $unselected;
+    border-radius: $radius-1;
+    padding: 0 $spacing-1;
+    margin-left: $spacing-2;
+  }
+}
+</style>
