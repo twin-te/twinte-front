@@ -221,6 +221,15 @@
         @click-remove-button="removeScheduleRow"
       ></ScheduleEditer>
     </section>
+    <section class="preview__content">
+      <LabeledTextField label="授業名" mandatory>
+        <TextFieldSingleLine
+          v-model="inputValue"
+          placeholder="例)ゼミ"
+          style="width: 100%"
+        ></TextFieldSingleLine>
+      </LabeledTextField>
+    </section>
   </article>
 </template>
 
@@ -247,6 +256,8 @@ import PopupContent, {
 import Modal from "../components/Modal.vue";
 import PageHeader from "../components/PageHeader.vue";
 import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
+import LabeledTextField from "~/components/LabeledTextField.vue";
+import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -266,6 +277,8 @@ export default defineComponent({
     Sidebar,
     SidebarContent,
     ToggleIconButton,
+    LabeledTextField,
+    TextFieldSingleLine,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -371,6 +384,9 @@ export default defineComponent({
       schedules.value.splice(index, 1);
     };
 
+    // labeled-text-field
+    const inputValue = ref("");
+
     return {
       addScheduleRow,
       clickHandler,
@@ -388,6 +404,7 @@ export default defineComponent({
       state,
       schedules,
       tileStat,
+      inputValue,
     };
   },
 });
