@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import App from "./pages/index.vue";
 import Add from "./pages/add/index.vue";
-import Details from "./pages/course/_course_id.vue";
+import Details from "./pages/course/_course_id/index.vue";
 import Preview from "./pages/preview.vue";
 
 const history = createWebHistory();
