@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
 
-type State = "active" | "default" | "disabled";
+export type State = "active" | "default" | "disabled";
 
 type Props = {
   onClick: Function;
@@ -74,6 +74,7 @@ export default defineComponent({
     :class="{
       button: true,
       '--active': isActive || state === 'active',
+      '--disabled': state === 'disabled',
       [`button--${size}`]: true,
       [`button--${color}`]: true,
       [`button--${layout}`]: true,
@@ -177,6 +178,10 @@ export default defineComponent({
       color: white;
       @include void-text-liner;
     }
+  }
+  &.--disabled {
+    opacity: 0.3;
+    box-shadow: $shadow-convex;
   }
 }
 </style>
