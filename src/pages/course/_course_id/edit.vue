@@ -128,18 +128,16 @@ export default defineComponent({
     const scheduleMax = 4;
     const scheduleMin = 1;
     const addSchedule = () => {
-      if (schedules.value.length < scheduleMax) {
-        schedules.value.push({
-          semester: "指定なし",
-          date: "指定なし",
-          period: "指定なし",
-        });
-      }
+      if (schedules.value.length >= scheduleMax) return;
+      schedules.value.push({
+        semester: "指定なし",
+        date: "指定なし",
+        period: "指定なし",
+      });
     };
     const removeSchedule = (index: number) => {
-      if (schedules.value.length > scheduleMin) {
-        schedules.value.splice(index, 1);
-      }
+      if (schedules.value.length <= scheduleMin) return;
+      schedules.value.splice(index, 1);
     };
 
     const name = ref("");
