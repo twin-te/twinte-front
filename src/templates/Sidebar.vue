@@ -1,15 +1,14 @@
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, ref } from "vue";
 import SidebarContent from "~/components/SidebarContent.vue";
 import Button from "~/components/Button.vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
 
 type Content = {
   iconName: string;
   item: string;
   link: string;
-  selected: boolean;
 };
 
 export default defineComponent({
@@ -28,42 +27,26 @@ export default defineComponent({
   emits: ["click"],
   setup: () => {
     const router = useRouter();
-    const route = useRoute();
     const { closeSidebar } = useSidebar();
 
     // ページ移動するとサイドバーを閉じる
     router.afterEach(closeSidebar);
 
-    const menu = computed<Content[]>(() =>
-      [
-        { iconName: "home", item: "ホーム", link: "/" },
-        { iconName: "add", item: "授業の追加", link: "/add" },
-        { iconName: "event_note", item: "学年暦", link: "/event_note" },
-        { iconName: "campaign", item: "お知らせ", link: "/campaign" },
-      ].map((content) => ({
-        ...content,
-        selected: route.path.toString() === content.link,
-      }))
-    );
-    const settings = computed<Content[]>(() =>
-      [
-        { iconName: "view_compact", item: "表示設定", link: "/view_compact" },
-        { iconName: "notifications", item: "通知設定", link: "/notifications" },
-      ].map((content) => ({
-        ...content,
-        selected: route.path.toString() === content.link,
-      }))
-    );
-    const links = computed<Content[]>(() =>
-      [
-        { iconName: "help", item: "使い方", link: "/help" },
-        { iconName: "people", item: "寄付者一覧", link: "/people" },
-        { iconName: "share", item: "時間割のシェア", link: "/share" },
-      ].map((content) => ({
-        ...content,
-        selected: route.path.toString() === content.link,
-      }))
-    );
+    const menu = ref<Content[]>([
+      { iconName: "home", item: "ホーム", link: "/" },
+      { iconName: "add", item: "授業の追加", link: "/add" },
+      { iconName: "event_note", item: "学年暦", link: "/event_note" },
+      { iconName: "campaign", item: "お知らせ", link: "/campaign" },
+    ]);
+    const settings = ref<Content[]>([
+      { iconName: "view_compact", item: "表示設定", link: "/view_compact" },
+      { iconName: "notifications", item: "通知設定", link: "/notifications" },
+    ]);
+    const links = ref<Content[]>([
+      { iconName: "help", item: "使い方", link: "/help" },
+      { iconName: "people", item: "寄付者一覧", link: "/people" },
+      { iconName: "share", item: "時間割のシェア", link: "/share" },
+    ]);
 
     return { menu, settings, links };
   },
@@ -103,7 +86,7 @@ export default defineComponent({
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
-          :selected="value.selected"
+          :selected="value.link === $route.path.toString()"
         ></SidebarContent>
       </ul>
 
