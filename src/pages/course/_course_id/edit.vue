@@ -148,10 +148,6 @@ export default defineComponent({
     const method = ref("");
 
     /** button */
-    const save = () => {
-      console.log("save");
-      router.push(`/course/${route.params.course_id}`);
-    };
     const btnState = computed(() => {
       if (
         !name.value ||
@@ -162,6 +158,10 @@ export default defineComponent({
         return "disabled";
       else return "default";
     });
+    const save = () => {
+      if (btnState.value == "disabled") return;
+      router.push(`/course/${route.params.course_id}`);
+    };
 
     /** modal */
     const modal = ref(false);
@@ -185,9 +185,16 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
+.header {
+  max-width: 900px;
+}
 .edit {
+  max-width: 900px;
   margin-top: $spacing-5;
   padding: $spacing-0 $spacing-4;
+  @include landscape {
+    padding: $spacing-0 $spacing-9;
+  }
   &__mask {
     height: calc(100vh - 16.2rem);
     @include scroll-mask;
@@ -205,6 +212,9 @@ export default defineComponent({
   &__footer {
     text-align: center;
     margin: $spacing-3 $spacing-0 $spacing-6;
+    @include landscape {
+      margin-bottom: $spacing-7;
+    }
   }
   .button {
     display: inline-block;
