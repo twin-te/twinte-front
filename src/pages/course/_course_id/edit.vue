@@ -55,14 +55,16 @@
         </div>
       </div>
     </div>
-    <Button
-      @click="save"
-      size="large"
-      layout="fill"
-      color="primary"
-      :state="btnState"
-      >変更を保存</Button
-    >
+    <section class="edit__footer">
+      <Button
+        @click="save"
+        size="large"
+        layout="fill"
+        color="primary"
+        :state="btnState"
+        >変更を保存</Button
+      >
+    </section>
   </div>
   <Modal
     class="leave-page-modal"
@@ -200,8 +202,12 @@ export default defineComponent({
     display: grid;
     gap: 1.4rem;
   }
-  .button {
+  &__footer {
+    text-align: center;
     margin: $spacing-3 $spacing-0 $spacing-6;
+  }
+  .button {
+    display: inline-block;
   }
 }
 .leave-page-modal .modal {
