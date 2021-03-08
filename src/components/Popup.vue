@@ -1,13 +1,27 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import { onClickOutside } from "@vueuse/core";
 
 export default defineComponent({
   name: "Popup",
+  props: {
+    onClick: {
+      type: Function,
+      required: true,
+    },
+  },
+  emits: ["click"],
+  setup: (_, { emit }) => {
+    const target = ref(null);
+    onClickOutside(target, (e: any) => emit("click", e));
+
+    return { target };
+  },
 });
 </script>
 
 <template>
-  <ul class="popup">
+  <ul ref="target" class="popup">
     <slot />
   </ul>
 </template>
