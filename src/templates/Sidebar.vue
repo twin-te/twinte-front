@@ -97,6 +97,7 @@ export default defineComponent({
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
+          :selected="value.link === $route.path.toString()"
         ></SidebarContent>
       </ul>
 
@@ -107,6 +108,7 @@ export default defineComponent({
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
+          :selected="value.link === $route.path.toString()"
         ></SidebarContent>
       </ul>
     </section>
