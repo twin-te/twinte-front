@@ -2,7 +2,7 @@
 import { defineComponent, ref } from "vue";
 import SidebarContent from "~/components/SidebarContent.vue";
 import Button from "~/components/Button.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
 
 type Content = {
@@ -27,10 +27,13 @@ export default defineComponent({
   emits: ["click"],
   setup: () => {
     const router = useRouter();
+    const route = useRoute();
     const { closeSidebar } = useSidebar();
 
     // ページ移動するとサイドバーを閉じる
     router.afterEach(closeSidebar);
+
+    const isSelected = (link: string) => link === route.path.toString();
 
     const menu = ref<Content[]>([
       { iconName: "home", item: "ホーム", link: "/" },
@@ -48,7 +51,7 @@ export default defineComponent({
       { iconName: "share", item: "時間割のシェア", link: "/share" },
     ]);
 
-    return { menu, settings, links };
+    return { menu, settings, links, isSelected };
   },
 });
 </script>
@@ -86,7 +89,7 @@ export default defineComponent({
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
-          :selected="value.link === $route.path.toString()"
+          :selected="isSelected(value.link)"
         ></SidebarContent>
       </ul>
 
@@ -97,7 +100,7 @@ export default defineComponent({
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
-          :selected="value.link === $route.path.toString()"
+          :selected="isSelected(value.link)"
         ></SidebarContent>
       </ul>
 
@@ -108,7 +111,7 @@ export default defineComponent({
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
-          :selected="value.link === $route.path.toString()"
+          :selected="isSelected(value.link)"
         ></SidebarContent>
       </ul>
     </section>
