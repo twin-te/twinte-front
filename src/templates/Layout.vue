@@ -3,7 +3,7 @@ import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
 import { StateKey } from "~/store";
 import Sidebar from "./Sidebar.vue";
-import GrayFilter from "./GrayFilter.vue";
+import GrayFilter from "~/components/GrayFilter.vue";
 
 export default defineComponent({
   components: { Sidebar, GrayFilter },
