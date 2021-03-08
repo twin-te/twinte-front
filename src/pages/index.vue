@@ -262,7 +262,7 @@ export default defineComponent({
       switch (course.state) {
         case "default":
           activeCourseTile.value = course;
-          await router.push(`/course/${activeCourseTile.value.room}`);
+          await router.push(`/course/${activeCourseTile.value.name}`);
           return;
         default:
           return;
