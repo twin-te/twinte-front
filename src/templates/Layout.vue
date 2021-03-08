@@ -40,10 +40,12 @@ export default defineComponent({
     @include portrait {
       display: block;
     }
+    z-index: 7;
   }
 }
 
 .sidebar {
+  z-index: 8;
   @include portrait {
     position: fixed;
   }
