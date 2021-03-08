@@ -63,7 +63,6 @@ export default defineComponent({
   <div
     class="text-field text-field__box"
     :style="{
-      width: `${width}rem`,
       height: `${height}rem`,
     }"
   >

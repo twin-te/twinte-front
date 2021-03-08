@@ -150,7 +150,7 @@ export default defineComponent({
   &--fill {
     display: block;
     width: 100%;
-    max-width: 400px;
+    max-width: 60rem;
     padding: 0;
   }
   &--half {
