@@ -2,6 +2,14 @@
 import { defineComponent, ref } from "vue";
 import SidebarContent from "~/components/SidebarContent.vue";
 import Button from "~/components/Button.vue";
+import { useRouter } from "vue-router";
+import { useSidebar } from "~/usecases/useSidebar";
+
+type Content = {
+  iconName: string;
+  item: string;
+  link: string;
+};
 
 export default defineComponent({
   name: "Sidebar",
@@ -17,28 +25,30 @@ export default defineComponent({
   },
 
   emits: ["click"],
-  setup: (_, { emit }) => {
-    const handleClick = () => {
-      emit("click");
-    };
+  setup: () => {
+    const router = useRouter();
+    const { closeSidebar } = useSidebar();
 
-    const menu = ref([
-      { iconName: "home", item: "ホーム" },
-      { iconName: "add", item: "授業の追加" },
-      { iconName: "event_note", item: "学年暦" },
-      { iconName: "campaign", item: "お知らせ" },
+    // ページ移動するとサイドバーを閉じる
+    router.afterEach(closeSidebar);
+
+    const menu = ref<Content[]>([
+      { iconName: "home", item: "ホーム", link: "/" },
+      { iconName: "add", item: "授業の追加", link: "/add" },
+      { iconName: "event_note", item: "学年暦", link: "/event_note" },
+      { iconName: "campaign", item: "お知らせ", link: "/campaign" },
     ]);
-    const settings = ref([
-      { iconName: "view_compact", item: "表示設定" },
-      { iconName: "notifications", item: "通知設定" },
+    const settings = ref<Content[]>([
+      { iconName: "view_compact", item: "表示設定", link: "/view_compact" },
+      { iconName: "notifications", item: "通知設定", link: "/notifications" },
     ]);
-    const links = ref([
-      { iconName: "help", item: "使い方" },
-      { iconName: "people", item: "寄付者一覧" },
-      { iconName: "share", item: "時間割のシェア" },
+    const links = ref<Content[]>([
+      { iconName: "help", item: "使い方", link: "/help" },
+      { iconName: "people", item: "寄付者一覧", link: "/people" },
+      { iconName: "share", item: "時間割のシェア", link: "/share" },
     ]);
 
-    return { handleClick, menu, settings, links };
+    return { menu, settings, links };
   },
 });
 </script>
@@ -47,21 +57,32 @@ export default defineComponent({
   <div class="sidebar">
     <section class="sidebar__head">
       <Button
-        @click="handleClick"
+        v-if="isLogin"
+        @click="$router.push('/logout')"
         size="small"
         layout="fill"
         color="primary"
         :pauseActiveStyle="false"
       >
-        {{ isLogin ? "ログアウト" : "ログイン" }}</Button
+        ログアウト
+      </Button>
+      <Button
+        v-else
+        @click="$router.push('/login')"
+        size="small"
+        layout="fill"
+        color="primary"
+        :pauseActiveStyle="false"
       >
+        ログイン
+      </Button>
     </section>
 
     <section class="sidebar__contents">
       <ul class="sidebar__listgroup">
         <SidebarContent
-          @click="handleClick"
           v-for="value in menu"
+          @click="$router.push(value.link)"
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
@@ -70,8 +91,8 @@ export default defineComponent({
 
       <ul class="sidebar__listgroup">
         <SidebarContent
-          @click="handleClick"
           v-for="value in settings"
+          @click="$router.push(value.link)"
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
@@ -80,8 +101,8 @@ export default defineComponent({
 
       <ul class="sidebar__listgroup">
         <SidebarContent
-          @click="handleClick"
           v-for="value in links"
+          @click="$router.push(value.link)"
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
@@ -92,7 +113,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/main.scss";
+@import "~/scss/main.scss";
 .sidebar {
   display: flex;
   flex-direction: column;
