@@ -79,7 +79,7 @@
             v-for="(courses, id) in y"
             :key="id"
             class="table__course"
-            @click="onClickCourseTile(courses)"
+            @click="onClickCourseTile(courses, weeks[d], id + 1)"
             :state="courses.length === 0 ? 'none' : 'default'"
             :name="courses[0]?.name ?? ''"
             :room="courses[0]?.room ?? ''"
@@ -147,7 +147,48 @@
     </div>
   </div>
   <Modal
-    v-if="welcomeModal"
+    v-if="duplicationState.courses.length > 0"
+    class="duplication-modal"
+    @click="clearDuplicationState()"
+    size="large"
+  >
+    <template #title>授業が重複しています</template>
+    <template #contents>
+      <p class="modal__text">
+        このコマ({{ duplicationState.day }}曜{{
+          duplicationState.period
+        }}限)には複数の授業が登録されています。
+        不要な授業がある場合、以下から「授業詳細」ページへ移動し右上のメニューから削除してください。
+      </p>
+      <CourseTile
+        v-for="course in duplicationState.courses"
+        :key="course.courseId"
+        class="modal__course-tile"
+        state="default"
+        :name="course.name"
+        :room="course.room"
+        @click="
+          onClickCourseTile(
+            [course],
+            duplicationState.day,
+            duplicationState.period
+          )
+        "
+      />
+    </template>
+    <template #button>
+      <Button
+        @click="clearDuplicationState()"
+        size="medium"
+        layout="fill"
+        color="base"
+      >
+        閉じる
+      </Button>
+    </template>
+  </Modal>
+  <Modal
+    v-if="welcomeModal && false"
     class="welcome-modal"
     @click="closeWelcomeModal"
     size="large"
@@ -194,7 +235,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader, { Calendar } from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
-import { dayJaList } from "~/entities/day";
+import { DayJa, dayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
 import { CourseState, dummyData } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
@@ -255,28 +296,45 @@ export default defineComponent({
 
     /** table */
     const table = computed(() => dummyData.table);
-    const activeCourseTile = ref<CourseState | null>(null);
     const setCurrentModule = () => {
       module.value = currentModule.value;
     };
-    const onClickCourseTile = async (courses: CourseState[]) => {
+    const onClickCourseTile = async (
+      courses: CourseState[],
+      day: DayJa,
+      period: number
+    ) => {
       switch (courses.length) {
         case 1:
-          activeCourseTile.value = courses[0];
-          await router.push(`/course/${activeCourseTile.value.name}`);
+          await router.push(`/course/${courses[0].name}`);
           break;
         case 2:
-          alert("重複モーダル表示");
+          duplicationState.value = {
+            courses,
+            day,
+            period,
+          };
           break;
         default:
           break;
       }
     };
-    const resetCourseTileState = () => {
-      activeCourseTile.value = null;
-    };
 
-    const todoFn = () => console.warn("not implements");
+    // duplication modal
+    type DuplocationState = {
+      day: DayJa;
+      period: number;
+      courses: CourseState[];
+    };
+    const initialDuplicationState: DuplocationState = {
+      courses: [],
+      day: "月",
+      period: 1,
+    };
+    const duplicationState = ref<DuplocationState>(initialDuplicationState);
+    const clearDuplicationState = () => {
+      duplicationState.value = initialDuplicationState;
+    };
 
     // welcome modal
     const login = async () => {
@@ -306,17 +364,16 @@ export default defineComponent({
       popupModuleData,
       onClickModule,
       module,
-      todoFn,
       table,
       calReady,
       calendar,
       setCurrentModule,
       isCurrentModule,
-      activeCourseTile,
       onClickCourseTile,
-      resetCourseTileState,
       login,
       isLogin,
+      duplicationState,
+      clearDuplicationState,
       welcomeModal,
       openWelcomeModal,
       closeWelcomeModal,
@@ -481,6 +538,18 @@ export default defineComponent({
     &:last-child {
       margin-left: 1.2rem;
     }
+  }
+}
+
+.duplication-modal .modal {
+  &__text {
+    font-size: $font-medium;
+    line-height: $multi-line;
+    margin-bottom: 3rem;
+  }
+  &__course-tile {
+    height: 4.8rem;
+    margin-bottom: $spacing-2;
   }
 }
 
