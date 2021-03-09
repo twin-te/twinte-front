@@ -201,8 +201,8 @@ import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
 import { useStore } from "~/store";
 import { useRouter } from "vue-router";
-import { useToggle } from "@vueuse/core";
 import { authCheck } from "~/usecases/authCheck";
+import { useSwitch } from "~/hooks/useSwitch";
 
 export default defineComponent({
   name: "Table",
@@ -242,10 +242,9 @@ export default defineComponent({
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
-    const [popupModule, togglePopupModule] = useToggle(false);
-    const closePopupModule = () => {
-      popupModule.value = false;
-    };
+    const [popupModule, , closePopupModule, togglePopupModule] = useSwitch(
+      false
+    );
     const popupModuleData = moduleMap;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
@@ -279,16 +278,14 @@ export default defineComponent({
       await router.push("/login");
     };
     const { state: isLogin } = useUsecase(authCheck, true);
-    const welcomeModal = ref(false);
-    watch(isLogin, (v) => {
-      welcomeModal.value = !v;
-    });
-    const openWelcomeModal = () => {
-      welcomeModal.value = true;
-    };
-    const closeWelcomeModal = () => {
-      welcomeModal.value = false;
-    };
+    const [
+      welcomeModal,
+      openWelcomeModal,
+      closeWelcomeModal,
+      ,
+      setWelcomeModal,
+    ] = useSwitch(false);
+    watch(isLogin, (v) => setWelcomeModal(!v));
 
     return {
       toggleSidebar,
