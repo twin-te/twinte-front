@@ -1,6 +1,5 @@
 import { Day } from "~/api/@types";
 import { weeksNum } from "./day";
-import { State as CourseTileState } from "~/components/CourseTile.vue";
 
 export const getValue = <T = unknown>(
   target: T[][],
@@ -11,50 +10,35 @@ export const getValue = <T = unknown>(
 export type CourseState = {
   name: string;
   room: string;
-  state: CourseTileState;
+  courseId: string;
 };
 
-export const dummyData: { table: CourseState[][] } = {
+/**
+ * ```
+ * table
+ *   [曜日]
+ *   [時限 0~5]
+ *   [該当する科目は一つとは限らないので配列（重複しなければ0番目に目的の CourseState が入っている）]
+ * ```
+ */
+export type Table = CourseState[][][];
+
+export const dummyData: { table: Table } = {
   table: [
     [
-      { name: "節足動物学野外演習", room: "1A101", state: "default" },
-      { name: "節足動物学野外演習", room: "1A101", state: "default" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
+      [{ name: "節足動物学野外演習", room: "1A101", courseId: "gb11514" }],
+      [
+        { name: "節足動物学野外演習", room: "1A101", courseId: "gb11514" },
+        { name: "重複科目", room: "1A102", courseId: "gb11451" },
+      ],
+      [],
+      [],
+      [],
+      [],
     ],
-    [
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-    ],
-    [
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-    ],
-    [
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-    ],
-    [
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-      { name: "", room: "", state: "none" },
-    ],
+    [[], [], [], [], [], []],
+    [[], [], [], [], [], []],
+    [[], [], [], [], [], []],
+    [[], [], [], [], [], []],
   ],
 };

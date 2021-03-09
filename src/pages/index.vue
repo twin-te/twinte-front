@@ -76,13 +76,14 @@
             {{ weeks[d] }}
           </div>
           <CourseTile
-            v-for="(x, id) in y"
+            v-for="(courses, id) in y"
             :key="id"
             class="table__course"
-            @click="onClickCourseTile(x)"
-            :state="x.state"
-            :name="x.name"
-            :room="x.room"
+            @click="onClickCourseTile(courses)"
+            :state="courses.length === 0 ? 'none' : 'default'"
+            :name="courses[0]?.name ?? ''"
+            :room="courses[0]?.room ?? ''"
+            :caution="courses.length > 1 ? `他${courses.length - 1}件` : ''"
           />
         </template>
       </div>
@@ -258,14 +259,17 @@ export default defineComponent({
     const setCurrentModule = () => {
       module.value = currentModule.value;
     };
-    const onClickCourseTile = async (course: CourseState) => {
-      switch (course.state) {
-        case "default":
-          activeCourseTile.value = course;
+    const onClickCourseTile = async (courses: CourseState[]) => {
+      switch (courses.length) {
+        case 1:
+          activeCourseTile.value = courses[0];
           await router.push(`/course/${activeCourseTile.value.name}`);
-          return;
+          break;
+        case 2:
+          alert("重複モーダル表示");
+          break;
         default:
-          return;
+          break;
       }
     };
     const resetCourseTileState = () => {
