@@ -235,7 +235,7 @@ import CourseTile, {
   State as CourseTileState,
 } from "../components/CourseTile.vue";
 import CourseDetail from "../components/CourseDetail.vue";
-import Sidebar from "../components/Sidebar.vue";
+import Sidebar from "../templates/Sidebar.vue";
 import SidebarContent from "../components/SidebarContent.vue";
 import DecoratedIcon from "../components/DecoratedIcon.vue";
 import CardAdd from "../components/CardAdd.vue";

@@ -20,16 +20,17 @@ export const useUsecase = <T>(
   fn: (ports: Ports) => Promise<T>,
   initState: T
 ) => {
-  const ports = {
-    api: instance(
-      axiosClient(axios, {
-        withCredentials: true,
-        validateStatus: () => true,
-      })
-    ) as ApiInstance,
-    store: useStore(),
-    now: dayjs().locale("ja"),
-  };
-
+  const ports = usePorts();
   return useAsyncState(fn(ports), initState);
 };
+
+export const usePorts = () => ({
+  api: instance(
+    axiosClient(axios, {
+      withCredentials: true,
+      validateStatus: () => true,
+    })
+  ) as ApiInstance,
+  store: useStore(),
+  now: dayjs().locale("ja"),
+});

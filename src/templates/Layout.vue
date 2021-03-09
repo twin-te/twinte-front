@@ -1,27 +1,24 @@
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
-import { StateKey } from "~/store";
+import { defineComponent } from "vue";
 import Sidebar from "./Sidebar.vue";
-import GrayFilter from "./GrayFilter.vue";
+import GrayFilter from "~/components/GrayFilter.vue";
+import { useSidebar } from "~/usecases/useSidebar";
 
 export default defineComponent({
   components: { Sidebar, GrayFilter },
   setup: () => {
-    const store = useStore(StateKey);
-    const close = computed<boolean>(() => !store.getters.sidebar);
-    const closeSidebar = () => store.commit("setSidebar", false);
-    return { close, closeSidebar };
+    const { isClose, isOpen, closeSidebar } = useSidebar();
+    return { isClose, isOpen, closeSidebar };
   },
 });
 </script>
 
 <template>
   <div class="layout">
-    <Sidebar :class="{ 'sidebar--close': close }"></Sidebar>
+    <Sidebar :class="{ 'sidebar--close': isClose }"></Sidebar>
     <GrayFilter
       class="layout__grayfilter"
-      v-show="!close"
+      v-show="isOpen"
       @click="closeSidebar"
     ></GrayFilter>
     <article class="layout__article">
@@ -43,10 +40,12 @@ export default defineComponent({
     @include portrait {
       display: block;
     }
+    z-index: 7;
   }
 }
 
 .sidebar {
+  z-index: 8;
   @include portrait {
     position: fixed;
   }
