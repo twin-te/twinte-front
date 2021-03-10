@@ -1,9 +1,7 @@
 <template>
-  <div id="app">
-    <Layout>
-      <router-view />
-    </Layout>
-  </div>
+  <Layout>
+    <router-view />
+  </Layout>
 </template>
 
 <script lang="ts">
@@ -15,7 +13,3 @@ export default defineComponent({
   components: { Layout },
 });
 </script>
-
-<style lang="scss" scoped>
-@import "./scss/main.scss";
-</style>
