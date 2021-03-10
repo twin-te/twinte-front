@@ -117,8 +117,8 @@ export default defineComponent({
     z-index: 10;
     left: $spacing-1;
     bottom: $spacing-1;
-    width: calc(100% - ($spacing-1 * 2));
-    padding: $spacing-1 $spacing-0;
+    width: calc(100% - 0.8rem);
+    padding: $spacing-1 0;
     border-radius: $radius-1;
     background-color: $base;
     text-align: center;
