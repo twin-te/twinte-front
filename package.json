@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "vite",
     "type-check": "vuedx-typecheck .",
-    "build": "vuedx-typecheck . && vite build",
-    "lint": "eslint --ext .vue ./src",
+    "build": "vite build",
+    "lint": "vuedx-typecheck . && eslint --ext .vue ./src",
     "lint:fix": "yarn lint --fix",
     "format": "prettier ./src --write",
     "test": "jest",
