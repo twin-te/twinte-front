@@ -7,7 +7,8 @@
     "build": "vite build",
     "lint": "vuedx-typecheck . && eslint --ext .vue ./src",
     "lint:fix": "yarn lint --fix",
-    "format": "prettier ./src --write",
+    "format": "prettier ./src",
+    "format:fix": "prettier ./src --write",
     "test": "jest",
     "apigen": "rm -rf src/api && npx openapi2aspida"
   },
