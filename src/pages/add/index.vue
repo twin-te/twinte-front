@@ -87,7 +87,7 @@ export default defineComponent({
 
 .add {
   margin: $spacing-0 $spacing-0;
-  @include tab-and-pc {
+  @include landscape {
     margin: $spacing-0 $spacing-9;
   }
   max-width: $max-pc-item-width;
