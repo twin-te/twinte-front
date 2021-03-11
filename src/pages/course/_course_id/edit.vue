@@ -84,7 +84,7 @@
         >キャンセル</Button
       >
       <Button
-        @click="$router.push(`/course/${$route.params.course_id}`)"
+        @click="$router.push(`/course/${courseId}`)"
         size="medium"
         layout="fill"
         color="primary"
@@ -120,6 +120,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const { course_id: courseId } = route.params;
 
     /** schedule-editor */
     const schedules = ref<Schedules>([
@@ -158,13 +159,14 @@ export default defineComponent({
     });
     const save = () => {
       if (btnState.value == "disabled") return;
-      router.push(`/course/${route.params.course_id}`);
+      router.push(`/course/${courseId}`);
     };
 
     /** modal */
     const modal = ref(false);
 
     return {
+      courseId,
       schedules,
       addSchedule,
       removeSchedule,
