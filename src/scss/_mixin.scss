@@ -76,7 +76,7 @@
 }
 
 // スクロール用マスク
-// (↓スクロールさせたい要素の親要素の疑似after/before要素に設定する。)
+// (↓スクロールさせたい要素をwrapする親要素に設定する。)
 @mixin scroll-mask {
   -webkit-mask-image: linear-gradient(
     180deg,
