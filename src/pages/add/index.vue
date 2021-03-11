@@ -94,7 +94,7 @@ export default defineComponent({
 }
 
 .header__left-btn {
-  @include wide-screen {
+  @include landscape {
     display: none;
   }
 }
@@ -104,7 +104,7 @@ export default defineComponent({
   flex-direction: column;
   height: calc(100vh - 7.6rem);
   margin: $spacing-7 $spacing-4 $spacing-0;
-  @include tab-and-pc {
+  @include landscape {
     margin: $spacing-4 $spacing-0 $spacing-0;
   }
   &__card {
