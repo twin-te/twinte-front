@@ -19,7 +19,7 @@
         iconName="more_vert"
         :isActive="showPopup"
       ></ToggleIconButton>
-      <Popup v-if="showPopup" @click="clickOutside">
+      <Popup v-show="showPopup" v-click-away="clickOutside">
         <PopupContent
           v-for="data in popupData"
           :key="data.value"
@@ -188,16 +188,10 @@ export default defineComponent({
     };
 
     // popup
-    const btnRef = ref(null);
     const showPopup = ref(false);
-    const clickOutside = (e: any) => {
+    const clickOutside = () => {
       if (deleteCourseModal.value) return;
-      /** buttonとpopup以外を押したらpopupを非表示にする */
-      if (
-        e.type == "mousedown" &&
-        !Object.keys(e.path).some((key) => e.path[key] == btnRef.value.$el)
-      )
-        showPopup.value = false;
+      showPopup.value = false;
     };
     const popupClickHandler = (value: string) => {
       console.log(value);
@@ -246,7 +240,6 @@ export default defineComponent({
     return {
       clickHandler,
       clickOutside,
-      btnRef,
       showPopup,
       memo,
       popupData,
