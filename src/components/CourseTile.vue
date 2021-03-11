@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 
-export type State = "default" | "active" | "none";
+export type State = "default" | "none";
 
 type Props = {
   name: string;
@@ -28,7 +28,7 @@ export default defineComponent({
       type: String as PropType<State>,
       required: true,
       validator: function (value: string) {
-        return ["default", "active", "none"].includes(value);
+        return ["default", "none"].includes(value);
       },
     },
     caution: {
@@ -74,7 +74,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "../scss/main.scss";
+@import "~/scss/main.scss";
 
 .tile {
   @include button-cursor;
@@ -85,10 +85,9 @@ export default defineComponent({
   transition: $transition-box-shadow;
   &.--default {
     background-color: $primary-light;
-  }
-  &.--active {
-    background-color: $primary-light;
-    box-shadow: $shadow-tile-concave;
+    &:active {
+      box-shadow: $shadow-tile-concave;
+    }
   }
   &.--none {
     background-color: $undefined;

@@ -67,7 +67,10 @@
         <div
           v-for="period in 6"
           :key="period"
-          :class="{ table__period: true, 'table__period--first': period == 1 }"
+          :class="{
+            table__period: true,
+            'table__period--first': period == 1,
+          }"
         >
           {{ period }}
         </div>
@@ -187,45 +190,10 @@
       </Button>
     </template>
   </Modal>
-  <Modal
-    v-if="welcomeModal && false"
-    class="welcome-modal"
-    @click="closeWelcomeModal"
-    size="large"
-  >
-    <template #title>Twin:teへようこそ！</template>
-    <template #contents>
-      <img class="modal__mascot" src="../assets/colon2.png" alt="colonの画像" />
-      <p class="modal__text">
-        こんにちは！<br />
-        筑波大生のための時間割アプリTwin:teをご利用いただきありがとうございます。<br />
-        時間割の作成や複数端末間の連携のため、ログインしてください。<br />
-        ※Twin:teにログインしたことがない場合は、自動的にアカウントが作成されます。
-      </p>
-    </template>
-    <template #button>
-      <Button
-        @click="closeWelcomeModal"
-        size="medium"
-        layout="fill"
-        color="base"
-      >
-        あとで
-      </Button>
-      <Button
-        @click="$router.push('/login')"
-        size="medium"
-        layout="fill"
-        color="primary"
-      >
-        ログインする
-      </Button>
-    </template>
-  </Modal>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import CourseTile from "~/components/CourseTile.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
@@ -243,7 +211,6 @@ import { getCalendar } from "~/usecases/getCalendar";
 import { useUsecase } from "~/usecases";
 import { useStore } from "~/store";
 import { useRouter } from "vue-router";
-import { authCheck } from "~/usecases/authCheck";
 import { useSwitch } from "~/hooks/useSwitch";
 
 export default defineComponent({
@@ -335,20 +302,6 @@ export default defineComponent({
       duplicationState.value = initialDuplicationState;
     };
 
-    // welcome modal
-    const login = async () => {
-      await router.push("/login");
-    };
-    const { state: isLogin } = useUsecase(authCheck, true);
-    const [
-      welcomeModal,
-      openWelcomeModal,
-      closeWelcomeModal,
-      ,
-      setWelcomeModal,
-    ] = useSwitch(false);
-    watch(isLogin, (v) => setWelcomeModal(!v));
-
     return {
       toggleSidebar,
       weeks,
@@ -367,13 +320,8 @@ export default defineComponent({
       setCurrentModule,
       isCurrentModule,
       onClickCourseTile,
-      login,
-      isLogin,
       duplicationState,
       clearDuplicationState,
-      welcomeModal,
-      openWelcomeModal,
-      closeWelcomeModal,
     };
   },
 });
@@ -514,27 +462,6 @@ export default defineComponent({
   }
   &__course {
     height: 4.8rem;
-  }
-}
-
-.welcome-modal .modal {
-  &__mascot {
-    width: 22.8rem;
-    height: 11.4rem;
-    margin: 2.7rem auto 6.4rem auto;
-  }
-  &__text {
-    font-size: $font-medium;
-    line-height: $multi-line;
-  }
-  .button {
-    width: calc(50% - 1.2rem);
-    &:first-child {
-      margin-right: 1.2rem;
-    }
-    &:last-child {
-      margin-left: 1.2rem;
-    }
   }
 }
 

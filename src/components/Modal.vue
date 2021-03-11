@@ -45,7 +45,7 @@ export default defineComponent({
         <slot name="button"></slot>
       </div>
     </div>
-    <GrayFilter @click="$emit('click')"></GrayFilter>
+    <GrayFilter class="modal-filter" @click="$emit('click')"></GrayFilter>
   </div>
 </template>
 
@@ -59,7 +59,7 @@ export default defineComponent({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 15;
+  z-index: 100;
   padding: 3.6rem 3.2rem 3.2rem 3.2rem;
   background: $base-liner;
   box-sizing: border-box;
@@ -111,5 +111,9 @@ export default defineComponent({
     font-weight: normal;
     line-height: 2.4rem;
   }
+}
+
+.modal-filter {
+  z-index: 99;
 }
 </style>

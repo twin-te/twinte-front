@@ -2,7 +2,7 @@
 
 @import "tailwindcss/base";
 
-@import "variable", "mixin", "reset";
+@import "variable", "mixin", "reset", "transition";
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap&subset=japanese");
 
@@ -38,43 +38,5 @@ body {
   }
   &__scheduleEditer {
     padding-bottom: 40rem;
-  }
-}
-
-// 下に広がるアニメーション
-.spread-down {
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-    transform: translateY(-1rem);
-  }
-
-  &-enter-to,
-  &-leave-from {
-    opacity: 1;
-  }
-
-  &-enter-active,
-  &-leave-active {
-    transition: $transition-all;
-  }
-}
-
-// 下に広がるアニメーション
-.spread-down {
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-    transform: translateY(-1rem);
-  }
-
-  &-enter-to,
-  &-leave-from {
-    opacity: 1;
-  }
-
-  &-enter-active,
-  &-leave-active {
-    transition: $transition-all;
   }
 }

@@ -44,14 +44,14 @@
     <section class="preview__content">
       <div class="course-grid">
         <CourseTile
-          @click="tileStat = tileStat == 'active' ? 'default' : 'active'"
+          @click="displayLog"
           :state="tileStat"
           name="学校を考える"
           room="1A101"
         ></CourseTile>
 
         <CourseTile
-          state="active"
+          state="default"
           name="学校を考える"
           room="1A101"
         ></CourseTile>
