@@ -146,6 +146,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
@@ -178,6 +179,10 @@ export default defineComponent({
       console.log("click");
     };
 
+    const router = useRouter();
+    const route = useRoute();
+    const { course_id: courseId } = route.params;
+
     // delete-course-modal
     const deleteCourseModal = ref(false);
     const openDeleteCourseModal = () => {
@@ -191,7 +196,6 @@ export default defineComponent({
     const btnRef = ref();
     const showPopup = ref(false);
     const clickOutside = (e: any) => {
-      if (showPopup.value === false) return;
       if (deleteCourseModal.value) return;
       // icon-buttonをクリックした時
       if (Object.keys(e.path).some((key) => e.path[key] === btnRef.value.$el))
@@ -208,7 +212,7 @@ export default defineComponent({
       color: popupContentColor;
     }[] = [
       {
-        onClick: popupClickHandler,
+        onClick: () => router.push(`/course/${courseId}/edit`),
         link: false,
         value: "編集する",
         color: "normal",
