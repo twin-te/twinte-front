@@ -4,7 +4,6 @@ import { defineComponent } from "vue";
 type Props = {
   modelValue: string;
   placeholder: string;
-  width: number;
   height: number;
   iconName: string;
 };
@@ -22,10 +21,6 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "",
-    },
-    width: {
-      type: Number,
-      default: 34, // 単位: rem
     },
     height: {
       type: Number,
@@ -63,7 +58,6 @@ export default defineComponent({
   <div
     class="text-field text-field__box"
     :style="{
-      width: `${width}rem`,
       height: `${height}rem`,
     }"
   >

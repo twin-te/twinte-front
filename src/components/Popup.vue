@@ -16,6 +16,8 @@ export default defineComponent({
 @import "../scss/main.scss";
 
 .popup {
+  position: relative;
+  z-index: 3;
   display: inline-block;
   padding: $spacing-2 $spacing-0;
   box-shadow: $shadow-convex-large;
