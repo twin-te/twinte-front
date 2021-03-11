@@ -1,14 +1,34 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watch } from "vue";
 import Sidebar from "./Sidebar.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
+import Modal from "~/components/Modal.vue";
+import Button from "~/components/Button.vue";
 import { useSidebar } from "~/usecases/useSidebar";
+import { useUsecase } from "~/usecases";
+import { useSwitch } from "~/hooks/useSwitch";
+import { authCheck } from "~/usecases/authCheck";
 
 export default defineComponent({
-  components: { Sidebar, GrayFilter },
+  components: { Sidebar, GrayFilter, Modal, Button },
   setup: () => {
     const { isClose, isOpen, closeSidebar } = useSidebar();
-    return { isClose, isOpen, closeSidebar };
+
+    // welcome modal
+    const { state: isLogin } = useUsecase(authCheck, true);
+    const [welcomeModal, , closeWelcomeModal, , setWelcomeModal] = useSwitch(
+      false
+    );
+    watch(isLogin, (v) => setWelcomeModal(!v));
+
+    return {
+      isLogin,
+      isClose,
+      isOpen,
+      closeSidebar,
+      welcomeModal,
+      closeWelcomeModal,
+    };
   },
 });
 </script>
@@ -21,6 +41,45 @@ export default defineComponent({
       v-show="isOpen"
       @click="closeSidebar"
     ></GrayFilter>
+    <Modal
+      v-if="welcomeModal"
+      class="welcome-modal"
+      @click="closeWelcomeModal"
+      size="large"
+    >
+      <template #title>Twin:teへようこそ！</template>
+      <template #contents>
+        <img
+          class="modal__mascot"
+          src="../assets/colon2.png"
+          alt="colonの画像"
+        />
+        <p class="modal__text">
+          こんにちは！<br />
+          筑波大生のための時間割アプリTwin:teをご利用いただきありがとうございます。<br />
+          時間割の作成や複数端末間の連携のため、ログインしてください。<br />
+          ※Twin:teにログインしたことがない場合は、自動的にアカウントが作成されます。
+        </p>
+      </template>
+      <template #button>
+        <Button
+          @click="closeWelcomeModal"
+          size="medium"
+          layout="fill"
+          color="base"
+        >
+          あとで
+        </Button>
+        <Button
+          @click="$router.push('/login')"
+          size="medium"
+          layout="fill"
+          color="primary"
+        >
+          ログインする
+        </Button>
+      </template>
+    </Modal>
     <article class="layout__article">
       <slot></slot>
     </article>
@@ -40,12 +99,12 @@ export default defineComponent({
     @include portrait {
       display: block;
     }
-    z-index: 7;
+    z-index: 12;
   }
 }
 
 .sidebar {
-  z-index: 8;
+  z-index: 13;
   @include portrait {
     position: fixed;
   }
@@ -53,6 +112,27 @@ export default defineComponent({
     @include portrait {
       transform: translateX(-20.8rem);
       width: 0;
+    }
+  }
+}
+
+.welcome-modal .modal {
+  &__mascot {
+    width: 22.8rem;
+    height: 11.4rem;
+    margin: 2.7rem auto 6.4rem auto;
+  }
+  &__text {
+    font-size: $font-medium;
+    line-height: $multi-line;
+  }
+  .button {
+    width: calc(50% - 1.2rem);
+    &:first-child {
+      margin-right: 1.2rem;
+    }
+    &:last-child {
+      margin-left: 1.2rem;
     }
   }
 }
