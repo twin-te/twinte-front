@@ -188,9 +188,14 @@ export default defineComponent({
     };
 
     // popup
+    const btnRef = ref();
     const showPopup = ref(false);
-    const clickOutside = () => {
+    const clickOutside = (e: any) => {
+      if (showPopup.value === false) return;
       if (deleteCourseModal.value) return;
+      // icon-buttonをクリックした時
+      if (Object.keys(e.path).some((key) => e.path[key] === btnRef.value.$el))
+        return;
       showPopup.value = false;
     };
     const popupClickHandler = (value: string) => {
@@ -239,6 +244,7 @@ export default defineComponent({
 
     return {
       clickHandler,
+      btnRef,
       clickOutside,
       showPopup,
       memo,
