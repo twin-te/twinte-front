@@ -1,23 +1,11 @@
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   props: {
     name: {
       type: String,
       required: true,
-    },
-    size: {
-      type: String as PropType<"small" | "medium" | "large">,
-      default: "large",
-    },
-    layout: {
-      type: String as PropType<"flexible" | "fill" | "half">,
-      default: "flexible",
-    },
-    color: {
-      type: String as PropType<"base" | "primary" | "danger">,
-      default: "base",
     },
     onChangeFile: {
       type: Function,
@@ -49,8 +37,9 @@ export default defineComponent({
     <label
       :class="{
         'input-button-file__label': true,
-        [`input-button-file__label--${color}`]: true,
-        [`input-button-file__label--${layout}`]: true,
+        [`input-button-file__label--small`]: true,
+        [`input-button-file__label--base`]: true,
+        [`input-button-file__label--flexible`]: true,
       }"
       :for="name"
     >
@@ -66,9 +55,10 @@ export default defineComponent({
 .input-button-file {
   display: flex;
   width: 100%;
+
   &__name {
     @include ellipsis;
-    line-height: 2.8rem;
+    line-height: $spacing-7;
     &::before {
       font-family: "Material Icons";
       content: "insert_drive_file";
@@ -76,7 +66,7 @@ export default defineComponent({
     }
 
     &--unselected {
-      line-height: 2.8rem;
+      line-height: $spacing-7;
       color: $unselected;
     }
   }
@@ -87,14 +77,17 @@ export default defineComponent({
     }
 
     @include center-flex;
-    padding: 0 1.6rem;
+    padding: 0 $spacing-4;
+    font-size: $spacing-3;
+    height: $spacing-7;
+    line-height: $spacing-7;
     margin-left: auto;
 
     position: relative;
 
-    /* base */
     background: $base;
-    /* shadow-convex */
+    color: $button-gray;
+
     border-radius: $radius-button;
     font-weight: medium;
     vertical-align: middle;
@@ -106,60 +99,8 @@ export default defineComponent({
       @include button-hover;
     }
     &:focus {
-      // i18n
       outline: none;
     }
-    &--small {
-      padding: 0 1.6rem;
-      font-size: 1.2rem;
-      height: 2.8rem;
-      line-height: 2.8rem;
-    }
-    &--medium {
-      padding: 0 3rem;
-      height: 4rem;
-      font-size: 1.4rem;
-      line-height: 4rem;
-    }
-    &--large {
-      padding: 0 3.6rem;
-      height: 4.6rem;
-      font-size: 1.4rem;
-      line-height: 4.6rem;
-    }
-    &--base {
-      background: $base;
-      color: $button-gray;
-    }
-    &--primary {
-      background: $primary-liner;
-      color: $white;
-    }
-    &--danger {
-      background: $danger;
-      color: $white;
-    }
-    &--fill {
-      display: block;
-      width: 100%;
-      max-width: 60rem;
-      padding: 0;
-    }
-    &--half {
-      width: 35%;
-      max-width: 200px;
-    }
-    &--withicon {
-      &::after {
-        font-family: "Material Icons";
-        content: "launch";
-        font-size: 100%;
-        line-height: 100%;
-        @include text-liner;
-        @include iconlayout;
-      }
-    }
-    &.--active,
     &:active {
       color: $white;
       @include button-active;
