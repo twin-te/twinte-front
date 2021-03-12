@@ -5,10 +5,9 @@
   line-height: $single-line;
   font-weight: medium;
 }
-@mixin text-label {
+@mixin ext-description {
   color: $text-main;
   font-size: $font-medium;
-  line-height: $single-line;
   font-weight: normal;
 }
 @mixin text-button {
