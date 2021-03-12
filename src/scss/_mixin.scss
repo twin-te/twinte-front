@@ -38,6 +38,11 @@
   background-clip: none;
   -webkit-text-fill-color: inherit;
 }
+@mixin ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 // button
 @mixin button-cursor {

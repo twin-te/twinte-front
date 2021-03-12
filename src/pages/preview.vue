@@ -230,6 +230,14 @@
         ></TextFieldSingleLine>
       </LabeledTextField>
     </section>
+    <InputBurronFile
+      name="some"
+      size="medium"
+      layout="flexible"
+      @change-file="echo"
+    >
+      file input
+    </InputBurronFile>
   </article>
 </template>
 
@@ -258,6 +266,7 @@ import PageHeader from "../components/PageHeader.vue";
 import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import InputBurronFile from "~/components/InputButtonFile.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -279,6 +288,7 @@ export default defineComponent({
     ToggleIconButton,
     LabeledTextField,
     TextFieldSingleLine,
+    InputBurronFile,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
@@ -302,6 +312,9 @@ export default defineComponent({
     ]);
     const displayLog = () => {
       console.log("click");
+    };
+    const echo = (e: any) => {
+      console.log(e);
     };
 
     // popup
@@ -393,6 +406,7 @@ export default defineComponent({
       closeModal,
       courseInfo,
       displayLog,
+      echo,
       isBtnActive,
       isCourseCheked,
       modal,
