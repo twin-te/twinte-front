@@ -1,6 +1,6 @@
 <template>
   <PageHeader :atHome="false">
-    <template #left-btn>
+    <template #left-button-icon>
       <IconButton
         @click="$router.push('/')"
         size="large"
@@ -9,10 +9,10 @@
       ></IconButton>
     </template>
     <template #title>授業詳細</template>
-    <template #right-btn>
+    <template #right-button-icon>
       <ToggleIconButton
         ref="btnRef"
-        class="header__right-btn"
+        class="header__right-button-icon"
         @click="showPopup = !showPopup"
         size="large"
         color="normal"
@@ -265,18 +265,20 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .header {
-  max-width: 900px;
-  &__right-btn {
+  @include max-width;
+  &__right-button-icon {
     margin: $spacing-0 $spacing-0 $spacing-2 auto;
   }
 }
+@include header-left-button-delete;
+
 .course {
   display: block;
   height: calc(100vh - 8rem /*Headerとmargin-top*/);
-  max-width: 900px;
   margin-top: $spacing-5;
   padding: $spacing-0 $spacing-4 $spacing-0;
   overflow-y: auto;
+  @include max-width;
   @include scroll-mask;
   &__contents {
     padding-top: $spacing-3;
@@ -310,7 +312,6 @@ export default defineComponent({
     gap: $spacing-5;
     padding: $spacing-4 $spacing-6;
     background: $base;
-    border: 0.1rem solid $base;
     box-shadow: $shadow-base;
     border-radius: $radius-3;
     &__item {
@@ -355,10 +356,6 @@ export default defineComponent({
 }
 
 .delete-course-modal .modal {
-  &__text {
-    font-size: $font-large;
-    line-height: $multi-line;
-  }
   .button {
     width: calc(50% - $spacing-3);
     &:first-child {

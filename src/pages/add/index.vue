@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <PageHeader>
-      <template #left-btn>
-        <div class="header__left-btn">
+      <template #left-button-icon>
+        <div class="header__left-button-icon">
           <IconButton
             @click="toggleSidebar"
             size="large"
@@ -85,18 +85,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "~/scss/main.scss";
 
+@include header-left-button-delete;
+
 .add {
   margin: $spacing-0 $spacing-0;
-  @include landscape {
-    margin: $spacing-0 $spacing-9;
-  }
-  max-width: $max-pc-item-width;
-}
-
-.header__left-btn {
-  @include landscape {
-    display: none;
-  }
+  @include max-width;
 }
 
 .main {

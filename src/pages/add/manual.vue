@@ -1,6 +1,6 @@
 <template>
   <PageHeader>
-    <template #left-btn>
+    <template #left-button-icon>
       <IconButton
         @click="$router.push('/add')"
         size="large"
@@ -218,15 +218,12 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .header {
-  max-width: 900px;
+  @include max-width;
 }
 .main {
-  max-width: 900px;
   margin-top: $spacing-5;
   padding: $spacing-0 $spacing-4;
-  @include landscape {
-    padding: $spacing-0 $spacing-9;
-  }
+  @include max-width;
   &__mask {
     height: calc(100vh - 16.2rem);
     @include scroll-mask;

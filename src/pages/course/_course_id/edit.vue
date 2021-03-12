@@ -1,6 +1,6 @@
 <template>
   <PageHeader>
-    <template #left-btn>
+    <template #left-button-icon>
       <IconButton
         @click="modal = true"
         size="large"
@@ -186,15 +186,12 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .header {
-  max-width: 900px;
+  @include max-width;
 }
 .edit {
-  max-width: 900px;
+  @include max-width;
   margin-top: $spacing-5;
   padding: $spacing-0 $spacing-4;
-  @include landscape {
-    padding: $spacing-0 $spacing-9;
-  }
   &__mask {
     height: calc(100vh - 16.2rem);
     @include scroll-mask;
@@ -221,10 +218,6 @@ export default defineComponent({
   }
 }
 .leave-page-modal .modal {
-  &__text {
-    font-size: $font-medium;
-    line-height: $multi-line;
-  }
   .button {
     width: calc(50% - $spacing-3);
     &:first-child {

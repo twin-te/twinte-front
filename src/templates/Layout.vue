@@ -93,6 +93,9 @@ export default defineComponent({
   background: $base-liner;
   &__article {
     width: 100%;
+    @include landscape {
+      margin: $spacing-0 $spacing-9;
+    }
   }
   &__grayfilter {
     display: none;
@@ -122,17 +125,13 @@ export default defineComponent({
     height: 11.4rem;
     margin: 2.7rem auto 6.4rem auto;
   }
-  &__text {
-    font-size: $font-medium;
-    line-height: $multi-line;
-  }
   .button {
-    width: calc(50% - 1.2rem);
+    width: calc(50% - $spacing-3);
     &:first-child {
-      margin-right: 1.2rem;
+      margin-right: $spacing-3;
     }
     &:last-child {
-      margin-left: 1.2rem;
+      margin-left: $spacing-3;
     }
   }
 }
