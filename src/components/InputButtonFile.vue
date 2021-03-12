@@ -30,7 +30,6 @@ export default defineComponent({
 
     const changeFile = (e: Event) => {
       const file = (e.target as any).files[0];
-      // console.log(file);
       fileName.value = file.name;
       emit("change-file", file);
     };
