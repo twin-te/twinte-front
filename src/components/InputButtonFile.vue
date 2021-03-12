@@ -62,11 +62,11 @@ export default defineComponent({
     &::before {
       font-family: "Material Icons";
       content: "insert_drive_file";
-      margin-right: $spacing-1;
+      margin-right: $spacing-2;
     }
 
     &--unselected {
-      line-height: $spacing-7;
+      line-height: 2.8rem;
       color: $unselected;
     }
   }
@@ -78,9 +78,9 @@ export default defineComponent({
 
     @include center-flex;
     padding: 0 $spacing-4;
-    font-size: $spacing-3;
-    height: $spacing-7;
-    line-height: $spacing-7;
+    font-size: $font-small;
+    height: 2.8rem;
+    line-height: 2.8rem;
     margin-left: auto;
 
     position: relative;
