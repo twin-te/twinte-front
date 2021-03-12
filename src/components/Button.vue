@@ -93,8 +93,7 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 0 1.6rem;
-
+  padding: 0 $spacing-4;
   position: relative;
 
   /* base */
@@ -115,21 +114,20 @@ export default defineComponent({
     outline: none;
   }
   &--small {
-    padding: 0 1.6rem;
-    font-size: 1.2rem;
+    padding: 0 $spacing-4;
+    font-size: $font-small;
     height: 2.8rem;
     line-height: 2.8rem;
   }
   &--medium {
+    font-size: $font-medium;
     padding: 0 3rem;
-    height: 4rem;
-    font-size: 1.4rem;
     line-height: 4rem;
   }
   &--large {
-    padding: 0 3.6rem;
+    font-size: $font-medium;
+    padding: 0 $spacing-9;
     height: 4.6rem;
-    font-size: 1.4rem;
     line-height: 4.6rem;
   }
   &--base {
@@ -162,7 +160,7 @@ export default defineComponent({
       font-family: "Material Icons";
       content: "launch";
       font-size: 100%;
-      line-height: 100%;
+      line-height: $fit;
       @include text-liner;
       @include iconlayout;
     }

@@ -55,12 +55,12 @@ export default defineComponent({
   display: block;
   width: 100%;
   resize: none;
-  padding: 0.8rem 1.6rem 1rem;
-  border-radius: $radius-2;
+  padding: $spacing-2 $spacing-4 1rem;
+  border-radius: $radius-input;
   box-shadow: $shadow-input-concave;
   background: $base;
-  font-size: 1.4rem;
-  line-height: 160%;
+  font-size: $font-medium;
+  line-height: $multi-line;
   color: $text-main;
   &:focus {
     outline: none;

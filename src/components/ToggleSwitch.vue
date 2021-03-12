@@ -53,7 +53,6 @@ export default defineComponent({
   position: relative;
   display: flex;
   align-items: center;
-  box-sizing: border-box;
   width: 4.8rem;
   height: 2.8rem;
   border: solid 0.1rem $base;

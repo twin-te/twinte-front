@@ -52,7 +52,7 @@ export default defineComponent({
   align-items: center;
   width: 100%;
   height: 3.8rem;
-  padding: 0.8rem 3.4rem 0.8rem 1.6rem;
+  padding: $spacing-2 3.4rem $spacing-2 $spacing-4;
   font-size: $font-large;
   font-weight: 500;
   line-height: $single-line;

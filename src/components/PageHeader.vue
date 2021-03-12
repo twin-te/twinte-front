@@ -35,11 +35,10 @@ export default defineComponent({
     <div class="header__container">
       <div
         :class="{
-          'header__menu-icon': true,
-          '--home': atHome,
+          'header__left-button': true,
         }"
       >
-        <slot name="left-btn"></slot>
+        <slot name="left-button-icon"></slot>
       </div>
       <div v-if="atHome">
         <img class="header__title--logo" src="../assets/twintelogo-color.svg" />
@@ -53,8 +52,8 @@ export default defineComponent({
         </p>
         <p class="header__schedule">{{ calendar.schedule }}</p>
       </div>
-      <div class="header__dropdown-menu-icon" v-else>
-        <slot name="right-btn"></slot>
+      <div class="header__right-button" v-else>
+        <slot name="right-button-icon"></slot>
       </div>
     </div>
   </header>
@@ -66,28 +65,23 @@ export default defineComponent({
 .header {
   width: 100%;
   height: 6rem;
-  padding: 2rem 1.6rem 0;
+  padding: $spacing-5 $spacing-4 0;
   &__container {
     position: relative;
     width: 100%;
     height: 100%;
   }
-  &__menu-icon {
+  &__left-button {
     position: absolute;
     left: 0;
     top: 0;
-    &.--home {
-      @include wide-screen {
-        display: none;
-      }
-    }
   }
   &__title {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     bottom: 0.3rem;
-    font-size: 1.6rem;
+    font-size: $font-large;
     font-weight: 500;
     line-height: $single-line;
     color: $text-main;
@@ -101,7 +95,7 @@ export default defineComponent({
     }
   }
 
-  &__dropdown-menu-icon {
+  &__right-button {
     position: absolute;
     right: 0;
     top: 0;

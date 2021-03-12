@@ -19,9 +19,7 @@ export default defineComponent({
 @import "../scss/main.scss";
 
 .card {
-  box-sizing: border-box;
   height: auto;
-  border: 1px solid $base;
   border-radius: $radius-3;
   box-shadow: $shadow-base;
   padding: $spacing-4 $spacing-6;

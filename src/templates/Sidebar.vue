@@ -135,7 +135,7 @@ export default defineComponent({
   transition: $transition-all-slow;
   transform: translateX(0);
   &__head {
-    padding: 6.2rem 2rem 2rem;
+    padding: $spacing-15 $spacing-5 $spacing-5;
   }
   &__contents {
     margin: 0 0 $spacing-10;

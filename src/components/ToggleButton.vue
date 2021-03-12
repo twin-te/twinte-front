@@ -81,7 +81,6 @@ input[type="checkbox"] {
   position: relative;
   display: flex;
   align-items: center;
-  box-sizing: border-box;
   width: 12rem;
   height: 2.8rem;
   padding: 0 0.3rem;
@@ -90,7 +89,7 @@ input[type="checkbox"] {
   box-shadow: $shadow-input-concave, $shadow-convex;
   background-color: $base;
   color: $button-gray;
-  font-size: 1.2rem;
+  font-size: $font-small;
   font-weight: 500;
   text-align: center;
   @include button-cursor;
