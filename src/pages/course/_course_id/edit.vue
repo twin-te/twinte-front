@@ -1,97 +1,99 @@
 <template>
-  <PageHeader>
-    <template #left-button-icon>
-      <IconButton
-        @click="modal = true"
-        size="large"
-        color="normal"
-        icon-name="arrow_back"
-      ></IconButton>
-    </template>
-    <template #title>授業情報の編集</template>
-  </PageHeader>
   <div class="edit">
-    <div class="edit__mask">
-      <div class="edit__contents">
-        <div class="edit__course-name">
-          <LabeledTextField label="授業名" mandatory>
-            <TextFieldSingleLine
-              v-model="name"
-              placeholder="例) ゼミ"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
-        </div>
-        <div class="edit__period">
-          <Label value="開講時限" mandatory></Label>
-          <ScheduleEditer
-            v-model:schedules="schedules"
-            :onClickAddButton="addSchedule"
-            :onClickRemoveButton="removeSchedule"
-          ></ScheduleEditer>
-        </div>
-        <div class="edit__instructor">
-          <LabeledTextField label="担当教員">
-            <TextFieldSingleLine
-              v-model="instructor"
-              placeholder="例) 山田太郎"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
-        </div>
-        <div class="edit__room">
-          <LabeledTextField label="授業場所">
-            <TextFieldSingleLine
-              v-model="room"
-              placeholder="例) 研究室"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
-        </div>
-        <div class="edit__method">
-          <LabeledTextField label="授業形式">
-            <TextFieldSingleLine
-              v-model="method"
-              placeholder="例) 対面"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
+    <PageHeader>
+      <template #left-button-icon>
+        <IconButton
+          @click="modal = true"
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+        ></IconButton>
+      </template>
+      <template #title>授業情報の編集</template>
+    </PageHeader>
+    <div class="main">
+      <div class="main__mask">
+        <div class="main__contents">
+          <div class="main__course-name">
+            <LabeledTextField label="授業名" mandatory>
+              <TextFieldSingleLine
+                v-model="name"
+                placeholder="例) ゼミ"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </div>
+          <div class="main__period">
+            <Label value="開講時限" mandatory></Label>
+            <ScheduleEditer
+              v-model:schedules="schedules"
+              :onClickAddButton="addSchedule"
+              :onClickRemoveButton="removeSchedule"
+            ></ScheduleEditer>
+          </div>
+          <div class="main__instructor">
+            <LabeledTextField label="担当教員">
+              <TextFieldSingleLine
+                v-model="instructor"
+                placeholder="例) 山田太郎"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </div>
+          <div class="main__room">
+            <LabeledTextField label="授業場所">
+              <TextFieldSingleLine
+                v-model="room"
+                placeholder="例) 研究室"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </div>
+          <div class="main__method">
+            <LabeledTextField label="授業形式">
+              <TextFieldSingleLine
+                v-model="method"
+                placeholder="例) 対面"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </div>
         </div>
       </div>
+      <section class="main__footer">
+        <Button
+          @click="save"
+          size="large"
+          layout="fill"
+          color="primary"
+          :state="btnState"
+          >変更を保存</Button
+        >
+      </section>
     </div>
-    <section class="edit__footer">
-      <Button
-        @click="save"
-        size="large"
-        layout="fill"
-        color="primary"
-        :state="btnState"
-        >変更を保存</Button
-      >
-    </section>
+    <Modal
+      class="leave-page-modal"
+      v-if="modal"
+      @click="modal = false"
+      size="small"
+    >
+      <template #title>ページから移動しますか？</template>
+      <template #contents>
+        <p class="modal__text">
+          「授業情報の編集」ページから移動してよろしいですか？<br />
+          未保存の変更内容は失われます。
+        </p>
+      </template>
+      <template #button>
+        <Button @click="modal = false" size="medium" layout="fill" color="base"
+          >キャンセル</Button
+        >
+        <Button
+          @click="$router.push(`/course/${courseId}`)"
+          size="medium"
+          layout="fill"
+          color="primary"
+          >移動する</Button
+        >
+      </template>
+    </Modal>
   </div>
-  <Modal
-    class="leave-page-modal"
-    v-if="modal"
-    @click="modal = false"
-    size="small"
-  >
-    <template #title>ページから移動しますか？</template>
-    <template #contents>
-      <p class="modal__text">
-        「授業情報の編集」ページから移動してよろしいですか？<br />
-        未保存の変更内容は失われます。
-      </p>
-    </template>
-    <template #button>
-      <Button @click="modal = false" size="medium" layout="fill" color="base"
-        >キャンセル</Button
-      >
-      <Button
-        @click="$router.push(`/course/${courseId}`)"
-        size="medium"
-        layout="fill"
-        color="primary"
-        >移動する</Button
-      >
-    </template>
-  </Modal>
 </template>
 
 <script lang="ts">
@@ -184,14 +186,11 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-
-.header {
-  @include max-width;
-}
 .edit {
   @include max-width;
+}
+.main {
   margin-top: $spacing-5;
-  padding: $spacing-0 $spacing-4;
   &__mask {
     height: calc(100vh - 16.2rem);
     @include scroll-mask;

@@ -1,147 +1,149 @@
 <template>
-  <PageHeader :atHome="false">
-    <template #left-button-icon>
-      <IconButton
-        @click="$router.push('/')"
-        size="large"
-        color="normal"
-        iconName="arrow_back"
-      ></IconButton>
-    </template>
-    <template #title>授業詳細</template>
-    <template #right-button-icon>
-      <ToggleIconButton
-        ref="btnRef"
-        class="header__right-button-icon"
-        @click="showPopup = !showPopup"
-        size="large"
-        color="normal"
-        iconName="more_vert"
-        :isActive="showPopup"
-      ></ToggleIconButton>
-      <Popup v-show="showPopup" v-click-away="clickOutside">
-        <PopupContent
-          v-for="data in popupData"
-          :key="data.value"
-          @click="data.onClick"
-          :link="data.link"
-          :value="data.value"
-          :color="data.color"
-        ></PopupContent>
-      </Popup>
-    </template>
-  </PageHeader>
-  <article class="course">
-    <div class="course__contents">
-      <p class="course__code">1E06001</p>
-      <h1 class="course__name">メディアアート・フィジカルコンピューティング</h1>
-      <div class="course__details">
-        <CourseDetail item="開講時限" value="春AB 木2">
-          <DecoratedIcon iconName="schedule"></DecoratedIcon>
-        </CourseDetail>
-        <CourseDetail
-          item="担当教員"
-          value="齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿"
+  <div class="course-detail">
+    <PageHeader>
+      <template #left-button-icon>
+        <IconButton
+          @click="$router.push('/')"
+          size="large"
+          color="normal"
+          iconName="arrow_back"
+        ></IconButton>
+      </template>
+      <template #title>授業詳細</template>
+      <template #right-button-icon>
+        <ToggleIconButton
+          ref="btnRef"
+          class="header__right-button-icon"
+          @click="showPopup = !showPopup"
+          size="large"
+          color="normal"
+          iconName="more_vert"
+          :isActive="showPopup"
+        ></ToggleIconButton>
+        <Popup v-show="showPopup" v-click-away="clickOutside">
+          <PopupContent
+            v-for="data in popupData"
+            :key="data.value"
+            @click="data.onClick"
+            :link="data.link"
+            :value="data.value"
+            :color="data.color"
+          ></PopupContent>
+        </Popup>
+      </template>
+    </PageHeader>
+    <article class="main">
+      <div class="main__contents">
+        <p class="main__code">1E06001</p>
+        <h1 class="main__name">メディアアート・フィジカルコンピューティング</h1>
+        <div class="main__details">
+          <CourseDetail item="開講時限" value="春AB 木2">
+            <DecoratedIcon iconName="schedule"></DecoratedIcon>
+          </CourseDetail>
+          <CourseDetail
+            item="担当教員"
+            value="齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿"
+          >
+            <DecoratedIcon iconName="person"></DecoratedIcon>
+          </CourseDetail>
+          <CourseDetail item="授業場所" value="6A508">
+            <DecoratedIcon iconName="room"></DecoratedIcon>
+          </CourseDetail>
+          <CourseDetail item="授業形式" value="対面">
+            <DecoratedIcon iconName="category"></DecoratedIcon>
+          </CourseDetail>
+        </div>
+        <TextFieldMultilines
+          class="main__memo"
+          v-model="memo"
+          placeholder="メモを入力"
+          :height="10.3"
+          style="width: 100%"
+        ></TextFieldMultilines>
+        <div class="main__attendance attendance">
+          <div class="attendance__item">
+            <p class="attendance__state">出席</p>
+            <IconButton
+              class="attendance__minus-btn"
+              @click="clickHandler"
+              size="small"
+              color="normal"
+              iconName="remove"
+            ></IconButton>
+            <p class="attendance__count">5</p>
+            <IconButton
+              class="attendance__plus-btn"
+              @click="clickHandler"
+              size="small"
+              color="normal"
+              iconName="add"
+            ></IconButton>
+          </div>
+          <div class="attendance__item">
+            <p class="attendance__state">欠席</p>
+            <IconButton
+              class="attendance__minus-btn"
+              @click="clickHandler"
+              size="small"
+              color="normal"
+              iconName="remove"
+            ></IconButton>
+            <p class="attendance__count">3</p>
+            <IconButton
+              class="attendance__plus-btn"
+              @click="clickHandler"
+              size="small"
+              color="normal"
+              iconName="add"
+            ></IconButton>
+          </div>
+          <div class="attendance__item">
+            <p class="attendance__state">遅刻</p>
+            <IconButton
+              class="attendance__minus-btn"
+              @click="clickHandler"
+              size="small"
+              color="normal"
+              iconName="remove"
+            ></IconButton>
+            <p class="attendance__count">1</p>
+            <IconButton
+              class="attendance__plus-btn"
+              @click="clickHandler"
+              size="small"
+              color="normal"
+              iconName="add"
+            ></IconButton>
+          </div>
+        </div>
+      </div>
+    </article>
+    <Modal
+      v-if="deleteCourseModal"
+      class="delete-course-modal"
+      @click="closeDeleteCourseModal"
+      size="small"
+    >
+      <template #title>授業の削除</template>
+      <template #contents>
+        <p class="modal__text">
+          「色彩学」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
+        </p>
+      </template>
+      <template #button>
+        <Button
+          @click="closeDeleteCourseModal"
+          size="medium"
+          layout="fill"
+          color="base"
+          >キャンセル</Button
         >
-          <DecoratedIcon iconName="person"></DecoratedIcon>
-        </CourseDetail>
-        <CourseDetail item="授業場所" value="6A508">
-          <DecoratedIcon iconName="room"></DecoratedIcon>
-        </CourseDetail>
-        <CourseDetail item="授業形式" value="対面">
-          <DecoratedIcon iconName="category"></DecoratedIcon>
-        </CourseDetail>
-      </div>
-      <TextFieldMultilines
-        class="course__memo"
-        v-model="memo"
-        placeholder="メモを入力"
-        :height="10.3"
-        style="width: 100%"
-      ></TextFieldMultilines>
-      <div class="course__attendance attendance">
-        <div class="attendance__item">
-          <p class="attendance__state">出席</p>
-          <IconButton
-            class="attendance__minus-btn"
-            @click="clickHandler"
-            size="small"
-            color="normal"
-            iconName="remove"
-          ></IconButton>
-          <p class="attendance__count">5</p>
-          <IconButton
-            class="attendance__plus-btn"
-            @click="clickHandler"
-            size="small"
-            color="normal"
-            iconName="add"
-          ></IconButton>
-        </div>
-        <div class="attendance__item">
-          <p class="attendance__state">欠席</p>
-          <IconButton
-            class="attendance__minus-btn"
-            @click="clickHandler"
-            size="small"
-            color="normal"
-            iconName="remove"
-          ></IconButton>
-          <p class="attendance__count">3</p>
-          <IconButton
-            class="attendance__plus-btn"
-            @click="clickHandler"
-            size="small"
-            color="normal"
-            iconName="add"
-          ></IconButton>
-        </div>
-        <div class="attendance__item">
-          <p class="attendance__state">遅刻</p>
-          <IconButton
-            class="attendance__minus-btn"
-            @click="clickHandler"
-            size="small"
-            color="normal"
-            iconName="remove"
-          ></IconButton>
-          <p class="attendance__count">1</p>
-          <IconButton
-            class="attendance__plus-btn"
-            @click="clickHandler"
-            size="small"
-            color="normal"
-            iconName="add"
-          ></IconButton>
-        </div>
-      </div>
-    </div>
-  </article>
-  <Modal
-    v-if="deleteCourseModal"
-    class="delete-course-modal"
-    @click="closeDeleteCourseModal"
-    size="small"
-  >
-    <template #title>授業の削除</template>
-    <template #contents>
-      <p class="modal__text">
-        「色彩学」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
-      </p>
-    </template>
-    <template #button>
-      <Button
-        @click="closeDeleteCourseModal"
-        size="medium"
-        layout="fill"
-        color="base"
-        >キャンセル</Button
-      >
-      <Button @click="clickHandler" size="medium" layout="fill" color="danger"
-        >削除</Button
-      >
-    </template>
-  </Modal>
+        <Button @click="clickHandler" size="medium" layout="fill" color="danger"
+          >削除</Button
+        >
+      </template>
+    </Modal>
+  </div>
 </template>
 
 <script lang="ts">
@@ -264,19 +266,21 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
-.header {
+.course-detail {
   @include max-width;
+}
+
+@include header-left-button-delete;
+.header {
   &__right-button-icon {
     margin: $spacing-0 $spacing-0 $spacing-2 auto;
   }
 }
-@include header-left-button-delete;
 
-.course {
+.main {
   display: block;
   height: calc(100vh - 8rem /*Headerとmargin-top*/);
   margin-top: $spacing-5;
-  padding: $spacing-0 $spacing-4 $spacing-0;
   overflow-y: auto;
   @include max-width;
   @include scroll-mask;

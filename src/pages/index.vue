@@ -334,7 +334,10 @@ export default defineComponent({
   border-radius: $radius-4 $radius-4 0 0;
   box-shadow: $shadow-base;
   padding: $spacing-4 $spacing-3;
-  margin: $spacing-4 0 0;
+  margin: $spacing-4 -1.6rem 0; //縦向きの画面でLayoutのpaddingを無視するため
+  @include landscape {
+    margin: $spacing-4 0 0;
+  }
   height: calc(100vh - 7.6rem);
   grid-template:
     "toggle module btn" $spacing-7

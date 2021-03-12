@@ -65,7 +65,7 @@ export default defineComponent({
 .header {
   width: 100%;
   height: 6rem;
-  padding: $spacing-5 $spacing-4 0;
+  padding: $spacing-5 0 0;
   &__container {
     position: relative;
     width: 100%;

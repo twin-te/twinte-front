@@ -88,7 +88,7 @@ export default defineComponent({
 @include header-left-button-delete;
 
 .add {
-  margin: $spacing-0 $spacing-0;
+  margin: $spacing-0;
   @include max-width;
 }
 
@@ -96,10 +96,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: calc(100vh - 7.6rem);
-  margin: $spacing-7 $spacing-4 $spacing-0;
-  @include landscape {
-    margin: $spacing-4 $spacing-0 $spacing-0;
-  }
+  margin-top: $spacing-8;
   &__card {
     margin-bottom: $spacing-4;
   }
