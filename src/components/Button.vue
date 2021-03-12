@@ -21,25 +21,16 @@ export default defineComponent({
       required: true,
     },
     size: {
-      type: String,
+      type: String as PropType<"small" | "medium" | "large">,
       default: "large",
-      validator: function (value: string) {
-        return ["small", "medium", "large"].includes(value);
-      },
     },
     layout: {
-      type: String,
+      type: String as PropType<"flexible" | "fill" | "half">,
       default: "flexible",
-      validator: function (value: string) {
-        return ["flexible", "fill", "half"].includes(value);
-      },
     },
     color: {
-      type: String,
+      type: String as PropType<"base" | "primary" | "danger">,
       default: "base",
-      varidator: function (value: string) {
-        return ["base", "primary", "danger"].includes(value);
-      },
     },
     icon: {
       type: Boolean,
