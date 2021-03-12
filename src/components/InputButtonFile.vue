@@ -92,6 +92,7 @@ export default defineComponent({
     font-weight: medium;
     vertical-align: middle;
     transition: $transition-box-shadow;
+    white-space: nowrap;
 
     @include button-cursor;
     @include button-inactive;
