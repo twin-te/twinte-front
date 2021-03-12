@@ -16,23 +16,35 @@
   font-weight: medium;
   line-height: $fit;
 }
+@mixin text-discription {
+  color: $text-main;
+  font-size: $font-medium;
+  line-height: $multi-line;
+  font-weight: regular;
+}
 @mixin text-sub-discription {
   color: $text-sub;
   font-size: $font-small;
   line-height: $multi-line;
   font-weight: regular;
 }
-@mixin text-liner {
-  color: #6bcedc; // baakground-clip に対応していない場合の色
-  background: $primary-liner;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+@mixin modal-title {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: $multi-line;
+  color: $text-main;
 }
 @mixin text-course-tile-id {
   color: $text-sub;
   font-size: 0.9rem;
   font-weight: normal;
   line-height: $single-line;
+}
+@mixin text-liner {
+  color: #6bcedc; // baakground-clip に対応していない場合の色
+  background: $primary-liner;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 @mixin void-text-liner {
   background-clip: none;
@@ -61,14 +73,6 @@
   box-shadow: $shadow-convex-hover;
 }
 
-// modal
-@mixin modal-title {
-  font-size: 2rem;
-  font-weight: 500;
-  line-height: $multi-line;
-  color: $text-main;
-}
-
 // icon
 @mixin icon-cursor {
   user-select: none;
@@ -95,13 +99,34 @@
 }
 
 // layout
+
+//  Sidebar直下のページで使う。横向きレイアウトの時にヘッダーの左のボタンを表示しない。
+@mixin header-left-button-delete {
+  .header__left-button-icon {
+    @include landscape {
+      display: none;
+    }
+  }
+}
+
+// Home以外のページで使う。
+@mixin max-width {
+  max-width: $max-pc-item-width;
+}
+
 @mixin flexible() {
   display: inline-block;
 }
 @mixin fixed {
   display: block;
 }
-@mixin center {
+@mixin center-fixed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+@mixin center-asolute {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -121,13 +146,14 @@
 // Media Queries
 @mixin tab-and-pc {
   @media only screen and (min-height: $pc-and-tab-height) {
+    // 画面の高さが一定以上ある場合(このブレイクポイントでrootのremの大きさを切り替える)
     @content;
   }
 }
 
 @mixin landscape {
   @media screen and (orientation: landscape) {
-    // 画面が横向きの場合(tab-and-pcサイズにしか適用しない。spは横向き禁止にする。)
+    // 画面が横向きの場合
     @content;
   }
 }
@@ -142,12 +168,7 @@
 @mixin large-screen {
   @media only screen and (min-height: $pc-and-tab-height),
     (orientation: landscape) {
-    @content;
-  }
-}
-
-@mixin wide-screen {
-  @media only screen and (min-height: $pc-and-tab-height) and(orientation: landscape) {
+    // 画面の高さが一定以上or画面が横向きの場合
     @content;
   }
 }

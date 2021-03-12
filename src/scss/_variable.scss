@@ -41,7 +41,7 @@ $shadow-drop: 0.2rem 0.2rem 0.3rem #a1a7aa8c;
 
 $blur: blur(1rem);
 
-$max-pc-item-width: 900px; 
+$max-pc-item-width: 900px;
 
 // padding&margin
 $spacing-0: 0;
@@ -55,8 +55,14 @@ $spacing-7: 2.8rem;
 $spacing-8: 3.2rem;
 $spacing-9: 3.6rem;
 $spacing-10: 4rem;
+$spacing-11: 4.4rem;
+$spacing-12: 4.8rem;
+$spacing-13: 5.2rem;
+$spacing-14: 5.6rem;
+$spacing-15: 6rem;
+$spacing-15: 6.4rem;
 
-// font-size
+// font-size(アイコンフォントには使わなくて良い)
 $font-minimum: 1rem;
 $font-small: 1.2rem;
 $font-medium: 1.4rem; //これがメイン
@@ -70,6 +76,7 @@ $radius-2: 0.8rem;
 $radius-3: 1.2rem;
 $radius-4: 1.6rem;
 $radius-button: 5rem; //側面が完全に丸いボタンに使う
+$radius-input: 0.6rem; //formやinput要素に使う
 $circle: 50% 50%;
 
 // line-height
