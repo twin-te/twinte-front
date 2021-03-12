@@ -3,7 +3,7 @@
     <div v-if="ready">
       {{ state ? "logined" : "not login" }}
     </div>
-    <div v-else>loading...</div>
+    <div v-else>loading~.</div>
 
     <section class="preview__content">
       <Button @click="$router.push('/add')" size="small">Go to Add Page</Button>
@@ -230,14 +230,9 @@
         ></TextFieldSingleLine>
       </LabeledTextField>
     </section>
-    <InputBurronFile
-      name="some"
-      size="medium"
-      layout="flexible"
-      @change-file="echo"
-    >
+    <InputButtonFile name="some" @change-file="echo">
       file input
-    </InputBurronFile>
+    </InputButtonFile>
   </article>
 </template>
 
@@ -245,28 +240,28 @@
 import { defineComponent, ref } from "vue";
 import { useUsecase } from "~/usecases";
 import { authCheck } from "~/usecases/authCheck";
-import Button from "../components/Button.vue";
-import IconButton from "../components/IconButton.vue";
-import ToggleIconButton from "../components/ToggleIconButton.vue";
+import Button from "~/components/Button.vue";
+import IconButton from "~/components/IconButton.vue";
+import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import CourseTile, {
   State as CourseTileState,
-} from "../components/CourseTile.vue";
-import CourseDetail from "../components/CourseDetail.vue";
-import Sidebar from "../templates/Sidebar.vue";
-import SidebarContent from "../components/SidebarContent.vue";
-import DecoratedIcon from "../components/DecoratedIcon.vue";
-import CardAdd from "../components/CardAdd.vue";
-import CardCourse, { Course } from "../components/CardCourse.vue";
-import Popup from "../components/Popup.vue";
+} from "~/components/CourseTile.vue";
+import CourseDetail from "~/components/CourseDetail.vue";
+import Sidebar from "~/templates/Sidebar.vue";
+import SidebarContent from "~/components/SidebarContent.vue";
+import DecoratedIcon from "~/components/DecoratedIcon.vue";
+import CardAdd from "~/components/CardAdd.vue";
+import CardCourse, { Course } from "~/components/CardCourse.vue";
+import Popup from "~/components/Popup.vue";
 import PopupContent, {
   Color as PopupContentColor,
-} from "../components/PopupContent.vue";
-import Modal from "../components/Modal.vue";
-import PageHeader from "../components/PageHeader.vue";
-import ScheduleEditer, { Schedules } from "../components/ScheduleEditer.vue";
+} from "~/components/PopupContent.vue";
+import Modal from "~/components/Modal.vue";
+import PageHeader from "~/components/PageHeader.vue";
+import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import InputBurronFile from "~/components/InputButtonFile.vue";
+import InputButtonFile from "~/components/InputButtonFile.vue";
 
 export default defineComponent({
   name: "Preview",
@@ -288,7 +283,7 @@ export default defineComponent({
     ToggleIconButton,
     LabeledTextField,
     TextFieldSingleLine,
-    InputBurronFile,
+    InputButtonFile,
   },
   setup: () => {
     const { ready, state } = useUsecase(authCheck, true);
