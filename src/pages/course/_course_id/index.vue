@@ -36,7 +36,7 @@
       <div class="main__contents">
         <p class="main__code">1E06001</p>
         <h1 class="main__name">メディアアート・フィジカルコンピューティング</h1>
-        <div class="main__details">
+        <section class="main__details">
           <CourseDetail item="開講時限" value="春AB 木2">
             <DecoratedIcon iconName="schedule"></DecoratedIcon>
           </CourseDetail>
@@ -52,7 +52,7 @@
           <CourseDetail item="授業形式" value="対面">
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
-        </div>
+        </section>
         <TextFieldMultilines
           class="main__memo"
           v-model="memo"
@@ -60,7 +60,7 @@
           :height="10.3"
           style="width: 100%"
         ></TextFieldMultilines>
-        <div class="main__attendance attendance">
+        <section class="main__attendance attendance">
           <div class="attendance__item">
             <p class="attendance__state">出席</p>
             <IconButton
@@ -115,7 +115,7 @@
               iconName="add"
             ></IconButton>
           </div>
-        </div>
+        </section>
       </div>
     </article>
     <Modal

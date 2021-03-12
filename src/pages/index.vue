@@ -11,7 +11,7 @@
         ></IconButton
       ></template>
     </PageHeader>
-    <div class="main">
+    <section class="main">
       <ToggleButton
         class="main__toggle"
         :labels="label"
@@ -91,7 +91,7 @@
           />
         </template>
       </div>
-      <div class="special" v-else>
+      <section class="special" v-else>
         <div class="special-header">
           <div class="special-header__label">集中</div>
           <div class="special-header__divider"></div>
@@ -147,8 +147,8 @@
             room=""
           />
         </div>
-      </div>
-    </div>
+      </section>
+    </section>
   </div>
   <Modal
     v-if="duplicationState.courses.length > 0"

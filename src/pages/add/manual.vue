@@ -14,46 +14,46 @@
     <div class="main">
       <div class="main__mask">
         <div class="main__contents">
-          <div class="main__course-name">
+          <section class="main__course-name">
             <LabeledTextField label="授業名" mandatory>
               <TextFieldSingleLine
                 v-model="name"
                 placeholder="例) ゼミ"
               ></TextFieldSingleLine>
             </LabeledTextField>
-          </div>
-          <div class="main__period">
+          </section>
+          <section class="main__period">
             <Label value="開講時限" mandatory></Label>
             <ScheduleEditer
               v-model:schedules="schedules"
               :onClickAddButton="addSchedule"
               :onClickRemoveButton="removeSchedule"
             ></ScheduleEditer>
-          </div>
-          <div class="main__instructor">
+          </section>
+          <section class="main__instructor">
             <LabeledTextField label="担当教員">
               <TextFieldSingleLine
                 v-model="instructor"
                 placeholder="例) 山田太郎"
               ></TextFieldSingleLine>
             </LabeledTextField>
-          </div>
-          <div class="main__room">
+          </section>
+          <section class="main__room">
             <LabeledTextField label="授業場所">
               <TextFieldSingleLine
                 v-model="room"
                 placeholder="例) 研究室"
               ></TextFieldSingleLine>
             </LabeledTextField>
-          </div>
-          <div class="main__method">
+          </section>
+          <section class="main__method">
             <LabeledTextField label="授業形式">
               <TextFieldSingleLine
                 v-model="method"
                 placeholder="例) 対面"
               ></TextFieldSingleLine>
             </LabeledTextField>
-          </div>
+          </section>
         </div>
       </div>
       <section class="main__button">

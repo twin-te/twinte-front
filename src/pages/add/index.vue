@@ -14,38 +14,38 @@
       <template #title>授業の追加</template>
     </PageHeader>
     <div class="main">
-      <div class="main__card">
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="search"
           heading="授業の検索"
           text="ワードや条件を指定して授業を検索・追加します。"
         ></CardAdd>
-      </div>
-      <div class="main__card">
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="get_app"
           heading="Twinsからインポート"
           text="Twinsで登録した授業をモジュール単位でインポートします。"
         ></CardAdd>
-      </div>
-      <div class="main__card">
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="insert_drive_file"
           heading="CSVファイルから追加"
           text="CSVファイルに入っている授業データを追加します。"
         ></CardAdd>
-      </div>
-      <div class="main__card">
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="style"
           heading="手動で授業を作成"
           text="手入力でカスタマイズして授業を作成します。"
         ></CardAdd>
-      </div>
+      </section>
     </div>
   </div>
 </template>
