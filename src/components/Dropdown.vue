@@ -89,7 +89,6 @@ export default defineComponent({
           :key="option"
           :value="option"
           :isSelected="isSelected(option)"
-          :width="width"
           @click="[emitSelectedEvent(option), toggleShown()]"
         ></DropdownContent>
       </div>
@@ -127,6 +126,7 @@ export default defineComponent({
     }
   }
   &__options {
+    width: 100%;
     position: absolute;
     z-index: 10;
     top: calc(100% + 0.6rem);
