@@ -13,11 +13,9 @@
   <div class="main">
     <div class="main__csv csv">
       <p class="csv__header">CSVファイル</p>
-      <div v-if="fileName" class="csv__file">{{ fileName }}</div>
-      <div v-else class="csv__file--unselected">未選択</div>
-      <p class="csv__btn">
-        <Button @click="upload" size="small">アップロードする</Button>
-      </p>
+      <InputButtonFile name="csv-file" @change-file="echo">
+        アップロードする
+      </InputButtonFile>
     </div>
     <div class="main__courses courses">
       <div class="courses__contents">
@@ -100,6 +98,7 @@ import Button from "~/components/Button.vue";
 import CardCourse, { Course } from "~/components/CardCourse.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
 import IconButton from "~/components/IconButton.vue";
+import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -111,6 +110,7 @@ export default defineComponent({
     CardCourse,
     CourseDetailMini,
     IconButton,
+    InputButtonFile,
     Modal,
     PageHeader,
   },
@@ -228,35 +228,9 @@ export default defineComponent({
   }
 }
 .csv {
-  display: grid;
-  grid-template:
-    "header ... ..." $spacing-5
-    "... ... ..." $spacing-5
-    "fileName ... btn" auto
-    / 1fr $spacing-2 auto;
   &__header {
-    grid-area: header;
     font-weight: 500;
-    @include center-flex;
-    justify-content: flex-start;
-  }
-  &__file {
-    grid-area: fileName;
-    line-height: 2.8rem;
-    @include ellipsis;
-    &::before {
-      font-family: "Material Icons";
-      content: "insert_drive_file";
-      margin-right: $spacing-1;
-    }
-    &--unselected {
-      grid-area: fileName;
-      line-height: 2.8rem;
-      color: $unselected;
-    }
-  }
-  &__btn {
-    grid-area: btn;
+    margin-bottom: $spacing-4;
   }
 }
 .courses {
