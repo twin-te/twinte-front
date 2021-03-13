@@ -226,6 +226,9 @@ export default defineComponent({
   margin-top: $spacing-5;
   &__mask {
     height: calc(100vh - 16.2rem);
+    @include landscape {
+      height: calc(100vh - 16.6rem);
+    }
     @include scroll-mask;
     overflow-y: auto;
   }

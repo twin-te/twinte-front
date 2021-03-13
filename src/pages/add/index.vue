@@ -95,7 +95,7 @@ export default defineComponent({
 .main {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 7.6rem);
+  height: calc(100vh - 9.2rem);
   margin-top: $spacing-8;
   &__card {
     margin-bottom: $spacing-4;
