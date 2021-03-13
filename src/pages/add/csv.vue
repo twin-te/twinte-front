@@ -243,6 +243,8 @@ export default defineComponent({
 .courses {
   height: calc(100vh - 25.7rem);
   overflow-y: scroll;
+  margin-right: -($spacing-4);
+  padding-right: $spacing-4;
   @include scroll-mask;
   &__contents {
     display: grid;
