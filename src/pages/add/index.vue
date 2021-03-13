@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <PageHeader>
-      <template #left-btn>
-        <div class="header__left-btn">
+      <template #left-button-icon>
+        <div class="header__left-button-icon">
           <IconButton
             @click="toggleSidebar"
             size="large"
@@ -14,38 +14,38 @@
       <template #title>授業の追加</template>
     </PageHeader>
     <div class="main">
-      <div class="main__card">
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="search"
           heading="授業の検索"
           text="ワードや条件を指定して授業を検索・追加します。"
         ></CardAdd>
-      </div>
-      <div class="main__card">
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="get_app"
           heading="Twinsからインポート"
           text="Twinsで登録した授業をモジュール単位でインポートします。"
         ></CardAdd>
-      </div>
-      <div class="main__card">
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="insert_drive_file"
           heading="CSVファイルから追加"
           text="CSVファイルに入っている授業データを追加します。"
         ></CardAdd>
-      </div>
-      <div class="main__card">
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/')"
           iconName="style"
           heading="手動で授業を作成"
           text="手入力でカスタマイズして授業を作成します。"
         ></CardAdd>
-      </div>
+      </section>
     </div>
   </div>
 </template>
@@ -85,28 +85,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "~/scss/main.scss";
 
-.add {
-  margin: $spacing-0 $spacing-0;
-  @include landscape {
-    margin: $spacing-0 $spacing-9;
-  }
-  max-width: $max-pc-item-width;
-}
+@include header-left-button-delete;
 
-.header__left-btn {
-  @include landscape {
-    display: none;
-  }
+.add {
+  margin: $spacing-0;
+  @include max-width;
 }
 
 .main {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 7.6rem);
-  margin: $spacing-7 $spacing-4 $spacing-0;
-  @include landscape {
-    margin: $spacing-4 $spacing-0 $spacing-0;
-  }
+  margin-top: $spacing-8;
   &__card {
     margin-bottom: $spacing-4;
   }

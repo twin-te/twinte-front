@@ -184,7 +184,7 @@
       atHome
       :calendar="{ month: 2, day: 23, week: '火', schedule: '通常日課' }"
     >
-      <template #left-btn>
+      <template #left-button-icon>
         <IconButton
           @click="clickHandler"
           size="large"
@@ -194,7 +194,7 @@
       </template>
     </PageHeader>
     <PageHeader>
-      <template #left-btn>
+      <template #left-button-icon>
         <IconButton
           @click="clickHandler"
           size="large"
@@ -203,7 +203,7 @@
         ></IconButton>
       </template>
       <template #title>授業詳細</template>
-      <template #right-btn>
+      <template #right-button-icon>
         <ToggleIconButton
           @click="isBtnActive.more_vert = !isBtnActive.more_vert"
           size="large"
@@ -449,12 +449,12 @@ export default defineComponent({
 .modal {
   // buttonが2個の場合
   .button {
-    width: calc(50% - 1.2rem);
+    width: calc(50% - $spacing-3);
     &:first-child {
-      margin-right: 1.2rem;
+      margin-right: $spacing-3;
     }
     &:last-child {
-      margin-left: 1.2rem;
+      margin-left: $spacing-3;
     }
   }
 }

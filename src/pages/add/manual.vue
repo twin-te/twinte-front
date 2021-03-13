@@ -1,114 +1,116 @@
 <template>
-  <PageHeader>
-    <template #left-btn>
-      <IconButton
-        @click="$router.push('/add')"
-        size="large"
-        color="normal"
-        icon-name="arrow_back"
-      ></IconButton>
-    </template>
-    <template #title>手動で授業を作成</template>
-  </PageHeader>
-  <div class="main">
-    <div class="main__mask">
-      <div class="main__contents">
-        <div class="main__course-name">
-          <LabeledTextField label="授業名" mandatory>
-            <TextFieldSingleLine
-              v-model="name"
-              placeholder="例) ゼミ"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
-        </div>
-        <div class="main__period">
-          <Label value="開講時限" mandatory></Label>
-          <ScheduleEditer
-            v-model:schedules="schedules"
-            :onClickAddButton="addSchedule"
-            :onClickRemoveButton="removeSchedule"
-          ></ScheduleEditer>
-        </div>
-        <div class="main__instructor">
-          <LabeledTextField label="担当教員">
-            <TextFieldSingleLine
-              v-model="instructor"
-              placeholder="例) 山田太郎"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
-        </div>
-        <div class="main__room">
-          <LabeledTextField label="授業場所">
-            <TextFieldSingleLine
-              v-model="room"
-              placeholder="例) 研究室"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
-        </div>
-        <div class="main__method">
-          <LabeledTextField label="授業形式">
-            <TextFieldSingleLine
-              v-model="method"
-              placeholder="例) 対面"
-            ></TextFieldSingleLine>
-          </LabeledTextField>
+  <div class="manual">
+    <PageHeader>
+      <template #left-button-icon>
+        <IconButton
+          @click="$router.push('/add')"
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+        ></IconButton>
+      </template>
+      <template #title>手動で授業を作成</template>
+    </PageHeader>
+    <div class="main">
+      <div class="main__mask">
+        <div class="main__contents">
+          <section class="main__course-name">
+            <LabeledTextField label="授業名" mandatory>
+              <TextFieldSingleLine
+                v-model="name"
+                placeholder="例) ゼミ"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </section>
+          <section class="main__period">
+            <Label value="開講時限" mandatory></Label>
+            <ScheduleEditer
+              v-model:schedules="schedules"
+              :onClickAddButton="addSchedule"
+              :onClickRemoveButton="removeSchedule"
+            ></ScheduleEditer>
+          </section>
+          <section class="main__instructor">
+            <LabeledTextField label="担当教員">
+              <TextFieldSingleLine
+                v-model="instructor"
+                placeholder="例) 山田太郎"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </section>
+          <section class="main__room">
+            <LabeledTextField label="授業場所">
+              <TextFieldSingleLine
+                v-model="room"
+                placeholder="例) 研究室"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </section>
+          <section class="main__method">
+            <LabeledTextField label="授業形式">
+              <TextFieldSingleLine
+                v-model="method"
+                placeholder="例) 対面"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </section>
         </div>
       </div>
-    </div>
-    <section class="main__button">
-      <Button
-        @click="addCourse"
-        size="large"
-        layout="fill"
-        color="primary"
-        :pauseActiveStyle="false"
-        :state="btnState"
-        >変更を保存</Button
-      >
-    </section>
-  </div>
-  <Modal
-    v-if="duplicationModal"
-    class="duplication-modal"
-    @click="closeDuplicationModal"
-  >
-    <template #title>開講時限が重複しています</template>
-    <template #contents>
-      <p class="modal__text">
-        以下の授業のコマには既に授業が登録されています。そのまま追加してよろしいですか？（当該のコマには複数の授業が登録されます。）
-      </p>
-      <div class="modal__courses">
-        <div
-          class="duplicated-course"
-          v-for="data in duplicatedCourses"
-          :key="data.name"
+      <section class="main__button">
+        <Button
+          @click="addCourse"
+          size="large"
+          layout="fill"
+          color="primary"
+          :pauseActiveStyle="false"
+          :state="btnState"
+          >変更を保存</Button
         >
-          <p class="duplicated-course__name">{{ data.name }}</p>
-          <CourseDetailMini
-            class="duplicated-course__detail"
-            iconName="schedule"
-            :text="data.period"
-          ></CourseDetailMini>
+      </section>
+    </div>
+    <Modal
+      v-if="duplicationModal"
+      class="duplication-modal"
+      @click="closeDuplicationModal"
+    >
+      <template #title>開講時限が重複しています</template>
+      <template #contents>
+        <p class="modal__text">
+          以下の授業のコマには既に授業が登録されています。そのまま追加してよろしいですか？（当該のコマには複数の授業が登録されます。）
+        </p>
+        <div class="modal__courses">
+          <div
+            class="duplicated-course"
+            v-for="data in duplicatedCourses"
+            :key="data.name"
+          >
+            <p class="duplicated-course__name">{{ data.name }}</p>
+            <CourseDetailMini
+              class="duplicated-course__detail"
+              iconName="schedule"
+              :text="data.period"
+            ></CourseDetailMini>
+          </div>
         </div>
-      </div>
-    </template>
-    <template #button>
-      <Button
-        @click="closeDuplicationModal"
-        size="medium"
-        layout="fill"
-        color="base"
-        >キャンセル</Button
-      >
-      <Button
-        @click="addCourse(true)"
-        size="medium"
-        layout="fill"
-        color="primary"
-        >そのまま追加</Button
-      >
-    </template>
-  </Modal>
+      </template>
+      <template #button>
+        <Button
+          @click="closeDuplicationModal"
+          size="medium"
+          layout="fill"
+          color="base"
+          >キャンセル</Button
+        >
+        <Button
+          @click="addCourse(true)"
+          size="medium"
+          layout="fill"
+          color="primary"
+          >そのまま追加</Button
+        >
+      </template>
+    </Modal>
+  </div>
 </template>
 
 <script lang="ts">
@@ -216,17 +218,12 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-
-.header {
-  max-width: 900px;
+.manual {
+  @include max-width;
 }
+
 .main {
-  max-width: 900px;
   margin-top: $spacing-5;
-  padding: $spacing-0 $spacing-4;
-  @include landscape {
-    padding: $spacing-0 $spacing-9;
-  }
   &__mask {
     height: calc(100vh - 16.2rem);
     @include scroll-mask;

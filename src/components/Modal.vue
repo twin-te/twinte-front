@@ -55,61 +55,57 @@ export default defineComponent({
 .modal {
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 100;
-  padding: 3.6rem 3.2rem 3.2rem 3.2rem;
+  padding: $spacing-9 $spacing-8 $spacing-8;
   background: $base-liner;
-  box-sizing: border-box;
-  border: 0.1rem solid $base;
   box-shadow: $shadow-base;
   border-radius: $radius-3;
   text-align: left;
+  @include center-fixed;
 
   &--large {
     // スマホ
-    width: 34.4rem;
-    height: 56.7rem;
+    width: 34rem;
+    height: 56rem;
     // タブレット、PC、横向き
     @include large-screen {
       width: 40rem;
-      height: 51.58334rem;
+      height: 50rem;
     }
   }
   &--small {
     // スマホ
-    width: 34.3rem;
-    height: 39.5rem;
+    width: 34rem;
+    height: 40rem;
     // タブレット、PC、横向き
     @include large-screen {
       width: 40rem;
-      height: 30.33334rem;
+      height: 30rem;
     }
   }
   &__title {
     @include modal-title;
-    margin-bottom: 4rem;
+    margin-bottom: $spacing-10;
   }
   &__contents {
     height: 100%;
     overflow: scroll;
+    @include text-discription;
   }
   &__button {
     display: flex;
     flex-direction: row;
-    margin-top: 2.8rem;
+    margin-top: $spacing-7;
   }
   &__close-btn {
     position: absolute;
-    top: 2.028rem;
+    top: 2rem;
     right: 2rem;
     color: $button-gray;
     @include button-cursor;
     font-size: 2.4rem;
     font-weight: normal;
-    line-height: 2.4rem;
+    line-height: $fit;
   }
 }
 

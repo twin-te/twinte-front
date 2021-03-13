@@ -93,12 +93,12 @@ export default defineComponent({
   &__box {
     display: flex;
     align-items: center;
-    padding: 0rem 1.6rem;
+    padding: 0rem $spacing-4;
     box-shadow: $shadow-input-concave;
-    border-radius: $radius-2;
+    border-radius: $radius-input;
   }
   &__icon {
-    margin-right: 0.4rem;
+    margin-right: $spacing-1;
     color: $unselected;
     font-size: 2.2rem;
     font-family: Material Icons;
@@ -109,8 +109,8 @@ export default defineComponent({
   &__input {
     display: block;
     width: 100%;
-    font-size: 1.4rem;
-    line-height: 1.4rem;
+    font-size: $font-medium;
+    line-height: $fit;
     color: $text-main;
     &:focus {
       outline: none;

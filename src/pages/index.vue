@@ -1,16 +1,17 @@
 <template>
   <div class="home">
     <PageHeader v-show="calReady" :calendar="calendar" atHome>
-      <template #left-btn>
+      <template #left-button-icon>
         <IconButton
           @click="toggleSidebar"
           size="large"
           color="normal"
           iconName="menu"
+          class="header__left-button-icon"
         ></IconButton
       ></template>
     </PageHeader>
-    <div class="main">
+    <section class="main">
       <ToggleButton
         class="main__toggle"
         :labels="label"
@@ -26,7 +27,7 @@
           {{ module }}
         </div>
         <div class="main__module-selector">
-          <ToggleIconButton
+          <IconButton
             class="main__module-btn"
             @click="togglePopupModule"
             size="small"
@@ -90,7 +91,7 @@
           />
         </template>
       </div>
-      <div class="special" v-else>
+      <section class="special" v-else>
         <div class="special-header">
           <div class="special-header__label">集中</div>
           <div class="special-header__divider"></div>
@@ -146,8 +147,8 @@
             room=""
           />
         </div>
-      </div>
-    </div>
+      </section>
+    </section>
   </div>
   <Modal
     v-if="duplicationState.courses.length > 0"
@@ -196,7 +197,6 @@
 import { computed, defineComponent, ref } from "vue";
 import CourseTile from "~/components/CourseTile.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
-import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import Button from "~/components/Button.vue";
 import Modal from "~/components/Modal.vue";
@@ -218,7 +218,6 @@ export default defineComponent({
   components: {
     CourseTile,
     ToggleButton,
-    ToggleIconButton,
     IconButton,
     Button,
     Modal,
@@ -332,10 +331,13 @@ export default defineComponent({
 
 .main {
   display: grid;
-  border-radius: $spacing-4 $spacing-4 0 0;
+  border-radius: $radius-4 $radius-4 0 0;
   box-shadow: $shadow-base;
   padding: $spacing-4 $spacing-3;
-  margin: $spacing-4 0 0;
+  margin: $spacing-4 -1.6rem 0; //縦向きの画面でLayoutのpaddingを無視するため
+  @include landscape {
+    margin: $spacing-4 0 0;
+  }
   height: calc(100vh - 7.6rem);
   grid-template:
     "toggle module btn" $spacing-7
@@ -359,6 +361,8 @@ export default defineComponent({
 
   &__module-text {
     color: $text-main;
+    font-weight: $font-medium;
+    font-size: $font-large;
     margin: auto 0.6rem auto;
   }
 
@@ -389,15 +393,11 @@ export default defineComponent({
   }
 }
 
+@include header-left-button-delete;
+
 .sidebar {
   &--sm {
     position: fixed;
-  }
-}
-
-.home {
-  @include landscape {
-    margin: 0 3.6rem $spacing-5;
   }
 }
 
@@ -430,7 +430,7 @@ export default defineComponent({
 
 .special-header {
   display: flex;
-  margin: 1.2rem 0 1.6rem 0;
+  margin: $spacing-3 0 $spacing-4 0;
   align-items: center;
   height: 2rem;
 
@@ -442,7 +442,7 @@ export default defineComponent({
     border-radius: 0.2rem;
     height: 0.4rem;
     width: calc(100% - 4rem);
-    margin-left: 1.2rem;
+    margin-left: $spacing-3;
     box-shadow: $shadow-input-concave;
   }
 }
@@ -454,11 +454,11 @@ export default defineComponent({
   grid-template-columns: 4.8rem 1fr;
   grid-template-rows: 4.8rem;
   gap: 0.2rem;
-  margin-bottom: 3.2rem;
+  margin-bottom: $spacing-8;
   &__module {
     color: $text-sub;
     font-size: $font-small;
-    margin-left: 0.4rem;
+    margin-left: $spacing-1;
   }
   &__course {
     height: 4.8rem;
