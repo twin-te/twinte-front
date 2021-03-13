@@ -189,6 +189,10 @@ export default defineComponent({
       else openDuplicationModal();
     };
 
+    const echo = (file: any) => {
+      console.log(file);
+    };
+
     return {
       courseData,
       upload,
@@ -200,6 +204,7 @@ export default defineComponent({
       openDuplicationModal,
       closeDuplicationModal,
       duplicatedCourses,
+      echo,
     };
   },
 });

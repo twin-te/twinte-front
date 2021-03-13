@@ -286,7 +286,7 @@ export default defineComponent({
     InputButtonFile,
   },
   setup: () => {
-    const { ready, state } = useUsecase(authCheck, true);
+    const { isReady: ready, state } = useUsecase(authCheck, true);
     const isBtnActive = ref({
       expand_more: false,
       edit: false,
