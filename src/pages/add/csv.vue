@@ -1,6 +1,6 @@
 <template>
   <PageHeader>
-    <template #left-btn>
+    <template #left-button-icon>
       <IconButton
         @click="$router.push('/add')"
         size="large"
@@ -17,23 +17,21 @@
         アップロードする
       </InputButtonFile>
     </div>
-    <div class="main__courses courses">
+    <div v-if="valid" class="main__courses courses">
       <div class="courses__contents">
-        <template v-if="valid">
-          <CardCourse
-            v-for="{ checked, course } in courseData"
-            :key="course"
-            @click-checkbox="checked.value = !checked.value"
-            @click-syllabus-link="$router.push(course.url)"
-            :isChecked="checked.value"
-            :course="course"
-          >
-          </CardCourse>
-        </template>
-        <div v-else class="courses__warning">
-          授業を読み込めません。CSVファイルの内容をご確認ください。
-        </div>
+        <CardCourse
+          v-for="{ checked, course } in courseData"
+          :key="course.id"
+          @click-checkbox="checked.value = !checked.value"
+          @click-syllabus-link="$router.push(course.url)"
+          :isChecked="checked.value"
+          :course="course"
+        >
+        </CardCourse>
       </div>
+    </div>
+    <div v-else class="main__error">
+      授業を読み込めません。CSVファイルの内容をご確認ください。
     </div>
     <div class="main__button">
       <Button
@@ -185,7 +183,7 @@ export default defineComponent({
       { name: "色彩学", period: "春B 水2" },
     ];
 
-    const addCourse = (force: boolean = false) => {
+    const addCourse = (force = false) => {
       if (btnState.value === "disabled") return;
       if (!duplicated.value || force) router.push("/");
       else openDuplicationModal();
@@ -215,9 +213,17 @@ export default defineComponent({
 }
 .main {
   max-width: 900px;
-  padding: $spacing-8 $spacing-4 $spacing-0;
+  &__csv {
+    margin-top: $spacing-8;
+  }
   &__courses {
     margin-top: $spacing-5;
+  }
+  &__error {
+    margin-top: $spacing-6;
+    height: calc(100vh - 26.1rem);
+    color: $danger;
+    line-height: 2rem;
   }
   &__button {
     margin: $spacing-3 $spacing-0 $spacing-6;
@@ -230,21 +236,18 @@ export default defineComponent({
 .csv {
   &__header {
     font-weight: 500;
+    line-height: $single-line;
     margin-bottom: $spacing-4;
   }
 }
 .courses {
-  height: calc(100vh - 26.2rem);
+  height: calc(100vh - 25.7rem);
   overflow-y: scroll;
   @include scroll-mask;
   &__contents {
     display: grid;
     gap: $spacing-3;
-    margin: $spacing-3 $spacing-0 5.6rem;
-  }
-  &__warning {
-    color: $danger;
-    line-height: 2rem;
+    margin: $spacing-3 $spacing-0 $spacing-14;
   }
 }
 .duplication-modal .modal {
