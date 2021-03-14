@@ -1,11 +1,12 @@
 <script lang="ts">
 import { defineComponent, PropType, watch } from "vue";
 import DropDown from "~/components/Dropdown.vue";
+import { methodOption, createOption } from "~/entities/method";
 
 type Props = {
   onClickAddButton: Function;
   onClickRemoveButton: Function;
-  methods: { value: string }[];
+  methods: { value: methodOption }[];
 };
 
 export default defineComponent({
@@ -23,25 +24,12 @@ export default defineComponent({
       required: true,
     },
     methods: {
-      type: Array as PropType<{ value: string }[]>,
+      type: Array as PropType<{ value: methodOption }[]>,
       required: true,
     },
   },
   emits: ["update:methods", "click-add-button", "click-remove-button"],
   setup: (props: Props, { emit }) => {
-    const options = [
-      "指定なし",
-      "対面",
-      "同時双方向",
-      "オンデマンド",
-      "その他",
-    ];
-
-    const createOption = () => {
-      return options.filter((o) => {
-        return !props.methods.some((obj) => obj.value === o);
-      });
-    };
     const add = () => {
       if (props.methods.some((obj) => obj.value === "指定なし")) return;
       emit("click-add-button");
@@ -68,7 +56,7 @@ export default defineComponent({
         :key="data.value"
       >
         <DropDown
-          :options="createOption()"
+          :options="createOption(methods)"
           v-model:selectedOption="data.value"
           :label="i === 0 ? '学期' : ''"
         >

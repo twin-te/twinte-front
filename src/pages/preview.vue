@@ -268,6 +268,7 @@ import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
+import { methodOption } from "~/entities/method";
 
 export default defineComponent({
   name: "Preview",
@@ -403,7 +404,9 @@ export default defineComponent({
     const inputValue = ref("");
 
     // dropdonw-addable
-    const methods = reactive<{ value: string }[]>([{ value: "指定なし" }]);
+    const methods = reactive<{ value: methodOption }[]>([
+      { value: "指定なし" },
+    ]);
     const addMethod = () => {
       if (methods.length > 3) return;
       methods.push({ value: "指定なし" });
