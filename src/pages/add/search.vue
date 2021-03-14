@@ -42,8 +42,11 @@
             key="accordion"
           >
             <div class="accordion__top-border"></div>
-            <div class="accordion__only-blank" @click="onlyBlank = !onlyBlank">
-              <Checkbox :isChecked="onlyBlank"></Checkbox>
+            <div class="accordion__only-blank" @click="toggleOnlyBlank">
+              <Checkbox
+                :isChecked="onlyBlank"
+                @clickCheckbox.stop="toggleOnlyBlank"
+              ></Checkbox>
               空いているコマのみを検索
             </div>
             <div class="accordion__shedule-editor">
@@ -55,21 +58,21 @@
             </div>
           </section>
           <section class="search__result" v-else key="result">
-            <template v-if="searchResult.length > 0">
-              <div
-                class="result__row"
-                v-for="course in searchResult"
-                :key="course.id"
-              >
-                <CardCourse
-                  :course="course"
-                  @click-checkbox="course.isSelected = !course.isSelected"
-                  @click-syllabus-link="$router.push('/')"
-                  :isChecked="course.isSelected"
-                ></CardCourse>
-              </div>
-            </template>
-            <div class="result__not-found" v-else>
+            <!-- <template v-if="searchResult.length > 0"> -->
+            <div
+              class="result__row"
+              v-for="course in searchResult"
+              :key="course.id"
+            >
+              <CardCourse
+                :course="course"
+                @click-checkbox="course.isSelected = !course.isSelected"
+                @click-syllabus-link="$router.push('/')"
+                :isChecked="course.isSelected"
+              ></CardCourse>
+            </div>
+            <!-- </template> -->
+            <div class="result__not-found" v-if="searchResult.length === 0">
               一致する授業がありません。
             </div>
           </section>
@@ -166,7 +169,7 @@ export default defineComponent({
     const [isAccordionOpen, toggleOpen] = useToggle();
 
     /** search option */
-    const onlyBlank = ref(false);
+    const [onlyBlank, toggleOnlyBlank] = useToggle();
 
     /** schedule-editor */
     const schedules = ref<Schedules>([
@@ -291,6 +294,7 @@ export default defineComponent({
       search,
       searchResult,
       searchWord,
+      toggleOnlyBlank,
       toggleOpen,
     };
   },
