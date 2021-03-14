@@ -29,7 +29,7 @@ export default defineComponent({
     },
     width: {
       type: String,
-      default: "8.8rem",
+      default: "9.4rem",
     },
   },
   emits: ["update:selectedOption"],
