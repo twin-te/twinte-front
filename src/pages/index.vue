@@ -242,7 +242,7 @@ export default defineComponent({
     const isCurrentModule = computed(
       () => module.value === currentModule.value
     );
-    const { ready: calReady, state: calendar } = useUsecase(
+    const { isReady: calReady, state: calendar } = useUsecase(
       getCalendar,
       {} as Calendar
     );

@@ -9,7 +9,6 @@ type Props = {
   options: Options;
   selectedOption: string;
   label: string;
-  width: string;
 };
 
 export default defineComponent({
@@ -26,10 +25,6 @@ export default defineComponent({
     label: {
       type: String,
       default: "",
-    },
-    width: {
-      type: String,
-      default: "8.8rem",
     },
   },
   emits: ["update:selectedOption"],
@@ -72,12 +67,7 @@ export default defineComponent({
 <template>
   <div class="dropdown">
     <div v-if="hasLabel" class="dropdown__label">{{ label }}</div>
-    <div
-      @click="toggleShown"
-      v-click-away="closeOptions"
-      class="dropdown__box"
-      :style="{ width }"
-    >
+    <div @click="toggleShown" v-click-away="closeOptions" class="dropdown__box">
       <div v-if="isDefault" class="dropdown__box__text--unselected">
         指定なし
       </div>
@@ -99,7 +89,6 @@ export default defineComponent({
           :key="option"
           :value="option"
           :isSelected="isSelected(option)"
-          :width="width"
           @click="[emitSelectedEvent(option), toggleShown()]"
         ></DropdownContent>
       </div>
@@ -112,13 +101,14 @@ export default defineComponent({
 
 .dropdown {
   position: relative;
+  width: 100%;
   &__label {
-    @include text-label;
+    @include text-main;
     margin-bottom: $spacing-2;
   }
   &__box {
     @include button-cursor;
-    @include text-label;
+    @include text-main;
     display: flex;
     justify-content: space-between;
     border-radius: $radius-1;
@@ -136,6 +126,7 @@ export default defineComponent({
     }
   }
   &__options {
+    width: 100%;
     position: absolute;
     z-index: 10;
     top: calc(100% + 0.6rem);

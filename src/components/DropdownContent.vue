@@ -15,10 +15,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    width: {
-      type: String,
-      default: "8.8rem",
-    },
   },
   emits: ["click"],
 });
@@ -28,7 +24,6 @@ export default defineComponent({
   <div
     @click="$emit('click')"
     :class="{ option: true, '--selected': isSelected }"
-    :style="{ width }"
   >
     {{ value }}
   </div>
