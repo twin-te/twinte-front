@@ -27,7 +27,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:methods", "click-add", "click-remove"],
+  emits: ["update:methods", "click-add-button", "click-remove-button"],
   setup: (props: Props, { emit }) => {
     const options = [
       "指定なし",
@@ -44,7 +44,7 @@ export default defineComponent({
     };
     const add = () => {
       if (props.methods.some((obj) => obj.value === "指定なし")) return;
-      emit("click-add");
+      emit("click-add-button");
     };
     watch(props.methods, (methods) => {
       const length = methods.length;
@@ -75,7 +75,7 @@ export default defineComponent({
         </DropDown>
         <div
           v-if="i"
-          @click="$emit('click-remove', i)"
+          @click="$emit('click-remove-button', i)"
           class="dropdown-addable__remove-btn material-icons"
         >
           close

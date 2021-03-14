@@ -235,8 +235,8 @@
     </InputButtonFile>
     <DropdownAddable
       v-model:methods="methods"
-      @click-add="addMethod"
-      @click-remove="removeMethod"
+      @click-add-button="addMethod"
+      @click-remove-button="removeMethod"
     ></DropdownAddable>
   </article>
 </template>
