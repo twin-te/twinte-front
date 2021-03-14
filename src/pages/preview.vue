@@ -237,9 +237,10 @@
 </template>
 
 <script lang="ts">
+import { authCheck } from "~/usecases/authCheck";
+import { CourseCard } from "~/entities/courseCard";
 import { defineComponent, ref } from "vue";
 import { useUsecase } from "~/usecases";
-import { authCheck } from "~/usecases/authCheck";
 import Button from "~/components/Button.vue";
 import IconButton from "~/components/IconButton.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
@@ -251,7 +252,7 @@ import Sidebar from "~/templates/Sidebar.vue";
 import SidebarContent from "~/components/SidebarContent.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
 import CardAdd from "~/components/CardAdd.vue";
-import CardCourse, { Course } from "~/components/CardCourse.vue";
+import CardCourse from "~/components/CardCourse.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent, {
   Color as PopupContentColor,
@@ -293,12 +294,13 @@ export default defineComponent({
       menu: false,
       more_vert: false,
     });
-    const courseInfo = ref<Course>({
+    const courseInfo = ref<CourseCard>({
       id: "01EB512",
       name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
       period: "春A 水2",
-      room: "6A203",
+      location: "6A203",
       url: "https://example.com",
+      isSelected: false,
     });
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);

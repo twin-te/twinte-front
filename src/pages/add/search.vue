@@ -136,12 +136,13 @@
 </template>
 
 <script lang="ts">
+import { CourseCard, dummyCourseCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle } from "@vueuse/core";
 import Button from "~/components/Button.vue";
-import CardCourse, { Course } from "~/components/CardCourse.vue";
+import CardCourse from "~/components/CardCourse.vue";
 import Checkbox from "~/components/Checkbox.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -191,59 +192,6 @@ export default defineComponent({
     };
 
     /** result */
-    const sampleData = [
-      {
-        id: "01EB512",
-        name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-        period: "春A 水2",
-        room: "6A203",
-        url: "https://example.com",
-        isSelected: false,
-      },
-      {
-        id: "01EB512",
-        name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-        period: "春A 水2",
-        room: "6A203",
-        url: "https://example.com",
-        isSelected: false,
-      },
-      {
-        id: "01EB512",
-        name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-        period: "春A 水2",
-        room: "6A203",
-        url: "https://example.com",
-        isSelected: false,
-      },
-      {
-        id: "01EB512",
-        name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-        period: "春A 水2",
-        room: "6A203",
-        url: "https://example.com",
-        isSelected: false,
-      },
-      {
-        id: "01EB512",
-        name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-        period: "春A 水2",
-        room: "6A203",
-        url: "https://example.com",
-        isSelected: false,
-      },
-      {
-        id: "01EB512",
-        name: "色彩計画論特講色彩計画論特講色色彩計画論特講色彩計画論特講色",
-        period: "春A 水2",
-        room: "6A203",
-        url: "https://example.com",
-        isSelected: false,
-      },
-    ];
-    interface CourseCard extends Course {
-      isSelected: boolean;
-    }
     const searchResult = ref<CourseCard[]>([]);
 
     /** top */
@@ -251,7 +199,7 @@ export default defineComponent({
     const search = () => {
       isAccordionOpen.value = false;
       // デモ用の動作
-      searchResult.value = searchWord.value === "色彩" ? sampleData : [];
+      searchResult.value = searchWord.value === "色彩" ? dummyCourseCard : [];
     };
 
     /** button */
@@ -381,7 +329,6 @@ export default defineComponent({
     margin-bottom: $spacing-3;
   }
   &__not-found {
-    // margin-top: $spacing-2;
     color: $disabled;
   }
 }
