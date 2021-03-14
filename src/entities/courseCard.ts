@@ -12,7 +12,7 @@ export type CourseCard = {
 /**
  * periodを文字形式(ex 秋AB火12)に変換する関数
  */
-export const periodTostring = (_schedules: CourseSchedule[]) => {
+export const periodToString = (_schedules: CourseSchedule[]) => {
   return "秋AB 火12";
 };
 
@@ -31,7 +31,7 @@ export const courseToCard = (course: Course): CourseCard => {
   const courseCard: CourseCard = {
     id: course.id,
     name: course.name,
-    period: periodTostring(course.schedules),
+    period: periodToString(course.schedules),
     location: locationToString(course.schedules),
     url: getSyllbUrl(course.id),
     isSelected: false,
