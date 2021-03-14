@@ -77,26 +77,28 @@ export default defineComponent({
 
 <template>
   <div class="schedule-editer">
-    <div
+    <section
       class="schedule-editer__row"
       v-for="(schedule, index) in schedules"
       :key="index"
     >
-      <Dropdown
-        :options="semesterOptions"
-        v-model:selectedOption="schedule.semester"
-        :label="index > 0 ? '' : '学期'"
-      ></Dropdown>
-      <Dropdown
-        :options="dateOptions"
-        v-model:selectedOption="schedule.date"
-        :label="index > 0 ? '' : '曜日'"
-      ></Dropdown>
-      <Dropdown
-        :options="periodOptions"
-        v-model:selectedOption="schedule.period"
-        :label="index > 0 ? '' : '時限'"
-      ></Dropdown>
+      <div class="schedule-editer__container">
+        <Dropdown
+          :options="semesterOptions"
+          v-model:selectedOption="schedule.semester"
+          :label="index > 0 ? '' : '学期'"
+        ></Dropdown>
+        <Dropdown
+          :options="dateOptions"
+          v-model:selectedOption="schedule.date"
+          :label="index > 0 ? '' : '曜日'"
+        ></Dropdown>
+        <Dropdown
+          :options="periodOptions"
+          v-model:selectedOption="schedule.period"
+          :label="index > 0 ? '' : '時限'"
+        ></Dropdown>
+      </div>
       <div
         v-if="index > 0"
         @click="emitRemoveEvent(index, $event)"
@@ -104,7 +106,7 @@ export default defineComponent({
       >
         <span class="material-icons">close</span>
       </div>
-    </div>
+    </section>
     <div @click="emitAddEvent" class="schedule-editer__add">
       <span class="material-icons">add</span>追加する
     </div>
@@ -118,14 +120,19 @@ export default defineComponent({
   &__row {
     display: flex;
     align-items: center;
-    gap: $spacing-2;
     &:not(:first-child) {
       margin-top: $spacing-5;
     }
     &__remove {
+      padding-left: $spacing-2;
       @include button-cursor;
       @include text-button;
     }
+  }
+  &__container {
+    display: flex;
+    width: 30rem;
+    gap: $spacing-2;
   }
   &__add {
     @include button-cursor;
