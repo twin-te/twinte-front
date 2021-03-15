@@ -15,6 +15,10 @@ export default defineComponent({
       type: Function,
       required: true,
     },
+    onKeyup: {
+      type: Function,
+      default: () => {},
+    },
     size: {
       type: String,
       default: "large",
@@ -48,6 +52,7 @@ export default defineComponent({
 <template>
   <button
     @click="handleClick"
+    @keyup.enter="$emit('click', $event)"
     :class="{
       'icon-button': true,
       [`icon-button--${size}`]: true,

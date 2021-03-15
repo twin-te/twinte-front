@@ -24,6 +24,7 @@
           <div class="top__search-button">
             <IconButton
               @click="search"
+              @keyup.enter="search"
               iconName="search"
               size="medium"
             ></IconButton>
