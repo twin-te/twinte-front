@@ -5,7 +5,7 @@
     </div>
     <div class="login__main">
       <div class="main__square-logo">
-        <img src="../assets/twintelogo-color-B.svg" />
+        <img src="../assets/twintelogo-color-b.svg" />
       </div>
       <div class="main__head">ログイン方法を選択</div>
       <img
