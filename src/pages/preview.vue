@@ -238,6 +238,9 @@
       @click-add-button="addMethod"
       @click-remove-button="removeMethod"
     ></DropdownAddable>
+    <section class="preview__content">
+      <CheckContent v-model:checked="checked">対面</CheckContent>
+    </section>
   </article>
 </template>
 
@@ -268,6 +271,7 @@ import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
+import CheckContent from "~/components/CheckContent.vue";
 import { methodOption } from "~/entities/method";
 
 export default defineComponent({
@@ -276,6 +280,7 @@ export default defineComponent({
     Button,
     CardAdd,
     CardCourse,
+    CheckContent,
     CourseDetail,
     CourseTile,
     DecoratedIcon,
@@ -415,6 +420,7 @@ export default defineComponent({
       if (methods.length < 2) return;
       methods.splice(i, 1);
     };
+    const checked = ref(false);
 
     return {
       addScheduleRow,
@@ -438,6 +444,7 @@ export default defineComponent({
       methods,
       addMethod,
       removeMethod,
+      checked,
     };
   },
 });

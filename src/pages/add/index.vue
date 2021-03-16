@@ -32,7 +32,7 @@
       </section>
       <section class="main__card">
         <CardAdd
-          @click-next-button="$router.push('/')"
+          @click-next-button="$router.push('/add/csv')"
           iconName="insert_drive_file"
           heading="CSVファイルから追加"
           text="CSVファイルに入っている授業データを追加します。"
@@ -40,7 +40,7 @@
       </section>
       <section class="main__card">
         <CardAdd
-          @click-next-button="$router.push('/')"
+          @click-next-button="$router.push('/add/manual')"
           iconName="style"
           heading="手動で授業を作成"
           text="手入力でカスタマイズして授業を作成します。"
