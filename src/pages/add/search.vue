@@ -73,7 +73,7 @@
               ></CardCourse>
             </div>
             <!-- </template> -->
-            <div class="result__not-found" v-if="!hasResult">
+            <div class="result__not-found" v-if="isNoResultShow">
               一致する授業がありません。
             </div>
           </section>
@@ -196,15 +196,16 @@ export default defineComponent({
     const searchResult = ref<CourseCard[]>([]);
 
     /** top */
-    const [hasResult, toggleHasResult] = useToggle(true);
+    const isNoResultShow = ref(false);
     const searchWord = ref("");
     const search = () => {
       isAccordionOpen.value = false;
       // デモ用の動作
       if (searchWord.value === "色彩") {
-        toggleHasResult();
+        isNoResultShow.value = false;
         searchResult.value = dummyCourseCard;
       } else {
+        isNoResultShow.value = true;
         searchResult.value = [];
       }
     };
@@ -242,7 +243,7 @@ export default defineComponent({
       duplicatedCourses,
       duplicationModal,
       isAccordionOpen,
-      hasResult,
+      isNoResultShow,
       onlyBlank,
       openDuplicationModal,
       removeSchedule,
