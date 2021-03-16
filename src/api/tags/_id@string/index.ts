@@ -1,9 +1,10 @@
 /* eslint-disable */
-import * as Types from '../../@types'
+import type * as Types from '../../@types'
 
 export type Methods = {
   put: {
     status: 200
+    /** 成功 */
     resBody: Types.Tag
 
     reqBody: {
