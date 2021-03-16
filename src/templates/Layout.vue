@@ -35,14 +35,17 @@ export default defineComponent({
 
 <template>
   <div class="layout">
-    <Sidebar :class="{ 'sidebar--close': isClose }"></Sidebar>
+    <Sidebar
+      v-if="$route.meta.hasSidebar ?? true"
+      :class="{ 'sidebar--close': isClose }"
+    ></Sidebar>
     <GrayFilter
       class="layout__grayfilter"
       v-show="isOpen"
       @click="closeSidebar"
     ></GrayFilter>
     <Modal
-      v-if="welcomeModal"
+      v-if="$route.meta.hasWelcomeModal ?? welcomeModal"
       class="welcome-modal"
       @click="closeWelcomeModal"
       size="large"

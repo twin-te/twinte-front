@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import App from "./pages/index.vue";
+import Login from "./pages/login.vue";
 import Add from "./pages/add/index.vue";
 import CSV from "./pages/add/csv.vue";
 import Manual from "./pages/add/manual.vue";
@@ -15,6 +16,11 @@ const history = createWebHistory();
 // We'll talk about nested routes later.
 const routes: RouteRecordRaw[] = [
   { path: "/", component: App },
+  {
+    path: "/login",
+    component: Login,
+    meta: { hasSidebar: false, hasWelcomeModal: false },
+  },
   { path: "/add", component: Add },
   { path: "/add/csv", component: CSV },
   { path: "/add/manual", component: Manual },
