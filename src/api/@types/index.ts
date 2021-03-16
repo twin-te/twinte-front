@@ -14,12 +14,13 @@ export type Day = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Inten
 
 export type SchoolCalendarEvent = {
   date: string
-  eventType: 'PublicHoliday' | 'Holiday' | 'Exam' | 'SubstituteDay'
+  eventType: 'PublicHoliday' | 'Holiday' | 'Exam' | 'SubstituteDay' | 'Other'
   description: string
   changeTo?: Day
 }
 
 export type SchoolCalendarModule = {
+  /** 年度 */
   year: number
   module: 'SpringA' | 'SpringB' | 'SpringC' | 'SummerVacation' | 'FallA' | 'FallB' | 'FallC' | 'SpringVacation'
   start: string
@@ -42,17 +43,17 @@ export type Course = {
 
 export type RegisteredCourse = {
   id: string
-  userID: string
+  userId: string
   course?: Course
 } & RegisteredCourseWithoutID
 
 export type RegisteredCourseWithoutID = {
   year: number
-  name: string
-  instructor: string
-  credit: number
-  methods: CourseMethod[]
-  schedules: CourseSchedule[]
+  name?: string
+  instructor?: string
+  credit?: number
+  methods?: CourseMethod[]
+  schedules?: CourseSchedule[]
   memo: string
   attendance: number
   absence: number
@@ -62,7 +63,7 @@ export type RegisteredCourseWithoutID = {
 
 export type Tag = {
   id: string
-  userID: string
+  userId: string
   name: string
 }
 

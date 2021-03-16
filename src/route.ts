@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import App from "./pages/index.vue";
 import Add from "./pages/add/index.vue";
 import Search from "./pages/add/search.vue";
+import CSV from "./pages/add/csv.vue";
 import Manual from "./pages/add/manual.vue";
 import Details from "./pages/course/_course_id/index.vue";
 import Edit from "./pages/course/_course_id/edit.vue";
@@ -17,6 +18,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/", component: App },
   { path: "/add", component: Add },
   { path: "/add/search", component: Search },
+  { path: "/add/csv", component: CSV },
   { path: "/add/manual", component: Manual },
   { path: "/course/:course_id/edit", component: Edit },
   { path: "/course/:course_id", component: Details },

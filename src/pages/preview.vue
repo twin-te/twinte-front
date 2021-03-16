@@ -233,13 +233,21 @@
     <InputButtonFile name="some" @change-file="echo">
       file input
     </InputButtonFile>
+    <DropdownAddable
+      v-model:methods="methods"
+      @click-add-button="addMethod"
+      @click-remove-button="removeMethod"
+    ></DropdownAddable>
+    <section class="preview__content">
+      <CheckContent v-model:checked="checked">対面</CheckContent>
+    </section>
   </article>
 </template>
 
 <script lang="ts">
 import { authCheck } from "~/usecases/authCheck";
 import { CourseCard } from "~/entities/courseCard";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, reactive } from "vue";
 import { useUsecase } from "~/usecases";
 import Button from "~/components/Button.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -253,6 +261,7 @@ import SidebarContent from "~/components/SidebarContent.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
 import CardAdd from "~/components/CardAdd.vue";
 import CardCourse from "~/components/CardCourse.vue";
+import DropdownAddable from "~/components/DropdownAddable.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent, {
   Color as PopupContentColor,
@@ -263,6 +272,8 @@ import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
+import CheckContent from "~/components/CheckContent.vue";
+import { methodOption } from "~/entities/method";
 
 export default defineComponent({
   name: "Preview",
@@ -270,9 +281,11 @@ export default defineComponent({
     Button,
     CardAdd,
     CardCourse,
+    CheckContent,
     CourseDetail,
     CourseTile,
     DecoratedIcon,
+    DropdownAddable,
     IconButton,
     Modal,
     PageHeader,
@@ -287,7 +300,7 @@ export default defineComponent({
     InputButtonFile,
   },
   setup: () => {
-    const { ready, state } = useUsecase(authCheck, true);
+    const { isReady: ready, state } = useUsecase(authCheck, true);
     const isBtnActive = ref({
       expand_more: false,
       edit: false,
@@ -397,6 +410,20 @@ export default defineComponent({
     // labeled-text-field
     const inputValue = ref("");
 
+    // dropdonw-addable
+    const methods = reactive<{ value: methodOption }[]>([
+      { value: "指定なし" },
+    ]);
+    const addMethod = () => {
+      if (methods.length > 3) return;
+      methods.push({ value: "指定なし" });
+    };
+    const removeMethod = (i: number) => {
+      if (methods.length < 2) return;
+      methods.splice(i, 1);
+    };
+    const checked = ref(false);
+
     return {
       addScheduleRow,
       clickHandler,
@@ -416,6 +443,10 @@ export default defineComponent({
       schedules,
       tileStat,
       inputValue,
+      methods,
+      addMethod,
+      removeMethod,
+      checked,
     };
   },
 });
@@ -459,5 +490,9 @@ export default defineComponent({
       margin-left: $spacing-3;
     }
   }
+}
+
+.dropdown-addable {
+  margin-bottom: 15rem;
 }
 </style>

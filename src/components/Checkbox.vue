@@ -1,6 +1,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+type Props = {
+  onClickCheckbox: Function;
+  isChecked: boolean;
+  isDisable: boolean;
+};
+
 export default defineComponent({
   props: {
     onClickCheckbox: {
@@ -17,8 +23,9 @@ export default defineComponent({
     },
   },
   emits: ["click-checkbox"],
-  setup: (_, { emit }) => {
+  setup: (props: Props, { emit }) => {
     const handleClick = (e: MouseEvent) => {
+      if (props.isDisable) return;
       emit("click-checkbox", e);
     };
 

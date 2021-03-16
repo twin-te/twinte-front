@@ -46,13 +46,16 @@
               ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
-          <section class="main__method">
-            <LabeledTextField label="授業形式">
-              <TextFieldSingleLine
-                v-model="method"
-                placeholder="例) 対面"
-              ></TextFieldSingleLine>
-            </LabeledTextField>
+          <section class="main__method method">
+            <Label value="授業形式"></Label>
+            <div class="method__checkboxes">
+              <CheckContent
+                v-for="data in methodData"
+                :key="data.value"
+                v-model:checked="data.checked.value"
+                >{{ data.value }}</CheckContent
+              >
+            </div>
           </section>
         </div>
       </div>
@@ -114,9 +117,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, Ref } from "vue";
 import { useRouter } from "vue-router";
+import { CourseMethod } from "~/api/@types";
 import Button from "~/components/Button.vue";
+import CheckContent from "~/components/CheckContent.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
 import IconButton from "~/components/IconButton.vue";
 import Label from "~/components/Label.vue";
@@ -125,11 +130,13 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { MethodJa } from "~/entities/method";
 import { useSwitch } from "~/hooks/useSwitch";
 
 export default defineComponent({
   components: {
     Button,
+    CheckContent,
     CourseDetailMini,
     IconButton,
     Modal,
@@ -164,7 +171,16 @@ export default defineComponent({
     const name = ref("");
     const instructor = ref("");
     const room = ref("");
-    const method = ref("");
+    const methodData: {
+      checked: Ref<boolean>;
+      name: CourseMethod;
+      value: MethodJa;
+    }[] = [
+      { checked: ref(false), name: "FaceToFace", value: "対面" },
+      { checked: ref(false), name: "Synchronous", value: "同時双方向" },
+      { checked: ref(false), name: "Asynchronous", value: "オンデマンド" },
+      { checked: ref(false), name: "Others", value: "その他" },
+    ];
 
     /** button */
     const btnState = computed(() => {
@@ -204,7 +220,7 @@ export default defineComponent({
       name,
       instructor,
       room,
-      method,
+      methodData,
       addCourse,
       btnState,
       duplicationModal,
@@ -226,13 +242,16 @@ export default defineComponent({
   margin-top: $spacing-5;
   &__mask {
     height: calc(100vh - 16.2rem);
+    @include landscape {
+      height: calc(100vh - 16.6rem);
+    }
     @include scroll-mask;
     overflow-y: auto;
   }
   &__contents {
     display: grid;
-    gap: 3.2rem;
-    padding: $spacing-3 $spacing-0 5.6rem;
+    gap: $spacing-8;
+    padding: $spacing-3 $spacing-0 $spacing-14;
   }
   &__period {
     display: grid;
@@ -247,6 +266,13 @@ export default defineComponent({
   }
   .button {
     display: inline-block;
+  }
+}
+.method {
+  &__checkboxes {
+    display: grid;
+    gap: $spacing-5;
+    margin-top: 1.4rem;
   }
 }
 .duplication-modal .modal {
