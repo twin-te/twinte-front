@@ -2,7 +2,7 @@
   <PageHeader>
     <template #left-button-icon>
       <IconButton
-        @click="$router.push('/add')"
+        @click="$router.back()"
         size="large"
         color="normal"
         icon-name="arrow_back"
