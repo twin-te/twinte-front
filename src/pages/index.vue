@@ -77,13 +77,13 @@
         </div>
         <template v-for="(y, d) in table" :key="d">
           <div class="table__day">
-            {{ weeks[d] }}
+            {{ weekday[d] }}
           </div>
           <CourseTile
             v-for="(courses, id) in y"
             :key="id"
             class="table__course"
-            @click="onClickCourseTile(courses, weeks[d], id + 1)"
+            @click="onClickCourseTile(courses, weekday[d], id + 1)"
             :state="courses.length === 0 ? 'none' : 'default'"
             :name="courses[0]?.name ?? ''"
             :room="courses[0]?.room ?? ''"
@@ -203,7 +203,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader, { Calendar } from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
-import { DayJa, dayJaList } from "~/entities/day";
+import { WeekDayJa, weekdayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
 import { CourseState, dummyData } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
@@ -246,7 +246,7 @@ export default defineComponent({
       getCalendar,
       {} as Calendar
     );
-    const weeks = dayJaList;
+    const weekday = weekdayJaList;
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
@@ -266,7 +266,7 @@ export default defineComponent({
     };
     const onClickCourseTile = async (
       courses: CourseState[],
-      day: DayJa,
+      day: WeekDayJa,
       period: number
     ) => {
       switch (courses.length) {
@@ -287,7 +287,7 @@ export default defineComponent({
 
     // duplication modal
     type DuplocationState = {
-      day: DayJa;
+      day: WeekDayJa;
       period: number;
       courses: CourseState[];
     };
@@ -303,7 +303,7 @@ export default defineComponent({
 
     return {
       toggleSidebar,
-      weeks,
+      weekday,
       label,
       whichSelected,
       onClickLabel,

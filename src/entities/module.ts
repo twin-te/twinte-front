@@ -1,6 +1,10 @@
 import { CourseModule } from "~/api/@types";
 
+// 夏季休業中、春季休業中
+export type vacationModule = "その他";
+
 export type ModuleJa = "春A" | "春B" | "春C" | "秋A" | "秋B" | "秋C";
+export type ScheduleModuleJa = ModuleJa | vacationModule;
 
 export const modules: CourseModule[] = [
   "SpringA",
@@ -17,6 +21,15 @@ export const moduleJaList: ModuleJa[] = [
   "秋A",
   "秋B",
   "秋C",
+];
+export const scheduleModuleJaList: ScheduleModuleJa[] = [
+  "春A",
+  "春B",
+  "春C",
+  "秋A",
+  "秋B",
+  "秋C",
+  "その他",
 ];
 export const moduleMap: { [key in string]: ModuleJa } = {
   SpringA: "春A",

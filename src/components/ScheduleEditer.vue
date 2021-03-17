@@ -1,6 +1,9 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
 import Dropdown, { Options as DropdownOptions } from "./Dropdown.vue";
+import { scheduleModuleJaList } from "~/entities/module";
+import { scheduleDayJaList } from "~/entities/day";
+import { schedulePeriods } from "~/entities/period";
 
 export type Schedule = {
   semester: string;
@@ -27,37 +30,9 @@ export default defineComponent({
   },
   emits: ["update:schedule", "click-add-button", "click-remove-button"],
   setup(_, { emit }) {
-    const semesterOptions = ref<DropdownOptions>([
-      "春A",
-      "春B",
-      "春C",
-      "秋A",
-      "秋B",
-      "秋C",
-      "その他",
-      "指定なし",
-    ]);
-    const dateOptions = ref<DropdownOptions>([
-      "月",
-      "火",
-      "水",
-      "木",
-      "金",
-      "土",
-      "日",
-      "その他",
-      "指定なし",
-    ]);
-    const periodOptions = ref<DropdownOptions>([
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "指定なし",
-    ]);
+    const semesterOptions = ref<DropdownOptions>(scheduleModuleJaList);
+    const dateOptions = ref<DropdownOptions>(scheduleDayJaList);
+    const periodOptions = ref<DropdownOptions>(schedulePeriods);
     const emitAddEvent = (e: MouseEvent) => {
       emit("click-add-button", e);
     };

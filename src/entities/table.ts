@@ -1,11 +1,11 @@
 import { Day } from "~/api/@types";
-import { weeksNum } from "./day";
+import { weekdayNum } from "./day";
 
 export const getValue = <T = unknown>(
   target: T[][],
   day: Day,
   peirod: number
-) => target[weeksNum(day)][peirod];
+) => target[weekdayNum(day)][peirod];
 
 export type CourseState = {
   name: string;
