@@ -76,13 +76,13 @@
         </div>
         <template v-for="(y, d) in table" :key="d">
           <div class="table__day">
-            {{ weeks[d] }}
+            {{ weekday[d] }}
           </div>
           <CourseTile
             v-for="(courses, id) in y"
             :key="id"
             class="table__course"
-            @click="onClickCourseTile(courses, weeks[d], id + 1)"
+            @click="onClickCourseTile(courses, weekday[d], id + 1)"
             :state="courses.length === 0 ? 'none' : 'default'"
             :name="courses[0]?.name ?? ''"
             :room="courses[0]?.room ?? ''"
@@ -204,9 +204,11 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
-import { DayJa, dayJaList } from "~/entities/day";
+import { Calendar } from "~/components/PageHeader.vue";
+import { WeekDayJa, weekdayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
 import { CourseState } from "~/entities/table";
+import { useUsecase } from "~/usecases/index";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { courseListToTable } from "~/usecases/courseListToTable";
@@ -233,14 +235,17 @@ export default defineComponent({
 
     /** ヘッダー */
     const { toggleSidebar } = useSidebar();
-    const calendar = await getCalendar(ports);
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
     const whichSelected = ref<Select>("left");
-    const currentModule = await getCurrentModule(ports);
-    const module = ref(currentModule);
-    const isCurrentModule = computed(() => module.value === currentModule);
+    const module = ref<ModuleJa>("春A");
+    const { state: currentModule } = useUsecase(getCurrentModule, "春A");
+    const isCurrentModule = computed(
+      () => module.value === currentModule.value
+    );
+    const { state: calendar } = useUsecase(getCalendar, {} as Calendar);
+    const weekday = weekdayJaList;
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
@@ -257,12 +262,12 @@ export default defineComponent({
       courseListToTable(storedCourses, module.value)
     );
     const setCurrentModule = () => {
-      module.value = currentModule;
+      module.value = currentModule.value;
     };
-    const weeks = dayJaList;
+    const weeks = weekdayJaList;
     const onClickCourseTile = async (
       courses: CourseState[],
-      day: DayJa,
+      day: WeekDayJa,
       period: number
     ) => {
       switch (courses.length) {
@@ -283,7 +288,7 @@ export default defineComponent({
 
     /** duplication modal */
     type DuplocationState = {
-      day: DayJa;
+      day: WeekDayJa;
       period: number;
       courses: CourseState[];
     };
@@ -299,6 +304,7 @@ export default defineComponent({
 
     return {
       toggleSidebar,
+      weekday,
       label,
       whichSelected,
       onClickLabel,
