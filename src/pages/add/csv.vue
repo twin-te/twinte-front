@@ -92,8 +92,9 @@
 <script lang="ts">
 import { defineComponent, ref, Ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { CourseCard } from "~/entities/courseCard";
 import Button from "~/components/Button.vue";
-import CardCourse, { Course } from "~/components/CardCourse.vue";
+import CardCourse from "~/components/CardCourse.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
 import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
@@ -115,24 +116,26 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    const course1: Course = {
+    const course1: CourseCard = {
       id: "01EB512",
       name: "色彩計画論特講色彩計画論特講色彩計画論特講",
       period: "春A 水2",
-      room: "6A203",
+      location: "6A203",
       url: "/syllabus/6A203",
+      isSelected: false,
     };
-    const course2: Course = {
+    const course2: CourseCard = {
       id: "01EB512",
       name: "色彩計画演習",
       period: "春A 水2",
-      room: "6A203",
+      location: "6A203",
       url: "/syllabus/6A203",
+      isSelected: false,
     };
 
     const courseData: {
       checked: Ref<boolean>;
-      course: Course;
+      course: CourseCard;
     }[] = [
       {
         checked: ref(true),

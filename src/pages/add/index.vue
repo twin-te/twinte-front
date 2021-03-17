@@ -16,7 +16,7 @@
     <div class="main">
       <section class="main__card">
         <CardAdd
-          @click-next-button="$router.push('/')"
+          @click-next-button="$router.push('/add/search')"
           iconName="search"
           heading="授業の検索"
           text="ワードや条件を指定して授業を検索・追加します。"

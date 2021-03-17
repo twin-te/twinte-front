@@ -38,7 +38,7 @@ export default defineComponent({
     },
     pauseActiveStyle: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     state: {
       type: String as PropType<State>,

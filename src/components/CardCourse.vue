@@ -1,18 +1,10 @@
 <script lang="ts">
+import { CourseCard } from "~/entities/courseCard";
 import { defineComponent, PropType } from "vue";
-import Card from "./Card.vue";
 import Button from "./Button.vue";
+import Card from "./Card.vue";
 import Checkbox from "./Checkbox.vue";
 import CourseDetailMini from "./CourseDetailMini.vue";
-
-// 一時的にコースの型をここで定義する。
-export type Course = {
-  id: string;
-  name: string;
-  period: string;
-  room: string;
-  url: string;
-};
 
 export default defineComponent({
   components: { Card, Button, CourseDetailMini, Checkbox },
@@ -30,7 +22,7 @@ export default defineComponent({
       required: true,
     },
     course: {
-      type: Object as PropType<Course>,
+      type: Object as PropType<CourseCard>,
       required: true,
     },
     width: {
@@ -71,7 +63,7 @@ export default defineComponent({
         ></CourseDetailMini>
         <CourseDetailMini
           iconName="room"
-          :text="course.room"
+          :text="course.location"
         ></CourseDetailMini>
       </div>
       <div class="card-course__syllabus-link">
