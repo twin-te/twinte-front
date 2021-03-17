@@ -274,6 +274,7 @@ import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import { methodOption } from "~/entities/method";
+import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
 
 export default defineComponent({
   name: "Preview",
@@ -299,7 +300,7 @@ export default defineComponent({
     TextFieldSingleLine,
     InputButtonFile,
   },
-  setup: () => {
+  setup: async () => {
     const { isReady: ready, state } = useUsecase(authCheck, true);
     const isBtnActive = ref({
       expand_more: false,
@@ -423,6 +424,13 @@ export default defineComponent({
       methods.splice(i, 1);
     };
     const checked = ref(false);
+
+    // async
+    try {
+      console.log(await asyncSetTimeout(3000, true));
+    } catch (error) {
+      console.log(`${error} was caught in preview.vue`);
+    }
 
     return {
       addScheduleRow,
