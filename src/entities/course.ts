@@ -1,4 +1,4 @@
-import { RegisteredCourse, CourseSchedule } from "~/api/@types";
+import { RegisteredCourse, CourseSchedule, Course } from "~/api/@types";
 import { methodMap } from "./method";
 
 export type DisplayCourse = {
@@ -114,3 +114,17 @@ const getLectureTimeAsStr = (schedules: CourseSchedule[]): string => {
     return "";
   }
 };
+
+export const getInitCourse = (): Course => ({
+  id: "",
+  year: 0,
+  code: "",
+  name: "",
+  instructor: "",
+  credit: 0,
+  overview: "",
+  remarks: "",
+  recommendedGrades: [],
+  methods: [],
+  schedules: [],
+});

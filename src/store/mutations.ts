@@ -7,7 +7,6 @@ export const mutations: MutationTree<GlobalState> = {
     if (state.user !== null) {
       throw new Error("すでにユーザーが存在します。");
     }
-
     state.user = user;
   },
   setSidebar(state, show: boolean) {
@@ -15,5 +14,8 @@ export const mutations: MutationTree<GlobalState> = {
   },
   setCourses(state, courses: RegisteredCourse[]) {
     state.courses = courses;
+  },
+  addCourse(state, course) {
+    state.courses.push(course);
   },
 };
