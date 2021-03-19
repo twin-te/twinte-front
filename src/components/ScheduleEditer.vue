@@ -1,13 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
+import { Schedule } from "~/entities/schedule";
 import Dropdown, { Options as DropdownOptions } from "./Dropdown.vue";
-
-export type Schedule = {
-  semester: string;
-  date: string;
-  period: string;
-};
-export type Schedules = Schedule[];
 
 export default defineComponent({
   components: { Dropdown },
@@ -21,7 +15,7 @@ export default defineComponent({
       required: true,
     },
     schedules: {
-      type: Object as PropType<Schedules>,
+      type: Object as PropType<Schedule[]>,
       required: true,
     },
   },
@@ -85,12 +79,12 @@ export default defineComponent({
       <div class="schedule-editer__container">
         <Dropdown
           :options="semesterOptions"
-          v-model:selectedOption="schedule.semester"
+          v-model:selectedOption="schedule.module"
           :label="index > 0 ? '' : '学期'"
         ></Dropdown>
         <Dropdown
           :options="dateOptions"
-          v-model:selectedOption="schedule.date"
+          v-model:selectedOption="schedule.day"
           :label="index > 0 ? '' : '曜日'"
         ></Dropdown>
         <Dropdown

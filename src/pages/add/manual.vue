@@ -128,9 +128,10 @@ import Label from "~/components/Label.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
+import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { MethodJa } from "~/entities/method";
+import { Schedule } from "~/entities/schedule";
 import { useSwitch } from "~/hooks/useSwitch";
 
 export default defineComponent({
@@ -150,17 +151,18 @@ export default defineComponent({
     const router = useRouter();
 
     /** schedule-editor */
-    const schedules = ref<Schedules>([
-      { semester: "指定なし", date: "指定なし", period: "指定なし" },
+    const schedules = ref<Schedule[]>([
+      { module: "指定なし", day: "指定なし", period: "指定なし", room: "" },
     ]);
     const scheduleMax = 4;
     const scheduleMin = 1;
     const addSchedule = () => {
       if (schedules.value.length >= scheduleMax) return;
       schedules.value.push({
-        semester: "指定なし",
-        date: "指定なし",
+        module: "指定なし",
+        day: "指定なし",
         period: "指定なし",
+        room: "",
       });
     };
     const removeSchedule = (index: number) => {
