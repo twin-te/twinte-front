@@ -28,7 +28,6 @@ export const usePorts = (): Ports => ({
   api: instance(
     axiosClient(axios, {
       withCredentials: true,
-      validateStatus: () => true,
     })
   ) as ApiInstance,
   store: useStore(),
