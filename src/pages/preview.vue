@@ -268,13 +268,14 @@ import PopupContent, {
 } from "~/components/PopupContent.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
+import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import CheckContent from "~/components/CheckContent.vue";
-import { methodOption } from "~/entities/method";
+import { MethodOption } from "~/entities/method";
 import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
+import { Schedule } from "~/entities/schedule";
 
 export default defineComponent({
   name: "Preview",
@@ -318,8 +319,12 @@ export default defineComponent({
     });
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);
-    const schedules = ref<Schedules>([
-      { semester: "指定なし", date: "指定なし", period: "指定なし" },
+    const schedules = ref<Schedule[]>([
+      {
+        module: "指定なし",
+        day: "指定なし",
+        period: "指定なし",
+      },
     ]);
     const displayLog = () => {
       console.log("click");
@@ -399,8 +404,8 @@ export default defineComponent({
 
     const addScheduleRow = () => {
       schedules.value.push({
-        semester: "指定なし",
-        date: "指定なし",
+        module: "指定なし",
+        day: "指定なし",
         period: "指定なし",
       });
     };
@@ -412,7 +417,7 @@ export default defineComponent({
     const inputValue = ref("");
 
     // dropdonw-addable
-    const methods = reactive<{ value: methodOption }[]>([
+    const methods = reactive<{ value: MethodOption }[]>([
       { value: "指定なし" },
     ]);
     const addMethod = () => {

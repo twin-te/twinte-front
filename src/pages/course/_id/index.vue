@@ -11,50 +11,50 @@
       </template>
       <template #title>授業詳細</template>
       <template #right-button-icon>
-        <ToggleIconButton
-          ref="btnRef"
-          class="header__right-button-icon"
-          @click="showPopup = !showPopup"
-          size="large"
-          color="normal"
-          iconName="more_vert"
-          :isActive="showPopup"
-        ></ToggleIconButton>
-        <Popup v-show="showPopup" v-click-away="clickOutside">
-          <PopupContent
-            v-for="data in popupData"
-            :key="data.value"
-            @click="data.onClick"
-            :link="data.link"
-            :value="data.value"
-            :color="data.color"
-          ></PopupContent>
-        </Popup>
+        <div v-click-away="closePopup">
+          <ToggleIconButton
+            ref="btnRef"
+            class="header__right-button-icon"
+            @click="toggleShowPopup"
+            size="large"
+            color="normal"
+            iconName="more_vert"
+            :isActive="showPopup"
+          ></ToggleIconButton>
+          <Popup v-show="showPopup">
+            <PopupContent
+              v-for="data in popupData"
+              :key="data.value"
+              @click="data.onClick"
+              :link="data.link"
+              :value="data.value"
+              :color="data.color"
+            ></PopupContent>
+          </Popup>
+        </div>
       </template>
     </PageHeader>
     <article class="main">
       <div class="main__contents">
-        <p class="main__code">1E06001</p>
-        <h1 class="main__name">メディアアート・フィジカルコンピューティング</h1>
+        <p class="main__code">{{ courseId }}</p>
+        <h1 class="main__name">{{ name }}</h1>
         <section class="main__details">
-          <CourseDetail item="開講時限" value="春AB 木2">
+          <CourseDetail item="開講時限" :value="date">
             <DecoratedIcon iconName="schedule"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail
-            item="担当教員"
-            value="齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿、齋藤敏寿"
-          >
+          <CourseDetail item="担当教員" :value="instructor">
             <DecoratedIcon iconName="person"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="授業場所" value="6A508">
+          <CourseDetail item="授業場所" :value="room">
             <DecoratedIcon iconName="room"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="授業形式" value="対面">
+          <CourseDetail item="授業形式" :value="methods">
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
         <TextFieldMultilines
           class="main__memo"
+          @update:modelValue="update"
           v-model="memo"
           placeholder="メモを入力"
           :height="10.3"
@@ -65,15 +65,15 @@
             <p class="attendance__state">出席</p>
             <IconButton
               class="attendance__minus-btn"
-              @click="clickHandler"
+              @click="updateCounter('attendance', -1)"
               size="small"
               color="normal"
               iconName="remove"
             ></IconButton>
-            <p class="attendance__count">5</p>
+            <p class="attendance__count">{{ attendance }}</p>
             <IconButton
               class="attendance__plus-btn"
-              @click="clickHandler"
+              @click="updateCounter('attendance', 1)"
               size="small"
               color="normal"
               iconName="add"
@@ -83,15 +83,15 @@
             <p class="attendance__state">欠席</p>
             <IconButton
               class="attendance__minus-btn"
-              @click="clickHandler"
+              @click="updateCounter('absence', -1)"
               size="small"
               color="normal"
               iconName="remove"
             ></IconButton>
-            <p class="attendance__count">3</p>
+            <p class="attendance__count">{{ absence }}</p>
             <IconButton
               class="attendance__plus-btn"
-              @click="clickHandler"
+              @click="updateCounter('absence', 1)"
               size="small"
               color="normal"
               iconName="add"
@@ -101,15 +101,15 @@
             <p class="attendance__state">遅刻</p>
             <IconButton
               class="attendance__minus-btn"
-              @click="clickHandler"
+              @click="updateCounter('late', -1)"
               size="small"
               color="normal"
               iconName="remove"
             ></IconButton>
-            <p class="attendance__count">1</p>
+            <p class="attendance__count">{{ late }}</p>
             <IconButton
               class="attendance__plus-btn"
-              @click="clickHandler"
+              @click="updateCounter('late', 1)"
               size="small"
               color="normal"
               iconName="add"
@@ -127,7 +127,9 @@
       <template #title>授業の削除</template>
       <template #contents>
         <p class="modal__text">
-          「色彩学」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
+          「{{
+            name
+          }}」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
         </p>
       </template>
       <template #button>
@@ -136,18 +138,24 @@
           size="medium"
           layout="fill"
           color="base"
-          >キャンセル</Button
         >
-        <Button @click="clickHandler" size="medium" layout="fill" color="danger"
-          >削除</Button
+          キャンセル
+        </Button>
+        <Button
+          @click="deleteCourse"
+          size="medium"
+          layout="fill"
+          color="danger"
         >
+          削除
+        </Button>
       </template>
     </Modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
@@ -161,6 +169,13 @@ import PopupContent, {
 } from "~/components/PopupContent.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
+import { apiToDisplayCourse, displayCourseToApi } from "~/entities/course";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { deleteRegisteredCourse } from "~/usecases/deleteRegisteredCourse";
+import { useDisplayCourse } from "~/usecases/getRegisteredCourse";
+import { openUrl } from "~/usecases/openUrl";
+import { updateCourse } from "~/usecases/updateCourse";
 
 export default defineComponent({
   name: "Details",
@@ -176,37 +191,53 @@ export default defineComponent({
     TextFieldMultilines,
     ToggleIconButton,
   },
-  setup: () => {
-    const clickHandler = () => {
-      console.log("click");
-    };
-
-    const router = useRouter();
+  setup: async () => {
+    const ports = usePorts();
     const route = useRoute();
-    const { course_id: courseId } = route.params;
+    const router = useRouter();
+    const { id } = route.params as { id: string };
 
-    // delete-course-modal
-    const deleteCourseModal = ref(false);
-    const openDeleteCourseModal = () => {
-      deleteCourseModal.value = true;
-    };
-    const closeDeleteCourseModal = () => {
-      deleteCourseModal.value = false;
+    const {
+      absence,
+      attendance,
+      code,
+      courseId,
+      date,
+      instructor,
+      late,
+      memo,
+      methods,
+      name,
+      registeredCourse,
+      room,
+    } = await useDisplayCourse(ports)(id);
+
+    const updateCounter = (
+      tag: "attendance" | "late" | "absence",
+      value: number
+    ) => {
+      ({
+        attendance,
+        late,
+        absence,
+      }[tag].value += value);
+      update();
     };
 
-    // popup
-    const btnRef = ref();
-    const showPopup = ref(false);
-    const clickOutside = (e: any) => {
-      if (deleteCourseModal.value) return;
-      // icon-buttonをクリックした時
-      if (Object.keys(e.path).some((key) => e.path[key] === btnRef.value.$el))
-        return;
-      showPopup.value = false;
+    /** delete-course-modal */
+    const [
+      deleteCourseModal,
+      openDeleteCourseModal,
+      closeDeleteCourseModal,
+    ] = useSwitch();
+    const deleteCourse = async () => {
+      await deleteRegisteredCourse(ports)(id);
+      closeDeleteCourseModal();
+      router.push("/");
     };
-    const popupClickHandler = (value: string) => {
-      console.log(value);
-    };
+
+    /** popup */
+    const [showPopup, , closePopup, toggleShowPopup] = useSwitch(false);
     const popupData: {
       onClick: Function;
       link: boolean;
@@ -214,25 +245,29 @@ export default defineComponent({
       color: popupContentColor;
     }[] = [
       {
-        onClick: () => router.push(`/course/${courseId}/edit`),
+        onClick: () => router.push(`/course/${id}/edit`),
         link: false,
         value: "編集する",
         color: "normal",
       },
       {
-        onClick: popupClickHandler,
+        onClick: () =>
+          openUrl(
+            `https://kdb.tsukuba.ac.jp/syllabi/2020/${courseId.value}/jpn/`
+          ),
         link: true,
         value: "シラバス",
         color: "normal",
       },
       {
-        onClick: popupClickHandler,
+        onClick: () => openUrl("https://atmnb.tsukuba.ac.jp"),
         link: true,
         value: "出席(respon)",
         color: "normal",
       },
       {
-        onClick: popupClickHandler,
+        onClick: () =>
+          openUrl(`https://www.google.com/maps/search/筑波大学+${room.value}`),
         link: true,
         value: "地図",
         color: "normal",
@@ -245,19 +280,60 @@ export default defineComponent({
       },
     ];
 
-    // memo
-    const memo = ref("");
+    const update = async () => {
+      const course = displayCourseToApi({
+        code: code.value,
+        courseId: courseId.value,
+        date: date.value,
+        instructor: instructor.value,
+        methods: methods.value,
+        name: name.value,
+        room: room.value,
+        attendance: attendance.value,
+        absence: absence.value,
+        late: late.value,
+        memo: memo.value,
+        registeredCourse: registeredCourse.value,
+      });
+      const newCourse = await updateCourse(ports)(course);
+      /** const newRegisteredCourse = */ apiToDisplayCourse(newCourse);
+      // code.value = newRegisteredCourse.code;
+      // courseId.value = newRegisteredCourse.courseId;
+      // date.value = newRegisteredCourse.date;
+      // instructor.value = newRegisteredCourse.instructor;
+      // methods.value = newRegisteredCourse.methods;
+      // name.value = newRegisteredCourse.name;
+      // room.value = newRegisteredCourse.room;
+      // attendance.value = newRegisteredCourse.attendance;
+      // absence.value = newRegisteredCourse.absence;
+      // late.value = newRegisteredCourse.late;
+      // memo.value = newRegisteredCourse.memo;
+      // registeredCourse.value = newRegisteredCourse.registeredCourse;
+    };
 
     return {
-      clickHandler,
-      btnRef,
-      clickOutside,
-      showPopup,
+      absence,
+      attendance,
+      code,
+      courseId,
+      date,
+      instructor,
+      late,
       memo,
+      methods,
+      name,
+      registeredCourse,
+      room,
+      updateCounter,
+      showPopup,
+      closePopup,
+      toggleShowPopup,
       popupData,
       deleteCourseModal,
       openDeleteCourseModal,
       closeDeleteCourseModal,
+      update,
+      deleteCourse,
     };
   },
 });

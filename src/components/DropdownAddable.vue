@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent, PropType, watch } from "vue";
 import DropDown from "~/components/Dropdown.vue";
-import { methodOption, createOption } from "~/entities/method";
+import { MethodOption, createOption } from "~/entities/method";
 
 type Props = {
   onClickAddButton: Function;
   onClickRemoveButton: Function;
-  methods: { value: methodOption }[];
+  methods: { value: MethodOption }[];
 };
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
       required: true,
     },
     methods: {
-      type: Array as PropType<{ value: methodOption }[]>,
+      type: Array as PropType<{ value: MethodOption }[]>,
       required: true,
     },
   },

@@ -5,4 +5,5 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   sidebar: (state) => {
     return state.sidebar;
   },
+  courses: (state) => state.courses,
 };

@@ -1,5 +1,5 @@
 import { MutationTree } from "vuex";
-import { User } from "~/api/@types";
+import { User, RegisteredCourse } from "~/api/@types";
 import { GlobalState } from ".";
 
 export const mutations: MutationTree<GlobalState> = {
@@ -12,5 +12,8 @@ export const mutations: MutationTree<GlobalState> = {
   },
   setSidebar(state, show: boolean) {
     state.sidebar = show;
+  },
+  setCourses(state, courses: RegisteredCourse[]) {
+    state.courses = courses;
   },
 };

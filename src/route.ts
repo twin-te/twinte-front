@@ -6,8 +6,8 @@ import Add from "./pages/add/index.vue";
 import Search from "./pages/add/search.vue";
 import CSV from "./pages/add/csv.vue";
 import Manual from "./pages/add/manual.vue";
-import Details from "./pages/course/_course_id/index.vue";
-import Edit from "./pages/course/_course_id/edit.vue";
+import Details from "./pages/course/_id/index.vue";
+import Edit from "./pages/course/_id/edit.vue";
 import Preview from "./pages/preview.vue";
 
 const history = createWebHistory();
@@ -26,8 +26,8 @@ const routes: RouteRecordRaw[] = [
   { path: "/add/search", component: Search },
   { path: "/add/csv", component: CSV },
   { path: "/add/manual", component: Manual },
-  { path: "/course/:course_id/edit", component: Edit },
-  { path: "/course/:course_id", component: Details },
+  { path: "/course/:id/edit", component: Edit },
+  { path: "/course/:id", component: Details },
   { path: "/preview", component: Preview },
 ];
 
