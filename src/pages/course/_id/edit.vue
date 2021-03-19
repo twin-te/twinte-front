@@ -38,14 +38,6 @@
               ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
-          <section class="main__room">
-            <LabeledTextField label="授業場所">
-              <TextFieldSingleLine
-                v-model="room"
-                placeholder="例) 研究室"
-              ></TextFieldSingleLine>
-            </LabeledTextField>
-          </section>
           <section class="main__method method">
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
@@ -65,7 +57,7 @@
           size="large"
           layout="fill"
           color="primary"
-          :state="btnState"
+          :state="submitButton"
           >変更を保存</Button
         >
       </section>
@@ -88,7 +80,7 @@
           >キャンセル</Button
         >
         <Button
-          @click="$router.push(`/course/${courseId}`)"
+          @click="$router.back()"
           size="medium"
           layout="fill"
           color="primary"
@@ -110,9 +102,12 @@ import Label from "~/components/Label.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import ScheduleEditer, { Schedules } from "~/components/ScheduleEditer.vue";
+import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { MethodJa } from "~/entities/method";
+import { apiToDisplaySchedule, Schedule } from "~/entities/schedule";
+import { usePorts } from "~/usecases";
+import { useRegisteredCourse } from "~/usecases/getRegisteredCourse";
 
 export default defineComponent({
   components: {
@@ -126,74 +121,92 @@ export default defineComponent({
     ScheduleEditer,
     TextFieldSingleLine,
   },
-  setup() {
+  setup: async () => {
+    const ports = usePorts();
     const route = useRoute();
     const router = useRouter();
-    const { course_id: courseId } = route.params;
+    const { id } = route.params as { id: string };
+
+    const {
+      instructor,
+      methods,
+      name,
+      schedules: apiSchedules,
+    } = await useRegisteredCourse(ports)(id);
 
     /** schedule-editor */
-    const schedules = ref<Schedules>([
-      { semester: "指定なし", date: "指定なし", period: "指定なし" },
-    ]);
+    const blankSchedule: Schedule = {
+      module: "指定なし",
+      day: "指定なし",
+      period: "指定なし",
+      room: "",
+    };
+    const schedules = ref<Schedule[]>(apiToDisplaySchedule(apiSchedules.value));
     const scheduleMax = 4;
     const scheduleMin = 1;
     const addSchedule = () => {
       if (schedules.value.length >= scheduleMax) return;
-      schedules.value.push({
-        semester: "指定なし",
-        date: "指定なし",
-        period: "指定なし",
-      });
+      schedules.value.push(blankSchedule);
     };
     const removeSchedule = (index: number) => {
       if (schedules.value.length <= scheduleMin) return;
       schedules.value.splice(index, 1);
     };
 
-    const name = ref("");
-    const instructor = ref("");
-    const room = ref("");
     const methodData: {
       checked: Ref<boolean>;
       name: CourseMethod;
       value: MethodJa;
     }[] = [
-      { checked: ref(false), name: "FaceToFace", value: "対面" },
-      { checked: ref(false), name: "Synchronous", value: "同時双方向" },
-      { checked: ref(false), name: "Asynchronous", value: "オンデマンド" },
-      { checked: ref(false), name: "Others", value: "その他" },
+      {
+        checked: ref(methods.value.includes("FaceToFace")),
+        name: "FaceToFace",
+        value: "対面",
+      },
+      {
+        checked: ref(methods.value.includes("Synchronous")),
+        name: "Synchronous",
+        value: "同時双方向",
+      },
+      {
+        checked: ref(methods.value.includes("Asynchronous")),
+        name: "Asynchronous",
+        value: "オンデマンド",
+      },
+      {
+        checked: ref(methods.value.includes("Others")),
+        name: "Others",
+        value: "その他",
+      },
     ];
 
-    /** button */
-    const btnState = computed(() => {
-      if (
-        !name.value ||
+    /** submit button */
+    const submitButton = computed(() => {
+      return !name.value ||
         schedules.value.every((obj) =>
-          Object.keys(obj).every((key) => obj[key] == "指定なし")
+          Object.keys(obj).every((key) => obj[key] === "指定なし")
         )
-      )
-        return "disabled";
-      else return "default";
+        ? "disabled"
+        : "default";
     });
     const save = () => {
-      if (btnState.value == "disabled") return;
-      router.push(`/course/${courseId}`);
+      if (submitButton.value === "disabled") return;
+      router.push(`/course/${id}`);
     };
 
     /** modal */
     const modal = ref(false);
 
     return {
-      courseId,
+      instructor,
+      methods,
+      name,
       schedules,
       addSchedule,
       removeSchedule,
-      name,
-      instructor,
-      room,
       methodData,
       save,
-      btnState,
+      submitButton,
       modal,
     };
   },
