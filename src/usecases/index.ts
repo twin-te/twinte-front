@@ -24,7 +24,7 @@ export const useUsecase = <T>(
   return useAsyncState(fn(ports), initState);
 };
 
-export const usePorts = () => ({
+export const usePorts = (): Ports => ({
   api: instance(
     axiosClient(axios, {
       withCredentials: true,

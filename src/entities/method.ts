@@ -11,9 +11,9 @@ export const methodMap: { [key in CourseMethod]: MethodJa } = {
 
 export const methodToJa = (method: CourseMethod): MethodJa => methodMap[method];
 
-export type methodOption = MethodJa | "指定なし";
+export type MethodOption = MethodJa | "指定なし";
 
-export const methodOptions: methodOption[] = [
+export const methodOptions: MethodOption[] = [
   "指定なし",
   "対面",
   "同時双方向",
@@ -21,7 +21,7 @@ export const methodOptions: methodOption[] = [
   "その他",
 ];
 
-export const createOption = (selectedOptions: { value: methodOption }[]) => {
+export const createOption = (selectedOptions: { value: MethodOption }[]) => {
   return methodOptions.filter((option) => {
     return !selectedOptions.some((obj) => obj.value === option);
   });
