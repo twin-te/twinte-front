@@ -152,7 +152,7 @@ export default defineComponent({
 
     /** schedule-editor */
     const schedules = ref<Schedule[]>([
-      { module: "指定なし", day: "指定なし", period: "指定なし", room: "" },
+      { module: "指定なし", day: "指定なし", period: "指定なし" },
     ]);
     const scheduleMax = 4;
     const scheduleMin = 1;
@@ -162,7 +162,6 @@ export default defineComponent({
         module: "指定なし",
         day: "指定なし",
         period: "指定なし",
-        room: "",
       });
     };
     const removeSchedule = (index: number) => {

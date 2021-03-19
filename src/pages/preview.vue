@@ -324,7 +324,6 @@ export default defineComponent({
         module: "指定なし",
         day: "指定なし",
         period: "指定なし",
-        room: "",
       },
     ]);
     const displayLog = () => {
@@ -408,7 +407,6 @@ export default defineComponent({
         module: "指定なし",
         day: "指定なし",
         period: "指定なし",
-        room: "",
       });
     };
     const removeScheduleRow = (index: number) => {
