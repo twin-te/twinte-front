@@ -193,55 +193,53 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import CourseTile from "~/components/CourseTile.vue";
-import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
-import IconButton from "~/components/IconButton.vue";
+import { computed, defineComponent, ref } from "vue-demi";
+import { useRouter } from "vue-router";
+import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
+import CourseTile from "~/components/CourseTile.vue";
+import IconButton from "~/components/IconButton.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
+import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import { DayJa, dayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
 import { CourseState } from "~/entities/table";
-import { getCurrentModule } from "~/usecases/getCurrentModule";
-import { getCalendar } from "~/usecases/getCalendar";
-import { usePorts } from "~/usecases";
-import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
 import { courseListToTable } from "~/usecases/courseListToTable";
+import { getCalendar } from "~/usecases/getCalendar";
 import { getCourseList } from "~/usecases/getCourseList";
-import { RegisteredCourse } from "~/api/@types";
+import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { useSidebar } from "~/usecases/useSidebar";
 
 export default defineComponent({
   name: "Table",
   components: {
-    CourseTile,
-    ToggleButton,
-    IconButton,
     Button,
+    CourseTile,
+    IconButton,
     Modal,
     PageHeader,
     Popup,
     PopupContent,
+    ToggleButton,
   },
   setup: async () => {
     const ports = usePorts();
-    const { store } = ports;
     const router = useRouter();
 
     /** ヘッダー */
-    const toggleSidebar = () => {
-      store.commit("setSidebar", !store.state.sidebar);
-    };
+    const { toggleSidebar } = useSidebar();
     const calendar = await getCalendar(ports);
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
     const whichSelected = ref<Select>("left");
-    const module = ref<ModuleJa>("春A");
     const currentModule = await getCurrentModule(ports);
+    const module = ref(currentModule);
     const isCurrentModule = computed(() => module.value === currentModule);
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";

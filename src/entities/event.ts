@@ -5,7 +5,7 @@ export type eventType =
   | "SubstituteDay"
   | "Other";
 
-export const eventMap: { [key in eventType]: string } = {
+export const EventMap: { [key in eventType]: string } = {
   PublicHoliday: "祝日",
   Holiday: "休日",
   Exam: "試験",

@@ -11,31 +11,38 @@ export const courseListToTable = (
   moduleJa: ModuleJa
 ): Table => {
   const module = moduleFromJa(moduleJa);
-  const table: Table = [
-    [[], [], [], [], [], []],
-    [[], [], [], [], [], []],
-    [[], [], [], [], [], []],
-    [[], [], [], [], [], []],
-    [[], [], [], [], [], []],
-  ];
-  courses.forEach((course) => {
-    const name = course.name ?? (course.course?.name as string);
-    const courseId = course.id;
-    const schedules =
-      course.schedules ?? (course.course?.schedules as CourseSchedule[]);
-    schedules.forEach((schedule) => {
-      if (schedule.module !== module) return;
-      const weekNum = weeksNum(schedule.day);
-      if (weekNum === -1) return;
-      const period = schedule.period;
-      if (period < 0 || 5 < period) return;
-      table[weekNum][period].push({
-        name,
-        room: schedule.room,
-        courseId,
-      });
-    });
-  });
+  const table = courses.reduce(
+    (prevTable, course) => {
+      const name = course.name ?? (course.course?.name as string);
+      const courseId = course.id;
+      const schedules =
+        course.schedules ?? (course.course?.schedules as CourseSchedule[]);
+      schedules
+        .filter(
+          (schedule) =>
+            schedule.module === module &&
+            weeksNum(schedule.day) !== -1 &&
+            0 <= schedule.period &&
+            schedule.period <= 5
+        )
+        .forEach((schedule) =>
+          prevTable[weeksNum(schedule.day)][schedule.period].push({
+            name,
+            room: schedule.room,
+            courseId,
+          })
+        );
+
+      return prevTable;
+    },
+    [
+      [[], [], [], [], [], []],
+      [[], [], [], [], [], []],
+      [[], [], [], [], [], []],
+      [[], [], [], [], [], []],
+      [[], [], [], [], [], []],
+    ] as Table
+  );
 
   return table;
 };

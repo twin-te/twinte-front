@@ -31,5 +31,5 @@ export const usePorts = () => ({
     })
   ) as ApiInstance,
   store: useStore(),
-  dayjs: (date?: ConfigType | undefined): Dayjs => dayjs(date).locale("ja"),
+  dayjs: (date?: ConfigType): Dayjs => dayjs(date).locale("ja"),
 });

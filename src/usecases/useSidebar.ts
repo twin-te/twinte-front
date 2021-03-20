@@ -8,6 +8,9 @@ export const useSidebar = () => {
   const isOpen = computed<boolean>(() => store.getters.sidebar);
   const closeSidebar = () => store.commit("setSidebar", false);
   const openSidebar = () => store.commit("setSidebar", true);
+  const toggleSidebar = () => {
+    store.commit("setSidebar", !store.state.sidebar);
+  };
 
-  return { isClose, isOpen, closeSidebar, openSidebar };
+  return { isClose, isOpen, closeSidebar, openSidebar, toggleSidebar };
 };

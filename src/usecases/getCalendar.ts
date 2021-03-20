@@ -2,7 +2,7 @@ import { Ports } from "~/adapter";
 import { SchoolCalendarEvent } from "~/api/@types";
 import { Calendar } from "~/components/PageHeader.vue";
 import { dayToJa } from "~/entities/day";
-import { eventMap } from "~/entities/event";
+import { EventMap } from "~/entities/event";
 import { getEvents } from "./getEvents";
 
 /**
@@ -36,5 +36,5 @@ export const getCalendarSchedule = (
     ? "通常日課"
     : event.eventType === "SubstituteDay" && event.changeTo != null
     ? `${dayToJa(event.changeTo)}曜授業`
-    : eventMap[event.eventType];
+    : EventMap[event.eventType];
 };

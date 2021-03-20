@@ -6,5 +6,5 @@ import { GlobalState } from "~/store";
 export interface Ports {
   api: ApiInstance;
   store: Store<GlobalState>;
-  dayjs: (date?: ConfigType | undefined) => Dayjs;
+  dayjs: (date?: ConfigType) => Dayjs;
 }
