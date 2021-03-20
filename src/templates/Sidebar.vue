@@ -85,14 +85,14 @@ export default defineComponent({
         {
           iconName: "view_compact",
           item: "表示設定",
-          link: "settings",
-          show: isMobile(),
+          link: "/view_compact",
+          show: false,
         },
         {
           iconName: "notifications",
           item: "通知設定",
-          link: "/notifications",
-          show: false,
+          link: "settings",
+          show: isMobile(),
         },
       ].filter((v) => v.show)
     );
