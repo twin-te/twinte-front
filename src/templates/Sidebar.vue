@@ -123,8 +123,8 @@ export default defineComponent({
           case "settings":
             await asyncSetTimeout(300); // アニメーションの関係で必要
             isiOS()
-              ? window.android?.openSettings()
-              : window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
+              ? window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("")
+              : window.android?.openSettings();
             break;
           case "share":
             await asyncSetTimeout(300);
