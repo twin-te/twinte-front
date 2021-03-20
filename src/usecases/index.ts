@@ -4,7 +4,7 @@ import { Ports } from "~/adapter";
 import instance, { ApiInstance } from "~/api/$api";
 import { useStore } from "~/store";
 import { useAsyncState } from "@vueuse/core";
-import dayjs from "dayjs";
+import dayjs, { ConfigType, Dayjs } from "dayjs";
 
 /**
  * @example
@@ -24,12 +24,12 @@ export const useUsecase = <T>(
   return useAsyncState(fn(ports), initState);
 };
 
-export const usePorts = (): Ports => ({
+export const usePorts = () => ({
   api: instance(
     axiosClient(axios, {
       withCredentials: true,
     })
   ) as ApiInstance,
   store: useStore(),
-  now: dayjs().locale("ja"),
+  dayjs: (date?: ConfigType | undefined): Dayjs => dayjs(date).locale("ja"),
 });
