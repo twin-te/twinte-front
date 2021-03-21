@@ -153,6 +153,7 @@ export default defineComponent({
       getInitCourse()
     );
     const room = ref("");
+
     /** schedule-editor */
     const schedules = ref<Schedule[]>([
       { module: "指定なし", day: "指定なし", period: "指定なし" },
@@ -168,6 +169,7 @@ export default defineComponent({
       schedules.value.splice(index, 1);
     };
 
+    /** checkbox */
     const methods = reactive<
       {
         checked: boolean;
@@ -202,11 +204,10 @@ export default defineComponent({
     const addCourse = async () => {
       if (btnState.value == "disabled") return;
       course.schedules = formatSchedule(schedules.value);
-      course.schedules = course.schedules.map((v) => {
-        v.room = room.value;
-        return v;
-      });
-      console.log(course);
+      course.schedules = course.schedules.map((v) => ({
+        ...v,
+        room: room.value,
+      }));
       if (await addCourseByManual(ports)(course)) {
         router.push("/");
       } else {
