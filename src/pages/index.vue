@@ -193,9 +193,21 @@
 </template>
 
 <script lang="ts">
+import { Calendar } from "~/components/PageHeader.vue";
 import { computed, defineComponent, ref } from "vue-demi";
-import { useRouter } from "vue-router";
+import { courseListToTable } from "~/usecases/courseListToTable";
+import { CourseState } from "~/entities/table";
+import { getCalendar } from "~/usecases/getCalendar";
+import { getCourseList } from "~/usecases/getCourseList";
+import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse } from "~/api/@types";
+import { usePorts } from "~/usecases";
+import { useRouter } from "vue-router";
+import { useSidebar } from "~/usecases/useSidebar";
+import { useSwitch } from "~/hooks/useSwitch";
+import { useUsecase } from "~/usecases";
+import { WeekDayJa, weekdayJaList } from "~/entities/day";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -204,18 +216,6 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
-import { Calendar } from "~/components/PageHeader.vue";
-import { WeekDayJa, weekdayJaList } from "~/entities/day";
-import { ModuleJa, moduleJaList } from "~/entities/module";
-import { CourseState } from "~/entities/table";
-import { useUsecase } from "~/usecases/index";
-import { useSwitch } from "~/hooks/useSwitch";
-import { usePorts } from "~/usecases";
-import { courseListToTable } from "~/usecases/courseListToTable";
-import { getCalendar } from "~/usecases/getCalendar";
-import { getCourseList } from "~/usecases/getCourseList";
-import { getCurrentModule } from "~/usecases/getCurrentModule";
-import { useSidebar } from "~/usecases/useSidebar";
 
 export default defineComponent({
   name: "Table",

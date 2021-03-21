@@ -116,8 +116,7 @@
 import { addCourseByManual } from "~/usecases/addCourseByManual";
 import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import { formatSchedule } from "~/entities/course";
-import { getInitCourse } from "~/entities/course";
+import { formatSchedule, getInitCourse } from "~/entities/course";
 import { MethodJa } from "~/entities/method";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
