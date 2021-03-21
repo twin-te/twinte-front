@@ -118,6 +118,7 @@ import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { formatSchedule, getInitCourse } from "~/entities/course";
 import { MethodJa } from "~/entities/method";
+import { Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -131,7 +132,6 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { Schedule } from "~/entities/schedule";
 
 export default defineComponent({
   components: {
