@@ -173,7 +173,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue-demi";
 import { useRouter } from "vue-router";
-// import { RegisteredCourse } from "~/api/@types";
+import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -184,13 +184,13 @@ import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import { DayJa, dayJaList, specialDayMap } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
-import { CourseState, dummySpecial } from "~/entities/table";
+import { CourseState } from "~/entities/table";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { getCalendar } from "~/usecases/getCalendar";
-// import { getCourseList } from "~/usecases/getCourseList";
+import { getCourseList } from "~/usecases/getCourseList";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { useSidebar } from "~/usecases/useSidebar";
 
@@ -231,9 +231,7 @@ export default defineComponent({
     };
 
     /** table */
-    // const storedCourses: RegisteredCourse[] = await getCourseList(ports);
-    const storedCourses = dummySpecial;
-    // const storedCourses = [];
+    const storedCourses: RegisteredCourse[] = await getCourseList(ports);
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
     );

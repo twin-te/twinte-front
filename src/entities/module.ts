@@ -60,25 +60,25 @@ export type ModuleFlg = [
   boolean
 ];
 
-export const moduleFlgToDisplay = (modules: ModuleFlg): string[] => {
+export const moduleFlgToDisplay = (moduleFlg: ModuleFlg): string[] => {
   const result = [] as string[];
-  if (modules[0]) result.push("通年");
-  if (modules.slice(1, 4).some((b) => b)) {
+  if (moduleFlg[0]) result.push("通年");
+  if (moduleFlg.slice(1, 4).some((b) => b)) {
     result.push(
-      modules.slice(1, 4).reduce((a, c, i) => {
-        return modules[1 + i] ? a + ["A", "B", "C"][i] : a;
+      moduleFlg.slice(1, 4).reduce((a, c, i) => {
+        return moduleFlg[1 + i] ? a + ["A", "B", "C"][i] : a;
       }, "春")
     );
   }
-  if (modules[4]) result.push("夏休");
-  if (modules.slice(5, 8).some((b) => b)) {
+  if (moduleFlg[4]) result.push("夏休");
+  if (moduleFlg.slice(5, 8).some((b) => b)) {
     result.push(
-      modules.slice(5, 8).reduce((a, c, i) => {
-        return modules[5 + i] ? a + ["A", "B", "C"][i] : a;
+      moduleFlg.slice(5, 8).reduce((a, c, i) => {
+        return moduleFlg[5 + i] ? a + ["A", "B", "C"][i] : a;
       }, "秋")
     );
   }
-  if (modules[8]) result.push("春休");
+  if (moduleFlg[8]) result.push("春休");
 
   return result;
 };
