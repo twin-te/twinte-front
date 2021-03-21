@@ -6,7 +6,7 @@ import { scheduleDayJaList } from "~/entities/day";
 import { schedulePeriods } from "~/entities/period";
 
 export type Schedule = {
-  semester: string;
+  module: string;
   date: string;
   period: string;
 };
@@ -60,7 +60,7 @@ export default defineComponent({
       <div class="schedule-editer__container">
         <Dropdown
           :options="semesterOptions"
-          v-model:selectedOption="schedule.semester"
+          v-model:selectedOption="schedule.module"
           :label="index > 0 ? '' : '学期'"
         ></Dropdown>
         <Dropdown

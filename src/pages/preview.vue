@@ -319,7 +319,7 @@ export default defineComponent({
     const tileStat = ref<CourseTileState>("default");
     const isCourseCheked = ref(false);
     const schedules = ref<Schedules>([
-      { semester: "指定なし", date: "指定なし", period: "指定なし" },
+      { module: "指定なし", date: "指定なし", period: "指定なし" },
     ]);
     const displayLog = () => {
       console.log("click");
@@ -399,7 +399,7 @@ export default defineComponent({
 
     const addScheduleRow = () => {
       schedules.value.push({
-        semester: "指定なし",
+        module: "指定なし",
         date: "指定なし",
         period: "指定なし",
       });

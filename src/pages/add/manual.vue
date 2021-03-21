@@ -114,10 +114,12 @@
 
 <script lang="ts">
 import { addCourseByManual } from "~/usecases/addCourseByManual";
-import { Course, CourseMethod } from "~/api/@types";
+import { Course, CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
+import { formatSchedule } from "~/entities/course";
 import { getInitCourse } from "~/entities/course";
 import { MethodJa } from "~/entities/method";
+import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
 import Button from "~/components/Button.vue";
@@ -146,16 +148,16 @@ export default defineComponent({
   },
   setup: () => {
     const router = useRouter();
-    const course = reactive<Course>(getInitCourse());
+    const ports = usePorts();
+    const course = reactive<RegisteredCourseWithoutID>(getInitCourse());
     const room = ref("");
-
     /** schedule-editor */
     const schedules = ref<Schedules>([
-      { semester: "指定なし", date: "指定なし", period: "指定なし" },
+      { module: "指定なし", date: "指定なし", period: "指定なし" },
     ]);
     const addSchedule = () => {
       schedules.value.push({
-        semester: "指定なし",
+        module: "指定なし",
         date: "指定なし",
         period: "指定なし",
       });
@@ -189,7 +191,7 @@ export default defineComponent({
       else return "default";
     });
 
-    // TODO: 重複の処理は後でまとめて作成する
+    // TODO: 重複の処理は別ブランチでまとめて作成する
     const [
       duplicationModal,
       openDuplicationModal,
@@ -197,15 +199,19 @@ export default defineComponent({
     ] = useSwitch();
     const addCourse = async () => {
       if (btnState.value == "disabled") return;
-      course.schedules.map((v) => (v.room = room.value));
-      if (await addCourseByManual(course)) {
+      course.schedules = formatSchedule(schedules.value);
+      course.schedules = course.schedules.map((v) => {
+        v.room = room.value;
+        return v;
+      });
+      console.log(course);
+      if (await addCourseByManual(ports)(course)) {
         router.push("/");
       } else {
         // TODO: エラー処理を追加
         console.error("ERROR");
       }
     };
-
     const duplicatedCourses = ref<{ name: string; period: string }[]>([]);
 
     return {

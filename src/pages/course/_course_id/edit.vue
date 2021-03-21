@@ -133,14 +133,14 @@ export default defineComponent({
 
     /** schedule-editor */
     const schedules = ref<Schedules>([
-      { semester: "指定なし", date: "指定なし", period: "指定なし" },
+      { module: "指定なし", date: "指定なし", period: "指定なし" },
     ]);
     const scheduleMax = 4;
     const scheduleMin = 1;
     const addSchedule = () => {
       if (schedules.value.length >= scheduleMax) return;
       schedules.value.push({
-        semester: "指定なし",
+        module: "指定なし",
         date: "指定なし",
         period: "指定なし",
       });
