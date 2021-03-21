@@ -233,6 +233,7 @@ export default defineComponent({
     /** table */
     // const storedCourses: RegisteredCourse[] = await getCourseList(ports);
     const storedCourses = dummySpecial;
+    // const storedCourses = [];
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
     );
