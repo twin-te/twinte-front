@@ -186,8 +186,8 @@ export default defineComponent({
     const btnState = computed(() => {
       if (
         !course.name ||
-        schedules.value.every((obj) =>
-          Object.keys(obj).every((key) => obj[key] == "指定なし")
+        schedules.value.some((obj) =>
+          Object.keys(obj).some((key) => obj[key] == "指定なし")
         )
       )
         return "disabled";
