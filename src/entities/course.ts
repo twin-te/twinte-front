@@ -1,11 +1,24 @@
 import { Schedules } from "~/components/ScheduleEditer.vue";
-import { RegisteredCourseWithoutID, CourseSchedule } from "~/api/@types";
+import { CourseSchedule, CourseMethod, TagIdOnly } from "~/api/@types";
 import { jaToModule } from "~/entities/module";
 import { jaToDay } from "~/entities/day";
 
+export type FullRegisteredCourseWithoutID = {
+  year: number;
+  name: string;
+  instructor: string;
+  credit: number;
+  methods: CourseMethod[];
+  schedules: CourseSchedule[];
+  memo: string;
+  attendance: number;
+  absence: number;
+  late: number;
+  tags: TagIdOnly[];
+};
 
 export const getInitCourse = () => {
-  const course: RegisteredCourseWithoutID = {
+  const course: FullRegisteredCourseWithoutID = {
     absence: 0,
     attendance: 0,
     credit: 0,

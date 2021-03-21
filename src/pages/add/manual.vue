@@ -114,10 +114,13 @@
 
 <script lang="ts">
 import { addCourseByManual } from "~/usecases/addCourseByManual";
-import { Course, CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
+import { CourseMethod } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import { formatSchedule } from "~/entities/course";
-import { getInitCourse } from "~/entities/course";
+import {
+  formatSchedule,
+  getInitCourse,
+  FullRegisteredCourseWithoutID,
+} from "~/entities/course";
 import { MethodJa } from "~/entities/method";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
@@ -149,7 +152,7 @@ export default defineComponent({
   setup: () => {
     const router = useRouter();
     const ports = usePorts();
-    const course = reactive<RegisteredCourseWithoutID>(getInitCourse());
+    const course = reactive<FullRegisteredCourseWithoutID>(getInitCourse());
     const room = ref("");
     /** schedule-editor */
     const schedules = ref<Schedules>([

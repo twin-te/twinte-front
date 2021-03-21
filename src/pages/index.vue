@@ -204,7 +204,7 @@ import PageHeader, { Calendar } from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import { WeekDayJa, weekdayJaList } from "~/entities/day";
-import { ModuleJa, moduleMap } from "~/entities/module";
+import { ModuleJa, moduleJaList } from "~/entities/module";
 import { CourseState, dummyData } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { getCalendar } from "~/usecases/getCalendar";
@@ -253,7 +253,7 @@ export default defineComponent({
     const [popupModule, , closePopupModule, togglePopupModule] = useSwitch(
       false
     );
-    const popupModuleData = moduleMap;
+    const popupModuleData = moduleJaList;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
       togglePopupModule();
