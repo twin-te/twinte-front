@@ -1,5 +1,13 @@
-import { RegisteredCourse, CourseSchedule, Course } from "~/api/@types";
+import {
+  RegisteredCourse,
+  RegisteredCourseWithoutID,
+  CourseSchedule,
+} from "~/api/@types";
+import { jaToDay } from "~/entities/day";
+import { jaToModule } from "~/entities/module";
 import { methodMap } from "./method";
+import { Schedule } from "~/entities/schedule";
+import {} from "~/api/@types";
 
 export type DisplayCourse = {
   code: string;
@@ -115,16 +123,28 @@ const getLectureTimeAsStr = (schedules: CourseSchedule[]): string => {
   }
 };
 
-export const getInitCourse = (): Course => ({
-  id: "",
-  year: 0,
-  code: "",
-  name: "",
-  instructor: "",
+export const getInitCourse = (): Required<RegisteredCourseWithoutID> => ({
+  absence: 0,
+  attendance: 0,
   credit: 0,
-  overview: "",
-  remarks: "",
-  recommendedGrades: [],
+  instructor: "",
+  late: 0,
+  memo: "",
   methods: [],
+  name: "",
   schedules: [],
+  tags: [],
+  year: 0,
 });
+
+/**
+ * 日本語の学期名などを api の形式に合うようにフォーマットする
+ */
+export const formatSchedule = (schedule: Schedule[]): CourseSchedule[] => {
+  return schedule.map((v) => ({
+    module: jaToModule(v.module),
+    day: jaToDay(v.day),
+    period: Number(v.period),
+    room: "",
+  }));
+};

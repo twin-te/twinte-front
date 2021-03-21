@@ -206,7 +206,7 @@ import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import { Calendar } from "~/components/PageHeader.vue";
 import { WeekDayJa, weekdayJaList } from "~/entities/day";
-import { ModuleJa, moduleMap } from "~/entities/module";
+import { ModuleJa, moduleJaList } from "~/entities/module";
 import { CourseState } from "~/entities/table";
 import { useUsecase } from "~/usecases/index";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -250,7 +250,7 @@ export default defineComponent({
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
     const [popup, , closePopup, togglePopup] = useSwitch(false);
-    const popupData = moduleMap;
+    const popupData = moduleJaList;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
       togglePopup();
