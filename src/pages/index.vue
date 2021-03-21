@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <PageHeader v-show="calReady" :calendar="calendar" atHome>
+    <PageHeader :calendar="calendar" atHome>
       <template #left-button-icon>
         <IconButton
           @click="toggleSidebar"
@@ -20,7 +20,7 @@
       />
       <div
         class="main__module"
-        v-click-away="closePopupModule"
+        v-click-away="closePopup"
         v-if="whichSelected === 'left'"
       >
         <div class="main__module-text">
@@ -29,15 +29,15 @@
         <div class="main__module-selector">
           <IconButton
             class="main__module-btn"
-            @click="togglePopupModule"
+            @click="togglePopup"
             size="small"
             color="normal"
             icon-name="expand_more"
             :is-active="false"
           />
-          <Popup class="main__module-popup" v-show="popupModule">
+          <Popup class="main__module-popup" v-show="popup">
             <PopupContent
-              v-for="data in popupModuleData"
+              v-for="data in popupData"
               :key="data"
               @click="onClickModule(data)"
               :value="data"
@@ -49,7 +49,6 @@
       <Button
         v-if="whichSelected === 'left'"
         :state="isCurrentModule ? 'active' : 'default'"
-        :pauseActiveStyle="false"
         class="main__btn"
         @click="setCurrentModule"
         size="small"
@@ -61,7 +60,7 @@
         :class="{
           main__table: true,
           table: true,
-          'main__table--popup': popupModule,
+          'main__table--popup': popup,
         }"
         v-if="whichSelected === 'left'"
       >
@@ -194,107 +193,104 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import CourseTile from "~/components/CourseTile.vue";
-import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
-import IconButton from "~/components/IconButton.vue";
+import { computed, defineComponent, ref } from "vue-demi";
+import { useRouter } from "vue-router";
+import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
+import CourseTile from "~/components/CourseTile.vue";
+import IconButton from "~/components/IconButton.vue";
 import Modal from "~/components/Modal.vue";
-import PageHeader, { Calendar } from "~/components/PageHeader.vue";
+import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
+import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import { DayJa, dayJaList } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
-import { CourseState, dummyData } from "~/entities/table";
-import { getCurrentModule } from "~/usecases/getCurrentModule";
-import { getCalendar } from "~/usecases/getCalendar";
-import { useUsecase } from "~/usecases";
-import { useStore } from "~/store";
-import { useRouter } from "vue-router";
+import { CourseState } from "~/entities/table";
 import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { courseListToTable } from "~/usecases/courseListToTable";
+import { getCalendar } from "~/usecases/getCalendar";
+import { getCourseList } from "~/usecases/getCourseList";
+import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { useSidebar } from "~/usecases/useSidebar";
 
 export default defineComponent({
   name: "Table",
   components: {
-    CourseTile,
-    ToggleButton,
-    IconButton,
     Button,
+    CourseTile,
+    IconButton,
     Modal,
     PageHeader,
     Popup,
     PopupContent,
+    ToggleButton,
   },
-  setup: () => {
+  setup: async () => {
+    const ports = usePorts();
     const router = useRouter();
-    const store = useStore();
 
     /** ヘッダー */
-    const toggleSidebar = () => {
-      store.commit("setSidebar", !store.state.sidebar);
-    };
+    const { toggleSidebar } = useSidebar();
+    const calendar = await getCalendar(ports);
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
     const whichSelected = ref<Select>("left");
-    const module = ref<ModuleJa>("春A");
-    const { state: currentModule } = useUsecase(getCurrentModule, "春A");
-    const isCurrentModule = computed(
-      () => module.value === currentModule.value
-    );
-    const { isReady: calReady, state: calendar } = useUsecase(
-      getCalendar,
-      {} as Calendar
-    );
-    const weeks = dayJaList;
+    const currentModule = await getCurrentModule(ports);
+    const module = ref(currentModule);
+    const isCurrentModule = computed(() => module.value === currentModule);
     const onClickLabel = () => {
       whichSelected.value = whichSelected.value === "left" ? "right" : "left";
     };
-    const [popupModule, , closePopupModule, togglePopupModule] = useSwitch(
-      false
-    );
-    const popupModuleData = moduleMap;
+    const [popup, , closePopup, togglePopup] = useSwitch(false);
+    const popupData = moduleMap;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
-      togglePopupModule();
+      togglePopup();
     };
 
     /** table */
-    const table = computed(() => dummyData.table);
+    const storedCourses: RegisteredCourse[] = await getCourseList(ports);
+    const table = computed(() =>
+      courseListToTable(storedCourses, module.value)
+    );
     const setCurrentModule = () => {
-      module.value = currentModule.value;
+      module.value = currentModule;
     };
+    const weeks = dayJaList;
     const onClickCourseTile = async (
       courses: CourseState[],
       day: DayJa,
       period: number
     ) => {
       switch (courses.length) {
-        case 1:
-          await router.push(`/course/${courses[0].name}`);
+        case 0:
           break;
-        case 2:
-          duplicationState.value = {
-            courses,
-            day,
-            period,
-          };
+        case 1:
+          await router.push(`/course/${courses[0].courseId}`);
           break;
         default:
+          duplicationState.value = {
+            day,
+            period,
+            courses,
+          };
           break;
       }
     };
 
-    // duplication modal
+    /** duplication modal */
     type DuplocationState = {
       day: DayJa;
       period: number;
       courses: CourseState[];
     };
     const initialDuplicationState: DuplocationState = {
-      courses: [],
       day: "月",
       period: 1,
+      courses: [],
     };
     const duplicationState = ref<DuplocationState>(initialDuplicationState);
     const clearDuplicationState = () => {
@@ -303,21 +299,20 @@ export default defineComponent({
 
     return {
       toggleSidebar,
-      weeks,
       label,
       whichSelected,
       onClickLabel,
-      popupModule,
-      togglePopupModule,
-      closePopupModule,
-      popupModuleData,
-      onClickModule,
-      module,
-      table,
-      calReady,
       calendar,
+      module,
+      popup,
+      togglePopup,
+      closePopup,
+      popupData,
+      onClickModule,
       setCurrentModule,
       isCurrentModule,
+      table,
+      weeks,
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
@@ -331,12 +326,12 @@ export default defineComponent({
 
 .main {
   display: grid;
-  border-radius: $radius-4 $radius-4 0 0;
+  border-radius: $radius-4 $radius-4 $radius-0 $radius-0;
   box-shadow: $shadow-base;
   padding: $spacing-4 $spacing-3;
-  margin: $spacing-4 -1.6rem 0; //縦向きの画面でLayoutのpaddingを無視するため
+  margin: $spacing-4 (-$spacing-4) $spacing-0; //縦向きの画面でLayoutのpaddingを無視するため
   @include landscape {
-    margin: $spacing-4 0 0;
+    margin: $spacing-4 $spacing-0 $spacing-0;
   }
   height: calc(100vh - 7.6rem);
   grid-template:
@@ -475,13 +470,5 @@ export default defineComponent({
     height: 4.8rem;
     margin-bottom: $spacing-2;
   }
-}
-
-.preview__dropdown {
-  padding-bottom: 10rem;
-}
-
-.preview__dropdown {
-  padding-bottom: 10rem;
 }
 </style>

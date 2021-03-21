@@ -7,7 +7,7 @@ import { Ports } from "~/adapter";
 /**
  * storeまたはAPIからidに該当する講義データを取得する。
  */
-export const getRegisteredCourse = ({ api }: Ports) => async (
+export const getCourseById = ({ api }: Ports) => async (
   id: string
 ): Promise<RegisteredCourse> => {
   try {
@@ -25,20 +25,20 @@ export const getRegisteredCourse = ({ api }: Ports) => async (
 export const useDisplayCourse = (ports: Ports) => async (
   id: string
 ): Promise<ToRefs<DisplayCourse>> => {
-  const regiesteredCourse = await getRegisteredCourse(ports)(id);
-  const displayedCourse = apiToDisplayCourse(regiesteredCourse);
+  const course = await getCourseById(ports)(id);
+  const displayedCourse = apiToDisplayCourse(course);
   return toRefs(reactive(displayedCourse));
 };
 
 export const useRegisteredCourse = (ports: Ports) => async (id: string) => {
-  const regiesteredCourse = await getRegisteredCourse(ports)(id);
+  const course = await getCourseById(ports)(id);
   return toRefs(
     reactive({
       name: "",
       instructor: "",
       methods: [] as CourseMethod[],
       schedules: [] as CourseSchedule[],
-      ...regiesteredCourse,
+      ...course,
     })
   );
 };

@@ -172,8 +172,8 @@ import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import { apiToDisplayCourse, displayCourseToApi } from "~/entities/course";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
-import { deleteRegisteredCourse } from "~/usecases/deleteRegisteredCourse";
-import { useDisplayCourse } from "~/usecases/getRegisteredCourse";
+import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
+import { useDisplayCourse } from "~/usecases/getCourseById";
 import { openUrl } from "~/usecases/openUrl";
 import { updateCourse } from "~/usecases/updateCourse";
 
@@ -231,7 +231,7 @@ export default defineComponent({
       closeDeleteCourseModal,
     ] = useSwitch();
     const deleteCourse = async () => {
-      await deleteRegisteredCourse(ports)(id);
+      await apiDeleteCourse(ports)(id);
       closeDeleteCourseModal();
       router.push("/");
     };

@@ -107,7 +107,7 @@ import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { MethodJa } from "~/entities/method";
 import { apiToDisplaySchedule, Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases";
-import { useRegisteredCourse } from "~/usecases/getRegisteredCourse";
+import { useRegisteredCourse } from "~/usecases/getCourseById";
 
 export default defineComponent({
   components: {

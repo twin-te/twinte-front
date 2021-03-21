@@ -1,6 +1,6 @@
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as useStoreAny } from "vuex";
-import { User, RegisteredCourse } from "~/api/@types";
+import { RegisteredCourse, User } from "~/api/@types";
 import { mutations } from "./mutations";
 import { getters } from "./getter";
 
