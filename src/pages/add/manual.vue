@@ -114,13 +114,9 @@
 
 <script lang="ts">
 import { addCourseByManual } from "~/usecases/addCourseByManual";
-import { CourseMethod } from "~/api/@types";
+import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import {
-  formatSchedule,
-  getInitCourse,
-  FullRegisteredCourseWithoutID,
-} from "~/entities/course";
+import { formatSchedule, getInitCourse } from "~/entities/course";
 import { MethodJa } from "~/entities/method";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
@@ -152,8 +148,11 @@ export default defineComponent({
   setup: () => {
     const router = useRouter();
     const ports = usePorts();
-    const course = reactive<FullRegisteredCourseWithoutID>(getInitCourse());
+    const course = reactive<Required<RegisteredCourseWithoutID>>(
+      getInitCourse()
+    );
     const room = ref("");
+
     /** schedule-editor */
     const schedules = ref<Schedules>([
       { module: "指定なし", date: "指定なし", period: "指定なし" },
@@ -169,6 +168,7 @@ export default defineComponent({
       schedules.value.splice(index, 1);
     };
 
+    /** checkbox */
     const methods = reactive<
       {
         checked: boolean;
@@ -203,11 +203,10 @@ export default defineComponent({
     const addCourse = async () => {
       if (btnState.value == "disabled") return;
       course.schedules = formatSchedule(schedules.value);
-      course.schedules = course.schedules.map((v) => {
-        v.room = room.value;
-        return v;
-      });
-      console.log(course);
+      course.schedules = course.schedules.map((v) => ({
+        ...v,
+        room: room.value,
+      }));
       if (await addCourseByManual(ports)(course)) {
         router.push("/");
       } else {
