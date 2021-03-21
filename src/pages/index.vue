@@ -91,61 +91,37 @@
         </template>
       </div>
       <section class="special" v-else>
-        <div class="special-header">
-          <div class="special-header__label">集中</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-contents">
-          <div class="special-contents__module">春A</div>
-          <CourseTile
-            class="special-contents__course"
-            state="default"
-            name="Pedagogy for a Changing World I"
-            room="1A101"
-          />
-          <div class="special-contents__module">夏休</div>
-          <CourseTile
-            class="special-contents__course"
-            state="default"
-            name="初等数学基礎"
-            room="1A101"
-          />
-          <div class="special-contents__module">秋A</div>
-          <CourseTile
-            class="special-contents__course"
-            state="default"
-            name="生物科学オムニバス特講"
-            room="-"
-          />
-        </div>
-
-        <div class="special-header">
-          <div class="special-header__label">応談</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-contents">
-          <div class="special-contents__module">-</div>
-          <CourseTile
-            class="special-contents__course"
-            state="none"
-            name=""
-            room=""
-          />
-        </div>
-
-        <div class="special-header">
-          <div class="special-header__label">随時</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-contents">
-          <div class="special-contents__module">-</div>
-          <CourseTile
-            class="special-contents__course"
-            state="none"
-            name=""
-            room=""
-          />
-        </div>
+        <template v-for="(value, key) in specialTable" :key="key">
+          <div class="special-header">
+            <div class="special-header__label">{{ specialDayMap[key] }}</div>
+            <div class="special-header__divider"></div>
+          </div>
+          <div
+            class="special-contents"
+            v-for="course in value"
+            :key="course.id"
+          >
+            <div class="special-contents__module">
+              <span v-for="m in course.module" :key="m">{{ m }}</span>
+            </div>
+            <CourseTile
+              class="special-contents__course"
+              @click="$router.push(`/course/${course.id}`)"
+              state="default"
+              :name="course.name"
+              :room="course.room"
+            />
+          </div>
+          <div v-if="value.length === 0" class="special-contents">
+            <div class="special-contents__module"></div>
+            <CourseTile
+              class="special-contents__course"
+              state="none"
+              name=""
+              room=""
+            />
+          </div>
+        </template>
       </section>
     </section>
   </div>
@@ -204,11 +180,12 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
-import { DayJa, dayJaList } from "~/entities/day";
+import { DayJa, dayJaList, specialDayMap } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
 import { CourseState } from "~/entities/table";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
+import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { getCalendar } from "~/usecases/getCalendar";
 import { getCourseList } from "~/usecases/getCourseList";
@@ -253,8 +230,12 @@ export default defineComponent({
 
     /** table */
     const storedCourses: RegisteredCourse[] = await getCourseList(ports);
+    // const storedCourses = dummySpecial;
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
+    );
+    const specialTable = computed(() =>
+      courseListToSpecialTable(storedCourses)
     );
     const setCurrentModule = () => {
       module.value = currentModule;
@@ -312,7 +293,9 @@ export default defineComponent({
       setCurrentModule,
       isCurrentModule,
       table,
+      specialTable,
       weeks,
+      specialDayMap,
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
@@ -454,6 +437,9 @@ export default defineComponent({
     color: $text-sub;
     font-size: $font-small;
     margin-left: $spacing-1;
+    display: flex;
+    flex-direction: column;
+    line-height: $single-line;
   }
   &__course {
     height: 4.8rem;
