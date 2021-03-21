@@ -81,10 +81,15 @@ export const courseListToSpecialTable = (
   // unsortedSpecialTableをソートし、SpecilalTableに変換する。
   return specialDays.reduce((st, sd) => {
     unsortedSpecialTable[sd].sort((prev, next) => {
-      // [prev, next]の順
-      if (prev.moduleFlg > next.moduleFlg) return -1;
-      // [next, prev]の順
-      if (prev.moduleFlg < next.moduleFlg) return 1;
+      // "夏休"と"夏休,春休"の大小関係を考慮
+      // モジュールの始まりが同じなら早く終わる方をより上に表示する
+      let flg = false;
+      for (let i = 0; i < 9; i++) {
+        if (!flg && prev.moduleFlg[i] && next.moduleFlg[i]) flg = true;
+        if (prev.moduleFlg[i] === next.moduleFlg[i]) continue;
+        const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);
+        return flg ? ans : -ans;
+      }
       return prev.name <= next.name ? -1 : 1;
     });
     st[sd] = unsortedSpecialTable[sd].map((sc) => ({
