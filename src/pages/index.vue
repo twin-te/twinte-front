@@ -96,30 +96,32 @@
             <div class="special-header__label">{{ specialDayMap[key] }}</div>
             <div class="special-header__divider"></div>
           </div>
-          <div
-            class="special-contents"
-            v-for="course in value"
-            :key="course.id"
-          >
-            <div class="special-contents__module">
-              <span v-for="m in course.module" :key="m">{{ m }}</span>
+          <div class="special-container">
+            <div
+              class="special-contents"
+              v-for="course in value"
+              :key="course.id"
+            >
+              <div class="special-contents__module">
+                <span v-for="m in course.module" :key="m">{{ m }}</span>
+              </div>
+              <CourseTile
+                class="special-contents__course"
+                @click="$router.push(`/course/${course.id}`)"
+                state="default"
+                :name="course.name"
+                :room="course.room"
+              />
             </div>
-            <CourseTile
-              class="special-contents__course"
-              @click="$router.push(`/course/${course.id}`)"
-              state="default"
-              :name="course.name"
-              :room="course.room"
-            />
-          </div>
-          <div v-if="value.length === 0" class="special-contents">
-            <div class="special-contents__module"></div>
-            <CourseTile
-              class="special-contents__course"
-              state="none"
-              name=""
-              room=""
-            />
+            <div v-if="value.length === 0" class="special-contents">
+              <div class="special-contents__module"></div>
+              <CourseTile
+                class="special-contents__course"
+                state="none"
+                name=""
+                room=""
+              />
+            </div>
           </div>
         </template>
       </section>
@@ -171,7 +173,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue-demi";
 import { useRouter } from "vue-router";
-import { RegisteredCourse } from "~/api/@types";
+// import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -182,13 +184,13 @@ import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
 import { DayJa, dayJaList, specialDayMap } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
-import { CourseState } from "~/entities/table";
+import { CourseState, dummySpecial } from "~/entities/table";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { getCalendar } from "~/usecases/getCalendar";
-import { getCourseList } from "~/usecases/getCourseList";
+// import { getCourseList } from "~/usecases/getCourseList";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { useSidebar } from "~/usecases/useSidebar";
 
@@ -229,8 +231,8 @@ export default defineComponent({
     };
 
     /** table */
-    const storedCourses: RegisteredCourse[] = await getCourseList(ports);
-    // const storedCourses = dummySpecial;
+    // const storedCourses: RegisteredCourse[] = await getCourseList(ports);
+    const storedCourses = dummySpecial;
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
     );
@@ -404,11 +406,17 @@ export default defineComponent({
 
 .special {
   grid-area: table;
+  height: calc(100vh - 14.8rem);
+  @include landscape {
+    height: calc(100vh - 16.4rem);
+  }
+  overflow-y: scroll;
+  margin-top: $spacing-3;
 }
 
 .special-header {
   display: flex;
-  margin: $spacing-3 0 $spacing-4 0;
+  margin-bottom: $spacing-4;
   align-items: center;
   height: 2rem;
 
@@ -425,14 +433,18 @@ export default defineComponent({
   }
 }
 
+.special-container {
+  display: grid;
+  gap: 0.2rem;
+  margin-bottom: $spacing-8;
+}
+
 .special-contents {
   width: 100%;
-  grid-area: table;
   display: grid;
   grid-template-columns: 4.8rem 1fr;
   grid-template-rows: 4.8rem;
   gap: 0.2rem;
-  margin-bottom: $spacing-8;
   &__module {
     color: $text-sub;
     font-size: $font-small;
