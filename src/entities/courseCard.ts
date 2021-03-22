@@ -27,14 +27,17 @@ export const getSyllbUrl = (courseId: string) => {
   return `https://kdb.tsukuba.ac.jp/syllabi/2021/${courseId}/jpn/0`;
 };
 
-export const courseToCard = (course: Course): CourseCard => {
+export const courseToCard = (
+  course: Course,
+  isSelect: boolean = false
+): CourseCard => {
   const courseCard: CourseCard = {
-    id: course.id,
+    id: course.code,
     name: course.name,
     period: periodToString(course.schedules),
     location: locationToString(course.schedules),
     url: getSyllbUrl(course.id),
-    isSelected: false,
+    isSelected: isSelect,
   };
   return courseCard;
 };

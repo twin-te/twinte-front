@@ -17,8 +17,8 @@ export default defineComponent({
     const fileName = ref("");
 
     const changeFile = (e: Event) => {
-      const file = (e.target as any).files[0];
-      fileName.value = file.name;
+      const file = (e.currentTarget as HTMLInputElement).files?.[0];
+      fileName.value = typeof file !== "undefined" ? file.name : "";
       emit("change-file", file);
     };
 

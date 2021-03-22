@@ -16,4 +16,7 @@ export const mutations: MutationTree<GlobalState> = {
   setCourses(state, courses: RegisteredCourse[]) {
     state.courses = courses;
   },
+  addCourse(state, course: RegisteredCourse) {
+    state.courses.push(course);
+  },
 };
