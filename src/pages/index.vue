@@ -181,7 +181,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
-import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
+import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
 import { DayJa, dayJaList, specialDayMap } from "~/entities/day";
 import { ModuleJa, moduleMap } from "~/entities/module";
 import { CourseState } from "~/entities/table";
@@ -192,6 +192,7 @@ import { courseListToTable } from "~/usecases/courseListToTable";
 import { getCalendar } from "~/usecases/getCalendar";
 import { getCourseList } from "~/usecases/getCourseList";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { useLabel } from "~/usecases/useLabel";
 import { useSidebar } from "~/usecases/useSidebar";
 
 export default defineComponent({
@@ -216,13 +217,10 @@ export default defineComponent({
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
-    const whichSelected = ref<Select>("left");
     const currentModule = await getCurrentModule(ports);
     const module = ref(currentModule);
     const isCurrentModule = computed(() => module.value === currentModule);
-    const onClickLabel = () => {
-      whichSelected.value = whichSelected.value === "left" ? "right" : "left";
-    };
+    const { whichSelected, onClickLabel } = useLabel(ports);
     const [popup, , closePopup, togglePopup] = useSwitch(false);
     const popupData = moduleMap;
     const onClickModule = (selectedModule: ModuleJa) => {
