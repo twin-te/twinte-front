@@ -17,7 +17,7 @@
         アップロードする
       </InputButtonFile>
     </div>
-    <div v-if="isCsvValild" class="main__courses courses">
+    <div v-if="isCsvValid" class="main__courses courses">
       <div class="courses__contents">
         <CardCourse
           v-for="course in loadedCourses"
@@ -126,13 +126,13 @@ export default defineComponent({
     };
 
     const fileName = "";
-    const isCsvValild = ref(true);
+    const isCsvValid = ref(true);
     const duplicated = ref(true);
     const loadedCourses = ref<CourseCard[]>([]);
 
     /** button */
     const btnState = computed(() => {
-      if (loadedCourses.value.some((v) => v.isSelected) && isCsvValild.value)
+      if (loadedCourses.value.some((v) => v.isSelected) && isCsvValid.value)
         return "default";
       else return "disabled";
     });
@@ -164,10 +164,10 @@ export default defineComponent({
 
     const loadCourses = async (file: File) => {
       loadedCourses.value = [];
-      isCsvValild.value = true;
+      isCsvValid.value = true;
       // TODO: エラー処理を実装
       const coursesId = await getCoursesIdByFile(file).catch((e) => {
-        isCsvValild.value = false;
+        isCsvValid.value = false;
         console.error(e);
         return [];
       });
@@ -175,7 +175,7 @@ export default defineComponent({
         const course = await searchCourseById(ports)(courseId).catch((e) => {
           // TODO: コースがない場合のエラーを作成
           // 不正な値が合った場合残りを正常に処理するのか、すべてエラーにするのか
-          isCsvValild.value = false;
+          isCsvValid.value = false;
           console.error(e);
           return;
         });
@@ -189,7 +189,7 @@ export default defineComponent({
       upload,
       addCourse,
       fileName,
-      isCsvValild,
+      isCsvValid,
       btnState,
       duplicationModal,
       openDuplicationModal,
