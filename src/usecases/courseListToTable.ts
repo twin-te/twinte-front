@@ -22,11 +22,11 @@ export const courseListToTable = (
           (schedule) =>
             schedule.module === module &&
             weeksNum(schedule.day) !== -1 &&
-            0 <= schedule.period &&
-            schedule.period <= 5
+            1 <= schedule.period &&
+            schedule.period <= 8
         )
         .forEach((schedule) =>
-          prevTable[weeksNum(schedule.day)][schedule.period].push({
+          prevTable[weeksNum(schedule.day)][schedule.period - 1].push({
             name,
             room: schedule.room,
             courseId,
@@ -36,13 +36,15 @@ export const courseListToTable = (
       return prevTable;
     },
     [
-      [[], [], [], [], [], []],
-      [[], [], [], [], [], []],
-      [[], [], [], [], [], []],
-      [[], [], [], [], [], []],
-      [[], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
+      [[], [], [], [], [], [], [], []],
     ] as Table
   );
 
-  return table;
+  if (table.some((arr) => arr[6].length !== 0 || arr[7].length !== 0))
+    return table;
+  return table.map((arr) => arr.slice(0, 6));
 };
