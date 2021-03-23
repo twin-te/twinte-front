@@ -123,7 +123,7 @@ const getLectureTimeAsStr = (schedules: CourseSchedule[]): string => {
   }
 };
 
-export const getInitCourse = (): Required<RegisteredCourseWithoutID> => ({
+export const initCourse: Required<RegisteredCourseWithoutID> = {
   absence: 0,
   attendance: 0,
   credit: 0,
@@ -135,7 +135,7 @@ export const getInitCourse = (): Required<RegisteredCourseWithoutID> => ({
   schedules: [],
   tags: [],
   year: 0,
-});
+};
 
 /**
  * 日本語の学期名などを api の形式に合うようにフォーマットする

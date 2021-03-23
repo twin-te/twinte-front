@@ -116,7 +116,7 @@
 import { addCourseByManual } from "~/usecases/addCourseByManual";
 import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import { formatSchedule, getInitCourse } from "~/entities/course";
+import { formatSchedule, initCourse } from "~/entities/course";
 import { MethodJa } from "~/entities/method";
 import { Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases/index";
@@ -149,9 +149,7 @@ export default defineComponent({
   setup: () => {
     const router = useRouter();
     const ports = usePorts();
-    const course = reactive<Required<RegisteredCourseWithoutID>>(
-      getInitCourse()
-    );
+    const course = reactive<Required<RegisteredCourseWithoutID>>(initCourse);
     const room = ref("");
 
     /** schedule-editor */
