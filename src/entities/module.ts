@@ -31,6 +31,17 @@ export const scheduleModuleJaList: ScheduleModuleJa[] = [
   "秋C",
   "その他",
 ];
+export const fullModules: CourseModule[] = [
+  "SpringA",
+  "SpringB",
+  "SpringC",
+  "SummerVacation",
+  "FallA",
+  "FallB",
+  "FallC",
+  "SpringVacation",
+  // "Annual", apispec側が非対応
+];
 export const moduleMap: ModuleMap = {
   SpringA: "春A",
   SpringB: "春B",
