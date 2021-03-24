@@ -12,7 +12,7 @@ import { Methods as Methods8 } from './timetable/_date@string'
 import { Methods as Methods9 } from './users/me'
 
 const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
-  const prefix = (baseURL === undefined ? 'http://localhost:3000/' : baseURL).replace(/\/$/, '')
+  const prefix = (baseURL === undefined ? 'https://api.dev.twinte.net/v3' : baseURL).replace(/\/$/, '')
   const PATH0 = '/courses'
   const PATH1 = '/courses/search'
   const PATH2 = '/registered-courses'
