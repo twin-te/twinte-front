@@ -4,11 +4,38 @@ import SidebarContent from "~/components/SidebarContent.vue";
 import Button from "~/components/Button.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
+import { isiOS, isMobile } from "~/usecases/ua";
+import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
+import { openUrl } from "~/usecases/openUrl";
+
+declare global {
+  // eslint-disable-next-line no-unused-vars
+  interface Window {
+    android?: {
+      openSettings: () => void;
+      // eslint-disable-next-line no-unused-vars
+      share: (message: string) => void;
+    };
+    webkit?: {
+      messageHandlers?: {
+        iPhoneSettings?: {
+          // eslint-disable-next-line no-unused-vars
+          postMessage: (hoge: string) => void;
+        };
+        share?: {
+          // eslint-disable-next-line no-unused-vars
+          postMessage: (message: string) => void;
+        };
+      };
+    };
+  }
+}
 
 type Content = {
   iconName: string;
   item: string;
   link: string;
+  show: boolean;
 };
 
 export default defineComponent({
@@ -35,23 +62,83 @@ export default defineComponent({
 
     const isSelected = (link: string) => link === route.path.toString();
 
-    const menu = ref<Content[]>([
-      { iconName: "home", item: "ホーム", link: "/" },
-      { iconName: "add", item: "授業の追加", link: "/add" },
-      { iconName: "event_note", item: "学年暦", link: "/event_note" },
-      { iconName: "campaign", item: "お知らせ", link: "/campaign" },
-    ]);
-    const settings = ref<Content[]>([
-      { iconName: "view_compact", item: "表示設定", link: "/view_compact" },
-      { iconName: "notifications", item: "通知設定", link: "/notifications" },
-    ]);
-    const links = ref<Content[]>([
-      { iconName: "help", item: "使い方", link: "/help" },
-      { iconName: "people", item: "寄付者一覧", link: "/people" },
-      { iconName: "share", item: "時間割のシェア", link: "/share" },
-    ]);
+    const menu = ref<Content[]>(
+      [
+        { iconName: "home", item: "ホーム", link: "/", show: true },
+        { iconName: "add", item: "授業の追加", link: "/add", show: true },
+        {
+          iconName: "event_note",
+          item: "学年暦",
+          link: "/event_note",
+          show: false,
+        },
+        {
+          iconName: "campaign",
+          item: "お知らせ",
+          link: "/campaign",
+          show: false,
+        },
+      ].filter((v) => v.show)
+    );
+    const settings = ref<Content[]>(
+      [
+        {
+          iconName: "view_compact",
+          item: "表示設定",
+          link: "/view_compact",
+          show: false,
+        },
+        {
+          iconName: "notifications",
+          item: "通知設定",
+          link: "settings",
+          show: isMobile(),
+        },
+      ].filter((v) => v.show)
+    );
+    const links = ref<Content[]>(
+      [
+        { iconName: "help", item: "使い方", link: "/help", show: false },
+        {
+          iconName: "people",
+          item: "寄付者一覧",
+          link: "/people",
+          show: false,
+        },
+        {
+          iconName: "share",
+          item: "時間割のシェア",
+          link: "share",
+          show: isMobile(),
+        },
+      ].filter((v) => v.show)
+    );
 
-    return { menu, settings, links, isSelected };
+    const navigateHandler = async (link: string) => {
+      const shareMessage = "#Twinte";
+      if (link.startsWith("https://")) {
+        openUrl(link);
+      } else {
+        switch (link) {
+          case "settings":
+            await asyncSetTimeout(300); // アニメーションの関係で必要
+            isiOS()
+              ? window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("")
+              : window.android?.openSettings();
+            break;
+          case "share":
+            await asyncSetTimeout(300);
+            isiOS()
+              ? window.webkit?.messageHandlers?.share?.postMessage(shareMessage)
+              : window.android?.share(shareMessage);
+            break;
+          default:
+            router.push(link);
+        }
+      }
+    };
+
+    return { menu, settings, links, isSelected, navigateHandler };
   },
 });
 </script>
@@ -85,7 +172,7 @@ export default defineComponent({
       <ul class="sidebar__listgroup">
         <SidebarContent
           v-for="value in menu"
-          @click="$router.push(value.link)"
+          @click="navigateHandler(value.link)"
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
@@ -96,7 +183,7 @@ export default defineComponent({
       <ul class="sidebar__listgroup">
         <SidebarContent
           v-for="value in settings"
-          @click="$router.push(value.link)"
+          @click="navigateHandler(value.link)"
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"
@@ -107,7 +194,7 @@ export default defineComponent({
       <ul class="sidebar__listgroup">
         <SidebarContent
           v-for="value in links"
-          @click="$router.push(value.link)"
+          @click="navigateHandler(value.link)"
           :iconName="value.iconName"
           :item="value.item"
           :key="value.item"

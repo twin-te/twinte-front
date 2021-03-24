@@ -3,11 +3,12 @@ import {
   RegisteredCourseWithoutID,
   CourseSchedule,
 } from "~/api/@types";
+import { dayToJa } from "./day";
 import { jaToDay } from "~/entities/day";
 import { jaToModule } from "~/entities/module";
 import { methodMap } from "./method";
+import { moduleToJa } from "./module";
 import { Schedule } from "~/entities/schedule";
-import {} from "~/api/@types";
 
 export type DisplayCourse = {
   code: string;
@@ -38,21 +39,21 @@ export const displayCourseToApi = (
 export const apiToDisplayCourse = (
   registeredCourse: RegisteredCourse
 ): DisplayCourse => ({
-  code: registeredCourse?.course?.code ?? "-",
-  name: registeredCourse?.name ?? registeredCourse?.course?.name ?? "-",
-  date:
-    getLectureTimeAsStr(registeredCourse?.course?.schedules ?? []) ?? "undef",
+  code: registeredCourse.course?.code ?? "-",
+  name: registeredCourse.name ?? registeredCourse.course?.name ?? "-",
+  date: getLectureTimeAsStr(registeredCourse.course?.schedules ?? []) ?? "-",
   instructor:
-    registeredCourse?.instructor ?? registeredCourse?.course?.instructor ?? "-",
+    registeredCourse.instructor ?? registeredCourse.course?.instructor ?? "-",
   room:
-    registeredCourse?.course?.schedules.map((s) => s.room).join(", ") ?? "-",
-  methods:
-    registeredCourse?.methods?.map((c) => methodMap[c]).join(", ") ?? "-",
-  courseId: registeredCourse?.id ?? "undef",
-  attendance: registeredCourse?.attendance ?? 0,
-  absence: registeredCourse?.absence ?? 0,
-  late: registeredCourse?.late ?? 0,
-  memo: registeredCourse?.memo ?? "",
+    Array.from(
+      new Set(registeredCourse.course?.schedules.map((s) => s.room))
+    ).join(", ") ?? "-",
+  methods: registeredCourse.methods?.map((c) => methodMap[c]).join(", ") ?? "-",
+  courseId: registeredCourse.id,
+  attendance: registeredCourse.attendance,
+  absence: registeredCourse.absence,
+  late: registeredCourse.late,
+  memo: registeredCourse.memo,
   registeredCourse,
 });
 
@@ -73,7 +74,7 @@ const reduceArr = (arr: string[][]) => {
     }
   }
   return arr.reduce((acc, cur) => {
-    return acc + cur[0] + cur[1];
+    return `${acc}${cur[0]}${cur[1]}`;
   }, "");
 };
 
@@ -105,11 +106,13 @@ const genTreeStrucStr = (
 
 const getLectureTimeAsStr = (schedules: CourseSchedule[]): string => {
   if (schedules.length > 0) {
-    const li = schedules.map((x): string[] => {
-      // 0時限目は''と扱う
-      const period = x.period === 0 ? "" : String(x.period);
-      return [x.module[0], x.module[1], x.day, period];
-    });
+    const li = schedules
+      .map((x) => ({ ...x, module: moduleToJa(x.module), day: dayToJa(x.day) }))
+      .map((x): string[] => {
+        // 0時限目は''と扱う
+        const period = x.period === 0 ? "" : String(x.period);
+        return [x.module[0], x.module[1], x.day, period];
+      });
     const translocation = transpose(li);
     const txt = genTreeStrucStr(
       0,

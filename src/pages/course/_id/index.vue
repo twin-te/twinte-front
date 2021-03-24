@@ -36,7 +36,7 @@
     </PageHeader>
     <article class="main">
       <div class="main__contents">
-        <p class="main__code">{{ courseId }}</p>
+        <p class="main__code">{{ code }}</p>
         <h1 class="main__name">{{ name }}</h1>
         <section class="main__details">
           <CourseDetail item="開講時限" :value="date">
@@ -252,9 +252,7 @@ export default defineComponent({
       },
       {
         onClick: () =>
-          openUrl(
-            `https://kdb.tsukuba.ac.jp/syllabi/2020/${courseId.value}/jpn/`
-          ),
+          openUrl(`https://kdb.tsukuba.ac.jp/syllabi/2020/${code.value}/jpn/`),
         link: true,
         value: "シラバス",
         color: "normal",

@@ -62,10 +62,11 @@
           table: true,
           'main__table--popup': popup,
         }"
+        :style="{ gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)` }"
         v-if="whichSelected === 'left'"
       >
         <div
-          v-for="period in 6"
+          v-for="period in table[0].length"
           :key="period"
           :class="{
             table__period: true,
@@ -382,7 +383,6 @@ export default defineComponent({
 
 .table {
   display: grid;
-  grid-template-rows: 1.4rem repeat(6, 1fr);
   grid-template-columns: 2rem repeat(5, 1fr);
   grid-auto-flow: column;
   gap: 0.2rem;

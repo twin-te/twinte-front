@@ -33,7 +33,7 @@ export const weekMap: WeekMap = {
   Fri: "金",
   Sat: "土",
   Sun: "日",
-}
+};
 export type SpecialDay = "Intensive" | "Appointment" | "AnyTime";
 export type SpecialDayJa = "集中" | "応談" | "随時";
 export const specialDays: SpecialDay[] = [
