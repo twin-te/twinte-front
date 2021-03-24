@@ -1,5 +1,6 @@
 import { MutationTree } from "vuex";
 import { User, RegisteredCourse } from "~/api/@types";
+import { Select } from "~/components/ToggleButton.vue";
 import { GlobalState } from ".";
 
 export const mutations: MutationTree<GlobalState> = {
@@ -14,6 +15,9 @@ export const mutations: MutationTree<GlobalState> = {
   },
   setCourses(state, courses: RegisteredCourse[]) {
     state.courses = courses;
+  },
+  setLabel(state, label: Select) {
+    state.label = label;
   },
   addCourse(state, course) {
     state.courses.push(course);

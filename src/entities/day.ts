@@ -33,6 +33,18 @@ export const weekMap: WeekMap = {
   Fri: "金",
   Sat: "土",
   Sun: "日",
+}
+export type SpecialDay = "Intensive" | "Appointment" | "AnyTime";
+export type SpecialDayJa = "集中" | "応談" | "随時";
+export const specialDays: SpecialDay[] = [
+  "Intensive",
+  "Appointment",
+  "AnyTime",
+];
+export const specialDayMap: { [key in SpecialDay]: SpecialDayJa } = {
+  Intensive: "集中",
+  Appointment: "応談",
+  AnyTime: "随時",
 };
 
 export const weekdayNum = (day: Day): number => weekdays.indexOf(day);

@@ -8,4 +8,7 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   courses: (state) => {
     return state.courses;
   },
+  label: (state) => {
+    return state.label;
+  },
 };

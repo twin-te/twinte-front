@@ -76,13 +76,13 @@
         </div>
         <template v-for="(y, d) in table" :key="d">
           <div class="table__day">
-            {{ weekday[d] }}
+            {{ weeks[d] }}
           </div>
           <CourseTile
             v-for="(courses, id) in y"
             :key="id"
             class="table__course"
-            @click="onClickCourseTile(courses, weekday[d], id + 1)"
+            @click="onClickCourseTile(courses, weeks[d], id + 1)"
             :state="courses.length === 0 ? 'none' : 'default'"
             :name="courses[0]?.name ?? ''"
             :room="courses[0]?.room ?? ''"
@@ -91,61 +91,39 @@
         </template>
       </div>
       <section class="special" v-else>
-        <div class="special-header">
-          <div class="special-header__label">集中</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-contents">
-          <div class="special-contents__module">春A</div>
-          <CourseTile
-            class="special-contents__course"
-            state="default"
-            name="Pedagogy for a Changing World I"
-            room="1A101"
-          />
-          <div class="special-contents__module">夏休</div>
-          <CourseTile
-            class="special-contents__course"
-            state="default"
-            name="初等数学基礎"
-            room="1A101"
-          />
-          <div class="special-contents__module">秋A</div>
-          <CourseTile
-            class="special-contents__course"
-            state="default"
-            name="生物科学オムニバス特講"
-            room="-"
-          />
-        </div>
-
-        <div class="special-header">
-          <div class="special-header__label">応談</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-contents">
-          <div class="special-contents__module">-</div>
-          <CourseTile
-            class="special-contents__course"
-            state="none"
-            name=""
-            room=""
-          />
-        </div>
-
-        <div class="special-header">
-          <div class="special-header__label">随時</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-contents">
-          <div class="special-contents__module">-</div>
-          <CourseTile
-            class="special-contents__course"
-            state="none"
-            name=""
-            room=""
-          />
-        </div>
+        <template v-for="(value, key) in specialTable" :key="key">
+          <div class="special-header">
+            <div class="special-header__label">{{ specialDayMap[key] }}</div>
+            <div class="special-header__divider"></div>
+          </div>
+          <div class="special-container">
+            <div
+              class="special-contents"
+              v-for="course in value"
+              :key="course.id"
+            >
+              <div class="special-contents__module">
+                <span v-for="m in course.module" :key="m">{{ m }}</span>
+              </div>
+              <CourseTile
+                class="special-contents__course"
+                @click="$router.push(`/course/${course.id}`)"
+                state="default"
+                :name="course.name"
+                :room="course.room"
+              />
+            </div>
+            <div v-if="value.length === 0" class="special-contents">
+              <div class="special-contents__module"></div>
+              <CourseTile
+                class="special-contents__course"
+                state="none"
+                name=""
+                room=""
+              />
+            </div>
+          </div>
+        </template>
       </section>
     </section>
   </div>
@@ -193,21 +171,19 @@
 </template>
 
 <script lang="ts">
-import { Calendar } from "~/components/PageHeader.vue";
 import { computed, defineComponent, ref } from "vue-demi";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { CourseState } from "~/entities/table";
-import { getCalendar } from "~/usecases/getCalendar";
 import { getCourseList } from "~/usecases/getCourseList";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse } from "~/api/@types";
+import { specialDayMap } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useSwitch } from "~/hooks/useSwitch";
-import { useUsecase } from "~/usecases";
-import { WeekDayJa, weekdayJaList } from "~/entities/day";
+import { weekdays, WeekDayJa, weekdayJaList } from "~/entities/day";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -215,7 +191,10 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
-import ToggleButton, { Labels, Select } from "~/components/ToggleButton.vue";
+import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
+import { useLabel } from "~/usecases/useLabel";
+import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
+import { getCalendar } from "~/usecases/getCalendar";
 
 export default defineComponent({
   name: "Table",
@@ -238,17 +217,11 @@ export default defineComponent({
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
-    const whichSelected = ref<Select>("left");
-    const module = ref<ModuleJa>("春A");
-    const { state: currentModule } = useUsecase(getCurrentModule, "春A");
-    const isCurrentModule = computed(
-      () => module.value === currentModule.value
-    );
-    const { state: calendar } = useUsecase(getCalendar, {} as Calendar);
-    const weekday = weekdayJaList;
-    const onClickLabel = () => {
-      whichSelected.value = whichSelected.value === "left" ? "right" : "left";
-    };
+    const currentModule = await getCurrentModule(ports);
+    const calendar = await getCalendar(ports);
+    const module = ref(currentModule);
+    const isCurrentModule = computed(() => module.value === currentModule);
+    const { whichSelected, onClickLabel } = useLabel(ports);
     const [popup, , closePopup, togglePopup] = useSwitch(false);
     const popupData = moduleJaList;
     const onClickModule = (selectedModule: ModuleJa) => {
@@ -261,8 +234,11 @@ export default defineComponent({
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
     );
+    const specialTable = computed(() =>
+      courseListToSpecialTable(storedCourses)
+    );
     const setCurrentModule = () => {
-      module.value = currentModule.value;
+      module.value = currentModule;
     };
     const weeks = weekdayJaList;
     const onClickCourseTile = async (
@@ -304,7 +280,7 @@ export default defineComponent({
 
     return {
       toggleSidebar,
-      weekday,
+      weekdays,
       label,
       whichSelected,
       onClickLabel,
@@ -318,7 +294,9 @@ export default defineComponent({
       setCurrentModule,
       isCurrentModule,
       table,
+      specialTable,
       weeks,
+      specialDayMap,
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
@@ -427,11 +405,17 @@ export default defineComponent({
 
 .special {
   grid-area: table;
+  height: calc(100vh - 14.8rem);
+  @include landscape {
+    height: calc(100vh - 16.4rem);
+  }
+  overflow-y: scroll;
+  margin-top: $spacing-3;
 }
 
 .special-header {
   display: flex;
-  margin: $spacing-3 0 $spacing-4 0;
+  margin-bottom: $spacing-4;
   align-items: center;
   height: 2rem;
 
@@ -448,18 +432,25 @@ export default defineComponent({
   }
 }
 
+.special-container {
+  display: grid;
+  gap: 0.2rem;
+  margin-bottom: $spacing-8;
+}
+
 .special-contents {
   width: 100%;
-  grid-area: table;
   display: grid;
   grid-template-columns: 4.8rem 1fr;
   grid-template-rows: 4.8rem;
   gap: 0.2rem;
-  margin-bottom: $spacing-8;
   &__module {
     color: $text-sub;
     font-size: $font-small;
     margin-left: $spacing-1;
+    display: flex;
+    flex-direction: column;
+    line-height: $single-line;
   }
   &__course {
     height: 4.8rem;
