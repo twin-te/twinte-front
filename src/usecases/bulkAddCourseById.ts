@@ -8,10 +8,10 @@ import { Ports } from "~/adapter";
  * 講義情報をサーバに登録し、成功すれば Vuex にも登録する。
  */
 export const bulkAddCourseById = ({ api, store }: Ports) => async (
-  coursesID: string[]
+  coursesId: string[]
 ) => {
   const registeredCourses: RegisteredCourse[] = [];
-  for (const courseID of coursesID) {
+  for (const courseID of coursesId) {
     try {
       const { body: registeredCourse } = await api.registered_courses.post({
         // TODO: yaerの値を動的に取得する
