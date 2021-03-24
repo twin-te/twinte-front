@@ -140,13 +140,6 @@ export type PaymentUser = {
   link?: string
 }
 
-export type Information = {
-  id: string
-  title: string
-  content: string
-  publishedAt: string
-}
-
 export type Error = {
   message: string
 }
