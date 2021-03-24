@@ -17,7 +17,7 @@
           <section class="main__course-name">
             <LabeledTextField label="授業名" mandatory>
               <TextFieldSingleLine
-                v-model="name"
+                v-model="course.name"
                 placeholder="例) ゼミ"
               ></TextFieldSingleLine>
             </LabeledTextField>
@@ -33,7 +33,7 @@
           <section class="main__instructor">
             <LabeledTextField label="担当教員">
               <TextFieldSingleLine
-                v-model="instructor"
+                v-model="course.instructor"
                 placeholder="例) 山田太郎"
               ></TextFieldSingleLine>
             </LabeledTextField>
@@ -50,10 +50,10 @@
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
               <CheckContent
-                v-for="data in methodData"
-                :key="data.value"
-                v-model:checked="data.checked.value"
-                >{{ data.value }}</CheckContent
+                v-for="method in methods"
+                :key="method.value"
+                v-model:checked="method.checked"
+                >{{ method.lavel }}</CheckContent
               >
             </div>
           </section>
@@ -104,11 +104,7 @@
           color="base"
           >キャンセル</Button
         >
-        <Button
-          @click="addCourse(true)"
-          size="medium"
-          layout="fill"
-          color="primary"
+        <Button @click="addCourse()" size="medium" layout="fill" color="primary"
           >そのまま追加</Button
         >
       </template>
@@ -117,9 +113,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, Ref } from "vue";
+import { addCourseByManual } from "~/usecases/addCourseByManual";
+import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
+import { defineComponent, ref, computed, reactive } from "vue";
+import { formatSchedule, initCourse } from "~/entities/course";
+import { MethodJa } from "~/entities/method";
+import { Schedule } from "~/entities/schedule";
+import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
-import { CourseMethod } from "~/api/@types";
+import { useSwitch } from "~/hooks/useSwitch";
 import Button from "~/components/Button.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
@@ -130,9 +132,6 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { MethodJa } from "~/entities/method";
-import { Schedule } from "~/entities/schedule";
-import { useSwitch } from "~/hooks/useSwitch";
 
 export default defineComponent({
   components: {
@@ -147,17 +146,17 @@ export default defineComponent({
     ScheduleEditer,
     TextFieldSingleLine,
   },
-  setup() {
+  setup: () => {
     const router = useRouter();
+    const ports = usePorts();
+    const course = reactive<Required<RegisteredCourseWithoutID>>(initCourse);
+    const room = ref("");
 
     /** schedule-editor */
     const schedules = ref<Schedule[]>([
       { module: "指定なし", day: "指定なし", period: "指定なし" },
     ]);
-    const scheduleMax = 4;
-    const scheduleMin = 1;
     const addSchedule = () => {
-      if (schedules.value.length >= scheduleMax) return;
       schedules.value.push({
         module: "指定なし",
         day: "指定なし",
@@ -165,69 +164,70 @@ export default defineComponent({
       });
     };
     const removeSchedule = (index: number) => {
-      if (schedules.value.length <= scheduleMin) return;
       schedules.value.splice(index, 1);
     };
 
-    const name = ref("");
-    const instructor = ref("");
-    const room = ref("");
-    const methodData: {
-      checked: Ref<boolean>;
-      name: CourseMethod;
-      value: MethodJa;
-    }[] = [
-      { checked: ref(false), name: "FaceToFace", value: "対面" },
-      { checked: ref(false), name: "Synchronous", value: "同時双方向" },
-      { checked: ref(false), name: "Asynchronous", value: "オンデマンド" },
-      { checked: ref(false), name: "Others", value: "その他" },
-    ];
+    /** checkbox */
+    const methods = reactive<
+      {
+        checked: boolean;
+        value: CourseMethod;
+        lavel: MethodJa;
+      }[]
+    >([
+      { checked: false, value: "FaceToFace", lavel: "対面" },
+      { checked: false, value: "Synchronous", lavel: "同時双方向" },
+      { checked: false, value: "Asynchronous", lavel: "オンデマンド" },
+      { checked: false, value: "Others", lavel: "その他" },
+    ]);
 
     /** button */
     const btnState = computed(() => {
       if (
-        !name.value ||
-        schedules.value.every((obj) =>
-          Object.keys(obj).every((key) => obj[key] == "指定なし")
+        !course.name ||
+        schedules.value.some((obj) =>
+          Object.keys(obj).some((key) => obj[key] == "指定なし")
         )
       )
         return "disabled";
       else return "default";
     });
 
+    // TODO: 重複の処理は別ブランチでまとめて作成する
     const [
       duplicationModal,
       openDuplicationModal,
       closeDuplicationModal,
     ] = useSwitch();
-    const duplicated = ref(true);
-    const addCourse = (force: boolean = false) => {
+    const addCourse = async () => {
       if (btnState.value == "disabled") return;
-      if (!duplicated.value || force) {
+      course.schedules = formatSchedule(schedules.value);
+      course.schedules = course.schedules.map((v) => ({
+        ...v,
+        room: room.value,
+      }));
+      if (await addCourseByManual(ports)(course)) {
         router.push("/");
       } else {
-        openDuplicationModal();
+        // TODO: エラー処理を追加
+        console.error("ERROR");
       }
     };
-    const duplicatedCourses = [
-      { name: "色彩計画演習", period: "春A 水2" },
-      { name: "色彩学", period: "春B 水2" },
-    ];
+    const duplicatedCourses = ref<{ name: string; period: string }[]>([]);
 
     return {
-      schedules,
-      addSchedule,
-      removeSchedule,
-      name,
-      instructor,
-      room,
-      methodData,
       addCourse,
+      addSchedule,
       btnState,
-      duplicationModal,
-      openDuplicationModal,
       closeDuplicationModal,
+      course,
       duplicatedCourses,
+      duplicationModal,
+      methods,
+      openDuplicationModal,
+      removeSchedule,
+      room,
+      schedules,
     };
   },
 });

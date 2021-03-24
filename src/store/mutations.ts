@@ -8,7 +8,6 @@ export const mutations: MutationTree<GlobalState> = {
     if (state.user !== null) {
       throw new Error("すでにユーザーが存在します。");
     }
-
     state.user = user;
   },
   setSidebar(state, show: boolean) {
@@ -22,5 +21,8 @@ export const mutations: MutationTree<GlobalState> = {
   },
   setLabel(state, label: Select) {
     state.label = label;
+  },
+  addCourse(state, course) {
+    state.courses.push(course);
   },
 };

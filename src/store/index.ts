@@ -1,6 +1,6 @@
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as useStoreAny } from "vuex";
-import { RegisteredCourse, User } from "~/api/@types";
+import { User, RegisteredCourse } from "~/api/@types";
 import { Select } from "~/components/ToggleButton.vue";
 import { mutations } from "./mutations";
 import { getters } from "./getter";

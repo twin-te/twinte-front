@@ -173,8 +173,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue-demi";
-import { useRouter } from "vue-router";
+import { courseListToTable } from "~/usecases/courseListToTable";
+import { CourseState } from "~/entities/table";
+import { getCourseList } from "~/usecases/getCourseList";
+import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse } from "~/api/@types";
+import { specialDayMap } from "~/entities/day";
+import { usePorts } from "~/usecases";
+import { useRouter } from "vue-router";
+import { useSidebar } from "~/usecases/useSidebar";
+import { useSwitch } from "~/hooks/useSwitch";
+import { weekdays, WeekDayJa, weekdayJaList } from "~/entities/day";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -183,18 +193,9 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
-import { DayJa, dayJaList, specialDayMap } from "~/entities/day";
-import { ModuleJa, moduleMap } from "~/entities/module";
-import { CourseState } from "~/entities/table";
-import { useSwitch } from "~/hooks/useSwitch";
-import { usePorts } from "~/usecases";
-import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
-import { courseListToTable } from "~/usecases/courseListToTable";
-import { getCalendar } from "~/usecases/getCalendar";
-import { getCourseList } from "~/usecases/getCourseList";
-import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { useLabel } from "~/usecases/useLabel";
-import { useSidebar } from "~/usecases/useSidebar";
+import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
+import { getCalendar } from "~/usecases/getCalendar";
 
 export default defineComponent({
   name: "Table",
@@ -214,16 +215,16 @@ export default defineComponent({
 
     /** ヘッダー */
     const { toggleSidebar } = useSidebar();
-    const calendar = await getCalendar(ports);
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
     const currentModule = await getCurrentModule(ports);
+    const calendar = await getCalendar(ports);
     const module = ref(currentModule);
     const isCurrentModule = computed(() => module.value === currentModule);
     const { whichSelected, onClickLabel } = useLabel(ports);
     const [popup, , closePopup, togglePopup] = useSwitch(false);
-    const popupData = moduleMap;
+    const popupData = moduleJaList;
     const onClickModule = (selectedModule: ModuleJa) => {
       module.value = selectedModule;
       togglePopup();
@@ -240,10 +241,10 @@ export default defineComponent({
     const setCurrentModule = () => {
       module.value = currentModule;
     };
-    const weeks = dayJaList;
+    const weeks = weekdayJaList;
     const onClickCourseTile = async (
       courses: CourseState[],
-      day: DayJa,
+      day: WeekDayJa,
       period: number
     ) => {
       switch (courses.length) {
@@ -264,7 +265,7 @@ export default defineComponent({
 
     /** duplication modal */
     type DuplocationState = {
-      day: DayJa;
+      day: WeekDayJa;
       period: number;
       courses: CourseState[];
     };
@@ -280,6 +281,7 @@ export default defineComponent({
 
     return {
       toggleSidebar,
+      weekdays,
       label,
       whichSelected,
       onClickLabel,
