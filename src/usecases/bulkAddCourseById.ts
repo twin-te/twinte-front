@@ -11,11 +11,11 @@ export const bulkAddCourseById = ({ api, store }: Ports) => async (
   coursesId: string[]
 ) => {
   const registeredCourses: RegisteredCourse[] = [];
-  for (const courseID of coursesId) {
+  for (const courseId of coursesId) {
     try {
       const { body: registeredCourse } = await api.registered_courses.post({
         // TODO: yaerの値を動的に取得する
-        body: { year: 2020, code: courseID },
+        body: { year: 2020, code: courseId },
       });
       store.commit("addCourse", registeredCourse);
       registeredCourses.push(registeredCourse);
