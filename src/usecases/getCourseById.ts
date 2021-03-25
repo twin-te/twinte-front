@@ -12,7 +12,6 @@ import { Ports } from "~/adapter";
 /**
  * storeまたはAPIからidに該当する登録した講義データを取得する。
  */
-// TODO: 関数名を getRegisterdCourseById などにする
 export const getCourseById = ({ api }: Ports) => async (
   id: string
 ): Promise<RegisteredCourse> => {
@@ -28,19 +27,24 @@ export const getCourseById = ({ api }: Ports) => async (
   }
 };
 
+// TODO: 適切なファイルに移動
 /**
- * APIからidに該当する講義データを取得する。
+ * APIから code に該当する講義データを取得する。
  */
-// TODO: 関数名を整理する
-export const searchCourseById = ({ api }: Ports) => async (
-  id: string
-): Promise<Course> => {
+export const getCoursesByCode = ({ api }: Ports) => async (
+  codes: string[]
+): Promise<Course[]> => {
   try {
     // TODO: 年度は動的に取得する
-    return await api.courses._year(2020)._code(id).$get();
+    return await api.courses.$get({
+      query: {
+        year: 2020,
+        codes: codes.join(","),
+      },
+    });
   } catch (error) {
     console.error(error);
-    throw new Error("idに該当する講義が見つかりません");
+    throw new Error("codeに該当する講義が見つかりません");
   }
 };
 

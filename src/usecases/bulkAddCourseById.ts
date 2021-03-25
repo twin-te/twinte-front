@@ -1,5 +1,3 @@
-import { RegisteredCourse } from "~/api/@types";
-import { Methods } from "~/api/registered-courses/index";
 import { Ports } from "~/adapter";
 
 // TODO: addCourseBymanualとコードが重複してるので統合する。
@@ -8,20 +6,19 @@ import { Ports } from "~/adapter";
  * 講義情報をサーバに登録し、成功すれば Vuex にも登録する。
  */
 export const bulkAddCourseById = ({ api, store }: Ports) => async (
-  coursesId: string[]
+  codes: string[]
 ) => {
-  const registeredCourses: RegisteredCourse[] = [];
-  for (const courseId of coursesId) {
-    try {
-      const { body: registeredCourse } = await api.registered_courses.post({
-        // TODO: yaerの値を動的に取得する
-        body: { year: 2020, code: courseId },
-      });
-      store.commit("addCourse", registeredCourse);
-      registeredCourses.push(registeredCourse);
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    const { body: registeredCourses } = await api.registered_courses.post({
+      body: codes.map((v) => ({
+        code: v,
+        year: 2020,
+      })),
+    });
+    store.commit("addCourses", registeredCourses);
+    return registeredCourses;
+  } catch (error) {
+    console.error(error);
+    throw new Error("授業の登録に失敗しました。");
   }
-  return registeredCourses;
 };

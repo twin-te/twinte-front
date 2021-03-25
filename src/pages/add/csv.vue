@@ -78,11 +78,7 @@
         color="base"
         >キャンセル</Button
       >
-      <Button
-        @click="addCourse(true)"
-        size="medium"
-        layout="fill"
-        color="primary"
+      <Button @click="addCourse()" size="medium" layout="fill" color="primary"
         >そのまま追加</Button
       >
     </template>
@@ -94,7 +90,7 @@ import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { CourseCard, courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
 import { getCoursesIdByFile } from "~/usecases/readCSV";
-import { searchCourseById } from "~/usecases/getCourseById";
+import { getCoursesByCode } from "~/usecases/getCourseById";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -127,7 +123,7 @@ export default defineComponent({
 
     const fileName = "";
     const isCsvValid = ref(true);
-    const duplicated = ref(true);
+    const duplicated = ref(false);
     const loadedCourses = ref<CourseCard[]>([]);
 
     /** button */
@@ -149,38 +145,37 @@ export default defineComponent({
       { name: "色彩学", period: "春B 水2" },
     ];
 
-    const addCourse = async (force = false) => {
+    const addCourse = async () => {
       if (btnState.value === "disabled") return;
       // TODO: エラー処理を実装
-      if (!duplicated.value || force) {
-        await bulkAddCourseById(ports)(
-          loadedCourses.value
-            .filter((v) => v.isSelected === true)
-            .map((v) => v.id)
-        ).catch((err) => console.error(err));
-        router.push("/");
+      if (!duplicated.value) {
+        try {
+          await bulkAddCourseById(ports)(
+            loadedCourses.value
+              .filter((v) => v.isSelected === true)
+              .map((v) => v.id)
+          );
+          router.push("/");
+        } catch (e) {
+          console.error(e);
+        }
       } else openDuplicationModal();
     };
 
     const loadCourses = async (file: File) => {
       loadedCourses.value = [];
       isCsvValid.value = true;
-      // TODO: エラー処理を実装
       const coursesId = await getCoursesIdByFile(file).catch((e) => {
         isCsvValid.value = false;
         console.error(e);
         return [];
       });
-      for (const courseId of coursesId) {
-        const course = await searchCourseById(ports)(courseId).catch((e) => {
-          // TODO: コースがない場合のエラーを作成
-          // 不正な値が合った場合残りを正常に処理するのか、すべてエラーにするのか
-          isCsvValid.value = false;
-          console.error(e);
-          return;
-        });
-        if (course !== void 0)
-          loadedCourses.value.push(courseToCard(course, true));
+      try {
+        const courses = await getCoursesByCode(ports)(coursesId);
+        loadedCourses.value = courses.map((v) => courseToCard(v, true));
+      } catch (e) {
+        isCsvValid.value = false;
+        console.error(e);
       }
     };
 

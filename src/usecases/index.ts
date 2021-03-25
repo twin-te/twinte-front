@@ -5,6 +5,7 @@ import instance, { ApiInstance } from "~/api/$api";
 import { useStore } from "~/store";
 import { useAsyncState } from "@vueuse/core";
 import dayjs, { ConfigType, Dayjs } from "dayjs";
+import qs from "qs";
 
 /**
  * @example
@@ -28,6 +29,7 @@ export const usePorts = () => ({
   api: instance(
     axiosClient(axios, {
       withCredentials: true,
+      paramsSerializer: (r) => qs.stringify(r),
     })
   ) as ApiInstance,
   store: useStore(),
