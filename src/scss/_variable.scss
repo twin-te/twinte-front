@@ -90,5 +90,9 @@ $transition-all-slow: all 0.25s ease-in-out;
 $transition-transform: transform 0.25s ease-in-out;
 $transition-box-shadow: box-shadow 0.18s ease;
 
+$safe-area-top: env(safe-area-inset-top);
+$safe-area-bottom: env(safe-area-inset-bottom);
+
 // Media Queries
-$pc-and-tab-height: 769px;
+$pc-and-tab-height: 860px;
+$pc-and-tab-width: 429px;

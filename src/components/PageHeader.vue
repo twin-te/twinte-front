@@ -64,8 +64,9 @@ export default defineComponent({
 
 .header {
   width: 100%;
-  height: 6rem;
+  height: calc(#{$safe-area-top} + 6rem);
   padding: $spacing-5 0 0;
+  @include sensor-housing;
   &__container {
     position: relative;
     width: 100%;
