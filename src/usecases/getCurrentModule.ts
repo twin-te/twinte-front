@@ -31,7 +31,8 @@ export const getCurrentModule = async ({
       case "SpringVacation":
         return "秋C";
       default:
-        return moduleMap[info?.module as CourseModule];
+        // TODO: もっといい方法があるはず
+        return info !== undefined ? moduleMap[info.module] ?? "春A" : "春A";
     }
   } catch (error) {
     console.error(error);

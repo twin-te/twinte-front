@@ -13,8 +13,14 @@
     "paths": {
       "~/*": ["src/*"]
     },
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "node"],
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/components/ScheduleEditer.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/components/ScheduleEditer.vue"
+  ]
 }

@@ -7,6 +7,11 @@ import { useAsyncState } from "@vueuse/core";
 import dayjs, { ConfigType, Dayjs } from "dayjs";
 import qs from "qs";
 
+const baseURL =
+  import.meta.env.VITE_API_URL === undefined
+    ? "https://api.dev.twinte.net/v3"
+    : String(import.meta.env.VITE_API_URL);
+
 /**
  * @example
  * // define in usecase directory
@@ -30,6 +35,7 @@ export const usePorts = () => ({
     axiosClient(axios, {
       withCredentials: true,
       paramsSerializer: (r) => qs.stringify(r),
+      baseURL,
     })
   ) as ApiInstance,
   store: useStore(),
