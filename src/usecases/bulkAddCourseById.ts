@@ -10,8 +10,8 @@ export const bulkAddCourseById = ({ api, store }: Ports) => async (
 ) => {
   try {
     const { body: registeredCourses } = await api.registered_courses.post({
-      body: codes.map((v) => ({
-        code: v,
+      body: codes.map((code) => ({
+        code,
         year: 2020,
       })),
     });
