@@ -1172,6 +1172,11 @@
     "@vueuse/shared" "4.3.5"
     vue-demi latest
 
+"@vueuse/head@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/head/-/head-0.5.1.tgz#7d8a31ba4d214fff75c1d0845148d7f0bdf5b68f"
+  integrity sha512-xt6qgtItb4z/7vp664opQc0c2+ZoU9itMfvpmg4+h0uJcEnhl7LYxO4V+G8H7EVki7SyXDIFMfoCiCFaJrArmg==
+
 "@vueuse/shared@4.3.5":
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-4.3.5.tgz#5f72e4f994a25196ae1ab976e9ab9319ea291c8f"

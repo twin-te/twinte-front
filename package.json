@@ -18,6 +18,7 @@
     "@aspida/axios": "^1.6.3",
     "@types/qs": "^6.9.6",
     "@vueuse/core": "^4.3.5",
+    "@vueuse/head": "^0.5.1",
     "aspida": "^1.6.3",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",

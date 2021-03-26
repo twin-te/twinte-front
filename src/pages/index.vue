@@ -196,6 +196,7 @@ import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
 import { useLabel } from "~/usecases/useLabel";
 import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { getCalendar } from "~/usecases/getCalendar";
+import { useHead } from "@vueuse/head";
 
 export default defineComponent({
   name: "Table",
@@ -210,6 +211,10 @@ export default defineComponent({
     ToggleButton,
   },
   setup: async () => {
+    useHead({
+      title: "Twin:te | ホーム",
+    });
+
     const ports = usePorts();
     const router = useRouter();
 

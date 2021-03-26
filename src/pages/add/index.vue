@@ -56,6 +56,7 @@ import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { defineComponent } from "vue";
 import { useStore } from "~/store";
+import { useHead } from "@vueuse/head";
 
 export default defineComponent({
   name: "Add",
@@ -65,6 +66,10 @@ export default defineComponent({
     PageHeader,
   },
   setup: () => {
+    useHead({
+      title: "Twin:te | 授業追加",
+    });
+
     const store = useStore();
 
     /** ヘッダー */
