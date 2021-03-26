@@ -11,6 +11,10 @@ export default defineComponent({
       type: Function,
       required: true,
     },
+    accept: {
+      type: String,
+      default: "",
+    },
   },
   emits: ["change-file"],
   setup: (_, { emit }) => {
@@ -44,7 +48,13 @@ export default defineComponent({
       :for="name"
     >
       <slot />
-      <input type="file" :name="name" :id="name" @change="changeFile" />
+      <input
+        type="file"
+        :name="name"
+        :id="name"
+        :accept="accept"
+        @change="changeFile"
+      />
     </label>
   </div>
 </template>

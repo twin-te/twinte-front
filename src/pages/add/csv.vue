@@ -13,7 +13,11 @@
   <div class="main">
     <div class="main__csv csv">
       <p class="csv__header">CSVファイル</p>
-      <InputButtonFile name="csv-file" @change-file="loadCourses">
+      <InputButtonFile
+        name="csv-file"
+        @change-file="loadCourses"
+        accept="text/csv"
+      >
         アップロードする
       </InputButtonFile>
     </div>
