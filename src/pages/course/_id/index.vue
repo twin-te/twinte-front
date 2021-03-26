@@ -157,6 +157,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
@@ -293,7 +294,11 @@ export default defineComponent({
         memo: memo.value,
         registeredCourse: registeredCourse.value,
       });
-      const newCourse = await updateCourse(ports)(course);
+      // TODO: as を使わない実装
+      if (!course.course) return;
+      const newCourse = await updateCourse(ports)(
+        course as Required<RegisteredCourse>
+      );
       /** const newRegisteredCourse = */ apiToDisplayCourse(newCourse);
       // code.value = newRegisteredCourse.code;
       // courseId.value = newRegisteredCourse.courseId;

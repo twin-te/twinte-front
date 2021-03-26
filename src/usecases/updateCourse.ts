@@ -6,7 +6,7 @@ import { Ports } from "~/adapter";
  */
 
 export const updateCourse = ({ api }: Ports) => async (
-  course: RegisteredCourse
+  course: Required<RegisteredCourse>
 ): Promise<RegisteredCourse> => {
   try {
     const currentCourse = await api.registered_courses
