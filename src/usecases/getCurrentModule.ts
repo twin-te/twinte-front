@@ -1,5 +1,4 @@
 import { Ports } from "~/adapter";
-import { CourseModule } from "~/api/@types";
 import { ModuleJa, moduleMap } from "~/entities/module";
 
 /**
