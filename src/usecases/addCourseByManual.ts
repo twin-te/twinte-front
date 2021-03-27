@@ -28,6 +28,6 @@ export const addCourseByManual = ({ api, store }: Ports) => async (
     return registeredCourse;
   } catch (error) {
     console.error(error);
-    return void 0;
+    throw "コースを追加できませんでした。";
   }
 };

@@ -26,6 +26,7 @@ export const weekdayMap: { [key in Day]?: WeekDayJa } = {
   Thu: "水",
   Fri: "金",
 };
+export const week: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export const fullDays: Day[] = [
   "Sun",
   "Mon",

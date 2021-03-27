@@ -9,8 +9,4 @@ export const asyncSetTimeout = async (timeout = 1000, shouldFail = false) => {
       resolve("usecase: asyncSetTimeout successed.");
     }, timeout);
   });
-
-  /** 別の書き方(setTimeoutではないけれど) */
-  if (shouldFail) throw new Error("usecase: asyncSetTimeout failed.");
-  return "usecase: asyncSetTimeout successed.";
 };

@@ -28,28 +28,6 @@ const registeredCourse1: RegisteredCourse = {
   late: 0,
   tags: [],
 };
-const registeredCourse2: RegisteredCourse = {
-  id: "xxx",
-  userId: "xxx",
-  year: 0,
-  name: "xxx",
-  instructor: "xxx",
-  credit: 0,
-  methods: ["FaceToFace"],
-  schedules: [
-    {
-      module: "FallB",
-      day: "Wed",
-      period: 3,
-      room: "xxx",
-    },
-  ],
-  memo: "",
-  attendance: 0,
-  absence: 0,
-  late: 0,
-  tags: [],
-};
 const registeredCourse3: RegisteredCourse = {
   id: "xxx",
   userId: "xxx",
@@ -111,26 +89,6 @@ const course1: Course = {
       module: "SpringA",
       day: "Mon",
       period: 1,
-      room: "xxx",
-    },
-  ],
-};
-const course2: Course = {
-  id: "xxx",
-  year: 0,
-  code: "xxx",
-  name: "xxx",
-  instructor: "xxx",
-  credit: 0,
-  overview: "xxx",
-  remarks: "xxx",
-  recommendedGrades: [0],
-  methods: ["FaceToFace"],
-  schedules: [
-    {
-      module: "FallB",
-      day: "Wed",
-      period: 3,
       room: "xxx",
     },
   ],
@@ -204,7 +162,7 @@ describe(getDuplicatedCourses.name, () => {
     const mockPort = {
       store: { getters: { courses: registeredCourses } },
     } as Ports;
-    expect(getDuplicatedCourses(mockPort, courses)).toEqual(duplicatedCourses);
+    expect(getDuplicatedCourses(mockPort)(courses)).toEqual(duplicatedCourses);
   });
 
   it("夏季休業中、集中は含めない", () => {
@@ -214,7 +172,7 @@ describe(getDuplicatedCourses.name, () => {
     const mockPort = {
       store: { getters: { courses: registeredCourses } },
     } as Ports;
-    expect(getDuplicatedCourses(mockPort, courses)).toEqual(duplicatedCourses);
+    expect(getDuplicatedCourses(mockPort)(courses)).toEqual(duplicatedCourses);
   });
 
   it("RegisteredCourseWithoutIDの型でも動く", () => {
@@ -224,6 +182,6 @@ describe(getDuplicatedCourses.name, () => {
     const mockPort = {
       store: { getters: { courses: registeredCourses } },
     } as Ports;
-    expect(getDuplicatedCourses(mockPort, courses)).toEqual(duplicatedCourses);
+    expect(getDuplicatedCourses(mockPort)(courses)).toEqual(duplicatedCourses);
   });
 });
