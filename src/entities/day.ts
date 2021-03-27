@@ -2,7 +2,7 @@ import { Day } from "~/api/@types";
 
 // 集中、応談、随時
 export type NotWeekDay = "その他";
-export type WeekDayJa = "月" | "火" | "水" | "木" | "金";
+export type WeekDayJa = "月" | "火" | "水" | "木" | "金" | "土";
 export type ScheduleDayJa = WeekDayJa | "土" | "日" | NotWeekDay;
 export type WeekMap = { [key in Day]?: ScheduleDayJa };
 
@@ -17,23 +17,28 @@ export const scheduleDayJaList: ScheduleDayJa[] = [
   "日",
   "その他",
 ];
-export const weekdays: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+export const weekdays: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export const weekdayMap: { [key in Day]?: WeekDayJa } = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
-  Thu: "水",
+  Thu: "木",
   Fri: "金",
+  Sat: "土",
 };
 export const weekMap: WeekMap = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
-  Thu: "水",
+  Thu: "木",
   Fri: "金",
   Sat: "土",
   Sun: "日",
 };
+export type DayJa = "月" | "火" | "水" | "木" | "金" | "土";
+
+export const dayJaList: DayJa[] = ["月", "火", "水", "木", "金"];
+export const weeks: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export type SpecialDay = "Intensive" | "Appointment" | "AnyTime";
 export type SpecialDayJa = "集中" | "応談" | "随時";
 export const specialDays: SpecialDay[] = [
