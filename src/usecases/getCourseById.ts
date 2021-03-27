@@ -4,10 +4,11 @@ import {
   CourseSchedule,
   RegisteredCourse,
 } from "~/api/@types";
-import { store } from "~/store";
-import { reactive, ToRefs, toRefs } from "vue-demi";
 import { apiToDisplayCourse, DisplayCourse } from "~/entities/course";
+import { NetworkAccessError } from "./error";
 import { Ports } from "~/adapter";
+import { reactive, ToRefs, toRefs } from "vue-demi";
+import { store } from "~/store";
 
 /**
  * storeまたはAPIからidに該当する登録した講義データを取得する。
@@ -30,21 +31,23 @@ export const getCourseById = ({ api }: Ports) => async (
 // TODO: 適切なファイルに移動
 /**
  * APIから code に該当する講義データを取得する。
+ * 一部の code が不正だった場合エラーにならずにその code を除いた正常な講義データのみが返却される
  */
 export const getCoursesByCode = ({ api }: Ports) => async (
   codes: string[]
 ): Promise<Course[]> => {
-  try {
-    // TODO: 年度は動的に取得する
-    return await api.courses.$get({
-      query: {
-        year: 2020,
-        codes: codes.join(","),
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    throw new Error("codeに該当する講義が見つかりません");
+  // TODO: 年度は動的に取得する
+  const { body, status, originalResponse } = await api.courses.get({
+    query: {
+      year: 2020,
+      codes: codes.join(","),
+    },
+  });
+  if (200 <= status && status < 300) {
+    return body;
+  } else {
+    console.error(body);
+    throw new NetworkAccessError(originalResponse);
   }
 };
 
