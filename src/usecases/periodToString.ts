@@ -112,44 +112,50 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
   );
 
   return courseModules
-    .reduce<[string, string][]>(
+    .reduce<{ module: string; date: string }[]>(
       (acc, module) => {
         if (convertedRegularSchedules[module] !== "")
-          acc.push([moduleToJa(module), convertedRegularSchedules[module]]);
+          acc.push({
+            module: moduleToJa(module),
+            date: convertedRegularSchedules[module],
+          });
         if (module in specialSchedules)
-          acc.push([moduleToJa(module), specialSchedules[module]]);
+          acc.push({
+            module: moduleToJa(module),
+            date: specialSchedules[module],
+          });
         return acc;
       },
-      [] // ex.) [["春A", "月1,2"], ["春B", "月1,2"], ["春C", "水1 木3"], ["春C", "応談"]]
+      [] // ex.) [{ module: "春A", date: "月1,2" }, { module: "春B", date: "月1,2" }, { module: "春C", date: "水1 木3" }, { module: "春C", date: "応談" }]
     )
-    .reduce<[string, string][]>(
+    .reduce<{ module: string; date: string }[]>(
       (acc, cur) => {
-        if (new RegExp("[ABC]$").test(cur[0])) {
+        if (new RegExp("[ABC]$").test(cur.module)) {
           const idx = acc.findIndex(
             (tar) =>
-              tar[0].charAt(0) === cur[0].charAt(0) && // 季節の確認 "春" === "春"
-              new RegExp("[ABC]$").test(tar[0]) && // 春ABC, 秋ABC だけ結合する
-              cur[1] === tar[1] // dayとperiodまたはspecialDayを確認 "月1" === "月1"
+              tar.module.charAt(0) === cur.module.charAt(0) && // 季節の確認 "春" === "春"
+              new RegExp("[ABC]$").test(tar.module) && // 春ABC, 秋ABC だけ結合する
+              cur.date === tar.date // dayとperiodまたはspecialDayを確認 "月1,2" === "月1,2" や "応談" === "応談"
           );
           if (idx !== -1) {
-            acc[idx][0] += cur[0].slice(-1);
+            acc[idx].module += cur.module.slice(-1);
             return acc;
           }
         }
         acc.push(cur);
         return acc;
       },
-      [] // ex.) [["春AB", "月1,2"], ["春C", "水1 木3"], ["春C", "応談"]]
+      [] // ex.) [{ module: "春AB", date: "月1,2" }, { module: "春C", date: "水1 木3" }, { module: "春C", date: "応談" }]
     )
-    .reduce<[string, string][]>(
+    .reduce<{ module: string; date: string }[]>(
       (acc, cur) => {
-        const idx = acc.findIndex((tar) => cur[0] === tar[0]);
-        if (idx !== -1) acc[idx][1] += " " + cur[1];
+        const idx = acc.findIndex((tar) => cur.module === tar.module);
+        if (idx !== -1) acc[idx].date += " " + cur.date;
         else acc.push(cur);
         return acc;
       },
-      [] // ex.) [["春AB", "月1,2"], ["春C", "水1 木3 応談"]]
+      [] // ex.) [{ module: "春AB", date: "月1,2" }, { module: "春C", date: "水1 木3 応談" }]
     )
-    .map((arr) => `${arr[0]} ${arr[1]}`)
+    .map((arr) => `${arr.module} ${arr.date}`)
     .join(" / ");
 };
