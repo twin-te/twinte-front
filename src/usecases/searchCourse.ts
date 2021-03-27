@@ -11,6 +11,9 @@ import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
 
+/**
+ * ex) module: "その他" -> modules: ["SummerVacation", "SpringVacation"]
+ */
 const parseSchedules = (schedule: Schedule) => ({
   modules: Object.keys(fullModulesMap).filter((k) =>
     fullModulesMap[k].includes(schedule.module)
@@ -24,7 +27,7 @@ const parseSchedules = (schedule: Schedule) => ({
 });
 
 /**
- * 与えられてた module day period が schedules の条件に当てはまるか確認する
+ * 与えられた module day period が schedules の指す範囲に当てはまるか確認する
  */
 const isWishinSchedules = (
   schedules: ParsedSchedule[],
@@ -33,15 +36,9 @@ const isWishinSchedules = (
   period: number // TODO: 適切な型を作成
 ): boolean => {
   return schedules.some((schedule) => {
-    if (
-      schedule.modules.includes(module) &&
+    schedule.modules.includes(module) &&
       schedule.days.includes(day) &&
-      schedule.periods.includes(String(period))
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+      schedule.periods.includes(String(period));
   });
 };
 
@@ -51,7 +48,7 @@ const isWishinSchedules = (
 const schedulesToTimetable = (
   schedules: ParsedSchedule[]
 ): SearchCourseTimetableQuery => {
-  const timetable = {};
+  const timetable: Partial<SearchCourseTimetableQuery> = {};
   for (const module of fullModules) {
     timetable[module] = {};
     for (const day of fullDays) {
@@ -66,7 +63,6 @@ const schedulesToTimetable = (
       }
     }
   }
-  // TODO:なんとかする
   return timetable as SearchCourseTimetableQuery;
 };
 
@@ -81,9 +77,7 @@ export const searchCourse = ({ api }: Ports) => async (
         year: 2020,
         searchMode: "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
-        timetable: schedulesToTimetable(
-          schedules.map((v) => parseSchedules(v))
-        ),
+        timetable: schedulesToTimetable(schedules.map(parseSchedules)),
       },
     });
     return courses;

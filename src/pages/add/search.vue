@@ -211,7 +211,7 @@ export default defineComponent({
         return [];
       });
       searchResult.value = courses?.map((v: Course) => courseToCard(v)) ?? [];
-      isNoResultShow.value = courses.length === 0 ? true : false;
+      isNoResultShow.value = courses.length === 0;
     };
 
     /** button */
@@ -232,9 +232,7 @@ export default defineComponent({
       if (btnState.value == "disabled") return;
       if (!duplicated.value || force) {
         bulkAddCourseById(ports)(
-          searchResult.value
-            .filter((v) => v.isSelected === true)
-            .map((v) => v.id)
+          searchResult.value.filter((v) => v.isSelected).map((v) => v.id)
         );
         router.push("/");
       } else {
