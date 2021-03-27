@@ -35,11 +35,12 @@ const isWishinSchedules = (
   day: Day,
   period: number // TODO: 適切な型を作成
 ): boolean => {
-  return schedules.some((schedule) => {
-    schedule.modules.includes(module) &&
+  return schedules.some(
+    (schedule) =>
+      schedule.modules.includes(module) &&
       schedule.days.includes(day) &&
-      schedule.periods.includes(String(period));
-  });
+      schedule.periods.includes(String(period))
+  );
 };
 
 /**
