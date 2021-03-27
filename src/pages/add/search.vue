@@ -137,8 +137,13 @@
 </template>
 
 <script lang="ts">
-import { CourseCard, dummyCourseCard } from "~/entities/courseCard";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { Course } from "~/api/@types";
+import { CourseCard, courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
+import { Schedule } from "~/entities/schedule";
+import { searchCourse } from "~/usecases/searchCourse";
+import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle } from "@vueuse/core";
@@ -151,7 +156,6 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { Schedule } from "~/entities/schedule";
 
 export default defineComponent({
   components: {
@@ -167,6 +171,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const ports = usePorts();
 
     /** accordion */
     const [isAccordionOpen, toggleOpen] = useToggle();
@@ -178,10 +183,7 @@ export default defineComponent({
     const schedules = ref<Schedule[]>([
       { module: "指定なし", day: "指定なし", period: "指定なし" },
     ]);
-    const scheduleMax = 4;
-    const scheduleMin = 1;
     const addSchedule = () => {
-      if (schedules.value.length >= scheduleMax) return;
       schedules.value.push({
         module: "指定なし",
         day: "指定なし",
@@ -189,7 +191,6 @@ export default defineComponent({
       });
     };
     const removeSchedule = (index: number) => {
-      if (schedules.value.length <= scheduleMin) return;
       schedules.value.splice(index, 1);
     };
 
@@ -199,16 +200,18 @@ export default defineComponent({
     /** top */
     const isNoResultShow = ref(false);
     const searchWord = ref("");
-    const search = () => {
+    const search = async () => {
       isAccordionOpen.value = false;
-      // デモ用の動作
-      if (searchWord.value === "色彩") {
-        isNoResultShow.value = false;
-        searchResult.value = dummyCourseCard;
-      } else {
-        isNoResultShow.value = true;
-        searchResult.value = [];
-      }
+      const courses = await searchCourse(ports)(
+        schedules.value,
+        searchWord.value.split(/\s/)
+      ).catch((e) => {
+        // TODO: エラー処理を実装
+        console.error(e);
+        return [];
+      });
+      searchResult.value = courses?.map((v: Course) => courseToCard(v)) ?? [];
+      isNoResultShow.value = courses.length === 0;
     };
 
     /** button */
@@ -217,6 +220,8 @@ export default defineComponent({
         return "default";
       else return "disabled";
     });
+
+    // TODO: 重複部分は後ほど作成
     const [
       duplicationModal,
       openDuplicationModal,
@@ -226,6 +231,9 @@ export default defineComponent({
     const addCourse = (force: boolean = false) => {
       if (btnState.value == "disabled") return;
       if (!duplicated.value || force) {
+        bulkAddCourseById(ports)(
+          searchResult.value.filter((v) => v.isSelected).map((v) => v.id)
+        );
         router.push("/");
       } else {
         openDuplicationModal();

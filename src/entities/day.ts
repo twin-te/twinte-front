@@ -3,7 +3,7 @@ import { Day } from "~/api/@types";
 // 集中、応談、随時
 export type NotWeekDay = "その他";
 export type WeekDayJa = "月" | "火" | "水" | "木" | "金";
-export type ScheduleDayJa = WeekDayJa | "土" | "日" | NotWeekDay;
+export type ScheduleDayJa = WeekDayJa | "土" | "日" | NotWeekDay | "指定なし";
 export type WeekMap = { [key in Day]?: ScheduleDayJa };
 
 export const weekdayJaList: WeekDayJa[] = ["月", "火", "水", "木", "金"];
@@ -16,6 +16,7 @@ export const scheduleDayJaList: ScheduleDayJa[] = [
   "土",
   "日",
   "その他",
+  "指定なし",
 ];
 export const weekdays: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 export const weekdayMap: { [key in Day]?: WeekDayJa } = {
@@ -25,6 +26,18 @@ export const weekdayMap: { [key in Day]?: WeekDayJa } = {
   Thu: "水",
   Fri: "金",
 };
+export const fullDays: Day[] = [
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+  "Intensive",
+  "Appointment",
+  "AnyTime",
+];
 export const weekMap: WeekMap = {
   Mon: "月",
   Tue: "火",
