@@ -1,6 +1,5 @@
+import { NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
-
-// TODO: addCourseBymanualとコードが重複してるので統合する。
 
 /**
  * 講義情報をサーバに登録し、成功すれば Vuex にも登録する。
@@ -8,17 +7,19 @@ import { Ports } from "~/adapter";
 export const bulkAddCourseById = ({ api, store }: Ports) => async (
   codes: string[]
 ) => {
-  try {
-    const { body: registeredCourses } = await api.registered_courses.post({
-      body: codes.map((code) => ({
-        code,
-        year: 2020,
-      })),
-    });
-    store.commit("addCourses", registeredCourses);
-    return registeredCourses;
-  } catch (error) {
-    console.error(error);
-    throw new Error("授業の登録に失敗しました。");
+  // const { body, headers, status } = await api.registered_courses.post({
+  const { body, status, originalResponse } = await api.registered_courses.post({
+    body: codes.map((code) => ({
+      code,
+      year: 2020,
+    })),
+  });
+  store.commit("addCourses", body);
+  if (200 <= status && status < 300) {
+    return body;
+  } else {
+    console.error(body);
+    console.error(originalResponse);
+    throw new NetworkAccessError(originalResponse);
   }
 };

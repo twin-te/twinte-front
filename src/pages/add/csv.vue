@@ -35,7 +35,7 @@
       </div>
     </div>
     <div v-else class="main__error">
-      授業を読み込めません。CSVファイルの内容をご確認ください。
+      {{ errorMessage }}
     </div>
     <div class="main__button">
       <Button
@@ -112,6 +112,7 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
+import { NetworkAccessError } from "~/usecases/error";
 
 export default defineComponent({
   name: "CSV",
@@ -128,6 +129,7 @@ export default defineComponent({
     const router = useRouter();
     const ports = usePorts();
 
+    const errorMessage = ref("");
     const isCsvValid = ref(true);
     const loadedCourses = ref<{ course: Course; isSelected: boolean }[]>([]);
 
@@ -162,27 +164,49 @@ export default defineComponent({
             .map((v) => v.course.code)
         );
         router.push("/");
-      } catch (e) {
-        // TODO: エラー処理を実装
-        console.error(e);
+      } catch (error) {
+        if (error instanceof NetworkAccessError) {
+          errorMessage.value = error.message;
+        }
+        isCsvValid.value = false;
+        console.error(error);
       }
     };
 
     const loadCourses = async (file: File) => {
       loadedCourses.value = [];
       isCsvValid.value = true;
-      const coursesId = await getCoursesIdByFile(file).catch((e) => {
-        isCsvValid.value = false;
-        console.error(e);
-        return [];
-      });
+      let coursesId: string[] = [];
+      try {
+        coursesId = await getCoursesIdByFile(file);
+      } catch (error) {
+        console.error(error);
+        errorMessage.value =
+          "授業を読み込めません。CSVファイルの内容をご確認ください。";
+        return;
+      }
       try {
         loadedCourses.value = (
           await getCoursesByCode(ports)(coursesId)
         ).map((course) => ({ course, isSelected: true }));
-      } catch (e) {
+      } catch (error) {
+        if (error instanceof NetworkAccessError) {
+          errorMessage.value = error.message;
+        }
         isCsvValid.value = false;
-        console.error(e);
+        console.error(error);
+        return;
+      }
+      // courseseId と loadedCourses に登録した講義番号との差分を求める
+      const missingCoursesCode = coursesId.filter(
+        (code) =>
+          loadedCourses.value.findIndex((v) => v.course.code === code) == -1
+      );
+      if (missingCoursesCode.length > 0) {
+        errorMessage.value = `以下の講義は見つかりませんでした: ${missingCoursesCode.join(
+          ", "
+        )}`;
+        isCsvValid.value = false;
       }
     };
 
@@ -193,6 +217,7 @@ export default defineComponent({
       courseToCard,
       duplicatedCourses,
       duplicationModal,
+      errorMessage,
       isCsvValid,
       loadCourses,
       loadedCourses,

@@ -33,9 +33,10 @@ export const useUsecase = <T>(
 export const usePorts = () => ({
   api: instance(
     axiosClient(axios, {
-      withCredentials: true,
-      paramsSerializer: (r) => qs.stringify(r),
       baseURL,
+      paramsSerializer: (r) => qs.stringify(r),
+      validateStatus: () => true,
+      withCredentials: true,
     })
   ) as ApiInstance,
   store: useStore(),
