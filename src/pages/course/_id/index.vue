@@ -48,7 +48,7 @@
           <CourseDetail item="授業場所" :value="room">
             <DecoratedIcon iconName="room"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="授業形式" :value="methods">
+          <CourseDetail item="授業形式" :value="method">
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
@@ -170,7 +170,7 @@ import PopupContent, {
 } from "~/components/PopupContent.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
-import { apiToDisplayCourse, displayCourseToApi } from "~/entities/course";
+import { displayCourseToApi } from "~/entities/course";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
@@ -207,10 +207,11 @@ export default defineComponent({
       instructor,
       late,
       memo,
-      methods,
+      method,
       name,
       registeredCourse,
       room,
+      schedules,
     } = await useDisplayCourse(ports)(id);
 
     const updateCounter = (
@@ -285,33 +286,19 @@ export default defineComponent({
         courseId: courseId.value,
         date: date.value,
         instructor: instructor.value,
-        methods: methods.value,
+        method: method.value,
         name: name.value,
         room: room.value,
         attendance: attendance.value,
         absence: absence.value,
         late: late.value,
         memo: memo.value,
+        schedules: schedules.value,
         registeredCourse: registeredCourse.value,
       });
       // TODO: as を使わない実装
       if (!course.course) return;
-      const newCourse = await updateCourse(ports)(
-        course as Required<RegisteredCourse>
-      );
-      /** const newRegisteredCourse = */ apiToDisplayCourse(newCourse);
-      // code.value = newRegisteredCourse.code;
-      // courseId.value = newRegisteredCourse.courseId;
-      // date.value = newRegisteredCourse.date;
-      // instructor.value = newRegisteredCourse.instructor;
-      // methods.value = newRegisteredCourse.methods;
-      // name.value = newRegisteredCourse.name;
-      // room.value = newRegisteredCourse.room;
-      // attendance.value = newRegisteredCourse.attendance;
-      // absence.value = newRegisteredCourse.absence;
-      // late.value = newRegisteredCourse.late;
-      // memo.value = newRegisteredCourse.memo;
-      // registeredCourse.value = newRegisteredCourse.registeredCourse;
+      await updateCourse(ports)(course as Required<RegisteredCourse>);
     };
 
     return {
@@ -323,7 +310,7 @@ export default defineComponent({
       instructor,
       late,
       memo,
-      methods,
+      method,
       name,
       registeredCourse,
       room,

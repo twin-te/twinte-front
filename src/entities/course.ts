@@ -6,9 +6,13 @@ import {
 import { dayToJa } from "./day";
 import { jaToDay } from "~/entities/day";
 import { jaToModule } from "~/entities/module";
-import { methodMap } from "./method";
+import { jaToMethod, MethodJa, methodToJa } from "./method";
 import { moduleToJa } from "./module";
-import { Schedule } from "~/entities/schedule";
+import {
+  apiToDisplaySchedule,
+  Schedule,
+  scheduleToApi,
+} from "~/entities/schedule";
 
 export type DisplayCourse = {
   code: string;
@@ -16,24 +20,30 @@ export type DisplayCourse = {
   date: string;
   instructor: string;
   room: string;
-  methods: string;
+  method: string;
   courseId: string;
   memo: string;
   attendance: number;
   absence: number;
   late: number;
   registeredCourse: RegisteredCourse;
+  schedules: Schedule[];
 };
 
 export const displayCourseToApi = (
-  displayedCourse: DisplayCourse
+  displayedCourse: Partial<DisplayCourse> &
+    Pick<DisplayCourse, "registeredCourse">,
+  methods: MethodJa[] = []
 ): RegisteredCourse => ({
   ...displayedCourse.registeredCourse,
-  attendance: displayedCourse.attendance,
-  absence: displayedCourse.absence,
-  late: displayedCourse.late,
-  memo: displayedCourse.memo,
+  attendance: displayedCourse.attendance ?? 0,
+  absence: displayedCourse.absence ?? 0,
+  late: displayedCourse.late ?? 0,
+  memo: displayedCourse.memo ?? "",
   name: displayedCourse.name,
+  instructor: displayedCourse.instructor,
+  schedules: scheduleToApi(displayedCourse.schedules ?? []),
+  methods: methods.map(jaToMethod),
 });
 
 export const apiToDisplayCourse = (
@@ -48,12 +58,15 @@ export const apiToDisplayCourse = (
     Array.from(
       new Set(registeredCourse.course?.schedules.map((s) => s.room))
     ).join(", ") ?? "-",
-  methods: registeredCourse.methods?.map((c) => methodMap[c]).join(", ") ?? "-",
+  method: registeredCourse.methods?.map(methodToJa).join(", ") ?? "-",
   courseId: registeredCourse.id,
   attendance: registeredCourse.attendance,
   absence: registeredCourse.absence,
   late: registeredCourse.late,
   memo: registeredCourse.memo,
+  schedules: apiToDisplaySchedule(
+    registeredCourse.schedules ?? registeredCourse.course?.schedules ?? []
+  ),
   registeredCourse,
 });
 
