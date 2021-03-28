@@ -9,6 +9,16 @@ export class BaseError extends Error {
   }
 }
 
+/**
+ * レスポンスが返ってこないときなどに使用
+ */
+export class NetworkError extends BaseError {
+  constructor(e?: string) {
+    super(e);
+    this.message = "ネットワークエラー。通信状況をご確認下さい。";
+  }
+}
+
 export type OriginalResponse = {
   data: {
     message: string;
@@ -20,7 +30,7 @@ export type OriginalResponse = {
 };
 
 /**
- * 300~500番台のネットワークエラー
+ * 2xx以外のレスポンス時に使用
  */
 export class NetworkAccessError extends BaseError {
   status: number;
@@ -30,10 +40,3 @@ export class NetworkAccessError extends BaseError {
     this.message = originalResponse.data.message ?? "エラー";
   }
 }
-
-// export class InvalidCsvError extends BaseError {
-//   constructor(public originalResponse: OriginalResponse, e?: string) {
-//     super(e);
-//     this.message = originalResponse.data.message;
-//   }
-// }

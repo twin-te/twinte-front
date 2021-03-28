@@ -112,7 +112,6 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { NetworkAccessError } from "~/usecases/error";
 
 export default defineComponent({
   name: "CSV",
@@ -165,9 +164,7 @@ export default defineComponent({
         );
         router.push("/");
       } catch (error) {
-        if (error instanceof NetworkAccessError) {
-          errorMessage.value = error.message;
-        }
+        errorMessage.value = error.message;
         isCsvValid.value = false;
         console.error(error);
       }
@@ -190,9 +187,7 @@ export default defineComponent({
           await getCoursesByCode(ports)(coursesId)
         ).map((course) => ({ course, isSelected: true }));
       } catch (error) {
-        if (error instanceof NetworkAccessError) {
-          errorMessage.value = error.message;
-        }
+        errorMessage.value = error.message;
         isCsvValid.value = false;
         console.error(error);
         return;
