@@ -10,6 +10,6 @@ export const getCoursesIdByFile = (file: File): Promise<string[]> => {
         .map((v) => v.replace(/"/g, ""));
       resolve(courses);
     };
-    reader.onerror = () => reject;
+    reader.onerror = (error) => reject(error);
   });
 };
