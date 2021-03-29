@@ -16,3 +16,31 @@
     transition: $transition-all;
   }
 }
+
+// Toast
+.toast {
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    bottom: 2rem;
+  }
+
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: $transition-all;
+  }
+
+  &-move {
+    transition: $transition-all;
+  }
+}

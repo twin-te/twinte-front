@@ -2,6 +2,7 @@ import { MutationTree } from "vuex";
 import { User, RegisteredCourse } from "~/api/@types";
 import { Select } from "~/components/ToggleButton.vue";
 import { GlobalState } from ".";
+import { Toast } from "~/entities/toast";
 
 export const mutations: MutationTree<GlobalState> = {
   setUser(state, user: User) {
@@ -22,10 +23,16 @@ export const mutations: MutationTree<GlobalState> = {
   deleteCourse(state, id: string) {
     state.courses = state.courses.filter((course) => course.id !== id);
   },
+  deleteToast(state, id: number) {
+    state.toasts = state.toasts.filter((toast) => toast.id != id);
+  },
   addCourse(state, course: RegisteredCourse) {
     state.courses.push(course);
   },
   addCourses(state, courses: RegisteredCourse[]) {
     state.courses.concat(courses);
+  },
+  addToast(state, toast: Toast) {
+    state.toasts.push(toast);
   },
 };
