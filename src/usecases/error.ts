@@ -37,7 +37,9 @@ export class NetworkAccessError extends BaseError {
   constructor(public originalResponse: OriginalResponse, e?: string) {
     super(e);
     this.status = originalResponse.status;
+    // 「6 ALREADY_EXISTS: xxxx」とサーバからエラーメッセージが返されるので
+    // 見せなくても良い箇所を削除する
     this.message =
-      originalResponse.data.message ?? "サーバエラーが発生しました。";
+      originalResponse.data.message.replace(/.*?:/g, "") ?? "サーバエラーが発生しました。";
   }
 }

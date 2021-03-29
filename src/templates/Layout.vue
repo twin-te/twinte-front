@@ -99,7 +99,6 @@ export default defineComponent({
         </Button>
       </template>
     </Modal>
-    <!-- {{ toasts }} -->
     <article class="layout__article">
       <slot></slot>
     </article>
