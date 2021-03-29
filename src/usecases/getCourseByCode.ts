@@ -2,19 +2,21 @@ import { Course } from "~/api/@types";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
+import { getYear } from "./getYear";
 
 /**
  * APIから code に該当する講義データを取得する。
  * 一部の code が不正だった場合エラーにならずにその code を除いた正常な講義データのみが返却される
  */
-export const getCoursesByCode = ({ api }: Ports) => async (
+export const getCoursesByCode = (ports: Ports) => async (
   codes: string[]
 ): Promise<{ courses: Course[]; missingCourseCodes: string[] }> => {
-  // TODO: 年度は動的に取得する
+  const { api } = ports;
+  const year = await getYear(ports);
   const { body, status, originalResponse } = await api.courses
     .get({
       query: {
-        year: 2020,
+        year,
         codes: codes.join(","),
       },
     })

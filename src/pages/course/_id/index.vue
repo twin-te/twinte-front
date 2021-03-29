@@ -171,6 +171,7 @@ import PopupContent, {
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import { displayCourseToApi } from "~/entities/course";
+import { getSyllbusUrl } from "~/entities/courseCard";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
@@ -259,8 +260,7 @@ export default defineComponent({
         color: "normal",
       },
       {
-        onClick: () =>
-          openUrl(`https://kdb.tsukuba.ac.jp/syllabi/2020/${code.value}/jpn/`),
+        onClick: () => openUrl(getSyllbusUrl(code.value)),
         link: true,
         value: "シラバス",
         color: "normal",

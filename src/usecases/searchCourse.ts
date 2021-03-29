@@ -11,6 +11,7 @@ import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
+import { getYear } from "./getYear";
 
 type ParsedSchedule = {
   modules: string[];
@@ -74,15 +75,16 @@ const schedulesToTimetable = (
   return timetable as SearchCourseTimetableQuery;
 };
 
-export const searchCourse = ({ api }: Ports) => async (
+export const searchCourse = (ports: Ports) => async (
   schedules: Schedule[],
   searchWords: string[]
 ) => {
-  console.log(searchWords);
+  const { api } = ports;
+  const year = await getYear(ports);
   const { body, status, originalResponse } = await api.courses.search
     .post({
       body: {
-        year: 2020,
+        year,
         searchMode: "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
         timetable: schedulesToTimetable(schedules.map(parseSchedules)),

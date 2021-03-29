@@ -150,7 +150,7 @@ export const initCourse: Required<RegisteredCourseWithoutID> = {
   name: "",
   schedules: [],
   tags: [],
-  year: 0,
+  year: 2021,
 };
 
 /**
