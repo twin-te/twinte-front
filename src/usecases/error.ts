@@ -37,6 +37,7 @@ export class NetworkAccessError extends BaseError {
   constructor(public originalResponse: OriginalResponse, e?: string) {
     super(e);
     this.status = originalResponse.status;
-    this.message = originalResponse.data.message ?? "エラー";
+    this.message =
+      originalResponse.data.message ?? "サーバエラーが発生しました。";
   }
 }

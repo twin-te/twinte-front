@@ -1,3 +1,4 @@
+import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 
@@ -18,11 +19,10 @@ export const bulkAddCourseById = ({ api, store }: Ports) => async (
       throw new NetworkError();
     });
   store.commit("addCourses", body);
-  if (200 <= status && status < 300) {
+  if (isValidStatus(status)) {
     return body;
   } else {
     console.error(body);
-    console.error(originalResponse);
     throw new NetworkAccessError(originalResponse);
   }
 };

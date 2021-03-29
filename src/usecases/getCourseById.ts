@@ -1,10 +1,6 @@
-import {
-  Course,
-  CourseMethod,
-  CourseSchedule,
-  RegisteredCourse,
-} from "~/api/@types";
 import { apiToDisplayCourse, DisplayCourse } from "~/entities/course";
+import { CourseMethod, CourseSchedule, RegisteredCourse } from "~/api/@types";
+import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import { reactive, ToRefs, toRefs } from "vue-demi";
@@ -16,39 +12,19 @@ import { store } from "~/store";
 export const getCourseById = ({ api }: Ports) => async (
   id: string
 ): Promise<RegisteredCourse> => {
-  try {
-    const storedCourse = (store.getters
-      .courses as Array<RegisteredCourse>).find((c) => id === c.id);
-    return storedCourse === undefined
-      ? await api.registered_courses._id(id).$get()
-      : storedCourse;
-  } catch (error) {
-    console.error(error);
-    throw new Error("idに該当する講義が見つかりません");
+  const storedCourse = (store.getters.courses as Array<RegisteredCourse>).find(
+    (c) => id === c.id
+  );
+  if (storedCourse) {
+    return storedCourse;
   }
-};
-
-// TODO: getCourseByCode.ts などの適切なファイルに移動
-// code と id を混合してました
-/**
- * APIから code に該当する講義データを取得する。
- * 一部の code が不正だった場合エラーにならずにその code を除いた正常な講義データのみが返却される
- */
-export const getCoursesByCode = ({ api }: Ports) => async (
-  codes: string[]
-): Promise<Course[]> => {
-  // TODO: 年度は動的に取得する
-  const { body, status, originalResponse } = await api.courses
-    .get({
-      query: {
-        year: 2020,
-        codes: codes.join(","),
-      },
-    })
+  const { body, status, originalResponse } = await api.registered_courses
+    ._id(id)
+    .get()
     .catch(() => {
       throw new NetworkError();
     });
-  if (200 <= status && status < 300) {
+  if (isValidStatus(status)) {
     return body;
   } else {
     console.error(body);
