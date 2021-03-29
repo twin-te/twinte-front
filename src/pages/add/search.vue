@@ -206,14 +206,16 @@ export default defineComponent({
     const searchWord = ref("");
     const search = async () => {
       isAccordionOpen.value = false;
-      const courses = await searchCourse(ports)(
-        schedules.value,
-        searchWord.value.split(/\s/)
-      ).catch((e) => {
-        // TODO: エラー処理を実装
-        console.error(e);
-        return [];
-      });
+      let courses: Course[] = [];
+      try {
+        courses = await searchCourse(ports)(
+          schedules.value,
+          searchWord.value.split(/\s/)
+        );
+      } catch (error) {
+        console.error(error);
+        return;
+      }
       searchResult.value =
         courses?.map((course: Course) => ({ course, isSelected: false })) ?? [];
       isNoResultShow.value = courses.length === 0;
@@ -248,11 +250,11 @@ export default defineComponent({
             .filter((v) => v.isSelected)
             .map((v) => v.course.code)
         );
-        router.push("/");
       } catch (e) {
-        // TODO: エラー処理を実装
         console.error(e);
+        return;
       }
+      router.push("/");
     };
 
     return {

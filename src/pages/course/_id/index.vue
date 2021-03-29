@@ -233,7 +233,13 @@ export default defineComponent({
       closeDeleteCourseModal,
     ] = useSwitch();
     const deleteCourse = async () => {
-      await apiDeleteCourse(ports)(id);
+      try {
+        await apiDeleteCourse(ports)(id);
+      } catch (error) {
+        // TODO: エラー表示を追加
+        console.error(error);
+        return;
+      }
       closeDeleteCourseModal();
       router.push("/");
     };
@@ -298,7 +304,13 @@ export default defineComponent({
       });
       // TODO: as を使わない実装
       if (!course.course) return;
-      await updateCourse(ports)(course as Required<RegisteredCourse>);
+      try {
+        await updateCourse(ports)(course as Required<RegisteredCourse>);
+      } catch (error) {
+        // TODO: エラー表示を実装
+        console.error(error);
+        return;
+      }
     };
 
     return {

@@ -1,4 +1,5 @@
 import { Course, CourseSchedule } from "~/api/@types";
+import { periodToString } from "~/usecases/periodToString";
 
 export type CourseCard = {
   id: string;
@@ -7,13 +8,6 @@ export type CourseCard = {
   location: string;
   url: string;
   isSelected: boolean;
-};
-
-/**
- * periodを文字形式(ex 秋AB火12)に変換する関数
- */
-export const periodToString = (_schedules: CourseSchedule[]) => {
-  return "秋AB 火12";
 };
 
 /**

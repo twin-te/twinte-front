@@ -35,7 +35,7 @@
       </div>
     </div>
     <div v-else class="main__error">
-      授業を読み込めません。CSVファイルの内容をご確認ください。
+      {{ errorMessage }}
     </div>
     <div class="main__button">
       <Button
@@ -99,7 +99,7 @@ import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
-import { getCoursesByCode } from "~/usecases/getCourseById";
+import { getCoursesByCode } from "~/usecases/getCourseByCode";
 import { getCoursesIdByFile } from "~/usecases/readCSV";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { usePorts } from "~/usecases";
@@ -128,6 +128,7 @@ export default defineComponent({
     const router = useRouter();
     const ports = usePorts();
 
+    const errorMessage = ref("");
     const isCsvValid = ref(true);
     const loadedCourses = ref<{ course: Course; isSelected: boolean }[]>([]);
 
@@ -162,27 +163,48 @@ export default defineComponent({
             .map((v) => v.course.code)
         );
         router.push("/");
-      } catch (e) {
-        // TODO: エラー処理を実装
-        console.error(e);
+      } catch (error) {
+        console.error(error);
+        errorMessage.value = error.message;
+        isCsvValid.value = false;
       }
     };
 
     const loadCourses = async (file: File) => {
       loadedCourses.value = [];
       isCsvValid.value = true;
-      const coursesId = await getCoursesIdByFile(file).catch((e) => {
-        isCsvValid.value = false;
-        console.error(e);
-        return [];
-      });
+      let courseCodes: string[] = [];
       try {
-        loadedCourses.value = (
-          await getCoursesByCode(ports)(coursesId)
-        ).map((course) => ({ course, isSelected: true }));
-      } catch (e) {
+        courseCodes = await getCoursesIdByFile(file);
+      } catch (error) {
+        console.error(error);
+        errorMessage.value =
+          "授業を読み込めません。CSVファイルの内容をご確認ください。";
+        return;
+      }
+
+      let fetchedCourses: Course[] = [];
+      let missingCourseCodes: string[] = [];
+      try {
+        const res = await getCoursesByCode(ports)(courseCodes);
+        fetchedCourses = res.courses;
+        missingCourseCodes = res.missingCourseCodes;
+      } catch (error) {
+        console.error(error);
+        errorMessage.value = error.message;
         isCsvValid.value = false;
-        console.error(e);
+        return;
+      }
+      loadedCourses.value = fetchedCourses.map((course) => ({
+        course,
+        isSelected: true,
+      }));
+
+      if (missingCourseCodes.length > 0) {
+        errorMessage.value = `以下の講義は見つかりませんでした: ${missingCourseCodes.join(
+          ", "
+        )}`;
+        isCsvValid.value = false;
       }
     };
 
@@ -193,6 +215,7 @@ export default defineComponent({
       courseToCard,
       duplicatedCourses,
       duplicationModal,
+      errorMessage,
       isCsvValid,
       loadCourses,
       loadedCourses,

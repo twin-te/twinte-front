@@ -6,6 +6,8 @@ import {
 import { SearchCourseTimetableQuery } from "~/api/@types";
 import { dayToJa, fullDays, ScheduleDayJa } from "~/entities/day";
 import { fullModules, moduleToJa, ScheduleModuleJa } from "~/entities/module";
+import { isValidStatus } from "~/usecases/api";
+import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
@@ -77,18 +79,22 @@ export const searchCourse = ({ api }: Ports) => async (
   searchWords: string[]
 ) => {
   console.log(searchWords);
-  try {
-    const courses = await api.courses.search.$post({
+  const { body, status, originalResponse } = await api.courses.search
+    .post({
       body: {
         year: 2020,
         searchMode: "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
         timetable: schedulesToTimetable(schedules.map(parseSchedules)),
       },
+    })
+    .catch(() => {
+      throw new NetworkError();
     });
-    return courses;
-  } catch (error) {
-    console.error(error);
-    return [];
+  if (isValidStatus(status)) {
+    return body;
+  } else {
+    console.error(body);
+    throw new NetworkAccessError(originalResponse);
   }
 };

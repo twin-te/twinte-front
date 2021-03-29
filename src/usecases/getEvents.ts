@@ -1,5 +1,7 @@
 import { Ports } from "~/adapter";
 import { SchoolCalendarEvent } from "~/api/@types";
+import { isValidStatus } from "~/usecases/api";
+import { NetworkAccessError, NetworkError } from "~/usecases/error";
 
 /**
  * APIからSchoolCalendarEventを取得する。
@@ -8,13 +10,22 @@ export const getEvents = async ({
   api,
   dayjs,
 }: Ports): Promise<SchoolCalendarEvent[]> => {
-  try {
-    const now = dayjs();
-    const year = now.month() < 3 ? now.year() - 1 : now.year();
-    const events = await api.school_calendar.events.$get({ query: { year } });
-    return events;
-  } catch (error) {
-    console.error(error);
-    return [] as SchoolCalendarEvent[];
+  const now = dayjs();
+  const year = now.month() < 3 ? now.year() - 1 : now.year();
+  const {
+    body,
+    status,
+    originalResponse,
+  } = await api.school_calendar.events
+    .get({ query: { year } })
+    .catch((error) => {
+      console.error(error);
+      throw new NetworkError();
+    });
+  if (isValidStatus(status)) {
+    return body;
+  } else {
+    console.error(body);
+    throw new NetworkAccessError(originalResponse);
   }
 };
