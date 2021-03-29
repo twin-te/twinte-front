@@ -2,21 +2,26 @@ import {
   fullModulesMap,
   fullWeekMap,
   fullPeriodMap,
-  ParsedSchedule,
 } from "~/entities/schedule";
-import { CourseModule, Day, SearchCourseTimetableQuery } from "~/api/@types";
-import { fullDays } from "~/entities/day";
-import { fullModules } from "~/entities/module";
+import { SearchCourseTimetableQuery } from "~/api/@types";
+import { dayToJa, fullDays, ScheduleDayJa } from "~/entities/day";
+import { fullModules, moduleToJa, ScheduleModuleJa } from "~/entities/module";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
 
+type ParsedSchedule = {
+  modules: string[];
+  days: string[];
+  periods: string[];
+};
+
 /**
  * ex) module: "その他" -> modules: ["SummerVacation", "SpringVacation"]
  */
-const parseSchedules = (schedule: Schedule) => ({
+const parseSchedules = (schedule: Schedule): ParsedSchedule => ({
   modules: Object.keys(fullModulesMap).filter((k) =>
     fullModulesMap[k].includes(schedule.module)
   ),
@@ -33,8 +38,8 @@ const parseSchedules = (schedule: Schedule) => ({
  */
 const isWishinSchedules = (
   schedules: ParsedSchedule[],
-  module: CourseModule,
-  day: Day,
+  module: ScheduleModuleJa,
+  day: ScheduleDayJa,
   period: number // TODO: 適切な型を作成
 ): boolean => {
   return schedules.some(
@@ -59,8 +64,8 @@ const schedulesToTimetable = (
       for (const period of [0, ...periods]) {
         timetable[module][day][period] = isWishinSchedules(
           schedules,
-          module,
-          day,
+          moduleToJa(module),
+          dayToJa(day),
           period
         );
       }

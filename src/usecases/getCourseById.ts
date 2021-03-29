@@ -1,10 +1,10 @@
+import { RegisteredCourse } from "~/api/@types";
+import { store } from "~/store";
+import { reactive, ToRefs, toRefs } from "vue-demi";
 import { apiToDisplayCourse, DisplayCourse } from "~/entities/course";
-import { CourseMethod, CourseSchedule, RegisteredCourse } from "~/api/@types";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
-import { reactive, ToRefs, toRefs } from "vue-demi";
-import { store } from "~/store";
 
 /**
  * storeまたはAPIからidに該当する登録した講義データを取得する。
@@ -38,17 +38,4 @@ export const useDisplayCourse = (ports: Ports) => async (
   const course = await getCourseById(ports)(id);
   const displayedCourse = apiToDisplayCourse(course);
   return toRefs(reactive(displayedCourse));
-};
-
-export const useRegisteredCourse = (ports: Ports) => async (id: string) => {
-  const course = await getCourseById(ports)(id);
-  return toRefs(
-    reactive({
-      name: "",
-      instructor: "",
-      methods: [] as CourseMethod[],
-      schedules: [] as CourseSchedule[],
-      ...course,
-    })
-  );
 };
