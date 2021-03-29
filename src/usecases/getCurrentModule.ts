@@ -33,14 +33,11 @@ export const getCurrentModule = async ({
     );
   });
   switch (info?.module) {
-    case undefined:
-      return "春A";
     case "SummerVacation":
       return "春C";
     case "SpringVacation":
       return "秋C";
     default:
-      // TODO: もっといい方法があるはず
-      return info !== undefined ? moduleMap[info.module] ?? "春A" : "春A";
+      return moduleToJa(info?.module ?? "SpringA");
   }
 };
