@@ -1,4 +1,4 @@
-import { Course, CourseSchedule } from "~/api/@types";
+import { CourseSchedule } from "~/api/@types";
 import { periodToString } from "../periodToString";
 
 describe(`${periodToString.name} ベース`, () => {

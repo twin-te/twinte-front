@@ -1,4 +1,4 @@
-import { ModuleJa, moduleMap } from "~/entities/module";
+import { ModuleJa, moduleToJa } from "~/entities/module";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import { isValidStatus } from "~/usecases/api";
