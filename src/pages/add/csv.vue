@@ -99,7 +99,7 @@ import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
-import { getCoursesByCode } from "~/usecases/getCourseById";
+import { getCoursesByCode } from "~/usecases/getCourseByCode";
 import { getCoursesIdByFile } from "~/usecases/readCSV";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { usePorts } from "~/usecases";
@@ -164,41 +164,44 @@ export default defineComponent({
         );
         router.push("/");
       } catch (error) {
+        console.error(error);
         errorMessage.value = error.message;
         isCsvValid.value = false;
-        console.error(error);
       }
     };
 
     const loadCourses = async (file: File) => {
       loadedCourses.value = [];
       isCsvValid.value = true;
-      let coursesId: string[] = [];
+      let courseCodes: string[] = [];
       try {
-        coursesId = await getCoursesIdByFile(file);
+        courseCodes = await getCoursesIdByFile(file);
       } catch (error) {
         console.error(error);
         errorMessage.value =
           "授業を読み込めません。CSVファイルの内容をご確認ください。";
         return;
       }
+
+      let fetchedCourses: Course[] = [];
+      let missingCourseCodes: string[] = [];
       try {
-        loadedCourses.value = (
-          await getCoursesByCode(ports)(coursesId)
-        ).map((course) => ({ course, isSelected: true }));
+        const res = await getCoursesByCode(ports)(courseCodes);
+        fetchedCourses = res.courses;
+        missingCourseCodes = res.missingCourseCodes;
       } catch (error) {
+        console.error(error);
         errorMessage.value = error.message;
         isCsvValid.value = false;
-        console.error(error);
         return;
       }
-      // courseseId と loadedCourses に登録した講義番号との差分を求める
-      const missingCoursesCode = coursesId.filter(
-        (code) =>
-          loadedCourses.value.findIndex((v) => v.course.code === code) == -1
-      );
-      if (missingCoursesCode.length > 0) {
-        errorMessage.value = `以下の講義は見つかりませんでした: ${missingCoursesCode.join(
+      loadedCourses.value = fetchedCourses.map((course) => ({
+        course,
+        isSelected: true,
+      }));
+
+      if (missingCourseCodes.length > 0) {
+        errorMessage.value = `以下の講義は見つかりませんでした: ${missingCourseCodes.join(
           ", "
         )}`;
         isCsvValid.value = false;

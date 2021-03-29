@@ -221,11 +221,11 @@ export default defineComponent({
       }
       try {
         await addCourseByManual(ports)(course);
-        router.push("/");
-      } catch {
-        // TODO: エラー表示を追加
-        console.error("ERROR");
+      } catch (error) {
+        console.error(error);
+        return;
       }
+      router.push("/");
     };
 
     return {
