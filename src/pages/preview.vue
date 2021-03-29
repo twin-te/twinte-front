@@ -128,7 +128,6 @@
       <div class="card-course-wrapper">
         <CardCourse
           @click-checkbox="isCourseCheked = !isCourseCheked"
-          @click-syllabus-link="displayLog"
           :isChecked="isCourseCheked"
           :course="courseInfo"
         ></CardCourse>

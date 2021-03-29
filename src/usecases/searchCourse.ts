@@ -3,7 +3,7 @@ import {
   fullWeekMap,
   fullPeriodMap,
 } from "~/entities/schedule";
-import { SearchCourseTimetableQuery } from "~/api/@types";
+import { CourseModule, Day, SearchCourseTimetableQuery } from "~/api/@types";
 import { dayToJa, fullDays, ScheduleDayJa } from "~/entities/day";
 import { fullModules, moduleToJa, ScheduleModuleJa } from "~/entities/module";
 import { isValidStatus } from "~/usecases/api";
@@ -39,10 +39,12 @@ const parseSchedules = (schedule: Schedule): ParsedSchedule => ({
  */
 const isWishinSchedules = (
   schedules: ParsedSchedule[],
-  module: ScheduleModuleJa,
-  day: ScheduleDayJa,
+  module: CourseModule,
+  day: Day,
   period: number // TODO: 適切な型を作成
 ): boolean => {
+  console.log(schedules);
+
   return schedules.some(
     (schedule) =>
       schedule.modules.includes(module) &&
@@ -65,8 +67,8 @@ const schedulesToTimetable = (
       for (const period of [0, ...periods]) {
         timetable[module][day][period] = isWishinSchedules(
           schedules,
-          moduleToJa(module),
-          dayToJa(day),
+          module,
+          day,
           period
         );
       }
