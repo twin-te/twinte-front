@@ -99,7 +99,9 @@ export default defineComponent({
     }
   }
   &__container {
-    display: flex;
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
     width: 30rem;
     gap: $spacing-2;
   }
