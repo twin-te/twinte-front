@@ -107,11 +107,10 @@
             :key="duplicatedCourse.name"
           >
             <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
-            <!-- TODO: scheduleToString の実装をまつ -->
             <CourseDetailMini
               class="duplicated-course__detail"
               iconName="schedule"
-              :text="duplicatedCourse.schedules.toString()"
+              :text="periodToString(duplicatedCourse.schedules)"
             ></CourseDetailMini>
           </div>
         </div>
@@ -143,6 +142,7 @@ import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
 import { displayToast } from "~/entities/toast";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
 import { searchCourse } from "~/usecases/searchCourse";
 import { usePorts } from "~/usecases";
@@ -270,6 +270,7 @@ export default defineComponent({
       isNoResultShow,
       onlyBlank,
       openDuplicationModal,
+      periodToString,
       removeSchedule,
       schedules,
       search,
