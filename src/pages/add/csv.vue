@@ -21,7 +21,7 @@
         アップロードする
       </InputButtonFile>
     </div>
-    <div v-if="isCsvValid" class="main__courses courses">
+    <div class="main__courses courses">
       <div class="courses__contents">
         <CardCourse
           v-for="course in loadedCourses"
@@ -32,9 +32,6 @@
         >
         </CardCourse>
       </div>
-    </div>
-    <div v-else class="main__error">
-      {{ errorMessage }}
     </div>
     <div class="main__button">
       <Button
@@ -98,6 +95,7 @@ import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
+import { displayToast } from "~/entities/toast";
 import { getCoursesByCode } from "~/usecases/getCourseByCode";
 import { getCoursesIdByFile } from "~/usecases/readCSV";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
@@ -127,14 +125,11 @@ export default defineComponent({
     const router = useRouter();
     const ports = usePorts();
 
-    const errorMessage = ref("");
-    const isCsvValid = ref(true);
     const loadedCourses = ref<{ course: Course; isSelected: boolean }[]>([]);
 
     /** button */
     const btnState = computed(() => {
-      if (loadedCourses.value.some((v) => v.isSelected) && isCsvValid.value)
-        return "default";
+      if (loadedCourses.value.some((v) => v.isSelected)) return "default";
       else return "disabled";
     });
 
@@ -164,21 +159,18 @@ export default defineComponent({
         router.push("/");
       } catch (error) {
         console.error(error);
-        errorMessage.value = error.message;
-        isCsvValid.value = false;
+        displayToast(ports)(error.message);
       }
     };
 
     const loadCourses = async (file: File) => {
       loadedCourses.value = [];
-      isCsvValid.value = true;
       let courseCodes: string[] = [];
       try {
         courseCodes = await getCoursesIdByFile(file);
       } catch (error) {
         console.error(error);
-        errorMessage.value =
-          "授業を読み込めません。CSVファイルの内容をご確認ください。";
+        displayToast(ports)("ファイルの読み込みに失敗しました。");
         return;
       }
 
@@ -190,8 +182,7 @@ export default defineComponent({
         missingCourseCodes = res.missingCourseCodes;
       } catch (error) {
         console.error(error);
-        errorMessage.value = error.message;
-        isCsvValid.value = false;
+        displayToast(ports)(error.message);
         return;
       }
       loadedCourses.value = fetchedCourses.map((course) => ({
@@ -200,10 +191,12 @@ export default defineComponent({
       }));
 
       if (missingCourseCodes.length > 0) {
-        errorMessage.value = `以下の講義は見つかりませんでした: ${missingCourseCodes.join(
-          ", "
-        )}`;
-        isCsvValid.value = false;
+        displayToast(ports)(
+          `以下の講義番号はシラバスに存在しませんでした。存在する講義のみを表示しています。\n${missingCourseCodes.join(
+            "  "
+          )}`,
+          0
+        );
       }
     };
 
@@ -214,8 +207,6 @@ export default defineComponent({
       courseToCard,
       duplicatedCourses,
       duplicationModal,
-      errorMessage,
-      isCsvValid,
       loadCourses,
       loadedCourses,
       openDuplicationModal,

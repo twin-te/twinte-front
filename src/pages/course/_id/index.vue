@@ -171,6 +171,7 @@ import PopupContent, {
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import { displayCourseToApi } from "~/entities/course";
+import { displayToast } from "~/entities/toast";
 import { getSyllbusUrl } from "~/entities/courseCard";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
@@ -237,8 +238,8 @@ export default defineComponent({
       try {
         await apiDeleteCourse(ports)(id);
       } catch (error) {
-        // TODO: エラー表示を追加
         console.error(error);
+        displayToast(error)(error.message);
         return;
       }
       closeDeleteCourseModal();
@@ -307,8 +308,8 @@ export default defineComponent({
       try {
         await updateCourse(ports)(course as Required<RegisteredCourse>);
       } catch (error) {
-        // TODO: エラー表示を実装
         console.error(error);
+        displayToast(error)(error.message);
         return;
       }
     };

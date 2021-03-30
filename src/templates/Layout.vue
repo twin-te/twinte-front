@@ -1,18 +1,22 @@
 <script lang="ts">
-import { defineComponent, watch } from "vue";
+import { computed, defineComponent, watch } from "vue";
+import Toast from "~/components/Toast.vue";
 import Sidebar from "./Sidebar.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
 import Button from "~/components/Button.vue";
 import { useSidebar } from "~/usecases/useSidebar";
+import { useStore } from "~/store";
 import { useUsecase } from "~/usecases";
 import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
+import { Toast as ToastContent } from "~/entities/toast";
 
 export default defineComponent({
-  components: { Sidebar, GrayFilter, Modal, Button },
+  components: { Toast, Sidebar, GrayFilter, Modal, Button },
   setup: () => {
     const { isClose, isOpen, closeSidebar } = useSidebar();
+    const store = useStore();
 
     // welcome modal
     const { state: isLogin } = useUsecase(authCheck, true);
@@ -21,6 +25,16 @@ export default defineComponent({
     );
     watch(isLogin, (v) => setWelcomeModal(!v));
 
+    // Toast
+    const toasts = computed<ToastContent[]>(() => {
+      return store.getters.toasts;
+    });
+
+    const closeToast = (id: number) => {
+      console.log(id);
+      store.commit("deleteToast", id);
+    };
+
     return {
       isLogin,
       isClose,
@@ -28,6 +42,8 @@ export default defineComponent({
       closeSidebar,
       welcomeModal,
       closeWelcomeModal,
+      toasts,
+      closeToast,
     };
   },
 });
@@ -84,6 +100,16 @@ export default defineComponent({
     <article class="layout__article">
       <slot></slot>
     </article>
+    <div class="layout__toast">
+      <transition-group name="toast">
+        <div class="toast__row" v-for="toast in toasts" :key="toast.id">
+          <Toast
+            @click-close-button="closeToast(toast.id)"
+            :text="toast.text"
+          ></Toast>
+        </div>
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -105,6 +131,17 @@ export default defineComponent({
       display: block;
     }
     z-index: 12;
+  }
+  &__toast {
+    position: fixed;
+    z-index: 1000;
+    right: 3rem;
+    bottom: 3rem;
+    width: min(50rem, 90vw);
+    @include portrait {
+      right: 50%;
+      transform: translateX(50%);
+    }
   }
 }
 
@@ -135,6 +172,12 @@ export default defineComponent({
     &:last-child {
       margin-left: $spacing-3;
     }
+  }
+}
+
+.toast {
+  &__row {
+    margin-top: 1.2rem;
   }
 }
 </style>

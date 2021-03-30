@@ -19,6 +19,7 @@ export default defineComponent({
   emits: ["change-file"],
   setup: (_, { emit }) => {
     const fileName = ref("");
+    const path = ref("");
 
     const changeFile = (e: Event) => {
       const file = (e.currentTarget as HTMLInputElement).files?.[0];
@@ -26,9 +27,16 @@ export default defineComponent({
       emit("change-file", file);
     };
 
+    // 同じ名前のファイルを再度選択したとき onChange が機能しないため
+    const resetFileSelect = () => {
+      path.value = "";
+    };
+
     return {
       fileName,
       changeFile,
+      path,
+      resetFileSelect,
     };
   },
 });
@@ -53,6 +61,8 @@ export default defineComponent({
         :name="name"
         :id="name"
         :accept="accept"
+        :value="path"
+        @click="resetFileSelect"
         @change="changeFile"
       />
     </label>

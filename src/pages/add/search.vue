@@ -141,6 +141,7 @@ import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
+import { displayToast } from "~/entities/toast";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { Schedule } from "~/entities/schedule";
 import { searchCourse } from "~/usecases/searchCourse";
@@ -211,6 +212,7 @@ export default defineComponent({
         );
       } catch (error) {
         console.error(error);
+        displayToast(ports)(error.message);
         return;
       }
       searchResult.value =
@@ -247,8 +249,9 @@ export default defineComponent({
             .filter((v) => v.isSelected)
             .map((v) => v.course.code)
         );
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error(error);
+        displayToast(ports)(error.message);
         return;
       }
       router.push("/");

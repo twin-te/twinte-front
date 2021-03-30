@@ -142,10 +142,7 @@ export default defineComponent({
       room,
       schedules: apiSchedules,
       registeredCourse,
-    } = await useDisplayCourse(ports)(id).catch((error) => {
-      // TODO: エラー表示処理を追加
-      throw error;
-    });
+    } = await useDisplayCourse(ports)(id);
 
     /** schedule-editor */
     const blankSchedule: Schedule = {
