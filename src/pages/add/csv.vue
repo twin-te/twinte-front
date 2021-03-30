@@ -27,7 +27,6 @@
           v-for="course in loadedCourses"
           :key="courseToCard(course.course).id"
           @click-checkbox="course.isSelected = !course.isSelected"
-          @click-syllabus-link="$router.push(courseToCard(course.course).url)"
           :isChecked="course.isSelected"
           :course="courseToCard(course.course)"
         >

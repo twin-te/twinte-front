@@ -139,20 +139,6 @@ const getLectureTimeAsStr = (schedules: CourseSchedule[]): string => {
   }
 };
 
-export const initCourse: Required<RegisteredCourseWithoutID> = {
-  absence: 0,
-  attendance: 0,
-  credit: 0,
-  instructor: "",
-  late: 0,
-  memo: "",
-  methods: [],
-  name: "",
-  schedules: [],
-  tags: [],
-  year: 0,
-};
-
 /**
  * 日本語の学期名などを api の形式に合うようにフォーマットする
  */

@@ -5,15 +5,12 @@ import Button from "./Button.vue";
 import Card from "./Card.vue";
 import Checkbox from "./Checkbox.vue";
 import CourseDetailMini from "./CourseDetailMini.vue";
+import { openUrl } from "~/usecases/openUrl";
 
 export default defineComponent({
   components: { Card, Button, CourseDetailMini, Checkbox },
   props: {
     onClickCheckbox: {
-      type: Function,
-      required: true,
-    },
-    onClickSyllabusLink: {
       type: Function,
       required: true,
     },
@@ -30,17 +27,16 @@ export default defineComponent({
       default: "100%",
     },
   },
-  emits: ["click-checkbox", "click-syllabus-link"],
-  setup(_, { emit }) {
+  emits: ["click-checkbox"],
+  setup(props, { emit }) {
     const emitCheckboxEvent = (e: MouseEvent) => {
       emit("click-checkbox", e);
     };
-
-    const emitSyllabusLinkEvent = (e: MouseEvent) => {
-      emit("click-syllabus-link", e);
+    const openSyllabus = () => {
+      openUrl(props.course.url);
     };
 
-    return { emitCheckboxEvent, emitSyllabusLinkEvent };
+    return { emitCheckboxEvent, openSyllabus };
   },
 });
 </script>
@@ -68,7 +64,7 @@ export default defineComponent({
       </div>
       <div class="card-course__syllabus-link">
         <Button
-          @click="emitSyllabusLinkEvent"
+          @click="openSyllabus"
           size="small"
           layout="flexible"
           :icon="true"
