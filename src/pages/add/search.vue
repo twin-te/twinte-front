@@ -50,7 +50,7 @@
               ></Checkbox>
               空いているコマのみを検索
             </div>
-            <div class="accordion__shedule-editor">
+            <div v-if="!onlyBlank" class="accordion__shedule-editor">
               <ScheduleEditer
                 v-model:schedules="schedules"
                 :onClickAddButton="addSchedule"
@@ -358,6 +358,7 @@ export default defineComponent({
     border-radius: $radius-1;
   }
   &__only-blank {
+    @include button-cursor;
     display: flex;
     align-items: center;
     margin-bottom: $spacing-6;
