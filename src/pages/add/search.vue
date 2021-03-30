@@ -208,7 +208,8 @@ export default defineComponent({
       try {
         courses = await searchCourse(ports)(
           schedules.value,
-          searchWord.value.split(/\s/)
+          searchWord.value.split(/\s/),
+          onlyBlank.value
         );
       } catch (error) {
         console.error(error);

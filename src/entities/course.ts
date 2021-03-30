@@ -1,7 +1,4 @@
-import {
-  RegisteredCourse,
-  CourseSchedule,
-} from "~/api/@types";
+import { RegisteredCourse, CourseSchedule } from "~/api/@types";
 import { dayToJa } from "./day";
 import { jaToDay } from "~/entities/day";
 import { jaToModule } from "~/entities/module";
