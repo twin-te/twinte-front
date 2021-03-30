@@ -61,6 +61,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "../scss/main.scss";
 .sidebar {
+  $self: &;
   &__content {
     @include button-cursor;
     display: flex;
@@ -71,7 +72,12 @@ export default defineComponent({
     transition: $transition-box-shadow;
     color: $button-gray;
     &--selected {
-      @include text-liner;
+      #{ $self }__icon {
+        @include text-liner;
+      }
+      #{ $self }__name {
+        @include text-liner;
+      }
     }
     &:active {
       box-shadow: $shadow-concave;
@@ -84,18 +90,15 @@ export default defineComponent({
   &__icon {
     font-size: 2.8rem;
     line-height: $single-line;
-    @include iconlayout;
   }
   &__name {
     font-weight: medium;
     vertical-align: bottom;
     margin-left: $spacing-4;
     font-size: $font-medium;
-
     &--link {
       &::after {
         font-family: "Material Icons";
-        @include iconlayout;
         @include text-liner;
         content: "launch";
         padding-left: $spacing-2;

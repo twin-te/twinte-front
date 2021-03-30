@@ -42,8 +42,14 @@
 @mixin text-liner {
   color: #6bcedc; // baakground-clip に対応していない場合の色
   background: $primary-liner;
+  background: -webkit-#{$primary-liner};
+  background: -moz-#{$primary-liner};
+  background-clip: text;
+  -moz-background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  text-fill-color: rgba(255, 255, 255, 0);
+  -webkit-text-fill-color: rgba(255, 255, 255, 0);
+  -moz-text-fill-color: rgba(255, 255, 255, 0);
 }
 @mixin void-text-liner {
   background-clip: none;
@@ -141,10 +147,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: $direction;
-}
-@mixin iconlayout {
-  display: inline-flex;
-  vertical-align: middle;
 }
 
 @mixin sensor-housing {

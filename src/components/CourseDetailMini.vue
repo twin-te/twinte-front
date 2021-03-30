@@ -33,7 +33,6 @@ export default defineComponent({
     @include text-main;
     @include text-liner;
     @include icon-cursor;
-    @include iconlayout;
     margin-right: $spacing-1;
   }
   &__value {

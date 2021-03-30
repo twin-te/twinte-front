@@ -153,7 +153,6 @@ export default defineComponent({
       font-size: 100%;
       line-height: $fit;
       @include text-liner;
-      @include iconlayout;
     }
   }
   &.--active,
