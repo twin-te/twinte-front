@@ -4,8 +4,8 @@ import {
   fullPeriodMap,
 } from "~/entities/schedule";
 import { CourseModule, Day, SearchCourseTimetableQuery } from "~/api/@types";
-import { dayToJa, fullDays, ScheduleDayJa } from "~/entities/day";
-import { fullModules, moduleToJa, ScheduleModuleJa } from "~/entities/module";
+import { fullDays } from "~/entities/day";
+import { fullModules } from "~/entities/module";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { periods } from "~/entities/period";
@@ -43,8 +43,6 @@ const isWishinSchedules = (
   day: Day,
   period: number // TODO: 適切な型を作成
 ): boolean => {
-  console.log(schedules);
-
   return schedules.some(
     (schedule) =>
       schedule.modules.includes(module) &&

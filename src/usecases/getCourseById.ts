@@ -33,9 +33,10 @@ export const getCourseById = ({ api }: Ports) => async (
 };
 
 export const useDisplayCourse = (ports: Ports) => async (
-  id: string
+  id: string,
+  char: string
 ): Promise<ToRefs<DisplayCourse>> => {
   const course = await getCourseById(ports)(id);
-  const displayedCourse = apiToDisplayCourse(course);
+  const displayedCourse = apiToDisplayCourse(course, char);
   return toRefs(reactive(displayedCourse));
 };

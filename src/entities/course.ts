@@ -32,33 +32,58 @@ export type DisplayCourse = {
 
 export const displayCourseToApi = (
   displayedCourse: Partial<DisplayCourse> &
-    Pick<DisplayCourse, "registeredCourse">,
+    Pick<DisplayCourse, "registeredCourse" | "absence" | "attendance" | "late">,
   methods: MethodJa[] = []
 ): RegisteredCourse => ({
   ...displayedCourse.registeredCourse,
-  attendance: displayedCourse.attendance ?? 0,
-  absence: displayedCourse.absence ?? 0,
-  late: displayedCourse.late ?? 0,
+  attendance: displayedCourse.attendance,
+  absence: displayedCourse.absence,
+  late: displayedCourse.late,
   memo: displayedCourse.memo ?? "",
-  name: displayedCourse.name,
-  instructor: displayedCourse.instructor,
+  name: displayedCourse.name ?? "",
+  instructor: displayedCourse.instructor ?? "",
   schedules: scheduleToApi(displayedCourse.schedules ?? []),
   methods: methods.map(jaToMethod),
 });
 
+const blankToChar = (value: string | undefined, char: string) =>
+  value === undefined || value === "" ? char : value;
+
 export const apiToDisplayCourse = (
-  registeredCourse: RegisteredCourse
+  registeredCourse: RegisteredCourse,
+  char: string
 ): DisplayCourse => ({
-  code: registeredCourse.course?.code ?? "-",
-  name: registeredCourse.name ?? registeredCourse.course?.name ?? "-",
-  date: getLectureTimeAsStr(registeredCourse.course?.schedules ?? []) ?? "-",
-  instructor:
-    registeredCourse.instructor ?? registeredCourse.course?.instructor ?? "-",
-  room:
+  code: blankToChar(registeredCourse.course?.code, char),
+  name: blankToChar(
+    registeredCourse.name ?? registeredCourse.course?.name,
+    char
+  ),
+  date: blankToChar(
+    getLectureTimeAsStr(
+      registeredCourse?.schedules ?? registeredCourse.course?.schedules ?? []
+    ),
+    char
+  ),
+  instructor: blankToChar(
+    registeredCourse.instructor ?? registeredCourse.course?.instructor,
+    char
+  ),
+  room: blankToChar(
     Array.from(
-      new Set(registeredCourse.course?.schedules.map((s) => s.room))
-    ).join(", ") ?? "-",
-  method: registeredCourse.methods?.map(methodToJa).join(", ") ?? "-",
+      new Set(
+        (
+          registeredCourse?.schedules ??
+          registeredCourse.course?.schedules ??
+          []
+        ).map((s) => s.room)
+      )
+    ).join(", "),
+    char
+  ),
+  method: blankToChar(
+    registeredCourse.methods?.map(methodToJa).join(", "),
+    char
+  ),
   courseId: registeredCourse.id,
   attendance: registeredCourse.attendance,
   absence: registeredCourse.absence,
