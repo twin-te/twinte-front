@@ -22,7 +22,10 @@ export const scheduleToApi = (schedules: Schedule[]): CourseSchedule[] =>
   schedules.map((schedule) => ({
     day: jaToDay(schedule.day),
     module: jaToModule(schedule.module),
-    period: Number(schedule.period),
+    period:
+      schedule.period === "指定なし" || schedule.period === "その他"
+        ? 0
+        : Number(schedule.period),
     room: "",
   }));
 

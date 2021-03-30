@@ -29,9 +29,6 @@ export const mutations: MutationTree<GlobalState> = {
   addCourse(state, course: RegisteredCourse) {
     state.courses.push(course);
   },
-  addCourses(state, courses: RegisteredCourse[]) {
-    state.courses.concat(courses);
-  },
   addToast(state, toast: Toast) {
     state.toasts.push(toast);
   },

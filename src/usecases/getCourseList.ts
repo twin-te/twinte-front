@@ -26,6 +26,8 @@ export const getCourseList = async ({
   if (isValidStatus(status)) {
     store.commit("setCourses", body);
     return body;
+  } else if ((status as number) === 401) {
+    return [];
   } else {
     console.error(body);
     throw new NetworkAccessError(originalResponse);

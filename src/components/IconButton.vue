@@ -30,7 +30,7 @@ export default defineComponent({
       type: String,
       default: "normal",
       varidator: function (value: string) {
-        return ["normal", "danger"].includes(value);
+        return ["normal", "danger", "primary"].includes(value);
       },
     },
     iconName: {
@@ -113,6 +113,20 @@ export default defineComponent({
     &:active {
       color: $white;
       @include button-active-danger;
+    }
+  }
+  &--primary {
+    span {
+      @include text-liner;
+      transition: $transition-box-shadow;
+    }
+    &:active {
+      @include button-active;
+      color: $white;
+      span {
+        @include void-text-liner;
+        color: $white;
+      }
     }
   }
 }
