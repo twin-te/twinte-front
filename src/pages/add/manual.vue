@@ -122,7 +122,7 @@ import { addCourseByManual } from "~/usecases/addCourseByManual";
 import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { displayToast } from "~/entities/toast";
-import { formatSchedule, initCourse } from "~/entities/course";
+import { formatSchedule } from "~/entities/course";
 import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
 import { MethodJa } from "~/entities/method";
 import { Schedule } from "~/entities/schedule";
@@ -139,6 +139,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   components: {
@@ -153,10 +154,22 @@ export default defineComponent({
     ScheduleEditer,
     TextFieldSingleLine,
   },
-  setup: () => {
+  setup: async () => {
     const router = useRouter();
     const ports = usePorts();
-    const course = reactive<Required<RegisteredCourseWithoutID>>(initCourse);
+    const course = reactive<Required<RegisteredCourseWithoutID>>({
+      absence: 0,
+      attendance: 0,
+      credit: 0,
+      instructor: "",
+      late: 0,
+      memo: "",
+      methods: [],
+      name: "",
+      schedules: [],
+      tags: [],
+      year: await getYear(ports),
+    });
     const room = ref("");
 
     /** schedule-editor */

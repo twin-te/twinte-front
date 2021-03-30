@@ -67,9 +67,6 @@
             >
               <CardCourse
                 @click-checkbox="course.isSelected = !course.isSelected"
-                @click-syllabus-link="
-                  $router.push(courseToCard(course.course).url)
-                "
                 :course="courseToCard(course.course)"
                 :isChecked="course.isSelected"
               ></CardCourse>

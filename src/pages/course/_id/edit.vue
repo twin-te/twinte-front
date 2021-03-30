@@ -94,7 +94,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { CourseMethod } from "~/api/@types";
+import { CourseMethod, RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -104,10 +104,12 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { displayCourseToApi } from "~/entities/course";
 import { MethodJa } from "~/entities/method";
-import { apiToDisplaySchedule, Schedule } from "~/entities/schedule";
+import { Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases";
-import { useRegisteredCourse } from "~/usecases/getCourseById";
+import { useDisplayCourse } from "~/usecases/getCourseById";
+import { updateCourse } from "~/usecases/updateCourse";
 
 export default defineComponent({
   components: {
@@ -128,13 +130,19 @@ export default defineComponent({
     const { id } = route.params as { id: string };
 
     const {
+      absence,
+      attendance,
+      code,
+      courseId,
+      date,
       instructor,
-      methods,
+      late,
+      memo,
       name,
+      room,
       schedules: apiSchedules,
-    } = await useRegisteredCourse(ports)(id).catch((error) => {
-      throw error;
-    });
+      registeredCourse,
+    } = await useDisplayCourse(ports)(id);
 
     /** schedule-editor */
     const blankSchedule: Schedule = {
@@ -142,7 +150,7 @@ export default defineComponent({
       day: "指定なし",
       period: "指定なし",
     };
-    const schedules = ref<Schedule[]>(apiToDisplaySchedule(apiSchedules.value));
+    const schedules = ref<Schedule[]>(apiSchedules.value);
     const scheduleMax = 4;
     const scheduleMin = 1;
     const addSchedule = () => {
@@ -154,28 +162,33 @@ export default defineComponent({
       schedules.value.splice(index, 1);
     };
 
+    const methods =
+      registeredCourse.value.methods ??
+      registeredCourse.value.course?.methods ??
+      [];
+
     const methodData: {
       checked: Ref<boolean>;
       name: CourseMethod;
       value: MethodJa;
     }[] = [
       {
-        checked: ref(methods.value.includes("FaceToFace")),
+        checked: ref(methods.includes("FaceToFace")),
         name: "FaceToFace",
         value: "対面",
       },
       {
-        checked: ref(methods.value.includes("Synchronous")),
+        checked: ref(methods.includes("Synchronous")),
         name: "Synchronous",
         value: "同時双方向",
       },
       {
-        checked: ref(methods.value.includes("Asynchronous")),
+        checked: ref(methods.includes("Asynchronous")),
         name: "Asynchronous",
         value: "オンデマンド",
       },
       {
-        checked: ref(methods.value.includes("Others")),
+        checked: ref(methods.includes("Others")),
         name: "Others",
         value: "その他",
       },
@@ -190,8 +203,27 @@ export default defineComponent({
         ? "disabled"
         : "default";
     });
-    const save = () => {
+    const save = async () => {
       if (submitButton.value === "disabled") return;
+      const course = displayCourseToApi(
+        {
+          code: code.value,
+          courseId: courseId.value,
+          date: date.value,
+          instructor: instructor.value,
+          method: "",
+          name: name.value,
+          room: room.value,
+          attendance: attendance.value,
+          absence: absence.value,
+          late: late.value,
+          memo: memo.value,
+          schedules: apiSchedules.value,
+          registeredCourse: registeredCourse.value,
+        },
+        methodData.filter((m) => m.checked.value).map((v) => v.value)
+      );
+      await updateCourse(ports)(course as Required<RegisteredCourse>);
       router.push(`/course/${id}`);
     };
 

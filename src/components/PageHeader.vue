@@ -1,12 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export type Calendar = {
-  month: number;
-  day: number;
-  week: string;
-  schedule: string;
-};
+import { Calendar } from "~/entities/calendar";
 
 export default defineComponent({
   name: "PageHeader",
@@ -64,8 +58,9 @@ export default defineComponent({
 
 .header {
   width: 100%;
-  height: 6rem;
+  height: calc(#{$safe-area-top} + 6rem);
   padding: $spacing-5 0 0;
+  @include sensor-housing;
   &__container {
     position: relative;
     width: 100%;

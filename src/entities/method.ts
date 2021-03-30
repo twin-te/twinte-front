@@ -10,6 +10,11 @@ export const methodMap: { [key in CourseMethod]: MethodJa } = {
 };
 
 export const methodToJa = (method: CourseMethod): MethodJa => methodMap[method];
+export const jaToMethod = (method: MethodJa): CourseMethod => {
+  const courseMethod =
+    Object.keys(methodMap).find((m) => methodMap[m] === method) ?? "Other";
+  return courseMethod as CourseMethod;
+};
 
 export type MethodOption = MethodJa | "指定なし";
 

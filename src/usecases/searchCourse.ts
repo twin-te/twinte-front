@@ -2,21 +2,27 @@ import {
   fullModulesMap,
   fullWeekMap,
   fullPeriodMap,
-  ParsedSchedule,
 } from "~/entities/schedule";
 import { CourseModule, Day, SearchCourseTimetableQuery } from "~/api/@types";
-import { fullDays } from "~/entities/day";
-import { fullModules } from "~/entities/module";
+import { dayToJa, fullDays, ScheduleDayJa } from "~/entities/day";
+import { fullModules, moduleToJa, ScheduleModuleJa } from "~/entities/module";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
+import { getYear } from "./getYear";
+
+type ParsedSchedule = {
+  modules: string[];
+  days: string[];
+  periods: string[];
+};
 
 /**
  * ex) module: "その他" -> modules: ["SummerVacation", "SpringVacation"]
  */
-const parseSchedules = (schedule: Schedule) => ({
+const parseSchedules = (schedule: Schedule): ParsedSchedule => ({
   modules: Object.keys(fullModulesMap).filter((k) =>
     fullModulesMap[k].includes(schedule.module)
   ),
@@ -37,6 +43,8 @@ const isWishinSchedules = (
   day: Day,
   period: number // TODO: 適切な型を作成
 ): boolean => {
+  console.log(schedules);
+
   return schedules.some(
     (schedule) =>
       schedule.modules.includes(module) &&
@@ -69,15 +77,16 @@ const schedulesToTimetable = (
   return timetable as SearchCourseTimetableQuery;
 };
 
-export const searchCourse = ({ api }: Ports) => async (
+export const searchCourse = (ports: Ports) => async (
   schedules: Schedule[],
   searchWords: string[]
 ) => {
-  console.log(searchWords);
+  const { api } = ports;
+  const year = await getYear(ports);
   const { body, status, originalResponse } = await api.courses.search
     .post({
       body: {
-        year: 2020,
+        year,
         searchMode: "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
         timetable: schedulesToTimetable(schedules.map(parseSchedules)),
