@@ -6,12 +6,13 @@ import {
 import { CourseModule, Day, SearchCourseTimetableQuery } from "~/api/@types";
 import { fullDays } from "~/entities/day";
 import { fullModules } from "~/entities/module";
+import { getYear } from "./getYear";
+import { isSchedulesDuplicated } from "./getDuplicatedCourses";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
-import { getYear } from "./getYear";
 
 type ParsedSchedule = {
   modules: string[];
@@ -55,7 +56,9 @@ const isWishinSchedules = (
  * scheduels から timetable形式 のデータを生成する。
  */
 const schedulesToTimetable = (
-  schedules: ParsedSchedule[]
+  schedules: ParsedSchedule[],
+  onlyBlank: boolean,
+  ports: Ports
 ): SearchCourseTimetableQuery => {
   const timetable: Partial<SearchCourseTimetableQuery> = {};
   for (const module of fullModules) {
@@ -63,12 +66,10 @@ const schedulesToTimetable = (
     for (const day of fullDays) {
       timetable[module][day] = {};
       for (const period of [0, ...periods]) {
-        timetable[module][day][period] = isWishinSchedules(
-          schedules,
-          module,
-          day,
-          period
-        );
+        // とりあえず空白検索とドロップダウン検索は or で実装
+        timetable[module][day][period] = onlyBlank
+          ? !isSchedulesDuplicated(ports)([{ module, day, period, room: "" }])
+          : isWishinSchedules(schedules, module, day, period);
       }
     }
   }
@@ -77,7 +78,8 @@ const schedulesToTimetable = (
 
 export const searchCourse = (ports: Ports) => async (
   schedules: Schedule[],
-  searchWords: string[]
+  searchWords: string[],
+  onlyBlank: boolean
 ) => {
   const { api } = ports;
   const year = await getYear(ports);
@@ -87,7 +89,11 @@ export const searchCourse = (ports: Ports) => async (
         year,
         searchMode: "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
-        timetable: schedulesToTimetable(schedules.map(parseSchedules)),
+        timetable: schedulesToTimetable(
+          schedules.map(parseSchedules),
+          onlyBlank,
+          ports
+        ),
       },
     })
     .catch(() => {

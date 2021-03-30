@@ -175,7 +175,6 @@
 import { computed, defineComponent, ref } from "vue-demi";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { CourseState } from "~/entities/table";
-import { getCourseList } from "~/usecases/getCourseList";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse } from "~/api/@types";
@@ -197,6 +196,7 @@ import { useLabel } from "~/usecases/useLabel";
 import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useHead } from "@vueuse/head";
+import { useStore } from "~/store";
 
 export default defineComponent({
   name: "Table",
@@ -215,6 +215,7 @@ export default defineComponent({
       title: "Twin:te | ホーム",
     });
 
+    const store = useStore();
     const ports = usePorts();
     const router = useRouter();
 
@@ -236,7 +237,7 @@ export default defineComponent({
     };
 
     /** table */
-    const storedCourses: RegisteredCourse[] = await getCourseList(ports);
+    const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
     );

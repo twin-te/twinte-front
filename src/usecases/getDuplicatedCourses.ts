@@ -9,19 +9,18 @@ import { modules } from "~/entities/module";
 import { week } from "~/entities/day";
 
 /**
- * 引き数に与えられたコースの schedule が既に登録してあるコース
+ * 引き数に与えられた schedules が既に登録してあるコース
  * の schedule と重複してないかどうか確認する
  * ただし「コマ」で表現できない日程は必ず重複しない
  */
-export const isCourseDuplicated = ({ store }: Ports) => <
-  T extends Course | RegisteredCourseWithoutID
->(
-  target: T
+export const isSchedulesDuplicated = ({ store }: Ports) => (
+  targetSchedules: CourseSchedule[]
 ): boolean => {
   return (
-    target.schedules?.some((targetSchedule) => {
+    targetSchedules?.some((targetSchedule) => {
       return store.getters.courses.some((c: RegisteredCourse) => {
-        return c.schedules?.some(
+        const registeredSchedules = c.schedules ?? c.course?.schedules;
+        return registeredSchedules?.some(
           (s: CourseSchedule) =>
             modules.includes(targetSchedule.module) &&
             week.includes(targetSchedule.day) &&
@@ -33,6 +32,22 @@ export const isCourseDuplicated = ({ store }: Ports) => <
       });
     }) ?? false
   );
+};
+
+/**
+ * 引き数に与えられたコースの schedule が既に登録してあるコース
+ * の schedule と重複してないかどうか確認する
+ */
+// TODO: 2つのコースに対応させる
+export const isCourseDuplicated = ({ store }: Ports) => <
+  T extends Course | RegisteredCourseWithoutID
+>(
+  target: T
+): boolean => {
+  if (target.schedules == undefined) {
+    return false;
+  }
+  return isSchedulesDuplicated({ store } as Ports)(target.schedules);
 };
 
 /**

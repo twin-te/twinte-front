@@ -88,11 +88,10 @@
             :key="duplicatedCourse.name"
           >
             <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
-            <!-- TODO: scheduleToString の実装をまつ -->
             <CourseDetailMini
               class="duplicated-course__detail"
               iconName="schedule"
-              :text="duplicatedCourse.schedules.toString()"
+              :text="periodToString(duplicatedCourse.schedules)"
             ></CourseDetailMini>
           </div>
         </div>
@@ -123,8 +122,10 @@ import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { displayToast } from "~/entities/toast";
 import { formatSchedule } from "~/entities/course";
+import { getYear } from "~/usecases/getYear";
 import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
 import { MethodJa } from "~/entities/method";
+import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
@@ -139,7 +140,6 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   components: {
@@ -253,6 +253,7 @@ export default defineComponent({
       duplicationModal,
       methods,
       openDuplicationModal,
+      periodToString,
       removeSchedule,
       room,
       schedules,

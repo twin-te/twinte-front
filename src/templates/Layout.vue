@@ -5,18 +5,20 @@ import Sidebar from "./Sidebar.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
 import Button from "~/components/Button.vue";
+import { getCourseList } from "~/usecases/getCourseList";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useStore } from "~/store";
-import { useUsecase } from "~/usecases";
+import { usePorts, useUsecase } from "~/usecases";
 import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
 import { Toast as ToastContent } from "~/entities/toast";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
-  setup: () => {
+  setup: async () => {
     const { isClose, isOpen, closeSidebar } = useSidebar();
     const store = useStore();
+    const ports = usePorts();
 
     // welcome modal
     const { state: isLogin } = useUsecase(authCheck, true);
@@ -34,6 +36,9 @@ export default defineComponent({
       console.log(id);
       store.commit("deleteToast", id);
     };
+
+    // HACK: vuex を初期化する目的で呼び出している
+    await getCourseList(ports);
 
     return {
       isLogin,
