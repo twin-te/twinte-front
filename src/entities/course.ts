@@ -1,6 +1,5 @@
 import {
   RegisteredCourse,
-  RegisteredCourseWithoutID,
   CourseSchedule,
 } from "~/api/@types";
 import { dayToJa } from "./day";
