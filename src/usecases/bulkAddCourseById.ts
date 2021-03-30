@@ -1,4 +1,3 @@
-import { RegisteredCourse } from "~/api/@types";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
@@ -20,13 +19,10 @@ export const bulkAddCourseById = (ports: Ports) => async (codes: string[]) => {
     .catch(() => {
       throw new NetworkError();
     });
-  // bodyの型ごとに条件分岐
-  if (codes.length === 1) {
-    store.commit("addCourse", body);
+  if (Array.isArray(body)) {
+    body.map((course) => store.commit("addCourse", course));
   } else {
-    (body as RegisteredCourse[]).map((course) =>
-      store.commit("addCourse", course)
-    );
+    store.commit("addCourse", body);
   }
   if (isValidStatus(status)) {
     return body;
