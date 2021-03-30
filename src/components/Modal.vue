@@ -95,6 +95,7 @@ export default defineComponent({
   &__button {
     display: flex;
     flex-direction: row;
+    flex-shrink: 0;
     margin-top: $spacing-7;
   }
   &__close-btn {
