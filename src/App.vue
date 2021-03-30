@@ -8,7 +8,9 @@
         <router-view v-if="!hasError" />
       </Layout>
     </template>
-    <template #fallback> now loading... </template>
+    <template #fallback>
+      <div class="loading">now loading...</div>
+    </template>
   </Suspense>
 </template>
 
@@ -41,5 +43,10 @@ export default defineComponent({
 .error {
   @include center-asolute;
   width: 80%;
+}
+
+.loading {
+  @include center-asolute;
+  opacity: 0.5;
 }
 </style>
