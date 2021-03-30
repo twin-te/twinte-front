@@ -1,12 +1,15 @@
 <template>
-  <Layout>
-    <Suspense>
-      <router-view v-if="!hasError" />
-      <div class="error" v-else>
-        <Error :errorMessage="errorMessage"></Error>
-      </div>
-    </Suspense>
-  </Layout>
+  <div class="error" v-if="hasError">
+    <Error :errorMessage="errorMessage"></Error>
+  </div>
+  <Suspense v-else>
+    <template #default>
+      <Layout>
+        <router-view v-if="!hasError" />
+      </Layout>
+    </template>
+    <template #fallback> now loading... </template>
+  </Suspense>
 </template>
 
 <script lang="ts">
