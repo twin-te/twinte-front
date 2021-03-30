@@ -106,6 +106,7 @@ export default defineComponent({
     gap: 2.4rem;
     line-height: $multi-line;
     margin: 4.2rem 0 1.2rem;
+    font-weight: 500;
   }
   &__button {
     text-align: center;
