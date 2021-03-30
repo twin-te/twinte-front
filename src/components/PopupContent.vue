@@ -54,7 +54,7 @@ export default defineComponent({
   height: 3.8rem;
   padding: $spacing-2 3.4rem $spacing-2 $spacing-4;
   font-size: $font-large;
-  font-weight: 500;
+  font-weight: medium;
   line-height: $single-line;
   transition: $transition-box-shadow;
   @include button-cursor;
