@@ -214,7 +214,7 @@ export default defineComponent({
       registeredCourse,
       room,
       schedules,
-    } = await useDisplayCourse(ports)(id);
+    } = await useDisplayCourse(ports)(id, "-");
 
     const updateCounter = (
       tag: "attendance" | "late" | "absence",
