@@ -346,7 +346,7 @@ export default defineComponent({
 
   &__module-text {
     color: $text-main;
-    font-weight: $font-medium;
+    font-weight: 500;
     font-size: $font-large;
     margin: auto 0.6rem auto;
   }

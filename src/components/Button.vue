@@ -91,7 +91,6 @@ export default defineComponent({
   background: $base;
   /* shadow-convex */
   border-radius: $radius-button;
-  font-weight: medium;
   vertical-align: middle;
   transition: $transition-box-shadow;
 

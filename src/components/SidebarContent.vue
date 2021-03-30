@@ -92,7 +92,6 @@ export default defineComponent({
     line-height: $single-line;
   }
   &__name {
-    font-weight: medium;
     vertical-align: bottom;
     margin-left: $spacing-4;
     font-size: $font-medium;
