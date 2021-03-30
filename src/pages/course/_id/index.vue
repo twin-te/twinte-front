@@ -67,7 +67,7 @@
               class="attendance__minus-btn"
               @click="updateCounter('attendance', -1)"
               size="small"
-              color="normal"
+              color="primary"
               iconName="remove"
             ></IconButton>
             <p class="attendance__count">{{ attendance }}</p>
@@ -75,7 +75,7 @@
               class="attendance__plus-btn"
               @click="updateCounter('attendance', 1)"
               size="small"
-              color="normal"
+              color="primary"
               iconName="add"
             ></IconButton>
           </div>
@@ -85,7 +85,7 @@
               class="attendance__minus-btn"
               @click="updateCounter('absence', -1)"
               size="small"
-              color="normal"
+              color="primary"
               iconName="remove"
             ></IconButton>
             <p class="attendance__count">{{ absence }}</p>
@@ -93,7 +93,7 @@
               class="attendance__plus-btn"
               @click="updateCounter('absence', 1)"
               size="small"
-              color="normal"
+              color="primary"
               iconName="add"
             ></IconButton>
           </div>
@@ -103,7 +103,7 @@
               class="attendance__minus-btn"
               @click="updateCounter('late', -1)"
               size="small"
-              color="normal"
+              color="primary"
               iconName="remove"
             ></IconButton>
             <p class="attendance__count">{{ late }}</p>
@@ -111,7 +111,7 @@
               class="attendance__plus-btn"
               @click="updateCounter('late', 1)"
               size="small"
-              color="normal"
+              color="primary"
               iconName="add"
             ></IconButton>
           </div>
@@ -413,12 +413,6 @@ export default defineComponent({
     }
     &__plus-btn {
       grid-area: plus-btn;
-      @include text-liner;
-      &:active {
-        color: $white;
-        background: $primary-liner;
-        @include void-text-liner;
-      }
     }
     &__count {
       grid-area: count;
@@ -428,12 +422,6 @@ export default defineComponent({
     }
     &__minus-btn {
       grid-area: minus-btn;
-      @include text-liner;
-      &:active {
-        color: $white;
-        background: $primary-liner;
-        @include void-text-liner;
-      }
     }
   }
 }

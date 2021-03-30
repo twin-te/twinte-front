@@ -109,7 +109,6 @@ export default defineComponent({
     color: $button-gray;
 
     border-radius: $radius-button;
-    font-weight: medium;
     vertical-align: middle;
     transition: $transition-box-shadow;
     white-space: nowrap;

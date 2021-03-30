@@ -106,7 +106,6 @@ export default defineComponent({
     font-weight: bold;
   }
   &__schedule {
-    font-weight: regular;
     padding-top: 0.2rem;
     color: $text-sub;
     font-size: $font-small;
