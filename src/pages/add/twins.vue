@@ -14,7 +14,12 @@
     <div class="main">
       <div class="main__mask">
         <div class="main__description">
-          Twinsに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。データの取り扱いに関しては利用規約をご確認ください。
+          Twinsに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。データの取り扱いに関しては<a
+            href="https://www.twinte.net/terms/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >利用規約</a
+          >をご確認ください。
         </div>
         <p class="main__description-sub">
           ※Twin:te側がユーザーの学籍番号・パスワードを取得することはございません。
