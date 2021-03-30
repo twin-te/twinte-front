@@ -47,6 +47,44 @@ export type RegisteredCourse = {
   course?: Course
 } & RegisteredCourseWithoutID
 
+export type SearchCourseTimetableQuery = {
+  SpringA: SearchCourseTimetableQueryDays
+  SpringB: SearchCourseTimetableQueryDays
+  SpringC: SearchCourseTimetableQueryDays
+  FallA: SearchCourseTimetableQueryDays
+  FallB: SearchCourseTimetableQueryDays
+  FallC: SearchCourseTimetableQueryDays
+  SummerVacation: SearchCourseTimetableQueryDays
+  SpringVacation: SearchCourseTimetableQueryDays
+}
+
+export type SearchCourseTimetableQueryDays = {
+  Sun: SearchCourseTimetableQueryPeriods
+  Mon: SearchCourseTimetableQueryPeriods
+  Tue: SearchCourseTimetableQueryPeriods
+  Wed: SearchCourseTimetableQueryPeriods
+  Thu: SearchCourseTimetableQueryPeriods
+  Fri: SearchCourseTimetableQueryPeriods
+  Sat: SearchCourseTimetableQueryPeriods
+  Intensive: SearchCourseTimetableQueryPeriods
+  Appointment: SearchCourseTimetableQueryPeriods
+  AntTime: SearchCourseTimetableQueryPeriods
+}
+
+/** 指定しなかった場合はfalseとみなされます */
+export type SearchCourseTimetableQueryPeriods = {
+  /** 時限が不明な授業は0になっているためそれらも検索したい場合はtrueに（集中授業に多い） */
+  '0': boolean
+  '1': boolean
+  '2': boolean
+  '3': boolean
+  '4': boolean
+  '5': boolean
+  '6': boolean
+  '7': boolean
+  '8': boolean
+}
+
 export type RegisteredCourseWithoutID = {
   year: number
   name?: string
@@ -74,6 +112,39 @@ export type TagIdOnly = {
 export type User = {
   id: string
   name: string
+}
+
+export type Payment = {
+  id: string
+  type: 'OneTime' | 'Subscription'
+  status: 'Succeeded' | 'Canceled' | 'Pending'
+  amount: number
+  created: string
+}
+
+export type Subscription = {
+  id: string
+  status: 'Active' | 'Canceled'
+  plans: {
+    id: string
+    name: string
+    amount: number
+  }[]
+  created: string
+}
+
+export type PaymentUser = {
+  paymentUserId: string
+  twinteUserId: string
+  displayName?: string
+  link?: string
+}
+
+export type Information = {
+  id: string
+  title: string
+  content: string
+  publishedAt: string
 }
 
 export type Error = {

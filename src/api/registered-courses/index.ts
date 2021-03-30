@@ -14,13 +14,17 @@ export type Methods = {
 
   post: {
     status: 200
+
     /** 成功 */
-    resBody: Types.RegisteredCourse
+    resBody: Types.RegisteredCourse | Types.RegisteredCourse[]
 
     reqBody: {
       year: number
       code: string
     } | {
+      year: number
+      code: string
+    }[] | {
       year: number
       name: string
       instructor: string

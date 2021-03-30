@@ -61,7 +61,7 @@
       </div>
       <section class="main__button">
         <Button
-          @click="addCourse"
+          @click="addCourse()"
           size="large"
           layout="fill"
           color="primary"
@@ -84,14 +84,15 @@
         <div class="modal__courses">
           <div
             class="duplicated-course"
-            v-for="data in duplicatedCourses"
-            :key="data.name"
+            v-for="duplicatedCourse in duplicatedCourses"
+            :key="duplicatedCourse.name"
           >
-            <p class="duplicated-course__name">{{ data.name }}</p>
+            <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
+            <!-- TODO: scheduleToString の実装をまつ -->
             <CourseDetailMini
               class="duplicated-course__detail"
               iconName="schedule"
-              :text="data.period"
+              :text="duplicatedCourse.schedules.toString()"
             ></CourseDetailMini>
           </div>
         </div>
@@ -104,7 +105,11 @@
           color="base"
           >キャンセル</Button
         >
-        <Button @click="addCourse()" size="medium" layout="fill" color="primary"
+        <Button
+          @click="addCourse(false)"
+          size="medium"
+          layout="fill"
+          color="primary"
           >そのまま追加</Button
         >
       </template>
@@ -116,7 +121,8 @@
 import { addCourseByManual } from "~/usecases/addCourseByManual";
 import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import { formatSchedule, initCourse } from "~/entities/course";
+import { formatSchedule } from "~/entities/course";
+import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
 import { MethodJa } from "~/entities/method";
 import { Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases/index";
@@ -132,6 +138,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   components: {
@@ -146,10 +153,22 @@ export default defineComponent({
     ScheduleEditer,
     TextFieldSingleLine,
   },
-  setup: () => {
+  setup: async () => {
     const router = useRouter();
     const ports = usePorts();
-    const course = reactive<Required<RegisteredCourseWithoutID>>(initCourse);
+    const course = reactive<Required<RegisteredCourseWithoutID>>({
+      absence: 0,
+      attendance: 0,
+      credit: 0,
+      instructor: "",
+      late: 0,
+      memo: "",
+      methods: [],
+      name: "",
+      schedules: [],
+      tags: [],
+      year: await getYear(ports),
+    });
     const room = ref("");
 
     /** schedule-editor */
@@ -184,36 +203,43 @@ export default defineComponent({
     /** button */
     const btnState = computed(() => {
       if (
-        !course.name ||
+        course.name === "" ||
         schedules.value.some((obj) =>
-          Object.keys(obj).some((key) => obj[key] == "指定なし")
+          Object.keys(obj).some((key) => obj[key] === "指定なし")
         )
       )
         return "disabled";
       else return "default";
     });
 
-    // TODO: 重複の処理は別ブランチでまとめて作成する
+    /** deulpication modal */
     const [
       duplicationModal,
       openDuplicationModal,
       closeDuplicationModal,
     ] = useSwitch();
-    const addCourse = async () => {
-      if (btnState.value == "disabled") return;
+    const duplicatedCourses = ref<Required<RegisteredCourseWithoutID>[]>([]);
+
+    const addCourse = async (showWarning = true) => {
+      if (btnState.value === "disabled") return;
       course.schedules = formatSchedule(schedules.value);
       course.schedules = course.schedules.map((v) => ({
         ...v,
         room: room.value,
       }));
-      if (await addCourseByManual(ports)(course)) {
-        router.push("/");
-      } else {
-        // TODO: エラー処理を追加
-        console.error("ERROR");
+      if (showWarning && isCourseDuplicated(ports)(course)) {
+        duplicatedCourses.value[0] = course;
+        openDuplicationModal();
+        return;
       }
+      try {
+        await addCourseByManual(ports)(course);
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+      router.push("/");
     };
-    const duplicatedCourses = ref<{ name: string; period: string }[]>([]);
 
     return {
       addCourse,

@@ -8,7 +8,8 @@ export type SchedulePeriod =
   | "6"
   | "7"
   | "8"
-  | "その他";
+  | "その他"
+  | "指定なし";
 export const periods: Period[] = [1, 2, 3, 4, 5, 6, 7, 8];
 export const schedulePeriods: SchedulePeriod[] = [
   "1",
@@ -20,4 +21,5 @@ export const schedulePeriods: SchedulePeriod[] = [
   "7",
   "8",
   "その他",
+  "指定なし",
 ];

@@ -48,7 +48,7 @@
           <CourseDetail item="授業場所" :value="room">
             <DecoratedIcon iconName="room"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="授業形式" :value="methods">
+          <CourseDetail item="授業形式" :value="method">
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
@@ -157,6 +157,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
@@ -169,7 +170,8 @@ import PopupContent, {
 } from "~/components/PopupContent.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
-import { apiToDisplayCourse, displayCourseToApi } from "~/entities/course";
+import { displayCourseToApi } from "~/entities/course";
+import { getSyllbusUrl } from "~/entities/courseCard";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
@@ -206,10 +208,11 @@ export default defineComponent({
       instructor,
       late,
       memo,
-      methods,
+      method,
       name,
       registeredCourse,
       room,
+      schedules,
     } = await useDisplayCourse(ports)(id);
 
     const updateCounter = (
@@ -231,7 +234,13 @@ export default defineComponent({
       closeDeleteCourseModal,
     ] = useSwitch();
     const deleteCourse = async () => {
-      await apiDeleteCourse(ports)(id);
+      try {
+        await apiDeleteCourse(ports)(id);
+      } catch (error) {
+        // TODO: エラー表示を追加
+        console.error(error);
+        return;
+      }
       closeDeleteCourseModal();
       router.push("/");
     };
@@ -251,8 +260,7 @@ export default defineComponent({
         color: "normal",
       },
       {
-        onClick: () =>
-          openUrl(`https://kdb.tsukuba.ac.jp/syllabi/2020/${code.value}/jpn/`),
+        onClick: () => openUrl(getSyllbusUrl(code.value)),
         link: true,
         value: "シラバス",
         color: "normal",
@@ -284,29 +292,25 @@ export default defineComponent({
         courseId: courseId.value,
         date: date.value,
         instructor: instructor.value,
-        methods: methods.value,
+        method: method.value,
         name: name.value,
         room: room.value,
         attendance: attendance.value,
         absence: absence.value,
         late: late.value,
         memo: memo.value,
+        schedules: schedules.value,
         registeredCourse: registeredCourse.value,
       });
-      const newCourse = await updateCourse(ports)(course);
-      /** const newRegisteredCourse = */ apiToDisplayCourse(newCourse);
-      // code.value = newRegisteredCourse.code;
-      // courseId.value = newRegisteredCourse.courseId;
-      // date.value = newRegisteredCourse.date;
-      // instructor.value = newRegisteredCourse.instructor;
-      // methods.value = newRegisteredCourse.methods;
-      // name.value = newRegisteredCourse.name;
-      // room.value = newRegisteredCourse.room;
-      // attendance.value = newRegisteredCourse.attendance;
-      // absence.value = newRegisteredCourse.absence;
-      // late.value = newRegisteredCourse.late;
-      // memo.value = newRegisteredCourse.memo;
-      // registeredCourse.value = newRegisteredCourse.registeredCourse;
+      // TODO: as を使わない実装
+      if (!course.course) return;
+      try {
+        await updateCourse(ports)(course as Required<RegisteredCourse>);
+      } catch (error) {
+        // TODO: エラー表示を実装
+        console.error(error);
+        return;
+      }
     };
 
     return {
@@ -318,7 +322,7 @@ export default defineComponent({
       instructor,
       late,
       memo,
-      methods,
+      method,
       name,
       registeredCourse,
       room,

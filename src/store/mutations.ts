@@ -16,13 +16,16 @@ export const mutations: MutationTree<GlobalState> = {
   setCourses(state, courses: RegisteredCourse[]) {
     state.courses = courses;
   },
-  deleteCourse(state, id: string) {
-    state.courses = state.courses.filter((course) => course.id !== id);
-  },
   setLabel(state, label: Select) {
     state.label = label;
   },
-  addCourse(state, course) {
+  deleteCourse(state, id: string) {
+    state.courses = state.courses.filter((course) => course.id !== id);
+  },
+  addCourse(state, course: RegisteredCourse) {
     state.courses.push(course);
+  },
+  addCourses(state, courses: RegisteredCourse[]) {
+    state.courses.concat(courses);
   },
 };

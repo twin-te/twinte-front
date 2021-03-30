@@ -1,12 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export type Calendar = {
-  month: number;
-  day: number;
-  week: string;
-  schedule: string;
-};
+import { Calendar } from "~/entities/calendar";
 
 export default defineComponent({
   name: "PageHeader",

@@ -196,6 +196,7 @@ import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
 import { useLabel } from "~/usecases/useLabel";
 import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { getCalendar } from "~/usecases/getCalendar";
+import { useHead } from "@vueuse/head";
 
 export default defineComponent({
   name: "Table",
@@ -210,6 +211,10 @@ export default defineComponent({
     ToggleButton,
   },
   setup: async () => {
+    useHead({
+      title: "Twin:te | ホーム",
+    });
+
     const ports = usePorts();
     const router = useRouter();
 
@@ -218,8 +223,14 @@ export default defineComponent({
 
     /** サブヘッダー部分 */
     const label = ref<Labels>({ left: "通常", right: "特殊" });
-    const currentModule = await getCurrentModule(ports);
-    const calendar = await getCalendar(ports);
+    const currentModule = await getCurrentModule(ports).catch((error) => {
+      // TODO: エラー表示処理を追加
+      throw error;
+    });
+    const calendar = await getCalendar(ports).catch((error) => {
+      // TODO: エラー表示処理を追加
+      throw error;
+    });
     const module = ref(currentModule);
     const isCurrentModule = computed(() => module.value === currentModule);
     const { whichSelected, onClickLabel } = useLabel(ports);
@@ -231,7 +242,12 @@ export default defineComponent({
     };
 
     /** table */
-    const storedCourses: RegisteredCourse[] = await getCourseList(ports);
+    const storedCourses: RegisteredCourse[] = await getCourseList(ports).catch(
+      (error) => {
+        // TODO: エラー表示処理を追加
+        throw error;
+      }
+    );
     const table = computed(() =>
       courseListToTable(storedCourses, module.value)
     );

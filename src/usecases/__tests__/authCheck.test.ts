@@ -5,7 +5,7 @@ describe(authCheck.name, () => {
   it("when user has not logined, should return false", async () => {
     const mockPort = {
       api: {
-        users: { me: { get: () => ({ status: 401, body: null }) } },
+        users: { me: { get: async () => ({ status: 401, body: null }) } },
       } as any,
       store: { commit: () => {} } as any,
     };
@@ -19,7 +19,7 @@ describe(authCheck.name, () => {
       api: {
         users: {
           me: {
-            get: () => ({
+            get: async () => ({
               status: 200,
               body: { id: "gb11514", name: "SampleUser" } as User,
             }),

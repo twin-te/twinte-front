@@ -11,14 +11,18 @@ export default defineComponent({
       type: Function,
       required: true,
     },
+    accept: {
+      type: String,
+      default: "",
+    },
   },
   emits: ["change-file"],
   setup: (_, { emit }) => {
     const fileName = ref("");
 
     const changeFile = (e: Event) => {
-      const file = (e.target as any).files[0];
-      fileName.value = file.name;
+      const file = (e.currentTarget as HTMLInputElement).files?.[0];
+      fileName.value = file?.name ?? "";
       emit("change-file", file);
     };
 
@@ -44,7 +48,13 @@ export default defineComponent({
       :for="name"
     >
       <slot />
-      <input type="file" :name="name" :id="name" @change="changeFile" />
+      <input
+        type="file"
+        :name="name"
+        :id="name"
+        :accept="accept"
+        @change="changeFile"
+      />
     </label>
   </div>
 </template>

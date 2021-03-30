@@ -63,12 +63,11 @@
             <div
               class="result__row"
               v-for="course in searchResult"
-              :key="course.id"
+              :key="course.course.id"
             >
               <CardCourse
-                :course="course"
                 @click-checkbox="course.isSelected = !course.isSelected"
-                @click-syllabus-link="$router.push('/')"
+                :course="courseToCard(course.course)"
                 :isChecked="course.isSelected"
               ></CardCourse>
             </div>
@@ -81,7 +80,7 @@
       </div>
       <section class="main__button">
         <Button
-          @click="addCourse"
+          @click="addCourse()"
           size="large"
           layout="fill"
           color="primary"
@@ -104,14 +103,15 @@
         <div class="modal__courses">
           <div
             class="duplicated-course"
-            v-for="data in duplicatedCourses"
-            :key="data.name"
+            v-for="duplicatedCourse in duplicatedCourses"
+            :key="duplicatedCourse.name"
           >
-            <p class="duplicated-course__name">{{ data.name }}</p>
+            <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
+            <!-- TODO: scheduleToString の実装をまつ -->
             <CourseDetailMini
               class="duplicated-course__detail"
               iconName="schedule"
-              :text="data.period"
+              :text="duplicatedCourse.schedules.toString()"
             ></CourseDetailMini>
           </div>
         </div>
@@ -137,8 +137,14 @@
 </template>
 
 <script lang="ts">
-import { CourseCard, dummyCourseCard } from "~/entities/courseCard";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { Course } from "~/api/@types";
+import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { Schedule } from "~/entities/schedule";
+import { searchCourse } from "~/usecases/searchCourse";
+import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle } from "@vueuse/core";
@@ -151,7 +157,6 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { Schedule } from "~/entities/schedule";
 
 export default defineComponent({
   components: {
@@ -167,6 +172,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const ports = usePorts();
 
     /** accordion */
     const [isAccordionOpen, toggleOpen] = useToggle();
@@ -178,10 +184,7 @@ export default defineComponent({
     const schedules = ref<Schedule[]>([
       { module: "指定なし", day: "指定なし", period: "指定なし" },
     ]);
-    const scheduleMax = 4;
-    const scheduleMin = 1;
     const addSchedule = () => {
-      if (schedules.value.length >= scheduleMax) return;
       schedules.value.push({
         module: "指定なし",
         day: "指定なし",
@@ -189,58 +192,74 @@ export default defineComponent({
       });
     };
     const removeSchedule = (index: number) => {
-      if (schedules.value.length <= scheduleMin) return;
       schedules.value.splice(index, 1);
     };
 
     /** result */
-    const searchResult = ref<CourseCard[]>([]);
+    const searchResult = ref<{ course: Course; isSelected: boolean }[]>([]);
 
     /** top */
     const isNoResultShow = ref(false);
     const searchWord = ref("");
-    const search = () => {
+    const search = async () => {
       isAccordionOpen.value = false;
-      // デモ用の動作
-      if (searchWord.value === "色彩") {
-        isNoResultShow.value = false;
-        searchResult.value = dummyCourseCard;
-      } else {
-        isNoResultShow.value = true;
-        searchResult.value = [];
+      let courses: Course[] = [];
+      try {
+        courses = await searchCourse(ports)(
+          schedules.value,
+          searchWord.value.split(/\s/)
+        );
+      } catch (error) {
+        console.error(error);
+        return;
       }
+      searchResult.value =
+        courses?.map((course: Course) => ({ course, isSelected: false })) ?? [];
+      isNoResultShow.value = courses.length === 0;
     };
 
     /** button */
     const btnState = computed(() => {
-      if (searchResult.value.some((v) => v.isSelected === true))
-        return "default";
+      if (searchResult.value.some((v) => v.isSelected)) return "default";
       else return "disabled";
     });
+
+    /** deulpication modal */
     const [
       duplicationModal,
       openDuplicationModal,
       closeDuplicationModal,
     ] = useSwitch();
-    const duplicated = ref(true);
-    const addCourse = (force: boolean = false) => {
+    const duplicatedCourses = ref<Required<Course>[]>([]);
+
+    const addCourse = async (showWarning = true) => {
       if (btnState.value == "disabled") return;
-      if (!duplicated.value || force) {
-        router.push("/");
-      } else {
+      duplicatedCourses.value = getDuplicatedCourses(ports)(
+        searchResult.value.filter((v) => v.isSelected).map((v) => v.course)
+      );
+      if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();
+        return;
       }
+      try {
+        await bulkAddCourseById(ports)(
+          searchResult.value
+            .filter((v) => v.isSelected)
+            .map((v) => v.course.code)
+        );
+      } catch (e) {
+        console.error(e);
+        return;
+      }
+      router.push("/");
     };
-    const duplicatedCourses = [
-      { name: "色彩計画演習", period: "春A 水2" },
-      { name: "色彩学", period: "春B 水2" },
-    ];
 
     return {
       addCourse,
       addSchedule,
       btnState,
       closeDuplicationModal,
+      courseToCard,
       duplicatedCourses,
       duplicationModal,
       isAccordionOpen,

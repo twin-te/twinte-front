@@ -13,29 +13,32 @@
   <div class="main">
     <div class="main__csv csv">
       <p class="csv__header">CSVファイル</p>
-      <InputButtonFile name="csv-file" @change-file="echo">
+      <InputButtonFile
+        name="csv-file"
+        @change-file="loadCourses"
+        accept="text/csv"
+      >
         アップロードする
       </InputButtonFile>
     </div>
-    <div v-if="valid" class="main__courses courses">
+    <div v-if="isCsvValid" class="main__courses courses">
       <div class="courses__contents">
         <CardCourse
-          v-for="{ checked, course } in courseData"
-          :key="course.id"
-          @click-checkbox="checked.value = !checked.value"
-          @click-syllabus-link="$router.push(course.url)"
-          :isChecked="checked.value"
-          :course="course"
+          v-for="course in loadedCourses"
+          :key="courseToCard(course.course).id"
+          @click-checkbox="course.isSelected = !course.isSelected"
+          :isChecked="course.isSelected"
+          :course="courseToCard(course.course)"
         >
         </CardCourse>
       </div>
     </div>
     <div v-else class="main__error">
-      授業を読み込めません。CSVファイルの内容をご確認ください。
+      {{ errorMessage }}
     </div>
     <div class="main__button">
       <Button
-        @click="addCourse"
+        @click="addCourse()"
         size="large"
         layout="fill"
         color="primary"
@@ -58,14 +61,15 @@
       <div class="modal__courses">
         <div
           class="duplicated-course"
-          v-for="data in duplicatedCourses"
-          :key="data.name"
+          v-for="duplicatedCourse in duplicatedCourses"
+          :key="duplicatedCourse.name"
         >
-          <p class="duplicated-course__name">{{ data.name }}</p>
+          <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
+          <!-- TODO: scheduleToString の実装をまつ -->
           <CourseDetailMini
             class="duplicated-course__detail"
             iconName="schedule"
-            :text="data.period"
+            :text="duplicatedCourse.schedules.toString()"
           ></CourseDetailMini>
         </div>
       </div>
@@ -79,7 +83,7 @@
         >キャンセル</Button
       >
       <Button
-        @click="addCourse(true)"
+        @click="addCourse(false)"
         size="medium"
         layout="fill"
         color="primary"
@@ -90,9 +94,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed } from "vue";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { Course } from "~/api/@types";
+import { courseToCard } from "~/entities/courseCard";
+import { defineComponent, ref, computed } from "vue";
+import { getCoursesByCode } from "~/usecases/getCourseByCode";
+import { getCoursesIdByFile } from "~/usecases/readCSV";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
-import { CourseCard } from "~/entities/courseCard";
+import { useSwitch } from "~/hooks/useSwitch";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
@@ -100,7 +111,6 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { useSwitch } from "~/hooks/useSwitch";
 
 export default defineComponent({
   name: "CSV",
@@ -115,99 +125,100 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const ports = usePorts();
 
-    const course1: CourseCard = {
-      id: "01EB512",
-      name: "色彩計画論特講色彩計画論特講色彩計画論特講",
-      period: "春A 水2",
-      location: "6A203",
-      url: "/syllabus/6A203",
-      isSelected: false,
-    };
-    const course2: CourseCard = {
-      id: "01EB512",
-      name: "色彩計画演習",
-      period: "春A 水2",
-      location: "6A203",
-      url: "/syllabus/6A203",
-      isSelected: false,
-    };
-
-    const courseData: {
-      checked: Ref<boolean>;
-      course: CourseCard;
-    }[] = [
-      {
-        checked: ref(true),
-        course: course1,
-      },
-      {
-        checked: ref(true),
-        course: course2,
-      },
-      {
-        checked: ref(true),
-        course: course1,
-      },
-      {
-        checked: ref(true),
-        course: course2,
-      },
-    ];
-
-    const upload = () => {
-      console.log("upload");
-    };
-
-    // ここを変更すると画面が変わります。
-    const fileName = "RSReferCsvaaaaaaaaaaaaaaaaaaaaaaa";
-    const valid = true;
-    const duplicated = ref(true);
+    const errorMessage = ref("");
+    const isCsvValid = ref(true);
+    const loadedCourses = ref<{ course: Course; isSelected: boolean }[]>([]);
 
     /** button */
     const btnState = computed(() => {
-      if (
-        courseData.every((data) => !data.checked.value) ||
-        !valid ||
-        !fileName
-      )
-        return "disabled";
-      else return "default";
+      if (loadedCourses.value.some((v) => v.isSelected) && isCsvValid.value)
+        return "default";
+      else return "disabled";
     });
 
-    /** modal */
+    /** deulpication modal */
     const [
       duplicationModal,
       openDuplicationModal,
       closeDuplicationModal,
     ] = useSwitch();
-    const duplicatedCourses = [
-      { name: "色彩計画演習", period: "春A 水2" },
-      { name: "色彩学", period: "春B 水2" },
-    ];
+    const duplicatedCourses = ref<Required<Course>[]>([]);
 
-    const addCourse = (force = false) => {
+    const addCourse = async (showWarning = true) => {
       if (btnState.value === "disabled") return;
-      if (!duplicated.value || force) router.push("/");
-      else openDuplicationModal();
+      duplicatedCourses.value = getDuplicatedCourses(ports)(
+        loadedCourses.value.filter((v) => v.isSelected).map((v) => v.course)
+      );
+      if (showWarning && duplicatedCourses.value.length > 0) {
+        openDuplicationModal();
+        return;
+      }
+      try {
+        await bulkAddCourseById(ports)(
+          loadedCourses.value
+            .filter((v) => v.isSelected)
+            .map((v) => v.course.code)
+        );
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+        errorMessage.value = error.message;
+        isCsvValid.value = false;
+      }
     };
 
-    const echo = (file: any) => {
-      console.log(file);
+    const loadCourses = async (file: File) => {
+      loadedCourses.value = [];
+      isCsvValid.value = true;
+      let courseCodes: string[] = [];
+      try {
+        courseCodes = await getCoursesIdByFile(file);
+      } catch (error) {
+        console.error(error);
+        errorMessage.value =
+          "授業を読み込めません。CSVファイルの内容をご確認ください。";
+        return;
+      }
+
+      let fetchedCourses: Course[] = [];
+      let missingCourseCodes: string[] = [];
+      try {
+        const res = await getCoursesByCode(ports)(courseCodes);
+        fetchedCourses = res.courses;
+        missingCourseCodes = res.missingCourseCodes;
+      } catch (error) {
+        console.error(error);
+        errorMessage.value = error.message;
+        isCsvValid.value = false;
+        return;
+      }
+      loadedCourses.value = fetchedCourses.map((course) => ({
+        course,
+        isSelected: true,
+      }));
+
+      if (missingCourseCodes.length > 0) {
+        errorMessage.value = `以下の講義は見つかりませんでした: ${missingCourseCodes.join(
+          ", "
+        )}`;
+        isCsvValid.value = false;
+      }
     };
 
     return {
-      courseData,
-      upload,
       addCourse,
-      fileName,
-      valid,
       btnState,
-      duplicationModal,
-      openDuplicationModal,
       closeDuplicationModal,
+      courseToCard,
       duplicatedCourses,
-      echo,
+      duplicationModal,
+      errorMessage,
+      isCsvValid,
+      loadCourses,
+      loadedCourses,
+      openDuplicationModal,
     };
   },
 });

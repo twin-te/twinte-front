@@ -2,9 +2,18 @@ import { CourseModule } from "~/api/@types";
 
 // 夏季休業中、春季休業中
 export type vacationModule = "その他";
-export type ModuleJa = "春A" | "春B" | "春C" | "秋A" | "秋B" | "秋C";
-export type ScheduleModuleJa = ModuleJa | vacationModule;
+export type ScheduleModuleJa = ModuleJa | vacationModule | "指定なし";
 export type ModuleMap = { [key in CourseModule]?: ModuleJa };
+export type ModuleJa =
+  | "通年"
+  | "春A"
+  | "春B"
+  | "春C"
+  | "夏季休業中"
+  | "秋A"
+  | "秋B"
+  | "秋C"
+  | "春季休業中";
 
 export const modules: CourseModule[] = [
   "SpringA",
@@ -30,14 +39,31 @@ export const scheduleModuleJaList: ScheduleModuleJa[] = [
   "秋B",
   "秋C",
   "その他",
+  "指定なし",
 ];
-export const moduleMap: ModuleMap = {
+export const fullModules: CourseModule[] = [
+  "SpringA",
+  "SpringB",
+  "SpringC",
+  "SummerVacation",
+  "FallA",
+  "FallB",
+  "FallC",
+  "SpringVacation",
+  // "Annual", apispec側が非対応
+];
+export const moduleMap: {
+  [key in Exclude<CourseModule, "Unknown">]: ModuleJa;
+} = {
+  Annual: "通年",
   SpringA: "春A",
   SpringB: "春B",
   SpringC: "春C",
+  SummerVacation: "夏季休業中",
   FallA: "秋A",
   FallB: "秋B",
   FallC: "秋C",
+  SpringVacation: "春季休業中",
 };
 export const courseModules: CourseModule[] = [
   "Annual",

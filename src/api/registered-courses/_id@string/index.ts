@@ -12,7 +12,12 @@ export type Methods = {
     status: 200
     /** 成功 */
     resBody: Types.RegisteredCourse
-    reqBody: Types.RegisteredCourseWithoutID
+
+    reqBody: {
+      course: {
+        id: string
+      }
+    } & Types.RegisteredCourseWithoutID
   }
 
   delete: {

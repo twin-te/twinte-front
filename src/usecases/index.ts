@@ -5,6 +5,7 @@ import instance, { ApiInstance } from "~/api/$api";
 import { useStore } from "~/store";
 import { useAsyncState } from "@vueuse/core";
 import dayjs, { ConfigType, Dayjs } from "dayjs";
+import qs from "qs";
 
 const baseURL =
   import.meta.env.VITE_API_URL === undefined
@@ -32,8 +33,10 @@ export const useUsecase = <T>(
 export const usePorts = () => ({
   api: instance(
     axiosClient(axios, {
-      withCredentials: true,
       baseURL,
+      paramsSerializer: (r) => qs.stringify(r),
+      validateStatus: () => true,
+      withCredentials: true,
     })
   ) as ApiInstance,
   store: useStore(),

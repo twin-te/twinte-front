@@ -1,4 +1,5 @@
 import { Course, CourseSchedule } from "~/api/@types";
+import { periodToString } from "~/usecases/periodToString";
 
 export type CourseCard = {
   id: string;
@@ -10,31 +11,27 @@ export type CourseCard = {
 };
 
 /**
- * periodを文字形式(ex 秋AB火12)に変換する関数
- */
-export const periodToString = (_schedules: CourseSchedule[]) => {
-  return "秋AB 火12";
-};
-
-/**
  * roomを文字形式(ex 6A203, オンライン)に変換する関数
  */
 export const locationToString = (_schedules: CourseSchedule[]) => {
   return "6A203";
 };
 
-export const getSyllbUrl = (courseId: string) => {
-  return `https://kdb.tsukuba.ac.jp/syllabi/2021/${courseId}/jpn/0`;
+export const getSyllbusUrl = (code: string) => {
+  return `https://kdb.tsukuba.ac.jp/syllabi/2021/${code}/jpn/`;
 };
 
-export const courseToCard = (course: Course): CourseCard => {
+export const courseToCard = (
+  course: Course,
+  isSelect: boolean = false
+): CourseCard => {
   const courseCard: CourseCard = {
-    id: course.id,
+    id: course.code,
     name: course.name,
     period: periodToString(course.schedules),
     location: locationToString(course.schedules),
-    url: getSyllbUrl(course.id),
-    isSelected: false,
+    url: getSyllbusUrl(course.code),
+    isSelected: isSelect,
   };
   return courseCard;
 };

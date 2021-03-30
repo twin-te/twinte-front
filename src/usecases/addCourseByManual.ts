@@ -1,6 +1,8 @@
+import { isValidStatus } from "~/usecases/api";
 import { Methods } from "~/api/registered-courses/index";
-import { RegisteredCourseWithoutID } from "~/api/@types";
+import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
+import { RegisteredCourseWithoutID } from "~/api/@types";
 
 export const adaptToApi = (
   course: RegisteredCourseWithoutID
@@ -20,14 +22,18 @@ export const adaptToApi = (
 export const addCourseByManual = ({ api, store }: Ports) => async (
   course: Methods["post"]["reqBody"]
 ) => {
-  try {
-    const { body: registeredCourse } = await api.registered_courses.post({
+  const { body, status, originalResponse } = await api.registered_courses
+    .post({
       body: course,
+    })
+    .catch(() => {
+      throw new NetworkError();
     });
-    store.commit("addCourse", registeredCourse);
-    return registeredCourse;
-  } catch (error) {
-    console.error(error);
-    return void 0;
+  if (isValidStatus(status)) {
+    store.commit("addCourse", body);
+    return body;
+  } else {
+    console.error(body);
+    throw new NetworkAccessError(originalResponse);
   }
 };
