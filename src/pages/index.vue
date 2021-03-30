@@ -334,7 +334,7 @@ export default defineComponent({
   @include landscape {
     margin: $spacing-4 $spacing-0 $spacing-0;
   }
-  height: calc(100vh - 7.6rem);
+  height: calc(100vh - 7.6rem - #{$safe-area-top});
   grid-template:
     "toggle module btn" $spacing-7
     "table table table" 1fr

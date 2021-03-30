@@ -147,10 +147,17 @@
   vertical-align: middle;
 }
 
+@mixin sensor-housing {
+  @supports (padding-top: $safe-area-top) {
+    // iphone上部の切り欠き部分を避ける
+    padding-top: calc(#{$safe-area-top} + 2rem);
+  }
+}
+
 // Media Queries
 @mixin tab-and-pc {
-  @media only screen and (min-height: $pc-and-tab-height) {
-    // 画面の高さが一定以上ある場合(このブレイクポイントでrootのremの大きさを切り替える)
+  @media only screen and (min-height: $pc-and-tab-height) and(min-width: $pc-and-tab-width) {
+    // 画面の高さと幅が一定以上ある場合(このブレイクポイントでrootのremの大きさを切り替える)
     @content;
   }
 }
