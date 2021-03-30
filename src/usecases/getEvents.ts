@@ -24,6 +24,8 @@ export const getEvents = async ({
     });
   if (isValidStatus(status)) {
     return body;
+  } else if ((status as number) === 401) {
+    return [];
   } else {
     console.error(body);
     throw new NetworkAccessError(originalResponse);

@@ -20,6 +20,9 @@ export const getCurrentModule = async ({
       console.error(error);
       throw new NetworkError();
     });
+  if ((status as number) === 401) {
+    return "春A";
+  }
   if (!isValidStatus(status)) {
     console.error(body);
     throw new NetworkAccessError(originalResponse);
