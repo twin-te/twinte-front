@@ -9,6 +9,7 @@ import Manual from "./pages/add/manual.vue";
 import Details from "./pages/course/_id/index.vue";
 import Edit from "./pages/course/_id/edit.vue";
 import Preview from "./pages/preview.vue";
+import Twins from "./pages/add/twins.vue";
 
 const history = createWebHistory();
 
@@ -26,6 +27,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/add/search", component: Search },
   { path: "/add/csv", component: CSV },
   { path: "/add/manual", component: Manual },
+  { path: "/add/twins", component: Twins },
   { path: "/course/:id/edit", component: Edit },
   { path: "/course/:id", component: Details },
   { path: "/preview", component: Preview },
