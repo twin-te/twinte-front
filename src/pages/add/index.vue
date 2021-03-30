@@ -22,9 +22,9 @@
           text="ワードや条件を指定して授業を検索・追加します。"
         ></CardAdd>
       </section>
-      <section class="main__card">
+      <section class="main__card" v-if="isMobile">
         <CardAdd
-          @click-next-button="$router.push('/')"
+          @click-next-button="$router.push('/add/twins')"
           iconName="get_app"
           heading="Twinsからインポート"
           text="Twinsで登録した授業をモジュール単位でインポートします。"
@@ -54,9 +54,10 @@
 import CardAdd from "~/components/CardAdd.vue";
 import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useStore } from "~/store";
 import { useHead } from "@vueuse/head";
+import { isMobile as isMobileFn } from "~/usecases/ua";
 
 export default defineComponent({
   name: "Add",
@@ -77,11 +78,14 @@ export default defineComponent({
       store.commit("setSidebar", !store.state.sidebar);
     };
 
+    const isMobile = ref(isMobileFn());
+
     return {
       CardAdd,
       IconButton,
       PageHeader,
       toggleSidebar,
+      isMobile,
     };
   },
 });
