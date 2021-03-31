@@ -1,7 +1,7 @@
 export type Provider = "google" | "apple" | "twitter";
 
 export const authBaseURL = import.meta.env.DEV
-  ? "https://api.dev.twinte.net/auth/v3"
+  ? "https://app.dev.twinte.net/auth/v3"
   : `${window.location.origin}/auth/v3`;
 
 export const getLoginUrl = (provider: Provider) => {
