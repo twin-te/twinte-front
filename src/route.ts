@@ -8,7 +8,6 @@ import CSV from "./pages/add/csv.vue";
 import Manual from "./pages/add/manual.vue";
 import Details from "./pages/course/_id/index.vue";
 import Edit from "./pages/course/_id/edit.vue";
-import Preview from "./pages/preview.vue";
 import Twins from "./pages/add/twins.vue";
 import ViewSettings from "./pages/view-settings.vue";
 
@@ -32,7 +31,6 @@ const routes: RouteRecordRaw[] = [
   { path: "/add/twins", component: Twins },
   { path: "/course/:id/edit", component: Edit },
   { path: "/course/:id", component: Details },
-  { path: "/preview", component: Preview },
 ];
 
 // 3. Create the router instance and pass the `routes` option
