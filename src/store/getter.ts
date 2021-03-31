@@ -2,6 +2,9 @@ import { GetterTree } from "vuex";
 import { GlobalState } from ".";
 
 export const getters: GetterTree<GlobalState, GlobalState> = {
+  user: (state) => {
+    return state.user;
+  },
   sidebar: (state) => {
     return state.sidebar;
   },

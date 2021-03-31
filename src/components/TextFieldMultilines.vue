@@ -13,11 +13,11 @@ export default defineComponent({
     },
     width: {
       type: String,
-      default: "100%", 
+      default: "100%",
     },
     height: {
       type: String,
-      default: "10rem", 
+      default: "10rem",
     },
   },
   emits: ["update:modelValue", "enter-text-field"],
@@ -40,7 +40,7 @@ export default defineComponent({
     :value="modelValue"
     :style="{
       width,
-      height, 
+      height,
     }"
     :placeholder="placeholder"
     class="text-field"
