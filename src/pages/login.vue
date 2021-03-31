@@ -8,21 +8,27 @@
         <img src="../assets/twintelogo-color-b.svg" />
       </div>
       <div class="main__head">ログイン方法を選択</div>
-      <img
-        class="main__login-button"
-        src="../assets/login-page/login-apple.svg"
-        alt="appleでログイン"
-      />
-      <img
-        class="main__login-button"
-        src="../assets/login-page/login-twitter.svg"
-        alt="twitterでログイン"
-      />
-      <img
-        class="main__login-button"
-        src="../assets/login-page/login-google.svg"
-        alt="googleでログイン"
-      />
+      <div @click="loginWith('apple')">
+        <img
+          class="main__login-button"
+          src="../assets/login-page/login-apple.svg"
+          alt="appleでログイン"
+        />
+      </div>
+      <div @click="loginWith('twitter')">
+        <img
+          class="main__login-button"
+          src="../assets/login-page/login-twitter.svg"
+          alt="twitterでログイン"
+        />
+      </div>
+      <div @click="loginWith('google')">
+        <img
+          class="main__login-button"
+          src="../assets/login-page/login-google.svg"
+          alt="googleでログイン"
+        />
+      </div>
       <div class="main__note">
         ※ ログインした場合、<a href="example.com">利用規約</a
         >に同意したものとします。<br />
@@ -40,8 +46,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { getLoginUrl, Provider } from "~/usecases/getLoginUrl";
+import { openUrl } from "~/usecases/openUrl";
 
-export default defineComponent({});
+export default defineComponent({
+  setup: () => {
+    const loginWith = (provider: Provider) => {
+      openUrl(getLoginUrl(provider));
+    };
+
+    return { loginWith };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

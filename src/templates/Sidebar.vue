@@ -7,6 +7,7 @@ import { useSidebar } from "~/usecases/useSidebar";
 import { isiOS, isMobile } from "~/usecases/ua";
 import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
 import { openUrl } from "~/usecases/openUrl";
+import { getLogoutUrl } from "~/usecases/getLoginUrl";
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -114,6 +115,10 @@ export default defineComponent({
       ].filter((v) => v.show)
     );
 
+    const logout = () => {
+      openUrl(getLogoutUrl());
+    };
+
     const navigateHandler = async (link: string) => {
       const shareMessage = "#Twinte";
       if (link.startsWith("https://")) {
@@ -138,7 +143,7 @@ export default defineComponent({
       }
     };
 
-    return { menu, settings, links, isSelected, navigateHandler };
+    return { menu, settings, links, isSelected, logout, navigateHandler };
   },
 });
 </script>
@@ -148,7 +153,7 @@ export default defineComponent({
     <section class="sidebar__head">
       <Button
         v-if="isLogin"
-        @click="$router.push('/logout')"
+        @click="logout"
         size="small"
         layout="fill"
         color="primary"
