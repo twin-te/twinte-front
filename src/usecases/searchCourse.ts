@@ -94,6 +94,7 @@ export const searchCourse = (ports: Ports) => async (
           onlyBlank,
           ports
         ),
+        limit: 100,
       },
     })
     .catch(() => {
