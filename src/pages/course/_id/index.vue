@@ -57,7 +57,7 @@
           v-model="memo"
           @update:modelValue="update"
           placeholder="メモを入力"
-          :height="10.3"
+          height="10.3rem"
           style="width: 100%"
         ></TextFieldMultilines>
         <section class="main__attendance attendance">
