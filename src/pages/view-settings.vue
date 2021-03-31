@@ -22,7 +22,7 @@
           />
         </div> -->
         <div class="main__content">
-          8限まで表示する
+          8限まで表示する(大学院生用)
           <ToggleSwitch
             class="switch"
             @click-toggle-switch="toggleBachelorMode"
