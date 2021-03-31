@@ -124,7 +124,7 @@
           >キャンセル</Button
         >
         <Button
-          @click="addCourse(true)"
+          @click="addCourse(false)"
           size="medium"
           layout="fill"
           color="primary"
