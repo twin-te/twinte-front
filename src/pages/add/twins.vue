@@ -1,5 +1,5 @@
 <template>
-  <div class="manual">
+  <div class="twins">
     <PageHeader>
       <template #left-button-icon>
         <IconButton
@@ -80,7 +80,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-.manual {
+.twins {
   @include max-width;
 }
 

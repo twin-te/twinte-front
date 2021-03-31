@@ -8,7 +8,8 @@ import { Table } from "~/entities/table";
  */
 export const courseListToTable = (
   courses: RegisteredCourse[],
-  moduleJa: ModuleJa
+  moduleJa: ModuleJa,
+  bachelorMode: boolean
 ): Table => {
   const module = moduleFromJa(moduleJa);
   const table = courses.reduce(
@@ -44,7 +45,10 @@ export const courseListToTable = (
     ] as Table
   );
 
-  if (table.some((arr) => arr[6].length !== 0 || arr[7].length !== 0))
+  if (
+    bachelorMode ||
+    table.some((arr) => arr[6].length !== 0 || arr[7].length !== 0)
+  )
     return table;
   return table.map((arr) => arr.slice(0, 6));
 };

@@ -11,6 +11,7 @@ export type GlobalState = {
   sidebar: boolean;
   courses: RegisteredCourse[];
   label: Select;
+  bachelorMode: boolean;
   toasts: Toast[];
 };
 
@@ -21,6 +22,7 @@ const initState: GlobalState = {
   sidebar: false,
   courses: [],
   label: "left",
+  bachelorMode: false,
   toasts: [],
 };
 
