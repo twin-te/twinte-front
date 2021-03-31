@@ -146,7 +146,9 @@ export default defineComponent({
         .then((res) => {
           console.log(res);
           displayToast(ports)(
-            "フィードバックを送信しました。ありがとうございます。"
+            "フィードバックを送信しました。ありがとうございます。",
+            5000,
+            "primary"
           );
           router.push("/");
         })

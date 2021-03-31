@@ -111,6 +111,7 @@ export default defineComponent({
           <Toast
             @click-close-button="closeToast(toast.id)"
             :text="toast.text"
+            :type="toast.type"
           ></Toast>
         </div>
       </transition-group>

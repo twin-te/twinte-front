@@ -1,5 +1,6 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { Toast } from "~/entities/toast";
 
 type Props = {
   onClickCloseButton: Function;
@@ -16,6 +17,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    type: {
+      type: String as PropType<Toast["type"]>,
+      default: "danger",
+    },
   },
   emits: ["click-close-button"],
   setup: (_: Props, { emit }) => {
@@ -30,8 +35,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="toast">
-    <div class="toast__text">{{ text }}</div>
+  <div :class="{ toast: true, [`toast--${type}`]: true }">
+    <div :class="{ toast__text: true, [`toast__text--${type}`]: true }">
+      {{ text }}
+    </div>
     <div @click="close()" class="toast__close-button">
       <div class="material-icons">close</div>
     </div>
@@ -48,15 +55,26 @@ export default defineComponent({
     "... text close ..." 1fr
     "... ...  ...   ..." 1.4rem
     / 1.4rem 1fr 4rem 1.4rem;
-  border: 0.1rem solid $danger;
+  border: 0.1rem solid;
   border-radius: $radius-1;
   box-shadow: $shadow-convex-hover;
   background: $base-liner;
+  &--primary {
+    border-color: $primary;
+  }
+  &--danger {
+    border-color: $danger;
+  }
   &__text {
     grid-area: text;
     white-space: pre-wrap;
     line-height: $multi-line;
-    color: $danger;
+    &--primary {
+      color: $primary;
+    }
+    &--danger {
+      color: $danger;
+    }
   }
   &__close-button {
     @include button-cursor;
