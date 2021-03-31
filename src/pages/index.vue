@@ -197,6 +197,7 @@ import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useHead } from "@vueuse/head";
 import { useStore } from "~/store";
+import { useBachelorMode } from "~/usecases/useBachelorMode";
 
 export default defineComponent({
   name: "Table",
@@ -237,9 +238,10 @@ export default defineComponent({
     };
 
     /** table */
+    const { bachelorMode } = useBachelorMode(ports);
     const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
-      courseListToTable(storedCourses, module.value)
+      courseListToTable(storedCourses, module.value, bachelorMode.value)
     );
     const specialTable = computed(() =>
       courseListToSpecialTable(storedCourses)

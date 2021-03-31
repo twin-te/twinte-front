@@ -85,8 +85,8 @@ export default defineComponent({
         {
           iconName: "view_compact",
           item: "表示設定",
-          link: "/view_compact",
-          show: false,
+          link: "/view-settings",
+          show: true,
         },
         {
           iconName: "notifications",

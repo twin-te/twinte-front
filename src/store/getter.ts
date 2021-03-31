@@ -11,6 +11,9 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   label: (state) => {
     return state.label;
   },
+  bachelorMode: (state) => {
+    return state.bachelorMode;
+  },
   toasts: (state) => {
     return state.toasts;
   },

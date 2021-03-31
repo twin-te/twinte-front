@@ -10,6 +10,7 @@ import Details from "./pages/course/_id/index.vue";
 import Edit from "./pages/course/_id/edit.vue";
 import Preview from "./pages/preview.vue";
 import Twins from "./pages/add/twins.vue";
+import ViewSettings from "./pages/view-settings.vue";
 
 const history = createWebHistory();
 
@@ -23,6 +24,7 @@ const routes: RouteRecordRaw[] = [
     component: Login,
     meta: { hasSidebar: false, hasWelcomeModal: false },
   },
+  { path: "/view-settings", component: ViewSettings },
   { path: "/add", component: Add },
   { path: "/add/search", component: Search },
   { path: "/add/csv", component: CSV },
