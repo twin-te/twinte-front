@@ -9,7 +9,7 @@ import qs from "qs";
 
 const baseURL =
   import.meta.env.VITE_API_URL === undefined
-    ? "https://api.dev.twinte.net/v3"
+    ? "https://app.dev.twinte.net/api/v3"
     : String(import.meta.env.VITE_API_URL);
 
 /**

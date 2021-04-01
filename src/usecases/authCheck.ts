@@ -15,7 +15,7 @@ export const authCheck = async ({ api, store }: Ports) => {
     });
   store.commit("setUser", body);
   if (isValidStatus(status)) {
-    return status === 200;
+    return (status as number) !== 401;
   } else if ((status as number) === 401) {
     // 401 は未ログインを示すのでエラーにしない
     // HACK: なぜか const status: 200 が指定されているので number にキャストする

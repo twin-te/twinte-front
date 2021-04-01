@@ -47,7 +47,9 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .error {
+  @include center-asolute;
   @include center-flex(column);
+  width: 80%;
   &__icon {
     font-size: 10rem;
     opacity: 0.2;

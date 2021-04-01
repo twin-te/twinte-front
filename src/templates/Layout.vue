@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, watch } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import Toast from "~/components/Toast.vue";
 import Sidebar from "./Sidebar.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
@@ -8,7 +8,7 @@ import Button from "~/components/Button.vue";
 import { getCourseList } from "~/usecases/getCourseList";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useStore } from "~/store";
-import { usePorts, useUsecase } from "~/usecases";
+import { usePorts } from "~/usecases";
 import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
 import { Toast as ToastContent } from "~/entities/toast";
@@ -21,11 +21,8 @@ export default defineComponent({
     const ports = usePorts();
 
     // welcome modal
-    const { state: isLogin } = useUsecase(authCheck, true);
-    const [welcomeModal, , closeWelcomeModal, , setWelcomeModal] = useSwitch(
-      false
-    );
-    watch(isLogin, (v) => setWelcomeModal(!v));
+    const isLogin = ref(await authCheck(ports));
+    const [welcomeModal, , closeWelcomeModal] = useSwitch(!isLogin.value);
 
     // Toast
     const toasts = computed<ToastContent[]>(() => {
