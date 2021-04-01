@@ -191,11 +191,13 @@ export default defineComponent({
       }));
 
       if (missingCourseCodes.length > 0) {
-        displayToast(ports)(
+        displayToast(
+          ports
+        )(
           `以下の講義番号はシラバスに存在しませんでした。存在する講義のみを表示しています。\n${missingCourseCodes.join(
             "  "
           )}`,
-          0
+          { displayPeriod: 0 }
         );
       }
     };

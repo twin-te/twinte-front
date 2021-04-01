@@ -10,11 +10,12 @@ export type Toast = {
  * トースト通知を表示する。指定した ms 後に消える。
  * 0を指定した場合は自動で消えない。
  */
-// TODO: オプションはオブジェクトで渡せるように
 export const displayToast = ({ store }: Ports) => (
   text: string,
-  displayPeriod = 5000,
-  type: Toast["type"] = "danger"
+  {
+    displayPeriod = 5000,
+    type = "danger",
+  }: Partial<{ displayPeriod: number; type: Toast["type"] }> = {}
 ) => {
   // WARN: index で id を決めると transition-group がバグる
   const id = Math.round(Math.random() * 100);

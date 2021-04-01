@@ -156,8 +156,9 @@ export default defineComponent({
           console.log(res);
           displayToast(ports)(
             "フィードバックを送信しました。ありがとうございます。",
-            5000,
-            "primary"
+            {
+              type: "primary",
+            }
           );
           router.push("/");
         })
