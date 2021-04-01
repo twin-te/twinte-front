@@ -196,6 +196,9 @@ export default defineComponent({
     @include landscape {
       margin-bottom: $spacing-7;
     }
+    button {
+      margin: auto;
+    }
   }
 }
 .feedback {
