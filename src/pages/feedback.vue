@@ -69,7 +69,7 @@
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
-          state="default"
+          :state="btnStatus"
           >フィードバックを送信</Button
         >
       </section>
@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { useHead } from "@vueuse/head";
 import axios from "axios";
 import Button from "~/components/Button.vue";
@@ -132,6 +132,15 @@ export default defineComponent({
       お問い合わせ: "返信用のメールアドレスをご記入下さい。",
     };
 
+    const btnStatus = computed(() => {
+      if (
+        feedbackContent.value === "" ||
+        (feedbackType.value === "お問い合わせ" && email.value === "")
+      )
+        return "disabled";
+      return "default";
+    });
+
     const sendFeedback = () => {
       const formData = new FormData();
       formData.append("entry.1670691903", store.getters.user.id);
@@ -160,6 +169,7 @@ export default defineComponent({
     };
 
     return {
+      btnStatus,
       email,
       emailNote,
       feedbackContent,
