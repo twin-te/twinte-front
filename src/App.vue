@@ -40,11 +40,6 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
-.error {
-  @include center-asolute;
-  width: 80%;
-}
-
 .loading {
   @include center-asolute;
   opacity: 0.5;
