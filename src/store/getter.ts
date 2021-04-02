@@ -17,4 +17,7 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   toasts: (state) => {
     return state.toasts;
   },
+  displayedYear: (state) => {
+    return state.displayedYear;
+  },
 };

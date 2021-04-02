@@ -13,6 +13,7 @@ export type GlobalState = {
   label: Select;
   bachelorMode: boolean;
   toasts: Toast[];
+  displayedYear: number | null;
 };
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
@@ -24,6 +25,7 @@ const initState: GlobalState = {
   label: "left",
   bachelorMode: false,
   toasts: [],
+  displayedYear: null,
 };
 
 export const store = createStore<GlobalState>({

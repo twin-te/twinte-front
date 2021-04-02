@@ -12,6 +12,7 @@ import { usePorts } from "~/usecases";
 import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
 import { Toast as ToastContent } from "~/entities/toast";
+import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
@@ -35,6 +36,7 @@ export default defineComponent({
     };
 
     // HACK: vuex を初期化する目的で呼び出している
+    useDisplayedYear(ports);
     await getCourseList(ports);
 
     return {
