@@ -23,6 +23,9 @@ export const mutations: MutationTree<GlobalState> = {
   setBachelorMode(state, mode: boolean) {
     state.bachelorMode = mode;
   },
+  setDisplayedYear(state, year: number | null) {
+    state.displayedYear = year;
+  },
   deleteCourse(state, id: string) {
     state.courses = state.courses.filter((course) => course.id !== id);
   },

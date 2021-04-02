@@ -29,23 +29,34 @@
             :isChecked="bachelorMode"
           />
         </div>
+        <div class="main__content--dropdown">
+          <p>時間割に表示する年度</p>
+          <Dropdown
+            @update:selectedOption="updateYear"
+            :options="displayedYearOptions"
+            v-model:selectedOption="selectedYear"
+          ></Dropdown>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useHead } from "@vueuse/head";
+import Dropdown from "~/components/Dropdown.vue";
 import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ToggleSwitch from "~/components/ToggleSwitch.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { usePorts } from "~/usecases";
+import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 
 export default defineComponent({
   components: {
+    Dropdown,
     IconButton,
     PageHeader,
     ToggleSwitch,
@@ -62,7 +73,34 @@ export default defineComponent({
     const isDark = useDark();
     const toggleDark = useToggle(isDark);
 
-    return { isDark, toggleDark, bachelorMode, toggleBachelorMode };
+    const displayedYearOptions = [
+      "指定なし",
+      "2021年度",
+      "2020年度",
+      "2019年度",
+    ];
+    const { displayedYear, setDisplayedYear } = useDisplayedYear(ports);
+    const selectedYear = ref(
+      displayedYear.value === null ? "指定なし" : displayedYear.value + "年度"
+    );
+    const updateYear = (year: string) => {
+      selectedYear.value = year;
+      setDisplayedYear(
+        selectedYear.value === "指定なし"
+          ? null
+          : Number(selectedYear.value.slice(0, 4))
+      );
+    };
+
+    return {
+      isDark,
+      toggleDark,
+      bachelorMode,
+      toggleBachelorMode,
+      displayedYearOptions,
+      selectedYear,
+      updateYear,
+    };
   },
 });
 </script>
@@ -87,6 +125,16 @@ export default defineComponent({
 
     & .switch {
       margin: 0 0 0 auto;
+    }
+    &--dropdown {
+      display: grid;
+      gap: 0.8rem;
+      padding: 2rem 0;
+      p {
+        line-height: $single-line;
+        font-weight: 500;
+        color: $text-main;
+      }
     }
   }
 }
