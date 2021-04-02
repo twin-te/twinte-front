@@ -55,6 +55,7 @@ export default defineComponent({
   <div class="layout">
     <Sidebar
       v-if="$route.meta.hasSidebar ?? true"
+      :isLogin="isLogin"
       :class="{ 'sidebar--close': isClose }"
     ></Sidebar>
     <GrayFilter
