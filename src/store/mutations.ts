@@ -35,4 +35,8 @@ export const mutations: MutationTree<GlobalState> = {
   addToast(state, toast: Toast) {
     state.toasts.push(toast);
   },
+  updateCourse(state, newCourse: RegisteredCourse) {
+    const idx = state.courses.findIndex((c) => c.id === newCourse.id);
+    if (idx !== -1) state.courses.splice(idx, 1, newCourse);
+  },
 };
