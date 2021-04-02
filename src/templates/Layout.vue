@@ -36,8 +36,8 @@ export default defineComponent({
     };
 
     // HACK: vuex を初期化する目的で呼び出している
-    await getCourseList(ports);
     useDisplayedYear(ports);
+    await getCourseList(ports);
 
     return {
       isLogin,
