@@ -18,7 +18,10 @@ export const apiToDisplaySchedule = (api: CourseSchedule[]): Schedule[] =>
     period: period === 0 ? defaultValue : (String(period) as SchedulePeriod),
   }));
 
-export const scheduleToApi = (schedules: Schedule[]): CourseSchedule[] =>
+export const scheduleToApi = (
+  schedules: Schedule[],
+  room: string
+): CourseSchedule[] =>
   schedules.map((schedule) => ({
     day: jaToDay(schedule.day),
     module: jaToModule(schedule.module),
@@ -26,7 +29,7 @@ export const scheduleToApi = (schedules: Schedule[]): CourseSchedule[] =>
       schedule.period === "指定なし" || schedule.period === "その他"
         ? 0
         : Number(schedule.period),
-    room: "",
+    room,
   }));
 
 export const fullModulesMap: Record<

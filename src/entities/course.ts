@@ -38,7 +38,10 @@ export const displayCourseToApi = (
   memo: displayedCourse.memo ?? "",
   name: displayedCourse.name ?? "",
   instructor: displayedCourse.instructor ?? "",
-  schedules: scheduleToApi(displayedCourse.schedules ?? []),
+  schedules: scheduleToApi(
+    displayedCourse.schedules ?? [],
+    displayedCourse.room ?? ""
+  ),
   methods: methods.map(jaToMethod),
 });
 
