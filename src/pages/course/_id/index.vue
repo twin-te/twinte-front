@@ -287,7 +287,10 @@ export default defineComponent({
       },
     ];
 
-    const update = async () => {
+    const update = async (newMemo?: string) => {
+      if (newMemo != null) {
+        memo.value = newMemo;
+      }
       const course = displayCourseToApi({
         code: code.value,
         courseId: courseId.value,
