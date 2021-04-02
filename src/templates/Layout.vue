@@ -149,13 +149,19 @@ export default defineComponent({
 
 .sidebar {
   z-index: 13;
-  @include portrait {
-    position: fixed;
+  position: fixed;
+  transition: $transition-all;
+  @include tab-and-pc {
+    @include landscape {
+      position: relative;
+    }
   }
   &--close {
-    @include portrait {
-      transform: translateX(-20.8rem);
-      width: 0;
+    transform: translateX(-23rem);
+    @include tab-and-pc {
+      @include landscape {
+        transform: translateX(0rem);
+      }
     }
   }
 }
