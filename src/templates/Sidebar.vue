@@ -156,7 +156,7 @@ export default defineComponent({
         @click="logout"
         size="small"
         layout="fill"
-        color="primary"
+        color="base"
         :pauseActiveStyle="false"
       >
         ログアウト
