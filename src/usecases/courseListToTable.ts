@@ -1,4 +1,4 @@
-import { CourseSchedule, RegisteredCourse } from "~/api/@types";
+import { RegisteredCourse } from "~/api/@types";
 import { weekdayNum } from "~/entities/day";
 import { moduleFromJa, ModuleJa } from "~/entities/module";
 import { Table } from "~/entities/table";
@@ -16,12 +16,12 @@ export const courseListToTable = (
     (prevTable, course) => {
       const name = course.name ?? (course.course?.name as string);
       const courseId = course.id;
-      const schedules =
-        course.schedules ?? (course.course?.schedules as CourseSchedule[]);
+      const schedules = course.schedules ?? course.course?.schedules ?? [];
       schedules
         .filter(
           (schedule) =>
             schedule.module === module &&
+            schedule.day !== "Sat" &&
             weekdayNum(schedule.day) !== -1 &&
             1 <= schedule.period &&
             schedule.period <= 8
