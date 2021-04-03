@@ -54,8 +54,8 @@
         </section>
         <TextFieldMultilines
           class="main__memo"
-          @update:modelValue="update"
           v-model="memo"
+          @update:modelValue="update"
           placeholder="メモを入力"
           :height="10.3"
           style="width: 100%"
@@ -287,10 +287,7 @@ export default defineComponent({
       },
     ];
 
-    const update = async (newMemo?: string) => {
-      if (newMemo != null) {
-        memo.value = newMemo;
-      }
+    const update = async () => {
       const course = displayCourseToApi({
         code: code.value,
         courseId: courseId.value,
