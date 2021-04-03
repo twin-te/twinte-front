@@ -54,8 +54,8 @@
         </section>
         <TextFieldMultilines
           class="main__memo"
-          @update:modelValue="update"
           v-model="memo"
+          @update:modelValue="update"
           placeholder="メモを入力"
           :height="10.3"
           style="width: 100%"
