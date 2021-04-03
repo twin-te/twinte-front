@@ -118,10 +118,8 @@
 //  Sidebar直下のページで使う。横向きレイアウトの時にヘッダーの左のボタンを表示しない。
 @mixin header-left-button-delete {
   .header__left-button-icon {
-    @include tab-and-pc {
-      @include landscape {
-        display: none;
-      }
+    @include landscape {
+      display: none;
     }
   }
 }
@@ -172,7 +170,7 @@
 }
 
 @mixin landscape {
-  @media screen and (orientation: landscape) {
+  @media screen and (min-width: 678px) and(orientation: landscape) {
     // 画面が横向きの場合
     @content;
   }
