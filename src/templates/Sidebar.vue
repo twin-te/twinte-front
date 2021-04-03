@@ -132,6 +132,7 @@ export default defineComponent({
               : window.android?.openSettings();
             break;
           case "share":
+            closeSidebar();
             await asyncSetTimeout(300);
             isiOS()
               ? window.webkit?.messageHandlers?.share?.postMessage(shareMessage)
