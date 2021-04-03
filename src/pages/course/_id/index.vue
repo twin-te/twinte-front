@@ -304,7 +304,6 @@ export default defineComponent({
         registeredCourse: registeredCourse.value,
       });
       // TODO: as を使わない実装
-      if (!course.course) return;
       try {
         await updateCourse(ports)(course as Required<RegisteredCourse>);
       } catch (error) {
