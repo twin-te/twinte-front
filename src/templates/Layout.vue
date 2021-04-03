@@ -154,17 +154,13 @@ export default defineComponent({
   z-index: 13;
   position: fixed;
   transition: $transition-all;
-  @include tab-and-pc {
-    @include landscape {
-      position: relative;
-    }
+  @include landscape {
+    position: relative;
   }
   &--close {
     transform: translateX(-23rem);
-    @include tab-and-pc {
-      @include landscape {
-        transform: translateX(0rem);
-      }
+    @include landscape {
+      transform: translateX(0rem);
     }
   }
 }
