@@ -30,7 +30,7 @@
         />
       </a>
       <div class="main__note">
-        ※ ログインした場合、<a href="example.com">利用規約</a
+        ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a
         >に同意したものとします。<br />
         ※Twin:teにログインしたことがない場合は、選択したログイン方法と紐づいたアカウントが自動で作成されます。
       </div>
