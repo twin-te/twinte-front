@@ -5,6 +5,7 @@ import { Select } from "~/components/ToggleButton.vue";
 import { mutations } from "./mutations";
 import { getters } from "./getter";
 import { Toast } from "~/entities/toast";
+import { ModuleJa } from "~/entities/module";
 
 export type GlobalState = {
   user: User | null;
@@ -14,6 +15,7 @@ export type GlobalState = {
   bachelorMode: boolean;
   toasts: Toast[];
   displayedYear: number | null;
+  module: ModuleJa | null;
 };
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
@@ -26,6 +28,7 @@ const initState: GlobalState = {
   bachelorMode: false,
   toasts: [],
   displayedYear: null,
+  module: null,
 };
 
 export const store = createStore<GlobalState>({
