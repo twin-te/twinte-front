@@ -58,7 +58,10 @@
               :mandatory="feedbackType === 'お問い合わせ'"
             ></Label>
             <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
-            <TextFieldSingleLine v-model="email" placeholder="xxx@example.com / @te_twin"></TextFieldSingleLine>
+            <TextFieldSingleLine
+              v-model="email"
+              placeholder="xxx@example.com / @te_twin"
+            ></TextFieldSingleLine>
           </section>
         </div>
       </div>
@@ -131,7 +134,8 @@ export default defineComponent({
     const emailNote = {
       バグの報告:
         "より詳しい原因解明のため開発チームから連絡を差し上げる場合がございます。ご協力いただける場合はメールアドレスまたはTwitterアカウントをご記入ください。",
-      お問い合わせ: "返信用のメールアドレスまたはTwitterアカウントをご記入下さい。",
+      お問い合わせ:
+        "返信用のメールアドレスまたはTwitterアカウントをご記入下さい。",
     };
 
     const btnStatus = computed(() => {
