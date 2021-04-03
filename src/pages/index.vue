@@ -398,6 +398,7 @@ export default defineComponent({
   grid-template-columns: 2rem repeat(5, 1fr);
   grid-auto-flow: column;
   gap: 0.2rem;
+  overflow-y: auto;
 
   &__period {
     color: $text-sub;
