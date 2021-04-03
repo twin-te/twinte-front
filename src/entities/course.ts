@@ -29,7 +29,7 @@ export type DisplayCourse = {
 export const displayCourseToApi = (
   displayedCourse: Partial<DisplayCourse> &
     Pick<DisplayCourse, "registeredCourse" | "absence" | "attendance" | "late">,
-  methods: MethodJa[] = []
+  methods?: MethodJa[]
 ): RegisteredCourse => ({
   ...displayedCourse.registeredCourse,
   attendance: displayedCourse.attendance,
@@ -39,7 +39,11 @@ export const displayCourseToApi = (
   name: displayedCourse.name ?? "",
   instructor: displayedCourse.instructor ?? "",
   schedules: scheduleToApi(displayedCourse.schedules ?? []),
-  methods: methods.map(jaToMethod),
+  methods:
+    methods?.map(jaToMethod) ??
+    displayedCourse.registeredCourse.methods ??
+    displayedCourse.registeredCourse.course?.methods ??
+    [],
 });
 
 const blankToChar = (value: string | undefined, char: string) =>
@@ -77,7 +81,9 @@ export const apiToDisplayCourse = (
     char
   ),
   method: blankToChar(
-    registeredCourse.methods?.map(methodToJa).join(", "),
+    (registeredCourse.methods ?? registeredCourse.course?.methods ?? [])
+      .map(methodToJa)
+      .join(", "),
     char
   ),
   courseId: registeredCourse.id,
