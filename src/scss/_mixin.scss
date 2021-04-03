@@ -170,7 +170,7 @@
 }
 
 @mixin landscape {
-  @media screen and (orientation: landscape) {
+  @media screen and (min-width: 678px) and(orientation: landscape) {
     // 画面が横向きの場合
     @content;
   }
