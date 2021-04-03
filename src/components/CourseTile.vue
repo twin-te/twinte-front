@@ -83,7 +83,7 @@ export default defineComponent({
   border-radius: $radius-1;
   text-align: left;
   transition: $transition-box-shadow;
-  overflow-y: scroll;
+  overflow: hidden;
   &.--default {
     background-color: $primary-light;
     &:active {
@@ -111,7 +111,10 @@ export default defineComponent({
   }
   &__course-room {
     @include text-course-tile-id;
-    overflow-wrap: anywhere;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
   }
   &__caution {
     position: absolute;
