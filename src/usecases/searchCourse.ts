@@ -60,7 +60,7 @@ const schedulesToTimetable = (
   onlyBlank: boolean,
   ports: Ports
 ): SearchCourseTimetableQuery | undefined => {
-  let countFalse = 0;
+  let allTrue = true;
   const timetable: Partial<SearchCourseTimetableQuery> = {};
   for (const module of fullModules) {
     timetable[module] = {};
@@ -73,11 +73,13 @@ const schedulesToTimetable = (
           ? !isSchedulesDuplicated(ports)([{ module, day, period, room: "" }])
           : isWishinSchedules(schedules, module, day, period);
         timetable[module][day][period] = ret;
-        if (ret === false) countFalse++;
+        if (ret === false) allTrue = false;
       }
     }
   }
-  return countFalse > 0 ? (timetable as SearchCourseTimetableQuery) : undefined;
+  return allTrue === true
+    ? undefined
+    : (timetable as SearchCourseTimetableQuery);
 };
 
 export const searchCourse = (ports: Ports) => async (
