@@ -35,7 +35,6 @@
             @update:selectedOption="updateYear"
             :options="displayedYearOptions"
             v-model:selectedOption="selectedYear"
-            placeholder="自動(現在の年度)"
           ></Dropdown>
         </div>
       </div>
