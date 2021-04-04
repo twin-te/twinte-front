@@ -30,8 +30,8 @@ export const getSaturdayCourseList = (
   }, []);
 
   // 比較する インデックス より前に同じ要素が存在するのか (hasSame) で大小関係が異なる
-  // [T, F ...] < [F, T ...]
-  // [T, F ...] > [T, T ...]
+  // [T, F ...] < [F, T ...] 春A < 春B
+  // [T, F ...] > [T, T ...] 春A < 春AB
   unsortedSaturdayCourseList.sort((prev, next) => {
     let hasSame = false;
     for (let i = 0; i < 9; i++) {
@@ -40,7 +40,7 @@ export const getSaturdayCourseList = (
       const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);
       return hasSame ? ans : -ans;
     }
-    return prev.name <= next.name ? -1 : 1;
+    return prev.name.localeCompare(next.name);
   });
 
   return unsortedSaturdayCourseList.map<SaturdayCourse>((c) => ({

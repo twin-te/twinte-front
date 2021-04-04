@@ -86,14 +86,14 @@ export const courseListToSpecialTable = (
       unsortedSpecialTable[sd].sort((prev, next) => {
         // "夏休"と"夏休,春休"の大小関係を考慮
         // モジュールの始まりが同じなら早く終わる方をより上に表示する
-        let flg = false;
+        let hasSame = false;
         for (let i = 0; i < 9; i++) {
-          if (!flg && prev.moduleFlg[i] && next.moduleFlg[i]) flg = true;
+          if (prev.moduleFlg[i] && next.moduleFlg[i]) hasSame = true;
           if (prev.moduleFlg[i] === next.moduleFlg[i]) continue;
           const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);
-          return flg ? ans : -ans;
+          return hasSame ? ans : -ans;
         }
-        return prev.name <= next.name ? -1 : 1;
+        return prev.name.localeCompare(next.name);
       });
       st[sd] = unsortedSpecialTable[sd].map((sc) => ({
         module: moduleFlgToDisplay(sc.moduleFlg),
