@@ -20,7 +20,7 @@ export type SpecialCourse = {
   room: string;
 };
 
-export type SatdayCourse = {
+export type SaturdayCourse = {
   id: string;
   name: string;
   module: string[];

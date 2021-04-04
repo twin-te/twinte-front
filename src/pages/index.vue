@@ -285,7 +285,6 @@ export default defineComponent({
     const saturdayCourseList = computed(() =>
       getSaturdayCourseList(storedCourses)
     );
-    console.log(saturdayCourseList.value);
     const setCurrentModule = () => {
       setDisplayedModule(currentModule);
     };

@@ -4,12 +4,12 @@ import {
   ModuleFlg,
   moduleFlgToDisplay,
 } from "~/entities/module";
-import { SatdayCourse } from "~/entities/table";
+import { SaturdayCourse } from "~/entities/table";
 
 export const getSaturdayCourseList = (
   courses: RegisteredCourse[]
-): SatdayCourse[] => {
-  const unsortedSatdayCourseList = courses.reduce<
+): SaturdayCourse[] => {
+  const unsortedSaturdayCourseList = courses.reduce<
     { moduleFlg: ModuleFlg; name: string; room: string; id: string }[]
   >((acc, course) => {
     const schedules: CourseSchedule[] =
@@ -29,7 +29,7 @@ export const getSaturdayCourseList = (
     return acc;
   }, []);
 
-  unsortedSatdayCourseList.sort((prev, next) => {
+  unsortedSaturdayCourseList.sort((prev, next) => {
     let flg = false;
     for (let i = 0; i < 9; i++) {
       if (!flg && prev.moduleFlg[i] && next.moduleFlg[i]) flg = true;
@@ -40,7 +40,7 @@ export const getSaturdayCourseList = (
     return prev.name <= next.name ? -1 : 1;
   });
 
-  return unsortedSatdayCourseList.map<SatdayCourse>((c) => ({
+  return unsortedSaturdayCourseList.map<SaturdayCourse>((c) => ({
     module: moduleFlgToDisplay(c.moduleFlg),
     name: c.name,
     room: c.room,
