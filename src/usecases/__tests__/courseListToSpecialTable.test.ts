@@ -537,12 +537,10 @@ describe(courseListToSpecialTable.name, () => {
       course2,
       course3,
       course4,
-      course5,
       course6,
       course7,
       course8,
       course9,
-      course10,
       course11,
       course12,
       course13,
@@ -551,7 +549,7 @@ describe(courseListToSpecialTable.name, () => {
     ];
     const table: SpecialTable = {
       Intensive: [res15, res2, res11, res1, res3],
-      Appointment: [res14, res13, res12, res4, res5, res10],
+      Appointment: [res14, res13, res12, res4],
       AnyTime: [res7, res8, res6, res9],
     };
     expect(courseListToSpecialTable(courses)).toEqual(table);

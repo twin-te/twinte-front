@@ -125,6 +125,37 @@
             </div>
           </div>
         </template>
+        <div class="special-header">
+          <div class="special-header__label">土曜</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-container">
+          <div
+            class="special-contents"
+            v-for="course in saturdayCourseList"
+            :key="course.id"
+          >
+            <div class="special-contents__module">
+              <span v-for="m in course.module" :key="m">{{ m }}</span>
+            </div>
+            <CourseTile
+              class="special-contents__course"
+              @click="$router.push(`/course/${course.id}`)"
+              state="default"
+              :name="course.name"
+              :room="course.room"
+            />
+          </div>
+          <div v-if="saturdayCourseList.length === 0" class="special-contents">
+            <div class="special-contents__module"></div>
+            <CourseTile
+              class="special-contents__course"
+              state="none"
+              name=""
+              room=""
+            />
+          </div>
+        </div>
       </section>
     </section>
   </div>
@@ -199,6 +230,7 @@ import { useHead } from "@vueuse/head";
 import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
+import { getSaturdayCourseList } from "~/usecases/getSaturdayCourseList";
 
 export default defineComponent({
   name: "Table",
@@ -249,6 +281,9 @@ export default defineComponent({
     );
     const specialTable = computed(() =>
       courseListToSpecialTable(storedCourses)
+    );
+    const saturdayCourseList = computed(() =>
+      getSaturdayCourseList(storedCourses)
     );
     const setCurrentModule = () => {
       setDisplayedModule(currentModule);
@@ -312,6 +347,7 @@ export default defineComponent({
       isCurrentModule,
       table,
       specialTable,
+      saturdayCourseList,
       weeks,
       specialDayMap,
       onClickCourseTile,
