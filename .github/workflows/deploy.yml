@@ -1,0 +1,37 @@
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'production'
+
+defaults:
+  run:
+    working-directory: ./kustomize
+
+jobs:
+  build:
+    if: ${{ github.ref == 'refs/heads/main' && github.event.inputs.environment == 'production' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Kustomize
+      run: |
+        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+
+    - name: Login to Kubernetes
+      run: |
+        mkdir -p ~/.kube
+        echo "$KUBE_CONFIG" > ~/.kube/config
+      env:
+        KUBE_CONFIG: "${{secrets.KUBE_CONFIG}}"
+
+    - name: Deploy
+      run: |
+        ./kustomize edit set image ghcr.io/twin-te/twinte-front:main=ghcr.io/twin-te/twinte-front:sha-${GITHUB_SHA::7}
+        ./kustomize build . | kubectl apply -f -
+        kubectl rollout status deploy/front

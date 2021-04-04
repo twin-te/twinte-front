@@ -8,29 +8,29 @@
         <img src="../assets/twintelogo-color-b.svg" />
       </div>
       <div class="main__head">ログイン方法を選択</div>
-      <div @click="loginWith('apple')">
+      <a :href="getLoginUrl('apple')">
         <img
           class="main__login-button"
           src="../assets/login-page/login-apple.svg"
           alt="appleでログイン"
         />
-      </div>
-      <div @click="loginWith('twitter')">
+      </a>
+      <a :href="getLoginUrl('twitter')">
         <img
           class="main__login-button"
           src="../assets/login-page/login-twitter.svg"
           alt="twitterでログイン"
         />
-      </div>
-      <div @click="loginWith('google')">
+      </a>
+      <a :href="getLoginUrl('google')">
         <img
           class="main__login-button"
           src="../assets/login-page/login-google.svg"
           alt="googleでログイン"
         />
-      </div>
+      </a>
       <div class="main__note">
-        ※ ログインした場合、<a href="example.com">利用規約</a
+        ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a
         >に同意したものとします。<br />
         ※Twin:teにログインしたことがない場合は、選択したログイン方法と紐づいたアカウントが自動で作成されます。
       </div>
@@ -46,16 +46,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getLoginUrl, Provider } from "~/usecases/getLoginUrl";
-import { openUrl } from "~/usecases/openUrl";
+import { getLoginUrl } from "~/usecases/getLoginUrl";
 
 export default defineComponent({
   setup: () => {
-    const loginWith = (provider: Provider) => {
-      openUrl(getLoginUrl(provider));
-    };
-
-    return { loginWith };
+    return { getLoginUrl };
   },
 });
 </script>

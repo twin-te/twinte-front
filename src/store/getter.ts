@@ -2,6 +2,9 @@ import { GetterTree } from "vuex";
 import { GlobalState } from ".";
 
 export const getters: GetterTree<GlobalState, GlobalState> = {
+  user: (state) => {
+    return state.user;
+  },
   sidebar: (state) => {
     return state.sidebar;
   },
@@ -16,5 +19,11 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   },
   toasts: (state) => {
     return state.toasts;
+  },
+  displayedYear: (state) => {
+    return state.displayedYear;
+  },
+  module: (state) => {
+    return state.module;
   },
 };

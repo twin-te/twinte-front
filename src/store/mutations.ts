@@ -23,6 +23,12 @@ export const mutations: MutationTree<GlobalState> = {
   setBachelorMode(state, mode: boolean) {
     state.bachelorMode = mode;
   },
+  setDisplayedYear(state, year: number | null) {
+    state.displayedYear = year;
+  },
+  setModule(state, module) {
+    state.module = module;
+  },
   deleteCourse(state, id: string) {
     state.courses = state.courses.filter((course) => course.id !== id);
   },
@@ -34,5 +40,9 @@ export const mutations: MutationTree<GlobalState> = {
   },
   addToast(state, toast: Toast) {
     state.toasts.push(toast);
+  },
+  updateCourse(state, newCourse: RegisteredCourse) {
+    const idx = state.courses.findIndex((c) => c.id === newCourse.id);
+    if (idx !== -1) state.courses.splice(idx, 1, newCourse);
   },
 };

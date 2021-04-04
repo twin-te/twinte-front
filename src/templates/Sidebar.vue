@@ -101,6 +101,12 @@ export default defineComponent({
       [
         { iconName: "help", item: "使い方", link: "/help", show: false },
         {
+          iconName: "feedback",
+          item: "フィードバック",
+          link: "/feedback",
+          show: true,
+        },
+        {
           iconName: "people",
           item: "寄付者一覧",
           link: "/people",
@@ -132,6 +138,7 @@ export default defineComponent({
               : window.android?.openSettings();
             break;
           case "share":
+            closeSidebar();
             await asyncSetTimeout(300);
             isiOS()
               ? window.webkit?.messageHandlers?.share?.postMessage(shareMessage)
@@ -156,7 +163,7 @@ export default defineComponent({
         @click="logout"
         size="small"
         layout="fill"
-        color="primary"
+        color="base"
         :pauseActiveStyle="false"
       >
         ログアウト

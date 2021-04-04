@@ -50,7 +50,7 @@
               ></Checkbox>
               空いているコマのみを検索
             </div>
-            <div class="accordion__shedule-editor">
+            <div v-if="!onlyBlank" class="accordion__shedule-editor">
               <ScheduleEditer
                 v-model:schedules="schedules"
                 :onClickAddButton="addSchedule"
@@ -146,7 +146,7 @@ import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
 import { searchCourse } from "~/usecases/searchCourse";
 import { usePorts } from "~/usecases";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle } from "@vueuse/core";
 import Button from "~/components/Button.vue";
@@ -172,18 +172,27 @@ export default defineComponent({
     TextFieldSingleLine,
   },
   setup() {
+    const route = useRoute();
     const router = useRouter();
     const ports = usePorts();
 
     /** accordion */
-    const [isAccordionOpen, toggleOpen] = useToggle();
+    const [isAccordionOpen, toggleOpen] = useToggle(
+      route.query.module != null &&
+        route.query.day != null &&
+        route.query.period != null
+    );
 
     /** search option */
     const [onlyBlank, toggleOnlyBlank] = useToggle();
 
     /** schedule-editor */
     const schedules = ref<Schedule[]>([
-      { module: "指定なし", day: "指定なし", period: "指定なし" },
+      {
+        module: route.query.module ?? "指定なし",
+        day: route.query.day ?? "指定なし",
+        period: route.query.period ?? "指定なし",
+      } as Schedule,
     ]);
     const addSchedule = () => {
       schedules.value.push({
@@ -349,6 +358,7 @@ export default defineComponent({
     border-radius: $radius-1;
   }
   &__only-blank {
+    @include button-cursor;
     display: flex;
     align-items: center;
     margin-bottom: $spacing-6;

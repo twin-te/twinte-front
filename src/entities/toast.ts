@@ -3,6 +3,7 @@ import { Ports } from "~/adapter";
 export type Toast = {
   text: string;
   id: number;
+  type: "primary" | "danger";
 };
 
 /**
@@ -11,12 +12,15 @@ export type Toast = {
  */
 export const displayToast = ({ store }: Ports) => (
   text: string,
-  displayPeriod = 5000
+  {
+    displayPeriod = 5000,
+    type = "danger",
+  }: Partial<{ displayPeriod: number; type: Toast["type"] }> = {}
 ) => {
   // WARN: index で id を決めると transition-group がバグる
   const id = Math.round(Math.random() * 100);
-  console.log({ id, text });
-  store.commit("addToast", { id, text });
+  console.log({ id, text, type });
+  store.commit("addToast", { id, text, type });
   if (displayPeriod > 0) {
     setTimeout(() => {
       store.commit("deleteToast", id);

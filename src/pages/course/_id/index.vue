@@ -54,10 +54,10 @@
         </section>
         <TextFieldMultilines
           class="main__memo"
-          @update:modelValue="update"
           v-model="memo"
+          @update:modelValue="update"
           placeholder="メモを入力"
-          :height="10.3"
+          height="10.3rem"
           style="width: 100%"
         ></TextFieldMultilines>
         <section class="main__attendance attendance">
@@ -304,7 +304,6 @@ export default defineComponent({
         registeredCourse: registeredCourse.value,
       });
       // TODO: as を使わない実装
-      if (!course.course) return;
       try {
         await updateCourse(ports)(course as Required<RegisteredCourse>);
       } catch (error) {

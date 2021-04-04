@@ -12,12 +12,12 @@ export default defineComponent({
       default: "",
     },
     width: {
-      type: Number,
-      default: 34, // 単位: rem
+      type: String,
+      default: "100%",
     },
     height: {
-      type: Number,
-      default: 4, // 単位: rem
+      type: String,
+      default: "10rem",
     },
   },
   emits: ["update:modelValue", "enter-text-field"],
@@ -40,8 +40,8 @@ export default defineComponent({
       @input="handleInput"
       :value="modelValue"
       :style="{
-        width: `${width}rem`,
-        height: `${height}rem`,
+        width,
+        height,
       }"
       :placeholder="placeholder"
       class="text-field-multilines__input"

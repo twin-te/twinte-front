@@ -12,6 +12,7 @@ import { usePorts } from "~/usecases";
 import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
 import { Toast as ToastContent } from "~/entities/toast";
+import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
@@ -35,6 +36,7 @@ export default defineComponent({
     };
 
     // HACK: vuex を初期化する目的で呼び出している
+    useDisplayedYear(ports);
     await getCourseList(ports);
 
     return {
@@ -55,6 +57,7 @@ export default defineComponent({
   <div class="layout">
     <Sidebar
       v-if="$route.meta.hasSidebar ?? true"
+      :isLogin="isLogin"
       :class="{ 'sidebar--close': isClose }"
     ></Sidebar>
     <GrayFilter
@@ -108,6 +111,7 @@ export default defineComponent({
           <Toast
             @click-close-button="closeToast(toast.id)"
             :text="toast.text"
+            :type="toast.type"
           ></Toast>
         </div>
       </transition-group>
@@ -149,13 +153,15 @@ export default defineComponent({
 
 .sidebar {
   z-index: 13;
-  @include portrait {
-    position: fixed;
+  position: fixed;
+  transition: $transition-all;
+  @include landscape {
+    position: relative;
   }
   &--close {
-    @include portrait {
-      transform: translateX(-20.8rem);
-      width: 0;
+    transform: translateX(-23rem);
+    @include landscape {
+      transform: translateX(0rem);
     }
   }
 }

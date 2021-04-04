@@ -198,6 +198,7 @@ import { getCalendar } from "~/usecases/getCalendar";
 import { useHead } from "@vueuse/head";
 import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
+import { useDisplayedModule } from "~/usecases/useDisplayedModule";
 
 export default defineComponent({
   name: "Table",
@@ -227,13 +228,16 @@ export default defineComponent({
     const label = ref<Labels>({ left: "通常", right: "特殊" });
     const currentModule = await getCurrentModule(ports);
     const calendar = await getCalendar(ports);
-    const module = ref(currentModule);
+    const {
+      displayedModule: module,
+      setDisplayedModule,
+    } = await useDisplayedModule(ports);
     const isCurrentModule = computed(() => module.value === currentModule);
     const { whichSelected, onClickLabel } = useLabel(ports);
     const [popup, , closePopup, togglePopup] = useSwitch(false);
     const popupData = moduleJaList;
     const onClickModule = (selectedModule: ModuleJa) => {
-      module.value = selectedModule;
+      setDisplayedModule(selectedModule);
       togglePopup();
     };
 
@@ -247,7 +251,7 @@ export default defineComponent({
       courseListToSpecialTable(storedCourses)
     );
     const setCurrentModule = () => {
-      module.value = currentModule;
+      setDisplayedModule(currentModule);
     };
     const weeks = weekdayJaList;
     const onClickCourseTile = async (
@@ -257,6 +261,10 @@ export default defineComponent({
     ) => {
       switch (courses.length) {
         case 0:
+          await router.push({
+            path: "/add/search",
+            query: { module: module.value, day, period },
+          });
           break;
         case 1:
           await router.push(`/course/${courses[0].courseId}`);
@@ -394,6 +402,7 @@ export default defineComponent({
   grid-template-columns: 2rem repeat(5, 1fr);
   grid-auto-flow: column;
   gap: 0.2rem;
+  overflow-y: auto;
 
   &__period {
     color: $text-sub;

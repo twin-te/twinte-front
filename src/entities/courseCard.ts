@@ -14,7 +14,8 @@ export type CourseCard = {
  * roomを文字形式(ex 6A203, オンライン)に変換する関数
  */
 export const locationToString = (_schedules: CourseSchedule[]) => {
-  return "6A203";
+  const rooms = new Set(_schedules.map((schedule) => schedule.room));
+  return [...rooms].join(", ");
 };
 
 export const getSyllbusUrl = (code: string) => {

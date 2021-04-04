@@ -1,11 +1,12 @@
 {
   "name": "front",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "type-check": "vuedx-typecheck .",
     "build": "vite build",
+    "build:staging": "vite build --mode staging",
     "lint": "vuedx-typecheck . && eslint --ext .vue ./src",
     "lint:fix": "yarn lint --fix",
     "format": "prettier ./src",
@@ -22,6 +23,7 @@
     "aspida": "^1.6.3",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
+    "firebase": "^8.3.2",
     "qs": "^6.10.1",
     "vue": "^3.0.9",
     "vue-router": "4",

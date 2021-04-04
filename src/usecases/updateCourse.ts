@@ -6,7 +6,7 @@ import { RegisteredCourse } from "~/api/@types";
 /**
  * 出欠カウントを更新する。
  */
-export const updateCourse = ({ api }: Ports) => async (
+export const updateCourse = ({ api, store }: Ports) => async (
   course: Required<RegisteredCourse>
 ): Promise<RegisteredCourse> => {
   const { body, status, originalResponse } = await api.registered_courses
@@ -16,6 +16,7 @@ export const updateCourse = ({ api }: Ports) => async (
       throw new NetworkError();
     });
   if (isValidStatus(status)) {
+    store.commit("updateCourse", body);
     return body;
   } else {
     console.error(body);
