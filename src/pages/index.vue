@@ -261,6 +261,10 @@ export default defineComponent({
     ) => {
       switch (courses.length) {
         case 0:
+          await router.push({
+            path: "/add/search",
+            query: { module: module.value, day, period },
+          });
           break;
         case 1:
           await router.push(`/course/${courses[0].courseId}`);
