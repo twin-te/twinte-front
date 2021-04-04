@@ -39,11 +39,11 @@ export const fullModulesMap: Record<
   SpringA: ["春A", "指定なし"],
   SpringB: ["春B", "指定なし"],
   SpringC: ["春C", "指定なし"],
-  SummerVacation: ["その他", "指定なし"],
+  SummerVacation: ["夏休", "指定なし"],
   FallA: ["秋A", "指定なし"],
   FallB: ["秋B", "指定なし"],
   FallC: ["秋C", "指定なし"],
-  SpringVacation: ["その他", "指定なし"],
+  SpringVacation: ["春休", "指定なし"],
   // Annual: ["その他", "指定なし"],  apispec 側が対応するのを待つ
 };
 
