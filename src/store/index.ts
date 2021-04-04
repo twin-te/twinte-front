@@ -13,10 +13,10 @@ export type GlobalState = {
   courses: RegisteredCourse[];
   label: Select;
   bachelorMode: boolean;
+  tableTimeMode: boolean;
   toasts: Toast[];
   displayedYear: number | null;
   module: ModuleJa | null;
-  tableTimeMode: boolean;
 };
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
@@ -27,10 +27,10 @@ const initState: GlobalState = {
   courses: [],
   label: "left",
   bachelorMode: false,
+  tableTimeMode: true,
   toasts: [],
   displayedYear: null,
   module: null,
-  tableTimeMode: false,
 };
 
 export const store = createStore<GlobalState>({

@@ -17,6 +17,9 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   bachelorMode: (state) => {
     return state.bachelorMode;
   },
+  tableTimeMode: (state) => {
+    return state.tableTimeMode;
+  },
   toasts: (state) => {
     return state.toasts;
   },
@@ -25,8 +28,5 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   },
   module: (state) => {
     return state.module;
-  },
-  tableTimeMode: (state) => {
-    return state.tableTimeMode;
   },
 };

@@ -470,7 +470,7 @@ export default defineComponent({
     &--with-time {
       background: $undefined;
       margin: 0;
-      overflow-y: scroll;
+      overflow-y: auto;
     }
     &--first {
       grid-row-start: 2;

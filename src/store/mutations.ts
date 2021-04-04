@@ -23,14 +23,14 @@ export const mutations: MutationTree<GlobalState> = {
   setBachelorMode(state, mode: boolean) {
     state.bachelorMode = mode;
   },
+  setTableTimeMode(state, show: boolean) {
+    state.tableTimeMode = show;
+  },
   setDisplayedYear(state, year: number | null) {
     state.displayedYear = year;
   },
   setModule(state, module) {
     state.module = module;
-  },
-  setTableTimeMode(state, show: boolean) {
-    state.tableTimeMode = show;
   },
   deleteCourse(state, id: string) {
     state.courses = state.courses.filter((course) => course.id !== id);
