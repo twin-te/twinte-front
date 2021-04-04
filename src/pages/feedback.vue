@@ -226,6 +226,7 @@ export default defineComponent({
   }
   &__feedback {
     height: calc(100vh - 15rem);
+    padding-top: $spacing-3;
   }
   &__button {
     text-align: center;
