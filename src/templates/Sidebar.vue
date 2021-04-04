@@ -101,6 +101,12 @@ export default defineComponent({
       [
         { iconName: "help", item: "使い方", link: "/help", show: false },
         {
+          iconName: "feedback",
+          item: "フィードバック",
+          link: "/feedback",
+          show: true,
+        },
+        {
           iconName: "people",
           item: "寄付者一覧",
           link: "/people",
