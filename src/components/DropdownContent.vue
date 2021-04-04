@@ -38,8 +38,11 @@ export default defineComponent({
   @include button-cursor;
   padding: $spacing-2 $spacing-3;
   background-color: $base;
-  &.--selected {
+  &:active {
     box-shadow: $shadow-concave;
+  }
+  &.--selected {
+    display: none;
   }
 }
 </style>
