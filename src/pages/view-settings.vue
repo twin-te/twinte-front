@@ -89,7 +89,7 @@ export default defineComponent({
     const updateYear = (year: string) => {
       selectedYear.value = year;
       setDisplayedYear(
-        selectedYear.value === "指定なし"
+        selectedYear.value === "自動(現在の年度)"
           ? null
           : Number(selectedYear.value.slice(0, 4))
       );
