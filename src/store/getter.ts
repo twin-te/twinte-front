@@ -26,4 +26,7 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   module: (state) => {
     return state.module;
   },
+  tableTimeMode: (state) => {
+    return state.tableTimeMode;
+  },
 };

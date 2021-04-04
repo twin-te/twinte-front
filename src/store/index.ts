@@ -16,6 +16,7 @@ export type GlobalState = {
   toasts: Toast[];
   displayedYear: number | null;
   module: ModuleJa | null;
+  tableTimeMode: Boolean;
 };
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
@@ -29,6 +30,7 @@ const initState: GlobalState = {
   toasts: [],
   displayedYear: null,
   module: null,
+  tableTimeMode: false,
 };
 
 export const store = createStore<GlobalState>({

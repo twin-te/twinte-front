@@ -29,6 +29,9 @@ export const mutations: MutationTree<GlobalState> = {
   setModule(state, module) {
     state.module = module;
   },
+  setTableTimeMode(state, show: boolean) {
+    state.tableTimeMode = show;
+  },
   deleteCourse(state, id: string) {
     state.courses = state.courses.filter((course) => course.id !== id);
   },

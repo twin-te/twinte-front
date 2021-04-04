@@ -62,7 +62,10 @@
           table: true,
           'main__table--popup': popup,
         }"
-        :style="{ gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)` }"
+        :style="{
+          gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)`,
+          gridTemplateColumns: `${tableTimeMode ? 3.6 : 2}rem repeat(5, 1fr)`,
+        }"
         v-if="whichSelected === 'left'"
       >
         <div
@@ -70,10 +73,16 @@
           :key="period"
           :class="{
             table__period: true,
+            'table__period--with-time': tableTimeMode,
             'table__period--first': period == 1,
           }"
         >
           {{ period }}
+          <p v-show="tableTimeMode" class="table__time">
+            {{ tableTimeData[period - 1].start }}
+            <span class="table__time--tilda">~</span>
+            {{ tableTimeData[period - 1].end }}
+          </p>
         </div>
         <template v-for="(y, d) in table" :key="d">
           <div class="table__day">
@@ -231,6 +240,7 @@ import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
 import { getSaturdayCourseList } from "~/usecases/getSaturdayCourseList";
+import { useTableTimeMode } from "~/usecases/useTableTime";
 
 export default defineComponent({
   name: "Table",
@@ -275,6 +285,7 @@ export default defineComponent({
 
     /** table */
     const { bachelorMode } = useBachelorMode(ports);
+    const { tableTimeMode } = useTableTimeMode(ports);
     const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
       courseListToTable(storedCourses, module.value, bachelorMode.value)
@@ -313,6 +324,16 @@ export default defineComponent({
           break;
       }
     };
+    const tableTimeData = [
+      { start: "8:40", end: "9:55" },
+      { start: "10:10", end: "11:25" },
+      { start: "12:15", end: "13:30" },
+      { start: "13:30", end: "15:00" },
+      { start: "15:15", end: "16:30" },
+      { start: "16:45", end: "18:00" },
+      { start: "18:20", end: "19:35" },
+      { start: "19:45", end: "21:00" },
+    ];
 
     /** duplication modal */
     type DuplocationState = {
@@ -349,6 +370,8 @@ export default defineComponent({
       specialTable,
       saturdayCourseList,
       weeks,
+      tableTimeMode,
+      tableTimeData,
       specialDayMap,
       onClickCourseTile,
       duplicationState,
@@ -435,7 +458,6 @@ export default defineComponent({
 
 .table {
   display: grid;
-  grid-template-columns: 2rem repeat(5, 1fr);
   grid-auto-flow: column;
   gap: 0.2rem;
   overflow-y: auto;
@@ -443,9 +465,32 @@ export default defineComponent({
   &__period {
     color: $text-sub;
     font-size: $font-small;
+    font-weight: 500;
     margin: auto auto auto 0;
+    &--with-time {
+      background: $undefined;
+      margin: 0;
+    }
     &--first {
       grid-row-start: 2;
+    }
+    @include center-flex(column);
+    gap: 0.5rem;
+  }
+
+  &__time {
+    font-size: 0.9rem;
+    font-weight: normal;
+    line-height: $fit;
+    color: $text-sub-light;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-1;
+    &--tilda {
+      width: min-content;
+      display: inline-block;
+      transform: rotate(90deg);
     }
   }
 
