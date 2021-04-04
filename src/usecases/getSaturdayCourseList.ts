@@ -29,13 +29,16 @@ export const getSaturdayCourseList = (
     return acc;
   }, []);
 
+  // 比較する インデックス より前に同じ要素が存在するのか (hasSame) で大小関係が異なる
+  // [T, F ...] < [F, T ...]
+  // [T, F ...] > [T, T ...]
   unsortedSaturdayCourseList.sort((prev, next) => {
-    let flg = false;
+    let hasSame = false;
     for (let i = 0; i < 9; i++) {
-      if (!flg && prev.moduleFlg[i] && next.moduleFlg[i]) flg = true;
+      if (prev.moduleFlg[i] && next.moduleFlg[i]) hasSame = true;
       if (prev.moduleFlg[i] === next.moduleFlg[i]) continue;
       const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);
-      return flg ? ans : -ans;
+      return hasSame ? ans : -ans;
     }
     return prev.name <= next.name ? -1 : 1;
   });
