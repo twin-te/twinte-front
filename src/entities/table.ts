@@ -20,6 +20,13 @@ export type SpecialCourse = {
   room: string;
 };
 
+export type SatdayCourse = {
+  id: string;
+  name: string;
+  module: string[];
+  room: string;
+};
+
 /**
  * ```
  * table
