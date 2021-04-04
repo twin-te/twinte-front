@@ -63,8 +63,10 @@ export const weekNum = (day: Day): number => week.indexOf(day);
 export const weekDayToJa = (day: Day): WeekDayJa => weekdayMap[day] ?? "月";
 export const dayToJa = (day: Day): DayJa => weekMap[day] ?? "月";
 
-export const jaToDay = (day: DayJa): Day =>
-  week.find((key) => weekMap[key] === day) ?? "Unknown";
+export const jaToDay = (ja: DayJa): Day =>
+  week.find((key) => weekMap[key] === ja) ?? "Unknown";
+export const scheduleJaToDay = (ja: ScheduleDayJa): Day =>
+  week.find((key) => weekMap[key] === ja) ?? "Unknown";
 
 // 特殊
 export type SpecialDay = "Intensive" | "Appointment" | "AnyTime";
