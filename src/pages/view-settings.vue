@@ -35,6 +35,7 @@
             @update:selectedOption="updateYear"
             :options="displayedYearOptions"
             v-model:selectedOption="selectedYear"
+            placeholder="自動(現在の年度)"
           ></Dropdown>
         </div>
       </div>
@@ -74,10 +75,17 @@ export default defineComponent({
     const isDark = useDark();
     const toggleDark = useToggle(isDark);
 
-    const displayedYearOptions = ["指定なし", "2021年度", "2020年度"];
+    const displayedYearOptions = [
+      "自動(現在の年度)",
+      "2021年度",
+      "2020年度",
+      "2019年度",
+    ];
     const { displayedYear, setDisplayedYear } = useDisplayedYear(ports);
     const selectedYear = ref(
-      displayedYear.value === null ? "指定なし" : displayedYear.value + "年度"
+      displayedYear.value === null
+        ? "自動(現在の年度)"
+        : displayedYear.value + "年度"
     );
     const updateYear = (year: string) => {
       selectedYear.value = year;

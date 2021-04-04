@@ -9,6 +9,7 @@ type Props = {
   options: Options;
   selectedOption: string;
   label: string;
+  placeholder: string;
 };
 
 export default defineComponent({
@@ -26,13 +27,17 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    placeholder: {
+      type: String,
+      default: "指定なし",
+    },
   },
   emits: ["update:selectedOption"],
   setup(props: Props, { emit }) {
     const [isOptionsShown, toggleShown] = useToggle();
 
     const isDefault = computed(() => {
-      return ["", "指定なし"].includes(props.selectedOption);
+      return props.placeholder === props.selectedOption;
     });
 
     const hasLabel = computed(() => {
@@ -69,7 +74,7 @@ export default defineComponent({
     <div v-if="hasLabel" class="dropdown__label">{{ label }}</div>
     <div @click="toggleShown" v-click-away="closeOptions" class="dropdown__box">
       <div v-if="isDefault" class="dropdown__box__text--unselected">
-        指定なし
+        {{ placeholder }}
       </div>
       <div v-else>{{ selectedOption }}</div>
       <div
