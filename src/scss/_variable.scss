@@ -92,6 +92,7 @@ $transition-box-shadow: box-shadow 0.18s ease;
 
 $safe-area-top: env(safe-area-inset-top);
 $safe-area-bottom: env(safe-area-inset-bottom);
+$vh: calc(100vh - #{$safe-area-top});
 
 // Media Queries
 $pc-and-tab-height: 860px;

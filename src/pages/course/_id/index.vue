@@ -357,7 +357,7 @@ export default defineComponent({
 
 .main {
   display: block;
-  height: calc(100vh - 8rem /*Headerとmargin-top*/);
+  height: calc(#{$vh} - 8rem /*Headerとmargin-top*/);
   margin-top: $spacing-5;
   overflow-y: auto;
   @include max-width;

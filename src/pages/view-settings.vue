@@ -111,7 +111,7 @@ export default defineComponent({
 .main {
   margin-top: $spacing-5;
   &__contents {
-    height: calc(100vh - 8rem - #{$safe-area-top});
+    height: calc(#{$vh} - 8rem - #{$safe-area-top});
   }
   &__content {
     display: flex;
