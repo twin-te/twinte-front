@@ -35,37 +35,43 @@ export default defineComponent({
 </script>
 
 <template>
-  <textarea
-    @input="handleInput"
-    :value="modelValue"
-    :style="{
-      width,
-      height,
-    }"
-    :placeholder="placeholder"
-    class="text-field"
-  >
-  </textarea>
+  <div class="text-field-multilines">
+    <textarea
+      @input="handleInput"
+      :value="modelValue"
+      :style="{
+        width,
+        height,
+      }"
+      :placeholder="placeholder"
+      class="text-field-multilines__input"
+    >
+    </textarea>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @import "../scss/main.scss";
 
-.text-field {
-  display: block;
-  resize: none;
+.text-field-multilines {
+  box-shadow: $shadow-input-concave;
   padding: $spacing-2 $spacing-4 1rem;
   border-radius: $radius-input;
-  box-shadow: $shadow-input-concave;
-  background: $base;
-  font-size: $font-medium;
-  line-height: $multi-line;
-  color: $text-main;
-  &:focus {
-    outline: none;
-  }
-  &::placeholder {
-    color: $unselected;
+  &__input {
+    display: block;
+    width: 100%;
+    resize: none;
+
+    background: $base;
+    font-size: $font-medium;
+    line-height: $multi-line;
+    color: $text-main;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: $unselected;
+    }
   }
 }
 </style>

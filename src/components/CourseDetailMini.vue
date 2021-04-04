@@ -31,9 +31,11 @@ export default defineComponent({
   @include center-flex;
   &__icon {
     @include text-main;
-    @include text-liner;
     @include icon-cursor;
     margin-right: $spacing-1;
+    span {
+      @include text-liner;
+    }
   }
   &__value {
     @include text-sub-discription;
