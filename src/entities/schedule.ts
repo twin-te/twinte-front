@@ -1,5 +1,5 @@
 import { CourseModule, CourseSchedule, Day } from "~/api/@types";
-import { dayToJa, jaToDay, ScheduleDayJa } from "./day";
+import { dayToJa, scheduleJaToDay, ScheduleDayJa } from "./day";
 import { jaToModule, moduleToJa, ScheduleModuleJa } from "./module";
 import { SchedulePeriod } from "./period";
 
@@ -23,7 +23,7 @@ export const scheduleToApi = (
   room: string
 ): CourseSchedule[] =>
   schedules.map((schedule) => ({
-    day: jaToDay(schedule.day),
+    day: scheduleJaToDay(schedule.day),
     module: jaToModule(schedule.module),
     period:
       schedule.period === "指定なし" || schedule.period === "その他"
