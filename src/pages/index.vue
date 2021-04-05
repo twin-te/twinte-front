@@ -378,7 +378,7 @@ export default defineComponent({
 
   @include landscape {
     border-radius: $spacing-4;
-    height: calc(100vh - 9.6rem);
+    height: calc(#{$vh} - 9.6rem);
   }
 
   &__toggle {
@@ -458,9 +458,9 @@ export default defineComponent({
 
 .special {
   grid-area: table;
-  height: calc(100vh - 14.8rem);
+  height: calc(#{$vh} - 14.8rem);
   @include landscape {
-    height: calc(100vh - 16.4rem);
+    height: calc(#{$vh} - 16.4rem);
   }
   overflow-y: scroll;
   margin-top: $spacing-3;

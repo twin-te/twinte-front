@@ -234,9 +234,9 @@ export default defineComponent({
   }
   &__error {
     margin-top: $spacing-6;
-    height: calc(100vh - 26.1rem);
+    height: calc(#{$vh} - 26.1rem);
     @include landscape {
-      height: calc(100vh - 26.5rem);
+      height: calc(#{$vh} - 26.5rem);
     }
     color: $danger;
     line-height: 2rem;
@@ -257,9 +257,9 @@ export default defineComponent({
   }
 }
 .courses {
-  height: calc(100vh - 25.7rem);
+  height: calc(#{$vh} - 25.7rem);
   @include landscape {
-    height: calc(100vh - 26.1rem);
+    height: calc(#{$vh} - 26.1rem);
   }
   overflow-y: scroll;
   margin-right: -($spacing-4);

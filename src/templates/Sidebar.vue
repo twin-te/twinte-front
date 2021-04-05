@@ -222,11 +222,12 @@ export default defineComponent({
 .sidebar {
   display: flex;
   flex-direction: column;
+  padding-top: $safe-area-top;
   top: 0;
   left: 0;
   width: 20.8rem;
-  height: 100vh;
-  min-height: 100%;
+  height: calc(#{$vh});
+  min-height: calc(100% - #{$safe-area-top});
   background: $base-liner;
   border-radius: 0 $radius-4 $radius-4 0;
   box-shadow: $shadow-convex;
