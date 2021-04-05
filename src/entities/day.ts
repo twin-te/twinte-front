@@ -40,14 +40,14 @@ export const scheduleDayJaList: ScheduleDayJa[] = [
   "指定なし",
 ];
 
-export const weekdayMap: { [key in Day]?: WeekDayJa } = {
+export const weekdayMap: Partial<Record<Day, WeekDayJa>> = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
   Thu: "木",
   Fri: "金",
 };
-export const weekMap: { [key in Day]?: DayJa } = {
+export const weekMap: Partial<Record<Day, DayJa>> = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
@@ -76,7 +76,7 @@ export const specialDays: SpecialDay[] = [
   "Appointment",
   "AnyTime",
 ];
-export const specialDayMap: { [key in SpecialDay]: SpecialDayJa } = {
+export const specialDayMap: Record<SpecialDay, SpecialDayJa> = {
   Intensive: "集中",
   Appointment: "応談",
   AnyTime: "随時",
