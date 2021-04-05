@@ -463,6 +463,7 @@ export default defineComponent({
   overflow-y: auto;
 
   &__period {
+    @include center-flex(column);
     color: $text-sub;
     font-size: $font-small;
     font-weight: 500;
@@ -475,8 +476,6 @@ export default defineComponent({
     &--first {
       grid-row-start: 2;
     }
-    @include center-flex(column);
-    gap: 0.5rem;
   }
 
   &__time {
@@ -484,6 +483,7 @@ export default defineComponent({
     font-weight: normal;
     line-height: $fit;
     color: $text-sub-light;
+    margin: 0.5rem 0 0 0;
     display: grid;
     gap: $spacing-1;
     &--tilda {
