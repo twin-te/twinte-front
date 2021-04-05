@@ -104,7 +104,7 @@ export default defineComponent({
           :key="option"
           :value="option"
           :isSelected="isSelected(option)"
-          @click="[emitSelectedEvent(option), toggleShown()]"
+          @click="[emitSelectedEvent(option), closeOptions]"
         ></DropdownContent>
       </div>
     </transition>
