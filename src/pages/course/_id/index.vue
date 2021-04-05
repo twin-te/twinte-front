@@ -361,7 +361,7 @@ export default defineComponent({
 
 .main {
   overflow-y: auto;
-  height: calc(100vh - 8rem); // header + gap
+  @include height-without-header;
   @include scroll-mask;
   &__contents {
     padding-top: $spacing-3;

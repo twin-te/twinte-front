@@ -115,7 +115,7 @@ export default defineComponent({
 
 .main {
   &__contents {
-    height: calc(100vh - 8rem); // header + gap
+    @include height-without-header;
   }
   &__content {
     display: flex;

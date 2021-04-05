@@ -239,7 +239,7 @@ export default defineComponent({
     "..." $spacing-3
     "button" auto
     / auto;
-  height: calc(100vh - 8rem); // header + gap
+  @include height-without-header;
   &__csv {
     margin-top: $spacing-3;
     grid-area: csv;

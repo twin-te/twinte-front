@@ -92,7 +92,7 @@ export default defineComponent({
   display: grid;
   grid-auto-rows: 1fr auto;
   gap: $spacing-3;
-  height: calc(100vh - 8rem); // header + gap
+  @include height-without-header;
   &__mask {
     @include scroll-mask;
     overflow-y: auto;

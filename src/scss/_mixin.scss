@@ -132,6 +132,11 @@
   }
 }
 
+// header + gap
+@mixin height-without-header {
+  height: calc(100vh - 8rem - #{$safe-area-top});
+}
+
 // Home以外のページで使う。
 @mixin max-width {
   max-width: $max-pc-item-width;
