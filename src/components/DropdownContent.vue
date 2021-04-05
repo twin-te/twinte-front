@@ -41,8 +41,5 @@ export default defineComponent({
   &:active {
     box-shadow: $shadow-concave;
   }
-  &.--selected {
-    display: none;
-  }
 }
 </style>
