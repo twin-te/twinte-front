@@ -1,5 +1,5 @@
 <template>
-  <div class="course-detail">
+  <div class="detail">
     <PageHeader>
       <template #left-button-icon>
         <IconButton
@@ -344,7 +344,11 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
-.course-detail {
+.detail {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
   @include max-width;
 }
 
@@ -356,11 +360,8 @@ export default defineComponent({
 }
 
 .main {
-  display: block;
-  height: calc(100vh - 8rem /*Headerとmargin-top*/);
-  margin-top: $spacing-5;
   overflow-y: auto;
-  @include max-width;
+  height: calc(100vh - 8rem); // header + gap
   @include scroll-mask;
   &__contents {
     padding-top: $spacing-3;

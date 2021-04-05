@@ -78,17 +78,16 @@
           </section>
         </transition>
       </div>
-      <section class="main__button">
-        <Button
-          @click="addCourse()"
-          size="large"
-          layout="fill"
-          color="primary"
-          :pauseActiveStyle="false"
-          :state="btnState"
-          >選択した授業を追加</Button
-        >
-      </section>
+      <Button
+        class="main__button"
+        @click="addCourse()"
+        size="large"
+        layout="fill"
+        color="primary"
+        :pauseActiveStyle="false"
+        :state="btnState"
+        >選択した授業を追加</Button
+      >
     </div>
     <Modal
       v-if="duplicationModal"
@@ -295,24 +294,24 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 .search {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
   @include max-width;
 }
 
 .main {
-  margin-top: $spacing-5;
+  display: grid;
+  grid-auto-rows: 1fr auto;
+  gap: $spacing-3;
+  height: calc(100vh - 8rem); // header + gap
   &__search {
-    height: calc(100vh - 16.2rem);
-    padding: $spacing-3 $spacing-0 $spacing-0;
+    padding-top: $spacing-3;
   }
   &__button {
-    text-align: center;
-    margin: $spacing-3 $spacing-0 $spacing-6;
-    @include landscape {
-      margin-bottom: $spacing-7;
-    }
-  }
-  .button {
-    display: inline-block;
+    margin: 0 auto;
+    @include bottom-buttom-bottom-margin;
   }
 }
 
