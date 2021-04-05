@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useToggle } from "@vueuse/core";
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, ref, watch } from "vue";
 import DropdownContent from "./DropdownContent.vue";
 
 export type Options = string[];
@@ -36,6 +36,15 @@ export default defineComponent({
   setup(props: Props, { emit }) {
     const [isOptionsShown, toggleShown] = useToggle();
 
+    const unselectedOptions = ref(props.options);
+
+    watch(isOptionsShown, (isOptionsShown) => {
+      if (!isOptionsShown) return;
+      unselectedOptions.value = props.options.filter(
+        (o) => o !== props.selectedOption
+      );
+    });
+
     const isDefault = computed(() => {
       return props.placeholder === props.selectedOption;
     });
@@ -57,6 +66,7 @@ export default defineComponent({
     };
 
     return {
+      unselectedOptions,
       isOptionsShown,
       isDefault,
       isSelected,
@@ -90,7 +100,7 @@ export default defineComponent({
     <transition name="spread-down">
       <div v-show="isOptionsShown" class="dropdown__options">
         <DropdownContent
-          v-for="option in options"
+          v-for="option in unselectedOptions"
           :key="option"
           :value="option"
           :isSelected="isSelected(option)"
