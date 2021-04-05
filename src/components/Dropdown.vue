@@ -36,11 +36,11 @@ export default defineComponent({
   setup(props: Props, { emit }) {
     const [isOptionsShown, toggleShown] = useToggle();
 
-    const optionList = ref(props.options);
+    const unselectedOptions = ref(props.options);
 
     watch(isOptionsShown, (isOptionsShown) => {
       if (!isOptionsShown) return;
-      optionList.value = props.options.filter(
+      unselectedOptions.value = props.options.filter(
         (o) => o !== props.selectedOption
       );
     });
@@ -66,7 +66,7 @@ export default defineComponent({
     };
 
     return {
-      optionList,
+      unselectedOptions,
       isOptionsShown,
       isDefault,
       isSelected,
@@ -100,7 +100,7 @@ export default defineComponent({
     <transition name="spread-down">
       <div v-show="isOptionsShown" class="dropdown__options">
         <DropdownContent
-          v-for="option in optionList"
+          v-for="option in unselectedOptions"
           :key="option"
           :value="option"
           :isSelected="isSelected(option)"
