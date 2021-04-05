@@ -328,7 +328,7 @@ export default defineComponent({
       { start: "8:40", end: "9:55" },
       { start: "10:10", end: "11:25" },
       { start: "12:15", end: "13:30" },
-      { start: "13:30", end: "15:00" },
+      { start: "13:45", end: "15:00" },
       { start: "15:15", end: "16:30" },
       { start: "16:45", end: "18:00" },
       { start: "18:20", end: "19:35" },
