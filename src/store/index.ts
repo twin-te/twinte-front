@@ -27,7 +27,7 @@ const initState: GlobalState = {
   courses: [],
   label: "left",
   bachelorMode: false,
-  tableTimeMode: false,
+  tableTimeMode: true,
   toasts: [],
   displayedYear: null,
   module: null,
