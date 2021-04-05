@@ -11,7 +11,7 @@
       <a :href="getLoginUrl('apple')">
         <img
           class="main__login-button"
-          src="../assets/login-page/login-apple.svg"
+          src="../assets/login-page/login-apple.png"
           alt="appleでログイン"
         />
       </a>
