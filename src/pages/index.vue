@@ -484,13 +484,12 @@ export default defineComponent({
     font-weight: normal;
     line-height: $fit;
     color: $text-sub-light;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
     gap: $spacing-1;
     &--tilda {
       width: min-content;
       display: inline-block;
+      margin: auto auto;
       transform: rotate(90deg);
     }
   }
