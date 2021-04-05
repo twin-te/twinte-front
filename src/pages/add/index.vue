@@ -14,7 +14,7 @@
       <template #title>授業の追加</template>
     </PageHeader>
     <div class="main">
-      <div class="main__cards">
+      <div class="main__card-group">
         <CardAdd
           @click-next-button="$router.push('/add/search')"
           iconName="search"
@@ -101,7 +101,7 @@ export default defineComponent({
 
 .main {
   margin-top: $spacing-3;
-  &__cards {
+  &__card-group {
     display: grid;
     gap: $spacing-4;
   }
