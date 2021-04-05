@@ -17,14 +17,14 @@
           <div class="top__course-name">
             <TextFieldSingleLine
               v-model.trim="searchWord"
-              @enterTextField="search"
+              @enterTextField="search(0)"
               placeholder="科目名または科目番号"
             ></TextFieldSingleLine>
           </div>
           <div class="top__search-button">
             <IconButton
-              @click="search"
-              @keyup.enter="search"
+              @click="search(0)"
+              @keyup.enter="search(0)"
               iconName="search"
               size="medium"
             ></IconButton>
@@ -58,12 +58,22 @@
               ></ScheduleEditer>
             </div>
           </section>
-          <section class="search__result" v-else key="result">
+          <section
+            class="search__result"
+            v-else
+            ref="searchBoxRef"
+            key="result"
+          >
             <!-- <template v-if="searchResult.length > 0"> -->
             <div
               class="result__row"
-              v-for="course in searchResult"
+              v-for="(course, index) in searchResult"
               :key="course.course.id"
+              :ref="
+                (el) => {
+                  setSearchResultRef(el, index);
+                }
+              "
             >
               <CardCourse
                 @click-checkbox="course.isSelected = !course.isSelected"
@@ -139,7 +149,7 @@
 import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, onMounted } from "vue";
 import { displayToast } from "~/entities/toast";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { periodToString } from "~/usecases/periodToString";
@@ -207,17 +217,50 @@ export default defineComponent({
 
     /** result */
     const searchResult = ref<{ course: Course; isSelected: boolean }[]>([]);
+    // 検索結果を動的に読み込む処理
+    const searchBoxRef = ref<Element>();
+    let observer: IntersectionObserver;
+    const setSearchResultRef = (el, index) => {
+      if (index + 1 == searchResult.value.length) {
+        observer.observe(el);
+      }
+    };
+    const searchByIntersection = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver
+    ) => {
+      const entry = entries[0];
+      if (!entry.isIntersecting) return;
+      search();
+      observer.unobserve(entry.target);
+    };
+    onMounted(() => {
+      const options = {
+        root: searchBoxRef.value,
+        rootMargin: "0px 0px 500px 0px",
+        threshold: 1,
+      };
+      observer = new IntersectionObserver(searchByIntersection, options);
+    });
 
     /** top */
+    let offset = 0;
+    let limit = 50;
     const isNoResultShow = ref(false);
     const searchWord = ref("");
-    const search = async () => {
+    const search = async (_offset = offset) => {
+      if (_offset === 0) {
+        searchResult.value.splice(-searchResult.value.length);
+        offset = 0;
+      }
       isAccordionOpen.value = false;
       let courses: Course[] = [];
       try {
         courses = await searchCourse(ports)(
           schedules.value,
           searchWord.value.split(/\s/),
+          _offset,
+          limit,
           onlyBlank.value
         );
       } catch (error) {
@@ -225,9 +268,13 @@ export default defineComponent({
         displayToast(ports)(error.message);
         return;
       }
-      searchResult.value =
-        courses?.map((course: Course) => ({ course, isSelected: false })) ?? [];
-      isNoResultShow.value = courses.length === 0;
+      offset += limit;
+      searchResult.value.splice(
+        searchResult.value.length,
+        courses.length,
+        ...courses?.map((course: Course) => ({ course, isSelected: false }))
+      );
+      isNoResultShow.value = _offset === 0 && courses.length === 0;
     };
 
     /** button */
@@ -277,14 +324,17 @@ export default defineComponent({
       duplicationModal,
       isAccordionOpen,
       isNoResultShow,
+      limit,
       onlyBlank,
       openDuplicationModal,
       periodToString,
       removeSchedule,
       schedules,
       search,
+      searchBoxRef,
       searchResult,
       searchWord,
+      setSearchResultRef,
       toggleOnlyBlank,
       toggleOpen,
     };
