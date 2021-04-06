@@ -1,5 +1,6 @@
 import { CourseModule, CourseSchedule } from "~/api/@types";
 import {
+  Day,
   dayToJa,
   SpecialDay,
   specialDayMap,
@@ -47,9 +48,9 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
 
   schedules.forEach((schedule) => {
     if (schedule.module === "Unknown" || schedule.day === "Unknown") return;
-    if (week.includes(schedule.day)) {
+    if (week.includes(schedule.day as Day)) {
       if (schedule.period < 1 || 8 < schedule.period) return;
-      regularSchedules[schedule.module][weekNum(schedule.day)] |=
+      regularSchedules[schedule.module][weekNum(schedule.day as Day)] |=
         1 << (schedule.period - 1);
     } else {
       specialSchedules[schedule.module] = specialDayMap[schedule.day];

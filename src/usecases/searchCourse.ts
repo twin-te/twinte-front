@@ -5,7 +5,7 @@ import {
 } from "~/entities/schedule";
 import {
   CourseModule,
-  Day,
+  CourseDay,
   SearchCourseTimetableQuery,
   SearchCourseTimetableQueryDays,
 } from "~/api/@types";
@@ -46,7 +46,7 @@ const parseSchedules = (schedule: Schedule): ParsedSchedule => ({
 const isWishinSchedules = (
   schedules: ParsedSchedule[],
   module: CourseModule,
-  day: Day,
+  day: CourseDay,
   period: number // TODO: 適切な型を作成
 ): boolean => {
   return schedules.some(

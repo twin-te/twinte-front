@@ -1,12 +1,18 @@
-import { CourseModule, CourseSchedule, Day } from "~/api/@types";
+import { CourseSchedule } from "~/api/@types";
 import {
-  dayToJa,
+  FullDay,
   jaToDay,
   ScheduleDayJa,
   SpecialDay,
   specialDays,
+  weekMap,
 } from "./day";
-import { ScheduleModuleJa, jaToModule, moduleToFullModuleJa } from "./module";
+import {
+  ScheduleModuleJa,
+  jaToModule,
+  moduleToFullModuleJa,
+  FullModule,
+} from "./module";
 import { SchedulePeriod } from "./period";
 
 const defaultValue = "指定なし";
@@ -25,7 +31,7 @@ export const apiToSchedule = (api: CourseSchedule[]): Schedule[] =>
         ? defaultValue
         : specialDays.includes(day as SpecialDay)
         ? "その他"
-        : dayToJa(day),
+        : weekMap[day],
     period: period === 0 ? defaultValue : (String(period) as SchedulePeriod),
   }));
 
@@ -40,10 +46,7 @@ export const scheduleToApi = (
     room,
   }));
 
-export const searchModuleMap: Record<
-  Exclude<CourseModule, "Unknown">,
-  ScheduleModuleJa[]
-> = {
+export const searchModuleMap: Record<FullModule, ScheduleModuleJa[]> = {
   SpringA: ["春A", "指定なし"],
   SpringB: ["春B", "指定なし"],
   SpringC: ["春C", "指定なし"],
@@ -54,7 +57,7 @@ export const searchModuleMap: Record<
   SpringVacation: ["春休", "指定なし"],
 };
 
-export const searchWeekMap: Record<Exclude<Day, "Unknown">, ScheduleDayJa[]> = {
+export const searchWeekMap: Record<FullDay, ScheduleDayJa[]> = {
   Sun: ["日", "指定なし"],
   Mon: ["月", "指定なし"],
   Tue: ["火", "指定なし"],

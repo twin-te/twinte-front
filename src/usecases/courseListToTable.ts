@@ -1,5 +1,5 @@
 import { RegisteredCourse } from "~/api/@types";
-import { weekdayNum, weekdays } from "~/entities/day";
+import { WeekDay, weekdayNum, weekdays } from "~/entities/day";
 import { jaToModule, ModuleJa } from "~/entities/module";
 import { Table } from "~/entities/table";
 
@@ -21,12 +21,14 @@ export const courseListToTable = (
         .filter(
           (schedule) =>
             schedule.module === module &&
-            weekdays.includes(schedule.day) &&
+            weekdays.includes(schedule.day as WeekDay) &&
             1 <= schedule.period &&
             schedule.period <= 8
         )
         .forEach((schedule) =>
-          prevTable[weekdayNum(schedule.day)][schedule.period - 1].push({
+          prevTable[weekdayNum(schedule.day as WeekDay)][
+            schedule.period - 1
+          ].push({
             name,
             room: schedule.room,
             courseId,
