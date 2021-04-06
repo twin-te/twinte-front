@@ -5,18 +5,18 @@ export type CourseModule = 'SpringA' | 'SpringB' | 'SpringC' | 'SummerVacation' 
 
 export type CourseSchedule = {
   module: CourseModule
-  day: Day
+  day: CourseDay
   period: number
   room: string
 }
 
-export type Day = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Intensive' | 'Appointment' | 'AnyTime' | 'Unknown'
+export type CourseDay = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Intensive' | 'Appointment' | 'AnyTime' | 'Unknown'
 
 export type SchoolCalendarEvent = {
   date: string
   eventType: 'PublicHoliday' | 'Holiday' | 'Exam' | 'SubstituteDay' | 'Other'
   description: string
-  changeTo?: Day
+  changeTo?: CourseDay
 }
 
 export type SchoolCalendarModule = {
