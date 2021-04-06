@@ -5,7 +5,7 @@ import {
   RegisteredCourse,
   RegisteredCourseWithoutID,
 } from "~/api/@types";
-import { modules } from "~/entities/module";
+import { BaseModule, modules } from "~/entities/module";
 import { week } from "~/entities/day";
 
 /**
@@ -22,7 +22,7 @@ export const isSchedulesDuplicated = ({ store }: Ports) => (
         const registeredSchedules = c.schedules ?? c.course?.schedules;
         return registeredSchedules?.some(
           (s: CourseSchedule) =>
-            modules.includes(targetSchedule.module) &&
+            modules.includes(targetSchedule.module as BaseModule) &&
             week.includes(targetSchedule.day) &&
             targetSchedule.period !== 0 &&
             targetSchedule.module === s.module &&

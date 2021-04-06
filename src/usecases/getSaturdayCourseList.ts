@@ -1,6 +1,6 @@
 import { CourseSchedule, RegisteredCourse } from "~/api/@types";
 import {
-  courseModulesNum,
+  fullModulesNum,
   ModuleFlg,
   moduleFlgToDisplay,
 } from "~/entities/module";
@@ -16,11 +16,12 @@ export const getSaturdayCourseList = (
       course.schedules ?? course.course?.schedules ?? [];
     const moduleFlg = schedules.reduce<ModuleFlg>(
       (moduleFlg, schedule) => {
-        if (schedule.day !== "Sat") return moduleFlg;
-        moduleFlg[courseModulesNum(schedule.module)] = true;
+        if (schedule.module === "Unknown" || schedule.day !== "Sat")
+          return moduleFlg;
+        moduleFlg[fullModulesNum(schedule.module)] = true;
         return moduleFlg;
       },
-      [false, false, false, false, false, false, false, false, false]
+      [false, false, false, false, false, false, false, false]
     );
     if (!moduleFlg.some((f) => f)) return acc;
     const name = course.name ?? course.course?.name ?? "";
@@ -34,7 +35,7 @@ export const getSaturdayCourseList = (
   // [T, F ...] > [T, T ...] 春A < 春AB
   unsortedSaturdayCourseList.sort((prev, next) => {
     let hasSame = false;
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 8; i++) {
       if (prev.moduleFlg[i] && next.moduleFlg[i]) hasSame = true;
       if (prev.moduleFlg[i] === next.moduleFlg[i]) continue;
       const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);

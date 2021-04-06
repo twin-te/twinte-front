@@ -1,9 +1,14 @@
 import {
-  fullModulesMap,
-  fullWeekMap,
-  fullPeriodMap,
+  searchModuleMap,
+  searchWeekMap,
+  searchPeriodMap,
 } from "~/entities/schedule";
-import { CourseModule, Day, SearchCourseTimetableQuery } from "~/api/@types";
+import {
+  CourseModule,
+  Day,
+  SearchCourseTimetableQuery,
+  SearchCourseTimetableQueryDays,
+} from "~/api/@types";
 import { fullDays } from "~/entities/day";
 import { fullModules } from "~/entities/module";
 import { getYear } from "./getYear";
@@ -24,14 +29,14 @@ type ParsedSchedule = {
  * ex) module: "その他" -> modules: ["SummerVacation", "SpringVacation"]
  */
 const parseSchedules = (schedule: Schedule): ParsedSchedule => ({
-  modules: Object.keys(fullModulesMap).filter((k) =>
-    fullModulesMap[k].includes(schedule.module)
+  modules: Object.keys(searchModuleMap).filter((k) =>
+    searchModuleMap[k].includes(schedule.module)
   ),
-  days: Object.keys(fullWeekMap).filter((k) =>
-    fullWeekMap[k].includes(schedule.day)
+  days: Object.keys(searchWeekMap).filter((k) =>
+    searchWeekMap[k].includes(schedule.day)
   ),
-  periods: Object.keys(fullPeriodMap).filter((k) =>
-    fullPeriodMap[k].includes(schedule.period)
+  periods: Object.keys(searchPeriodMap).filter((k) =>
+    searchPeriodMap[k].includes(schedule.period)
   ),
 });
 
@@ -61,9 +66,9 @@ const schedulesToTimetable = (
   ports: Ports
 ): SearchCourseTimetableQuery | undefined => {
   let allTrue = true;
-  const timetable: Partial<SearchCourseTimetableQuery> = {};
+  const timetable = {} as SearchCourseTimetableQuery;
   for (const module of fullModules) {
-    timetable[module] = {};
+    timetable[module] = {} as SearchCourseTimetableQueryDays;
     for (const day of fullDays) {
       timetable[module][day] = {};
       for (const period of [0, ...periods]) {

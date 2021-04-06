@@ -1,6 +1,6 @@
 import { RegisteredCourse } from "~/api/@types";
-import { weekdayNum } from "~/entities/day";
-import { moduleFromJa, ModuleJa } from "~/entities/module";
+import { weekdayNum, weekdays } from "~/entities/day";
+import { jaToModule, ModuleJa } from "~/entities/module";
 import { Table } from "~/entities/table";
 
 /**
@@ -11,18 +11,17 @@ export const courseListToTable = (
   moduleJa: ModuleJa,
   bachelorMode: boolean
 ): Table => {
-  const module = moduleFromJa(moduleJa);
+  const module = jaToModule(moduleJa);
   const table = courses.reduce(
     (prevTable, course) => {
-      const name = course.name ?? (course.course?.name as string);
+      const name = course.name ?? course.course?.name ?? "";
       const courseId = course.id;
       const schedules = course.schedules ?? course.course?.schedules ?? [];
       schedules
         .filter(
           (schedule) =>
             schedule.module === module &&
-            schedule.day !== "Sat" &&
-            weekdayNum(schedule.day) !== -1 &&
+            weekdays.includes(schedule.day) &&
             1 <= schedule.period &&
             schedule.period <= 8
         )

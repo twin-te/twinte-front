@@ -6,13 +6,20 @@ import {
   week,
   weekNum,
 } from "~/entities/day";
-import { courseModules, moduleToJa } from "~/entities/module";
+import {
+  FullModule,
+  fullModules,
+  moduleToFullModuleJa,
+} from "~/entities/module";
 
-/** periodを文字形式(ex 秋AB 火1,2)に変換する関数 */
+/** periodを文字形式(ex 秋AB 火1,2)に変換する関数
+ * データが不完全な時""を返す
+ */
 export const periodToString = (schedules: CourseSchedule[]): string => {
-  /** module(9) × day(6) × period(8)を表現 */
+  /** module(8) × day(7) × period(8)を表現 */
   const regularSchedules: {
     [key in Exclude<CourseModule, "Unknown">]: [
+      number,
       number,
       number,
       number,
@@ -21,22 +28,21 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
       number
     ];
   } = {
-    Annual: [0, 0, 0, 0, 0, 0],
-    SpringA: [0, 0, 0, 0, 0, 0],
-    SpringB: [0, 0, 0, 0, 0, 0],
-    SpringC: [0, 0, 0, 0, 0, 0],
-    SummerVacation: [0, 0, 0, 0, 0, 0],
-    FallA: [0, 0, 0, 0, 0, 0],
-    FallB: [0, 0, 0, 0, 0, 0],
-    FallC: [0, 0, 0, 0, 0, 0],
-    SpringVacation: [0, 0, 0, 0, 0, 0],
+    SpringA: [0, 0, 0, 0, 0, 0, 0],
+    SpringB: [0, 0, 0, 0, 0, 0, 0],
+    SpringC: [0, 0, 0, 0, 0, 0, 0],
+    SummerVacation: [0, 0, 0, 0, 0, 0, 0],
+    FallA: [0, 0, 0, 0, 0, 0, 0],
+    FallB: [0, 0, 0, 0, 0, 0, 0],
+    FallC: [0, 0, 0, 0, 0, 0, 0],
+    SpringVacation: [0, 0, 0, 0, 0, 0, 0],
   };
 
   const specialSchedules: {
-    [key in Exclude<CourseModule, "Unknown">]?: SpecialDay;
+    [key in FullModule]?: SpecialDay;
   } = {};
   /**
-   * ex.) { SpringC: "応談j" }
+   * ex.) { SpringC: "応談" }
    */
 
   schedules.forEach((schedule) => {
@@ -50,7 +56,7 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
     }
   });
 
-  const convertedRegularSchedules = courseModules.reduce(
+  const convertedRegularSchedules = fullModules.reduce(
     (convertedRegularSchedules, module) => {
       // moduleごとにdayAndPeriodを作成
       convertedRegularSchedules[module] = regularSchedules[
@@ -85,7 +91,6 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
       return convertedRegularSchedules;
     },
     {
-      Annual: "",
       SpringA: "",
       SpringB: "",
       SpringC: "",
@@ -111,18 +116,18 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
      */
   );
 
-  return courseModules
+  return fullModules
     .reduce<{ module: string; date: string }[]>(
       (acc, module) => {
         if (convertedRegularSchedules[module] !== "")
           acc.push({
-            module: moduleToJa(module),
+            module: moduleToFullModuleJa(module),
             date: convertedRegularSchedules[module],
           });
         if (module in specialSchedules)
           acc.push({
-            module: moduleToJa(module),
-            date: specialSchedules[module],
+            module: moduleToFullModuleJa(module),
+            date: specialSchedules[module] ?? "",
           });
         return acc;
       },
