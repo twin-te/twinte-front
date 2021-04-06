@@ -85,12 +85,11 @@ export const fullDayMap: Partial<Record<Day, FullDayJa>> = {
 export const weekdayNum = (day: Day): number => weekdays.indexOf(day);
 export const weekNum = (day: Day): number => week.indexOf(day);
 
-export const weekDayToJa = (day: Day): WeekDayJa => weekdayMap[day] ?? "月";
+export const dayToWeekJa = (day: Day): WeekDayJa => weekdayMap[day] ?? "月";
 export const dayToJa = (day: Day): DayJa => weekMap[day] ?? "月";
+export const dayToFullDayja = (day: Day): FullDayJa => fullDayMap[day] ?? "月";
 
-export const jaToDay = (ja: DayJa): Day =>
-  week.find((key) => weekMap[key] === ja) ?? "Unknown";
-export const scheduleJaToDay = (ja: ScheduleDayJa): Day =>
-  week.find((key) => weekMap[key] === ja) ?? "Unknown";
-export const fullDayJaToDay = (ja: FullDayJa): Day =>
-  fullDays.find((key) => fullDayMap[key] === ja) ?? "Unknown";
+/** 任意の値をDayに変換できるように */
+export const jaToDay = (ja: string): Day =>
+  (Object.keys(fullDays) as Day[]).find((key) => fullDayMap[key] === ja) ??
+  "Unknown";

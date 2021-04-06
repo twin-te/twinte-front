@@ -1,21 +1,17 @@
 import { CourseModule } from "~/api/@types";
 
-// 夏季休業中、春季休業中
-export type vacationModule = "その他";
-export type ScheduleModuleJa = ModuleJa | vacationModule | "指定なし";
-export type ModuleMap = { [key in CourseModule]?: ModuleJa };
-export type ModuleJa =
-  | "通年"
-  | "春A"
-  | "春B"
-  | "春C"
-  | "夏季休業中"
-  | "秋A"
-  | "秋B"
-  | "秋C"
-  | "春季休業中";
+export type BaseModule = Exclude<
+  CourseModule,
+  "SummerVacation" | "SpringVacation" | "Unknown"
+>;
+export type FullModule = Exclude<CourseModule, "Unknown">;
 
-export const modules: CourseModule[] = [
+export type ModuleJa = "春A" | "春B" | "春C" | "秋A" | "秋B" | "秋C";
+export type VacationModuleJa = "夏休" | "春休";
+export type FullModuleJa = ModuleJa | VacationModuleJa;
+export type ScheduleModuleJa = FullModuleJa | "指定なし";
+
+export const modules: BaseModule[] = [
   "SpringA",
   "SpringB",
   "SpringC",
@@ -23,6 +19,17 @@ export const modules: CourseModule[] = [
   "FallB",
   "FallC",
 ];
+export const fullModules: FullModule[] = [
+  "SpringA",
+  "SpringB",
+  "SpringC",
+  "SummerVacation",
+  "FallA",
+  "FallB",
+  "FallC",
+  "SpringVacation",
+];
+
 export const moduleJaList: ModuleJa[] = [
   "春A",
   "春B",
@@ -35,64 +42,50 @@ export const scheduleModuleJaList: ScheduleModuleJa[] = [
   "春A",
   "春B",
   "春C",
+  "夏休",
   "秋A",
   "秋B",
   "秋C",
-  "その他",
+  "春休",
   "指定なし",
 ];
-export const fullModules: CourseModule[] = [
-  "SpringA",
-  "SpringB",
-  "SpringC",
-  "SummerVacation",
-  "FallA",
-  "FallB",
-  "FallC",
-  "SpringVacation",
-  // "Annual", apispec側が非対応
-];
-export const moduleMap: {
-  [key in Exclude<CourseModule, "Unknown">]: ModuleJa;
-} = {
-  Annual: "通年",
+
+export const moduleMap: Record<BaseModule, ModuleJa> = {
   SpringA: "春A",
   SpringB: "春B",
   SpringC: "春C",
-  SummerVacation: "夏季休業中",
   FallA: "秋A",
   FallB: "秋B",
   FallC: "秋C",
-  SpringVacation: "春季休業中",
 };
-export const courseModules: CourseModule[] = [
-  "Annual",
-  "SpringA",
-  "SpringB",
-  "SpringC",
-  "SummerVacation",
-  "FallA",
-  "FallB",
-  "FallC",
-  "SpringVacation",
-];
+export const fullModuleMap: Record<FullModule, FullModuleJa> = {
+  SpringA: "春A",
+  SpringB: "春B",
+  SpringC: "春C",
+  SummerVacation: "夏休",
+  FallA: "秋A",
+  FallB: "秋B",
+  FallC: "秋C",
+  SpringVacation: "春休",
+};
 
-export const modulesNum = (module: CourseModule): number =>
+export const modulesNum = (module: BaseModule): number =>
   modules.indexOf(module);
-export const courseModulesNum = (module: CourseModule) =>
-  courseModules.indexOf(module);
-export const moduleToJa = (module: CourseModule): ModuleJa =>
-  moduleMap[module] ?? "春A";
-export const moduleFromJa = (moduleJa: ModuleJa): CourseModule =>
-  modules[moduleJaList.indexOf(moduleJa)];
-export const jaToModule = (module: string): CourseModule =>
-  (Object.keys(moduleMap) as (keyof ModuleMap)[]).find(
-    (key) => moduleMap[key] === module
+export const fullModulesNum = (module: FullModule): number =>
+  fullModules.indexOf(module);
+
+export const moduleToJa = (module: BaseModule): ModuleJa => moduleMap[module];
+export const moduleToFullModuleJa = (module: FullModule): FullModuleJa =>
+  fullModuleMap[module];
+
+/** 任意の値をCourseModuleに変換できるように */
+export const jaToModule = (ja: string): CourseModule =>
+  (Object.keys(fullModuleMap) as CourseModule[]).find(
+    (key) => fullModuleMap[key] === ja
   ) ?? "Unknown";
 
-/** CourseModulesに対応 */
+/** fullModulesに対応 */
 export type ModuleFlg = [
-  boolean,
   boolean,
   boolean,
   boolean,
@@ -105,23 +98,22 @@ export type ModuleFlg = [
 
 export const moduleFlgToDisplay = (moduleFlg: ModuleFlg): string[] => {
   const result = [] as string[];
-  if (moduleFlg[0]) result.push("通年");
-  if (moduleFlg.slice(1, 4).some((b) => b)) {
+  if (moduleFlg.slice(0, 3).some((b) => b)) {
     result.push(
-      moduleFlg.slice(1, 4).reduce((a, _, i) => {
+      moduleFlg.slice(0, 3).reduce((a, _, i) => {
         return moduleFlg[1 + i] ? a + ["A", "B", "C"][i] : a;
       }, "春")
     );
   }
-  if (moduleFlg[4]) result.push("夏休");
-  if (moduleFlg.slice(5, 8).some((b) => b)) {
+  if (moduleFlg[3]) result.push("夏休");
+  if (moduleFlg.slice(4, 7).some((b) => b)) {
     result.push(
-      moduleFlg.slice(5, 8).reduce((a, _, i) => {
-        return moduleFlg[5 + i] ? a + ["A", "B", "C"][i] : a;
+      moduleFlg.slice(4, 7).reduce((a, _, i) => {
+        return moduleFlg[4 + i] ? a + ["A", "B", "C"][i] : a;
       }, "秋")
     );
   }
-  if (moduleFlg[8]) result.push("春休");
+  if (moduleFlg[7]) result.push("春休");
 
   return result;
 };
