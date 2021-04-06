@@ -244,8 +244,6 @@ export default defineComponent({
     const isNoResultShow = ref(false);
     const searchWord = ref("");
     const search = async (_offset = offset) => {
-      console.log(`offset ${offset}`);
-
       if (_offset === 0) {
         searchResult.value.splice(-searchResult.value.length);
         offset = 0;
