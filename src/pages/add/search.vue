@@ -149,7 +149,7 @@
 import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { displayToast } from "~/entities/toast";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { periodToString } from "~/usecases/periodToString";
@@ -158,7 +158,7 @@ import { searchCourse } from "~/usecases/searchCourse";
 import { usePorts } from "~/usecases";
 import { useRoute, useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
-import { useToggle } from "@vueuse/core";
+import { useToggle, useIntersectionObserver } from "@vueuse/core";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import Checkbox from "~/components/Checkbox.vue";
@@ -219,29 +219,24 @@ export default defineComponent({
     const searchResult = ref<{ course: Course; isSelected: boolean }[]>([]);
     // 検索結果を動的に読み込む処理
     const searchBoxRef = ref<Element>();
-    let observer: IntersectionObserver;
+    const options = {
+      root: searchBoxRef.value,
+      rootMargin: "0px 0px 500px 0px",
+      threshold: 0,
+    };
     const setSearchResultRef = (el, index) => {
       if (index + 1 == searchResult.value.length) {
-        observer.observe(el);
+        useIntersectionObserver(
+          el,
+          ([entry], observer) => {
+            if (!entry.isIntersecting) return;
+            search();
+            observer.unobserve(entry.target);
+          },
+          options
+        );
       }
     };
-    const searchByIntersection = (
-      entries: IntersectionObserverEntry[],
-      observer: IntersectionObserver
-    ) => {
-      const entry = entries[0];
-      if (!entry.isIntersecting) return;
-      search();
-      observer.unobserve(entry.target);
-    };
-    onMounted(() => {
-      const options = {
-        root: searchBoxRef.value,
-        rootMargin: "0px 0px 500px 0px",
-        threshold: 1,
-      };
-      observer = new IntersectionObserver(searchByIntersection, options);
-    });
 
     /** top */
     let offset = 0;
@@ -249,6 +244,8 @@ export default defineComponent({
     const isNoResultShow = ref(false);
     const searchWord = ref("");
     const search = async (_offset = offset) => {
+      console.log(`offset ${offset}`);
+
       if (_offset === 0) {
         searchResult.value.splice(-searchResult.value.length);
         offset = 0;
