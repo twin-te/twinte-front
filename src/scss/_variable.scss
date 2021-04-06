@@ -32,7 +32,7 @@ $theme-colors: (
   shadow-shade-inset: #aebecd56,
   shadow-light-input-inset: #ffffffa4,
   shadow-shade-input-inset: #bbc6d086,
-  shadow-shade-primary-inset: rgba(72, 182, 196, 0.839),
+  shadow-shade-primary-inset: #48b6c4d6,
   shadow-light-primary-light-inset: #aaf0df40,
   shadow-shade-primary-light-inset: #86e1dc40,
   shadow-shade-unselected-inset: #8e9da673,
@@ -44,7 +44,7 @@ $theme-colors: (
 $dark-theme-colors: (
   base: #222835,
   primary: #19c6c6,
-  primary-light: #5a66788c,
+  primary-light: #424c5a69,
   primaryull: #4e7b8e,
   text-main: #aeb7c4,
   text-sub: #838f96,
@@ -54,8 +54,8 @@ $dark-theme-colors: (
   disabled: #475258,
   undefined: #4c525528,
   unselected: #3f4a50,
-  filter-gray: #4e525b,
-  filter-darken: #58585f,
+  filter-gray: #4e525b57,
+  filter-darken: #1a1a2a50,
   text-link: #2f64b3,
   white: #ffffff,
   // shadow color
@@ -79,10 +79,9 @@ $dark-theme-colors: (
   --base-liner: linear-gradient(158.17deg, #f3f5fa -1.94%, #e5e7ed 102.24%);
   --primary-liner: linear-gradient(91.58deg, #6bcedc -8.01%, #71e2dc 105.39%);
   @each $key, $color in $theme-colors {
-    --color-#{$key}: #{hexToRGB($color)};
+    --color-#{""+$key}: #{hexToRGB($color)};
   }
-
-  @media (prefers-color-scheme: dark) {
+  .dark {
     --base-liner: linear-gradient(
       158.17deg,
       #0c101a -1.94%,
@@ -91,7 +90,7 @@ $dark-theme-colors: (
     );
     --primary-liner: linear-gradient(91.58deg, #3c919e -8.01%, #499893 105.39%);
     @each $key, $color in $dark-theme-colors {
-      --color-#{$key}: #{hexToRGB($color)};
+      --color-#{""+$key}: #{hexToRGB($color)};
     }
   }
 }

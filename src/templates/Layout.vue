@@ -13,6 +13,7 @@ import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
 import { Toast as ToastContent } from "~/entities/toast";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
+import { useDark } from "@vueuse/core";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
@@ -20,6 +21,9 @@ export default defineComponent({
     const { isClose, isOpen, closeSidebar } = useSidebar();
     const store = useStore();
     const ports = usePorts();
+    useDark({
+      selector: "body",
+    });
 
     // welcome modal
     const isLogin = ref(await authCheck(ports));
@@ -123,7 +127,7 @@ export default defineComponent({
 @import "~/scss/main.scss";
 .layout {
   display: flex;
-  background: $base-liner;
+  background: var(--base-liner);
   &__article {
     width: 100%;
     margin: $spacing-0 $spacing-4;
