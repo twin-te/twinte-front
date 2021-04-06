@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@aspida/axios": "^1.6.3",
+    "@sentry/browser": "^6.2.5",
+    "@sentry/tracing": "^6.2.5",
     "@types/qs": "^6.9.6",
     "@vueuse/core": "^4.6.2",
     "@vueuse/head": "^0.5.1",
@@ -26,6 +28,7 @@
     "firebase": "^8.3.2",
     "qs": "^6.10.1",
     "vue": "^3.0.9",
+    "vue-gtag-next": "^1.14.0",
     "vue-router": "4",
     "vue3-click-away": "^1.1.0",
     "vuex": "4"

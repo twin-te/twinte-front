@@ -154,13 +154,13 @@
 }
 @mixin center-fixed {
   position: fixed;
-  top: 50%;
+  top: calc(50% - #{$safe-area-top});
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 }
 @mixin center-asolute {
   position: absolute;
-  top: 50%;
+  top: calc(50% - #{$safe-area-top});
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 }

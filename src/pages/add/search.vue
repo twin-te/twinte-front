@@ -301,7 +301,7 @@ export default defineComponent({
 .main {
   margin-top: $spacing-5;
   &__search {
-    height: calc(100vh - 16.2rem);
+    height: calc(#{$vh} - 16.2rem);
     padding: $spacing-3 $spacing-0 $spacing-0;
   }
   &__button {
@@ -335,7 +335,7 @@ export default defineComponent({
     }
   }
   &__result {
-    height: calc(100vh - 26.6rem);
+    height: calc(#{$vh} - 26.6rem);
     @include scroll-mask;
     overflow-y: auto;
     padding: $spacing-2;

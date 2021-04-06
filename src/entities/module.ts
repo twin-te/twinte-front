@@ -9,11 +9,11 @@ export type ModuleJa =
   | "春A"
   | "春B"
   | "春C"
-  | "夏季休業中"
+  | "夏休"
   | "秋A"
   | "秋B"
   | "秋C"
-  | "春季休業中";
+  | "春休";
 
 export const modules: CourseModule[] = [
   "SpringA",
@@ -35,10 +35,11 @@ export const scheduleModuleJaList: ScheduleModuleJa[] = [
   "春A",
   "春B",
   "春C",
+  "夏休",
   "秋A",
   "秋B",
   "秋C",
-  "その他",
+  "春休",
   "指定なし",
 ];
 export const fullModules: CourseModule[] = [
@@ -59,11 +60,11 @@ export const moduleMap: {
   SpringA: "春A",
   SpringB: "春B",
   SpringC: "春C",
-  SummerVacation: "夏季休業中",
+  SummerVacation: "夏休",
   FallA: "秋A",
   FallB: "秋B",
   FallC: "秋C",
-  SpringVacation: "春季休業中",
+  SpringVacation: "春休",
 };
 export const courseModules: CourseModule[] = [
   "Annual",

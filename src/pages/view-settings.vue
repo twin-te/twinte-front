@@ -29,6 +29,14 @@
             :isChecked="bachelorMode"
           />
         </div>
+        <div class="main__content">
+          各時限の開始・終了時刻を表示する
+          <ToggleSwitch
+            class="switch"
+            @click-toggle-switch="toggleTableTimeMode"
+            :isChecked="tableTimeMode"
+          />
+        </div>
         <div class="main__content--dropdown">
           <p>時間割に表示する年度</p>
           <Dropdown
@@ -54,6 +62,7 @@ import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { usePorts } from "~/usecases";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 import { getCourseList } from "~/usecases/getCourseList";
+import { useTableTimeMode } from "~/usecases/useTableTime";
 
 export default defineComponent({
   components: {
@@ -70,19 +79,27 @@ export default defineComponent({
     const ports = usePorts();
 
     const { bachelorMode, toggleBachelorMode } = useBachelorMode(ports);
+    const { tableTimeMode, toggleTableTimeMode } = useTableTimeMode(ports);
 
     const isDark = useDark();
     const toggleDark = useToggle(isDark);
 
-    const displayedYearOptions = ["指定なし", "2021年度", "2020年度"];
+    const displayedYearOptions = [
+      "自動(現在の年度)",
+      "2021年度",
+      "2020年度",
+      "2019年度",
+    ];
     const { displayedYear, setDisplayedYear } = useDisplayedYear(ports);
     const selectedYear = ref(
-      displayedYear.value === null ? "指定なし" : displayedYear.value + "年度"
+      displayedYear.value === null
+        ? "自動(現在の年度)"
+        : displayedYear.value + "年度"
     );
     const updateYear = (year: string) => {
       selectedYear.value = year;
       setDisplayedYear(
-        selectedYear.value === "指定なし"
+        selectedYear.value === "自動(現在の年度)"
           ? null
           : Number(selectedYear.value.slice(0, 4))
       );
@@ -94,6 +111,8 @@ export default defineComponent({
       toggleDark,
       bachelorMode,
       toggleBachelorMode,
+      tableTimeMode,
+      toggleTableTimeMode,
       displayedYearOptions,
       selectedYear,
       updateYear,
@@ -111,7 +130,7 @@ export default defineComponent({
 .main {
   margin-top: $spacing-5;
   &__contents {
-    height: calc(100vh - 8rem - #{$safe-area-top});
+    height: calc(#{$vh} - 8rem - #{$safe-area-top});
   }
   &__content {
     display: flex;

@@ -62,7 +62,10 @@
           table: true,
           'main__table--popup': popup,
         }"
-        :style="{ gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)` }"
+        :style="{
+          gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)`,
+          gridTemplateColumns: `${tableTimeMode ? 3.6 : 2}rem repeat(5, 1fr)`,
+        }"
         v-if="whichSelected === 'left'"
       >
         <div
@@ -70,10 +73,16 @@
           :key="period"
           :class="{
             table__period: true,
+            'table__period--with-time': tableTimeMode,
             'table__period--first': period == 1,
           }"
         >
           {{ period }}
+          <p v-show="tableTimeMode" class="table__time">
+            {{ tableTimeData[period - 1].start }}
+            <span class="table__time--tilda">~</span>
+            {{ tableTimeData[period - 1].end }}
+          </p>
         </div>
         <template v-for="(y, d) in table" :key="d">
           <div class="table__day">
@@ -125,6 +134,37 @@
             </div>
           </div>
         </template>
+        <div class="special-header">
+          <div class="special-header__label">土曜</div>
+          <div class="special-header__divider"></div>
+        </div>
+        <div class="special-container">
+          <div
+            class="special-contents"
+            v-for="course in saturdayCourseList"
+            :key="course.id"
+          >
+            <div class="special-contents__module">
+              <span v-for="m in course.module" :key="m">{{ m }}</span>
+            </div>
+            <CourseTile
+              class="special-contents__course"
+              @click="$router.push(`/course/${course.id}`)"
+              state="default"
+              :name="course.name"
+              :room="course.room"
+            />
+          </div>
+          <div v-if="saturdayCourseList.length === 0" class="special-contents">
+            <div class="special-contents__module"></div>
+            <CourseTile
+              class="special-contents__course"
+              state="none"
+              name=""
+              room=""
+            />
+          </div>
+        </div>
       </section>
     </section>
   </div>
@@ -199,6 +239,8 @@ import { useHead } from "@vueuse/head";
 import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
+import { getSaturdayCourseList } from "~/usecases/getSaturdayCourseList";
+import { useTableTimeMode } from "~/usecases/useTableTime";
 
 export default defineComponent({
   name: "Table",
@@ -243,12 +285,16 @@ export default defineComponent({
 
     /** table */
     const { bachelorMode } = useBachelorMode(ports);
+    const { tableTimeMode } = useTableTimeMode(ports);
     const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
       courseListToTable(storedCourses, module.value, bachelorMode.value)
     );
     const specialTable = computed(() =>
       courseListToSpecialTable(storedCourses)
+    );
+    const saturdayCourseList = computed(() =>
+      getSaturdayCourseList(storedCourses)
     );
     const setCurrentModule = () => {
       setDisplayedModule(currentModule);
@@ -278,6 +324,16 @@ export default defineComponent({
           break;
       }
     };
+    const tableTimeData = [
+      { start: "8:40", end: "9:55" },
+      { start: "10:10", end: "11:25" },
+      { start: "12:15", end: "13:30" },
+      { start: "13:45", end: "15:00" },
+      { start: "15:15", end: "16:30" },
+      { start: "16:45", end: "18:00" },
+      { start: "18:20", end: "19:35" },
+      { start: "19:45", end: "21:00" },
+    ];
 
     /** duplication modal */
     type DuplocationState = {
@@ -312,7 +368,10 @@ export default defineComponent({
       isCurrentModule,
       table,
       specialTable,
+      saturdayCourseList,
       weeks,
+      tableTimeMode,
+      tableTimeData,
       specialDayMap,
       onClickCourseTile,
       duplicationState,
@@ -342,7 +401,7 @@ export default defineComponent({
 
   @include landscape {
     border-radius: $spacing-4;
-    height: calc(100vh - 9.6rem);
+    height: calc(#{$vh} - 9.6rem);
   }
 
   &__toggle {
@@ -399,17 +458,39 @@ export default defineComponent({
 
 .table {
   display: grid;
-  grid-template-columns: 2rem repeat(5, 1fr);
   grid-auto-flow: column;
   gap: 0.2rem;
   overflow-y: auto;
 
   &__period {
+    @include center-flex(column);
     color: $text-sub;
     font-size: $font-small;
+    font-weight: 500;
     margin: auto auto auto 0;
+    &--with-time {
+      background: $undefined;
+      margin: 0;
+      overflow-y: auto;
+    }
     &--first {
       grid-row-start: 2;
+    }
+  }
+
+  &__time {
+    font-size: 0.9rem;
+    font-weight: normal;
+    line-height: $fit;
+    color: $text-sub-light;
+    margin: 0.5rem 0 0 0;
+    display: grid;
+    gap: $spacing-1;
+    &--tilda {
+      width: min-content;
+      display: inline-block;
+      margin: auto auto;
+      transform: rotate(90deg);
     }
   }
 
@@ -422,9 +503,9 @@ export default defineComponent({
 
 .special {
   grid-area: table;
-  height: calc(100vh - 14.8rem);
+  height: calc(#{$vh} - 14.8rem);
   @include landscape {
-    height: calc(100vh - 16.4rem);
+    height: calc(#{$vh} - 16.4rem);
   }
   overflow-y: scroll;
   margin-top: $spacing-3;

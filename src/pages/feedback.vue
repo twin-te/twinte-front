@@ -209,14 +209,16 @@ export default defineComponent({
 
 .main {
   margin-top: $spacing-5;
-  &__feedback {
-    @include scroll-mask-large;
-    height: calc(100vh - 16.2rem);
+  &__mask {
+    height: calc(#{$vh} - 16.2rem);
     @include landscape {
-      height: calc(100vh - 16.6rem);
+      height: calc(#{$vh} - 16.6rem);
     }
     overflow-y: auto;
-    padding: $spacing-2 0;
+  }
+  &__feedback {
+    height: calc(#{$vh} - 15rem);
+    padding-top: $spacing-3;
   }
   &__button {
     text-align: center;

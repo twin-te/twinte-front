@@ -23,6 +23,9 @@ export const mutations: MutationTree<GlobalState> = {
   setBachelorMode(state, mode: boolean) {
     state.bachelorMode = mode;
   },
+  setTableTimeMode(state, show: boolean) {
+    state.tableTimeMode = show;
+  },
   setDisplayedYear(state, year: number | null) {
     state.displayedYear = year;
   },
