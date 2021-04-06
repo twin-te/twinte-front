@@ -1,7 +1,7 @@
 /* eslint-disable */
 export type CourseMethod = 'FaceToFace' | 'Synchronous' | 'Asynchronous' | 'Others'
 
-export type CourseModule = 'SpringA' | 'SpringB' | 'SpringC' | 'SummerVacation' | 'FallA' | 'FallB' | 'FallC' | 'SpringVacation' | 'Annual' | 'Unknown'
+export type CourseModule = 'SpringA' | 'SpringB' | 'SpringC' | 'SummerVacation' | 'FallA' | 'FallB' | 'FallC' | 'SpringVacation' | 'Unknown'
 
 export type CourseSchedule = {
   module: CourseModule
