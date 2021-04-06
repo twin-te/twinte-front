@@ -12,71 +12,58 @@
       <template #title>フィードバック</template>
     </PageHeader>
     <div class="main">
-      <div class="main__mask">
-        <div class="main__feedback">
-          <section class="feedback__row">
-            <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
-            <div class="feedback__note"></div>
-            <Dropdown
-              :options="[
-                'バグの報告',
-                '新機能の要望',
-                'お問い合わせ',
-                'その他',
-              ]"
-              v-model:selectedOption="feedbackType"
-            ></Dropdown>
-          </section>
-          <section class="feedback__row">
-            <Label value="スクリーンショットの添付"></Label>
-            <div class="feedback__note">
-              バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
-            </div>
-            <InputButtonFile
-              name="csv-file"
-              @change-file="screenShot = $event"
-              accept="image/*"
-            >
-              画像をアップロードする
-            </InputButtonFile>
-          </section>
-          <section class="feedback__row">
-            <Label value="内容" :mandatory="true"></Label>
-            <div class="feedback__note"></div>
-            <TextFieldMultilines
-              v-model="feedbackContent"
-              :placeholder="placeholder[feedbackType]"
-              height="20rem"
-            ></TextFieldMultilines>
-          </section>
-          <section
-            class="feedback__row"
-            v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
+      <div class="main__feedback">
+        <section class="feedback__row">
+          <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
+          <div class="feedback__note"></div>
+          <Dropdown
+            :options="['バグの報告', '新機能の要望', 'お問い合わせ', 'その他']"
+            v-model:selectedOption="feedbackType"
+          ></Dropdown>
+        </section>
+        <section class="feedback__row">
+          <Label value="スクリーンショットの添付"></Label>
+          <div class="feedback__note">
+            バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
+          </div>
+          <InputButtonFile
+            name="csv-file"
+            @change-file="screenShot = $event"
+            accept="image/*"
           >
-            <Label
-              value="連絡先メールアドレス or Twitterアカウント"
-              :mandatory="feedbackType === 'お問い合わせ'"
-            ></Label>
-            <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
-            <TextFieldSingleLine
-              v-model="email"
-              placeholder="xxx@example.com / @te_twin"
-            ></TextFieldSingleLine>
-          </section>
-        </div>
-      </div>
-      <section class="main__button">
-        <Button
-          @click="sendFeedback()"
-          size="large"
-          layout="fill"
-          color="primary"
-          :pauseActiveStyle="false"
-          :state="btnStatus"
-          >フィードバックを送信</Button
+            画像をアップロードする
+          </InputButtonFile>
+        </section>
+        <section class="feedback__row">
+          <Label value="内容" :mandatory="true"></Label>
+          <div class="feedback__note"></div>
+          <TextFieldMultilines
+            v-model="feedbackContent"
+            :placeholder="placeholder[feedbackType]"
+            height="20rem"
+          ></TextFieldMultilines>
+        </section>
+        <section
+          class="feedback__row"
+          v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
         >
-      </section>
+          <Label
+            value="連絡先メールアドレス or Twitterアカウント"
+            :mandatory="feedbackType === 'お問い合わせ'"
+          ></Label>
+          <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
+          <TextFieldSingleLine
+            v-model="email"
+            placeholder="xxx@example.com / @te_twin"
+          ></TextFieldSingleLine>
+        </section>
+      </div>
     </div>
+    <FooterButton
+      @button-click="sendFeedback()"
+      buttonText="フィードバックを送信"
+      :buttonState="btnStatus"
+    />
   </div>
 </template>
 
@@ -89,8 +76,8 @@ import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useStore } from "~/store";
 import axios, { AxiosError } from "axios";
-import Button from "~/components/Button.vue";
 import Dropdown from "~/components/Dropdown.vue";
+import FooterButton from "~/components/FooterButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Label from "~/components/Label.vue";
@@ -100,8 +87,8 @@ import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 
 export default defineComponent({
   components: {
-    Button,
     Dropdown,
+    FooterButton,
     IconButton,
     InputButtonFile,
     Label,
@@ -212,32 +199,24 @@ export default defineComponent({
 @import "~/scss/main.scss";
 .feedback {
   @include max-width;
+  height: $vh;
+  display: grid;
+  grid-template:
+    "header" 6rem
+    "...   " $content-margin-top
+    "main  " 1fr
+    "footer" 7rem
+    / 100%;
 }
-
+.header {
+  grid-area: header;
+}
+.footer-button {
+  grid-area: footer;
+}
 .main {
-  margin-top: $spacing-5;
-  &__mask {
-    height: calc(#{$vh} - 16.2rem);
-    @include landscape {
-      height: calc(#{$vh} - 16.6rem);
-    }
-    @include scroll-mask;
-    overflow-y: auto;
-  }
-  &__feedback {
-    height: calc(#{$vh} - 15rem);
-    padding-top: $spacing-3;
-  }
-  &__button {
-    text-align: center;
-    margin: $spacing-3 $spacing-0 $spacing-6;
-    @include landscape {
-      margin-bottom: $spacing-7;
-    }
-    button {
-      margin: auto;
-    }
-  }
+  grid-area: main;
+  @include scroll-content;
 }
 .feedback {
   &__row {

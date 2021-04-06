@@ -12,65 +12,57 @@
       <template #title>手動で授業を作成</template>
     </PageHeader>
     <div class="main">
-      <div class="main__mask">
-        <div class="main__contents">
-          <section class="main__course-name">
-            <LabeledTextField label="授業名" mandatory>
-              <TextFieldSingleLine
-                v-model="course.name"
-                placeholder="例) ゼミ"
-              ></TextFieldSingleLine>
-            </LabeledTextField>
-          </section>
-          <section class="main__period">
-            <Label value="開講時限" mandatory></Label>
-            <ScheduleEditer
-              v-model:schedules="schedules"
-              :onClickAddButton="addSchedule"
-              :onClickRemoveButton="removeSchedule"
-            ></ScheduleEditer>
-          </section>
-          <section class="main__instructor">
-            <LabeledTextField label="担当教員">
-              <TextFieldSingleLine
-                v-model="course.instructor"
-                placeholder="例) 山田太郎"
-              ></TextFieldSingleLine>
-            </LabeledTextField>
-          </section>
-          <section class="main__room">
-            <LabeledTextField label="授業場所">
-              <TextFieldSingleLine
-                v-model="room"
-                placeholder="例) 研究室"
-              ></TextFieldSingleLine>
-            </LabeledTextField>
-          </section>
-          <section class="main__method method">
-            <Label value="授業形式"></Label>
-            <div class="method__checkboxes">
-              <CheckContent
-                v-for="method in methods"
-                :key="method.value"
-                v-model:checked="method.checked"
-                >{{ method.lavel }}</CheckContent
-              >
-            </div>
-          </section>
-        </div>
+      <div class="main__scroll">
+        <section class="main__course-name">
+          <LabeledTextField label="授業名" mandatory>
+            <TextFieldSingleLine
+              v-model="course.name"
+              placeholder="例) ゼミ"
+            ></TextFieldSingleLine>
+          </LabeledTextField>
+        </section>
+        <section class="main__period">
+          <Label value="開講時限" mandatory></Label>
+          <ScheduleEditer
+            v-model:schedules="schedules"
+            :onClickAddButton="addSchedule"
+            :onClickRemoveButton="removeSchedule"
+          ></ScheduleEditer>
+        </section>
+        <section class="main__instructor">
+          <LabeledTextField label="担当教員">
+            <TextFieldSingleLine
+              v-model="course.instructor"
+              placeholder="例) 山田太郎"
+            ></TextFieldSingleLine>
+          </LabeledTextField>
+        </section>
+        <section class="main__room">
+          <LabeledTextField label="授業場所">
+            <TextFieldSingleLine
+              v-model="room"
+              placeholder="例) 研究室"
+            ></TextFieldSingleLine>
+          </LabeledTextField>
+        </section>
+        <section class="main__method method">
+          <Label value="授業形式"></Label>
+          <div class="method__checkboxes">
+            <CheckContent
+              v-for="method in methods"
+              :key="method.value"
+              v-model:checked="method.checked"
+              >{{ method.lavel }}</CheckContent
+            >
+          </div>
+        </section>
       </div>
-      <section class="main__button">
-        <Button
-          @click="addCourse()"
-          size="large"
-          layout="fill"
-          color="primary"
-          :pauseActiveStyle="false"
-          :state="btnState"
-          >変更を保存</Button
-        >
-      </section>
     </div>
+    <FooterButton
+      @button-click="addCourse()"
+      buttonText="変更を保存"
+      :buttonState="btnState"
+    />
     <Modal
       v-if="duplicationModal"
       class="duplication-modal"
@@ -133,6 +125,7 @@ import { useSwitch } from "~/hooks/useSwitch";
 import Button from "~/components/Button.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
+import FooterButton from "~/components/FooterButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import Label from "~/components/Label.vue";
 import LabeledTextField from "~/components/LabeledTextField.vue";
@@ -146,6 +139,7 @@ export default defineComponent({
     Button,
     CheckContent,
     CourseDetailMini,
+    FooterButton,
     IconButton,
     Modal,
     Label,
@@ -247,6 +241,7 @@ export default defineComponent({
       addCourse,
       addSchedule,
       btnState,
+      FooterButton,
       closeDuplicationModal,
       course,
       duplicatedCourses,
@@ -266,36 +261,34 @@ export default defineComponent({
 @import "~/scss/main.scss";
 .manual {
   @include max-width;
+  height: $vh;
+  display: grid;
+  grid-template:
+    "header" 6rem
+    "...   " $content-margin-top
+    "main  " 1fr
+    "footer" 7rem
+    / 100%;
+}
+
+.header {
+  grid-area: header;
+}
+
+.footer-button {
+  grid-area: footer;
 }
 
 .main {
-  margin-top: $spacing-5;
-  &__mask {
-    height: calc(#{$vh} - 16.2rem);
-    @include landscape {
-      height: calc(#{$vh} - 16.6rem);
-    }
-    @include scroll-mask;
-    overflow-y: auto;
-  }
-  &__contents {
+  grid-area: main;
+  @include scroll-content;
+  &__scroll {
     display: grid;
     gap: $spacing-8;
-    padding: $spacing-3 $spacing-0 $spacing-14;
   }
   &__period {
     display: grid;
     gap: 1.4rem;
-  }
-  &__button {
-    text-align: center;
-    margin: $spacing-3 $spacing-0 $spacing-6;
-    @include landscape {
-      margin-bottom: $spacing-7;
-    }
-  }
-  .button {
-    display: inline-block;
   }
 }
 .method {
