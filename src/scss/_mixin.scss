@@ -141,19 +141,6 @@
   }
 }
 
-// 画面下部のボタンのpadding-bottom
-@mixin bottom-buttom-bottom-margin {
-  margin-bottom: $spacing-6;
-  @include landscape {
-    margin-bottom: $spacing-7;
-  }
-}
-
-// header + gap
-@mixin height-without-header {
-  height: calc(100vh - 8rem - #{$safe-area-top});
-}
-
 // Home以外のページで使う。
 @mixin max-width {
   max-width: $max-pc-item-width;
@@ -182,18 +169,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: $direction;
-}
-
-// スクロールバーをつけたい要素の中身に付与する
-// $vh
-// - 6rem                 ヘッダーの高さ
-// - $content-margin-top  ヘッダーとコンテンツの間のマージン
-// - 7rem                 フッダーボタンの高さ
-@mixin scroll-content($height: calc($vh - 6rem - 7rem - $content-margin-top)) {
-  @include scroll-mask;
-  height: $height;
-  padding: $spacing-2 0 $spacing-7;
-  overflow-y: auto;
 }
 
 @mixin sensor-housing {

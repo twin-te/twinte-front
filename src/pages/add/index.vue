@@ -14,33 +14,38 @@
       <template #title>授業の追加</template>
     </PageHeader>
     <div class="main">
-      <div class="main__card-group">
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/add/search')"
           iconName="search"
           heading="授業の検索"
           text="ワードや条件を指定して授業を検索・追加します。"
         ></CardAdd>
+      </section>
+      <section class="main__card" v-if="isMobile">
         <CardAdd
-          v-if="isMobile"
           @click-next-button="$router.push('/add/twins')"
           iconName="get_app"
           heading="Twinsからインポート"
           text="Twinsで登録した授業をモジュール単位でインポートします。"
         ></CardAdd>
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/add/csv')"
           iconName="insert_drive_file"
           heading="CSVファイルから追加"
           text="CSVファイルに入っている授業データを追加します。"
         ></CardAdd>
+      </section>
+      <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/add/manual')"
           iconName="style"
           heading="手動で授業を作成"
           text="手入力でカスタマイズして授業を作成します。"
         ></CardAdd>
-      </div>
+      </section>
     </div>
   </div>
 </template>
@@ -92,18 +97,17 @@ export default defineComponent({
 @include header-left-button-delete;
 
 .add {
-  height: 100%;
-  display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: $spacing-5;
+  margin: $spacing-0;
   @include max-width;
 }
 
 .main {
-  margin-top: $spacing-3;
-  &__card-group {
-    display: grid;
-    gap: $spacing-4;
+  display: flex;
+  flex-direction: column;
+  height: calc(#{$vh} - 9.2rem);
+  margin-top: $spacing-8;
+  &__card {
+    margin-bottom: $spacing-4;
   }
 }
 </style>

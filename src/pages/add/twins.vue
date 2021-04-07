@@ -37,15 +37,16 @@
         </div>
         <img src="../../assets/twins-to-twinte.png" alt="twins-to-twinte" />
       </div>
-      <Button
-        class="main__button"
-        @click="openTwins"
-        size="large"
-        layout="fill"
-        color="primary"
-        :pauseActiveStyle="false"
-        >Twinsに移動</Button
-      >
+      <section class="main__button">
+        <Button
+          @click="openTwins"
+          size="large"
+          layout="fill"
+          color="primary"
+          :pauseActiveStyle="false"
+          >Twinsに移動</Button
+        >
+      </section>
     </div>
   </div>
 </template>
@@ -79,24 +80,20 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-
 .twins {
-  height: 100%;
-  display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: $spacing-5;
   @include max-width;
 }
 
 .main {
-  display: grid;
-  grid-auto-rows: 1fr auto;
-  gap: $spacing-3;
-  @include height-without-header;
+  margin-top: $spacing-5;
   &__mask {
+    height: calc(#{$vh} - 16.2rem);
+    @include landscape {
+      height: calc(#{$vh} - 16.6rem);
+    }
     @include scroll-mask;
     overflow-y: auto;
-    padding: $spacing-3 $spacing-0 $spacing-14;
+    padding: 0.9rem 0;
   }
   &__description {
     @include text-description;
@@ -112,8 +109,14 @@ export default defineComponent({
     font-weight: 500;
   }
   &__button {
-    margin: 0 auto;
-    @include bottom-buttom-bottom-margin;
+    text-align: center;
+    margin: $spacing-3 $spacing-0 $spacing-6;
+    @include landscape {
+      margin-bottom: $spacing-7;
+    }
+  }
+  .button {
+    display: inline-block;
   }
 }
 </style>

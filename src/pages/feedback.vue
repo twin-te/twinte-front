@@ -58,12 +58,18 @@
           ></TextFieldSingleLine>
         </section>
       </div>
+      <section class="main__button">
+        <Button
+          @click="sendFeedback()"
+          size="large"
+          layout="fill"
+          color="primary"
+          :pauseActiveStyle="false"
+          :state="btnStatus"
+          >フィードバックを送信</Button
+        >
+      </section>
     </div>
-    <FooterButton
-      @button-click="sendFeedback()"
-      buttonText="フィードバックを送信"
-      :buttonState="btnStatus"
-    />
   </div>
 </template>
 
@@ -76,8 +82,8 @@ import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useStore } from "~/store";
 import axios, { AxiosError } from "axios";
+import Button from "~/components/Button.vue";
 import Dropdown from "~/components/Dropdown.vue";
-import FooterButton from "~/components/FooterButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Label from "~/components/Label.vue";
@@ -87,8 +93,8 @@ import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 
 export default defineComponent({
   components: {
+    Button,
     Dropdown,
-    FooterButton,
     IconButton,
     InputButtonFile,
     Label,
@@ -197,27 +203,33 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-
 .feedback {
   @include max-width;
-  height: $vh;
-  display: grid;
-  grid-template:
-    "header" 6rem
-    "...   " $content-margin-top
-    "main  " 1fr
-    "footer" 7rem
-    / 100%;
 }
-.header {
-  grid-area: header;
-}
-.footer-button {
-  grid-area: footer;
-}
+
 .main {
-  grid-area: main;
-  @include scroll-content;
+  margin-top: $spacing-5;
+  &__mask {
+    height: calc(#{$vh} - 16.2rem);
+    @include landscape {
+      height: calc(#{$vh} - 16.6rem);
+    }
+    overflow-y: auto;
+  }
+  &__feedback {
+    height: calc(#{$vh} - 15rem);
+    padding-top: $spacing-3;
+  }
+  &__button {
+    text-align: center;
+    margin: $spacing-3 $spacing-0 $spacing-6;
+    @include landscape {
+      margin-bottom: $spacing-7;
+    }
+    button {
+      margin: auto;
+    }
+  }
 }
 .feedback {
   &__row {
