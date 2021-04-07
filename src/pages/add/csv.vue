@@ -1,41 +1,40 @@
 <template>
-  <div class="csv">
-    <PageHeader>
-      <template #left-button-icon>
-        <IconButton
-          @click="$router.back()"
-          size="large"
-          color="normal"
-          icon-name="arrow_back"
-        ></IconButton>
-      </template>
-      <template #title>CSVファイルから追加</template>
-    </PageHeader>
-    <div class="main">
-      <div class="main__csv csv">
-        <p class="csv__header">CSVファイル</p>
-        <InputButtonFile
-          name="csv-file"
-          @change-file="loadCourses"
-          accept="text/csv"
+  <PageHeader>
+    <template #left-button-icon>
+      <IconButton
+        @click="$router.back()"
+        size="large"
+        color="normal"
+        icon-name="arrow_back"
+      ></IconButton>
+    </template>
+    <template #title>CSVファイルから追加</template>
+  </PageHeader>
+  <div class="main">
+    <div class="main__csv csv">
+      <p class="csv__header">CSVファイル</p>
+      <InputButtonFile
+        name="csv-file"
+        @change-file="loadCourses"
+        accept="text/csv"
+      >
+        アップロードする
+      </InputButtonFile>
+    </div>
+    <div class="main__courses courses">
+      <div class="courses__contents">
+        <CardCourse
+          v-for="course in loadedCourses"
+          :key="courseToCard(course.course).id"
+          @click-checkbox="course.isSelected = !course.isSelected"
+          :isChecked="course.isSelected"
+          :course="courseToCard(course.course)"
         >
-          アップロードする
-        </InputButtonFile>
+        </CardCourse>
       </div>
-      <div class="main__courses courses">
-        <div class="courses__contents">
-          <CardCourse
-            v-for="course in loadedCourses"
-            :key="courseToCard(course.course).id"
-            @click-checkbox="course.isSelected = !course.isSelected"
-            :isChecked="course.isSelected"
-            :course="courseToCard(course.course)"
-          >
-          </CardCourse>
-        </div>
-      </div>
+    </div>
+    <div class="main__button">
       <Button
-        class="main__button"
         @click="addCourse()"
         size="large"
         layout="fill"
@@ -45,49 +44,49 @@
         >選択した授業を追加</Button
       >
     </div>
-    <Modal
-      v-if="duplicationModal"
-      class="duplication-modal"
-      @click="closeDuplicationModal"
-    >
-      <template #title>開講時限が重複しています</template>
-      <template #contents>
-        <p class="modal__text">
-          以下の授業のコマには既に授業が登録されています。そのまま追加してよろしいですか？（当該のコマには複数の授業が登録されます。）
-        </p>
-        <div class="modal__courses">
-          <div
-            class="duplicated-course"
-            v-for="duplicatedCourse in duplicatedCourses"
-            :key="duplicatedCourse.name"
-          >
-            <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
-            <CourseDetailMini
-              class="duplicated-course__detail"
-              iconName="schedule"
-              :text="periodToString(duplicatedCourse.schedules)"
-            ></CourseDetailMini>
-          </div>
-        </div>
-      </template>
-      <template #button>
-        <Button
-          @click="closeDuplicationModal"
-          size="medium"
-          layout="fill"
-          color="base"
-          >キャンセル</Button
-        >
-        <Button
-          @click="addCourse(false)"
-          size="medium"
-          layout="fill"
-          color="primary"
-          >そのまま追加</Button
-        >
-      </template>
-    </Modal>
   </div>
+  <Modal
+    v-if="duplicationModal"
+    class="duplication-modal"
+    @click="closeDuplicationModal"
+  >
+    <template #title>開講時限が重複しています</template>
+    <template #contents>
+      <p class="modal__text">
+        以下の授業のコマには既に授業が登録されています。そのまま追加してよろしいですか？（当該のコマには複数の授業が登録されます。）
+      </p>
+      <div class="modal__courses">
+        <div
+          class="duplicated-course"
+          v-for="duplicatedCourse in duplicatedCourses"
+          :key="duplicatedCourse.name"
+        >
+          <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
+          <CourseDetailMini
+            class="duplicated-course__detail"
+            iconName="schedule"
+            :text="periodToString(duplicatedCourse.schedules)"
+          ></CourseDetailMini>
+        </div>
+      </div>
+    </template>
+    <template #button>
+      <Button
+        @click="closeDuplicationModal"
+        size="medium"
+        layout="fill"
+        color="base"
+        >キャンセル</Button
+      >
+      <Button
+        @click="addCourse(false)"
+        size="medium"
+        layout="fill"
+        color="primary"
+        >そのまま追加</Button
+      >
+    </template>
+  </Modal>
 </template>
 
 <script lang="ts">
@@ -222,38 +221,34 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
-.csv {
-  height: 100%;
-  display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: $spacing-5;
-  @include max-width;
+.header {
+  max-width: 900px;
 }
-
 .main {
-  display: grid;
-  grid-template:
-    "csv" auto
-    "..." $spacing-5
-    "courses" 1fr
-    "..." $spacing-3
-    "button" auto
-    / auto;
-  @include height-without-header;
+  max-width: 900px;
   &__csv {
-    margin-top: $spacing-3;
-    grid-area: csv;
+    margin-top: $spacing-8;
   }
   &__courses {
-    grid-area: courses;
+    margin-top: $spacing-5;
+  }
+  &__error {
+    margin-top: $spacing-6;
+    height: calc(#{$vh} - 26.1rem);
+    @include landscape {
+      height: calc(#{$vh} - 26.5rem);
+    }
+    color: $danger;
+    line-height: 2rem;
   }
   &__button {
-    grid-area: button;
-    margin: 0 auto;
-    @include bottom-buttom-bottom-margin;
+    margin: $spacing-3 $spacing-0 $spacing-6;
+    @include center-flex;
+    @include landscape {
+      margin-bottom: $spacing-7;
+    }
   }
 }
-
 .csv {
   &__header {
     font-weight: 500;
@@ -261,8 +256,11 @@ export default defineComponent({
     margin-bottom: $spacing-4;
   }
 }
-
 .courses {
+  height: calc(#{$vh} - 25.7rem);
+  @include landscape {
+    height: calc(#{$vh} - 26.1rem);
+  }
   overflow-y: scroll;
   margin-right: -($spacing-4);
   padding-right: $spacing-4;
@@ -273,7 +271,6 @@ export default defineComponent({
     margin: $spacing-3 $spacing-0 $spacing-14;
   }
 }
-
 .duplication-modal .modal {
   &__text {
     line-height: $multi-line;
@@ -293,7 +290,6 @@ export default defineComponent({
     }
   }
 }
-
 .duplicated-course {
   @include center-flex(column);
   align-items: flex-start;
