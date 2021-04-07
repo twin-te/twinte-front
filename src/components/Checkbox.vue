@@ -64,7 +64,7 @@ export default defineComponent({
   @include button-cursor;
   &.--unchecked {
     @include button-inactive;
-    background: var(--base-liner);
+    background: getColor(--color-base);
     color: getColor(--color-unselected);
     &:hover {
       @include button-hover;

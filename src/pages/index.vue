@@ -468,6 +468,7 @@ export default defineComponent({
     font-weight: 500;
     margin: auto auto auto 0;
     &--with-time {
+      border-radius: $radius-1;
       background: getColor(--color-undefined);
       margin: 0;
       overflow-y: auto;

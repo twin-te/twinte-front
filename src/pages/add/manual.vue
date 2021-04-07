@@ -300,6 +300,9 @@ export default defineComponent({
 }
 .method {
   &__checkboxes {
+    position: relative;
+    padding-left: 2rem;
+    margin-left: -2rem;
     display: grid;
     gap: $spacing-5;
     margin-top: 1.4rem;

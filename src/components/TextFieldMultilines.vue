@@ -62,7 +62,7 @@ export default defineComponent({
     width: 100%;
     resize: none;
 
-    background: getColor(--color-base);
+    background: inherit;
     font-size: $font-medium;
     line-height: $multi-line;
     color: getColor(--color-text-main);

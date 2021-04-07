@@ -137,7 +137,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     padding: 1.2rem 0;
-    color: getColor(--color-text-sub);
+    color: getColor(--color-text-main);
     font-weight: 500;
 
     & .switch {

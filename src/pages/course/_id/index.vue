@@ -393,7 +393,7 @@ export default defineComponent({
     display: grid;
     gap: $spacing-5;
     padding: $spacing-4 $spacing-6;
-    background: getColor(--color-base);
+    background: inherit;
     box-shadow: $shadow-base;
     border-radius: $radius-3;
     &__item {
