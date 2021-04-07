@@ -238,7 +238,7 @@ export default defineComponent({
     @include landscape {
       height: calc(#{$vh} - 26.5rem);
     }
-    color: $danger;
+    color: getColor(--danger);
     line-height: 2rem;
   }
   &__button {
