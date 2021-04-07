@@ -13,14 +13,14 @@
     </PageHeader>
     <div class="main">
       <div class="main__contents">
-        <!-- <div class="main__content">
+        <div class="main__content">
           ダークモード
           <ToggleSwitch
             class="switch"
             @click-toggle-switch="toggleDark"
             :isChecked="isDark"
           />
-        </div> -->
+        </div>
         <div class="main__content">
           8限まで表示する(大学院生用)
           <ToggleSwitch
@@ -80,8 +80,9 @@ export default defineComponent({
 
     const { bachelorMode, toggleBachelorMode } = useBachelorMode(ports);
     const { tableTimeMode, toggleTableTimeMode } = useTableTimeMode(ports);
-
-    const isDark = useDark();
+    const isDark = useDark({
+      selector: "body",
+    });
     const toggleDark = useToggle(isDark);
 
     const displayedYearOptions = [
@@ -140,7 +141,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     padding: 1.2rem 0;
-    color: $text-sub;
+    color: getColor(--color-text-main);
     font-weight: 500;
 
     & .switch {
@@ -153,7 +154,7 @@ export default defineComponent({
       p {
         line-height: $single-line;
         font-weight: 500;
-        color: $text-main;
+        color: getColor(--color-text-main);
       }
     }
   }

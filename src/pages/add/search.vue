@@ -417,7 +417,7 @@ export default defineComponent({
     margin-bottom: $spacing-3;
   }
   &__not-found {
-    color: $disabled;
+    color: getColor(--color-disabled);
   }
 }
 

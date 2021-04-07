@@ -228,7 +228,7 @@ export default defineComponent({
   width: 20.8rem;
   height: calc(#{$vh});
   min-height: calc(100% - #{$safe-area-top});
-  background: $base-liner;
+  background: var(--base-liner);
   border-radius: 0 $radius-4 $radius-4 0;
   box-shadow: $shadow-convex;
   z-index: 12;

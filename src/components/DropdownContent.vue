@@ -37,7 +37,7 @@ export default defineComponent({
   font-weight: normal;
   @include button-cursor;
   padding: $spacing-2 $spacing-3;
-  background-color: $base;
+  background-color: getColor(--color-base);
   &:active {
     box-shadow: $shadow-concave;
   }

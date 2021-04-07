@@ -1,34 +1,34 @@
 // text
 @mixin text-main {
-  color: $text-main;
+  color: getColor(--color-text-main);
   font-size: $font-medium;
   line-height: $single-line;
   font-weight: 500;
 }
 @mixin text-description {
-  color: $text-main;
+  color: getColor(--color-text-main);
   font-size: $font-medium;
   line-height: $multi-line;
   font-weight: normal;
 }
 @mixin text-description-sub {
-  color: $text-sub;
+  color: getColor(--color-text-sub);
   font-size: $font-small;
   line-height: $multi-line;
   font-weight: regular;
 }
 @mixin text-button {
-  color: $button-gray;
+  color: getColor(--color-button-gray);
   font-weight: 400;
   line-height: $fit;
 }
 @mixin text-discription {
-  color: $text-main;
+  color: getColor(--color-text-main);
   font-size: $font-medium;
   line-height: $multi-line;
 }
 @mixin text-sub-discription {
-  color: $text-sub;
+  color: getColor(--color-text-sub);
   font-size: $font-small;
   line-height: $multi-line;
 }
@@ -36,19 +36,19 @@
   font-size: 2rem;
   font-weight: 500;
   line-height: $multi-line;
-  color: $text-main;
+  color: getColor(--color-text-main);
 }
 @mixin text-course-tile-id {
-  color: $text-sub;
+  color: getColor(--color-text-sub);
   font-size: 0.9rem;
   font-weight: normal;
   line-height: $single-line;
 }
 @mixin text-liner {
   color: #6bcedc; // baakground-clip に対応していない場合の色
-  background: $primary-liner;
-  background: -webkit-#{$primary-liner};
-  background: -moz-#{$primary-liner};
+  background: var(--primary-liner);
+  background: -webkit-#{var(--primary-liner)};
+  background: -moz-#{var(--primary-liner)};
   background-clip: text;
   -moz-background-clip: text;
   -webkit-background-clip: text;
@@ -72,12 +72,12 @@
   cursor: pointer;
 }
 @mixin button-active($negative-shadow-convex: 0 0 0 #00000000) {
-  background: $primary-liner;
+  background: var(--primary-liner);
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,
     $shadow-primary-concave;
 }
 @mixin button-active-danger($negative-shadow-convex: 0 0 0 #00000000) {
-  background: $danger;
+  background: getColor(--color-danger);
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,
     $shadow-danger-concave;
 }
