@@ -103,7 +103,9 @@
       <section class="special" v-else>
         <template v-for="(value, key) in specialTable" :key="key">
           <div class="special-header">
-            <div class="special-header__label">{{ specialDayMap[key] }}</div>
+            <div class="special-header__label">
+              {{ dayToSpecialTableJa(key) }}
+            </div>
             <div class="special-header__divider"></div>
           </div>
           <div class="special-container">
@@ -218,7 +220,7 @@ import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse } from "~/api/@types";
-import { specialDayMap } from "~/entities/day";
+import { dayToSpecialTableJa } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
@@ -372,7 +374,7 @@ export default defineComponent({
       weeks,
       tableTimeMode,
       tableTimeData,
-      specialDayMap,
+      dayToSpecialTableJa,
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,

@@ -1,12 +1,5 @@
 import { SpecialDay } from "./day";
 
-// 使ってる？
-// export const getValue = <T = unknown>(
-//   target: T[][],
-//   day: Day,
-//   peirod: number
-// ) => target[weekdayNum(day)][peirod];
-
 export type CourseState = {
   name: string;
   room: string;
@@ -39,5 +32,5 @@ export type SaturdayCourse = {
 export type Table = CourseState[][][];
 
 export type SpecialTable = {
-  [key in SpecialDay]: SpecialCourse[];
+  [key in SpecialDay | "Weekend"]: SpecialCourse[];
 };

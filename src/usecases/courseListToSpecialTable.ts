@@ -16,7 +16,7 @@ export const courseListToSpecialTable = (
   // moduleをフラグで管理(ソートしやすいように、日本語へ変換しやすいようにするため)
   const unsortedSpecialTable = courses.reduce<
     {
-      [key in SpecialDay]: {
+      [key in SpecialDay | "Weekend"]: {
         moduleFlg: ModuleFlg;
         name: string;
         room: string;
@@ -31,11 +31,15 @@ export const courseListToSpecialTable = (
        * schedule.dayが'Intensive', 'Appointment', 'AnyTime'のどれかと一致するものを取り出す。
        */
       const specialSchedules = schedules.reduce<
-        { [key in SpecialDay]: CourseSchedule[] }
+        { [key in SpecialDay | "Weekend"]: CourseSchedule[] }
       >(
         (ss, schedule) => {
-          if (specialDays.includes(schedule.day as SpecialDay)) {
-            ss[schedule.day].push(schedule);
+          if ([...specialDays, "Sat", "Sun"].includes(schedule.day)) {
+            ss[
+              schedule.day === "Sat" || schedule.day === "Sun"
+                ? "Weekend"
+                : schedule.day
+            ].push(schedule);
           }
           return ss;
         },
@@ -43,10 +47,11 @@ export const courseListToSpecialTable = (
           Intensive: [],
           Appointment: [],
           AnyTime: [],
+          Weekend: [],
         }
       );
       // 表示する講義一個分(SpecialCourse)の元となるデータのmoduleとroomの情報を集約し、unsortedSpecialTableに追加する。
-      specialDays.forEach((sd) => {
+      [...specialDays, "Weekend"].forEach((sd) => {
         if (specialSchedules[sd].length === 0) return;
         const moduleFlg: ModuleFlg = [
           false,
@@ -77,10 +82,11 @@ export const courseListToSpecialTable = (
       Intensive: [],
       Appointment: [],
       AnyTime: [],
+      Weekend: [],
     }
   );
   // unsortedSpecialTableをソートし、SpecilalTableに変換する。
-  return specialDays.reduce<SpecialTable>(
+  return [...specialDays, "Weekend"].reduce<SpecialTable>(
     (st, sd) => {
       unsortedSpecialTable[sd].sort((prev, next) => {
         // "夏休"と"夏休,春休"の大小関係を考慮
@@ -106,6 +112,7 @@ export const courseListToSpecialTable = (
       Intensive: [],
       Appointment: [],
       AnyTime: [],
+      Weekend: [],
     }
   );
 };

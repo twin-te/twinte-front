@@ -98,7 +98,7 @@ export const moduleFlgToDisplay = (moduleFlg: ModuleFlg): string[] => {
   if (moduleFlg.slice(0, 3).some((b) => b)) {
     result.push(
       moduleFlg.slice(0, 3).reduce((a, _, i) => {
-        return moduleFlg[1 + i] ? a + ["A", "B", "C"][i] : a;
+        return moduleFlg[0 + i] ? a + ["A", "B", "C"][i] : a;
       }, "春")
     );
   }
