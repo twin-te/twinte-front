@@ -123,14 +123,18 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
+
 .view-settings {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
   @include max-width;
 }
 
 .main {
-  margin-top: $spacing-5;
   &__contents {
-    height: calc(#{$vh} - 8rem - #{$safe-area-top});
+    @include height-without-header;
   }
   &__content {
     display: flex;

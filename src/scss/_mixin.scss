@@ -141,6 +141,19 @@
   }
 }
 
+// 画面下部のボタンのpadding-bottom
+@mixin bottom-buttom-bottom-margin {
+  margin-bottom: $spacing-6;
+  @include landscape {
+    margin-bottom: $spacing-7;
+  }
+}
+
+// header + gap
+@mixin height-without-header {
+  height: calc(100vh - 8rem - #{$safe-area-top});
+}
+
 // Home以外のページで使う。
 @mixin max-width {
   max-width: $max-pc-item-width;
