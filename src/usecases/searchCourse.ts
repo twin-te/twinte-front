@@ -85,6 +85,8 @@ const schedulesToTimetable = (
 export const searchCourse = (ports: Ports) => async (
   schedules: Schedule[],
   searchWords: string[],
+  offset: number,
+  limit: number,
   onlyBlank: boolean
 ) => {
   const { api } = ports;
@@ -100,7 +102,8 @@ export const searchCourse = (ports: Ports) => async (
           onlyBlank,
           ports
         ),
-        limit: 100,
+        offset,
+        limit,
       },
     })
     .catch(() => {
