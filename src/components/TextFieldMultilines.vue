@@ -62,15 +62,15 @@ export default defineComponent({
     width: 100%;
     resize: none;
 
-    background: $base;
+    background: getColor(--color-base);
     font-size: $font-medium;
     line-height: $multi-line;
-    color: $text-main;
+    color: getColor(--color-text-main);
     &:focus {
       outline: none;
     }
     &::placeholder {
-      color: $unselected;
+      color: getColor(--color-unselected);
     }
   }
 }

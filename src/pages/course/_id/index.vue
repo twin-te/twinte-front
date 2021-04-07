@@ -370,13 +370,13 @@ export default defineComponent({
     font-size: $font-small;
     font-weight: normal;
     line-height: $fit;
-    color: $text-sub;
+    color: getColor(--color-text-sub);
   }
   &__name {
     font-size: $font-maximum;
     font-weight: 500;
     line-height: $multi-line;
-    color: $text-main;
+    color: getColor(--color-text-main);
   }
   &__details {
     display: grid;
@@ -393,7 +393,7 @@ export default defineComponent({
     display: grid;
     gap: $spacing-5;
     padding: $spacing-4 $spacing-6;
-    background: $base;
+    background: getColor(--color-base);
     box-shadow: $shadow-base;
     border-radius: $radius-3;
     &__item {
@@ -408,7 +408,7 @@ export default defineComponent({
       grid-area: state;
       font-size: $font-medium;
       font-weight: 500;
-      color: $text-main;
+      color: getColor(--color-text-main);
     }
     &__plus-btn {
       grid-area: plus-btn;

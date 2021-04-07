@@ -87,7 +87,7 @@ export default defineComponent({
 
     &--unselected {
       line-height: 2.8rem;
-      color: $unselected;
+      color: getColor(--color-unselected);
     }
   }
 
@@ -105,8 +105,8 @@ export default defineComponent({
 
     position: relative;
 
-    background: $base;
-    color: $button-gray;
+    background: getColor(--color-base);
+    color: getColor(--color-button-gray);
 
     border-radius: $radius-button;
     vertical-align: middle;
@@ -122,7 +122,7 @@ export default defineComponent({
       outline: none;
     }
     &:active {
-      color: $white;
+      color: getColor(--color-white);
       @include button-active;
       &.button--danger {
         @include button-active-danger;

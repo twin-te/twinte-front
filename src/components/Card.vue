@@ -23,6 +23,6 @@ export default defineComponent({
   border-radius: $radius-3;
   box-shadow: $shadow-base;
   padding: $spacing-4 $spacing-6;
-  background: $base-liner;
+  background: var(--base-liner);
 }
 </style>

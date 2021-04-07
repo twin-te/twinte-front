@@ -10,7 +10,7 @@ html {
   font-size: 62.5%; //1rem=10px
   font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
-  color: $text-main;
+  color: getColor(--color-text-main);
   @include tab-and-pc {
     font-size: 75%; //1rem=12px
   }

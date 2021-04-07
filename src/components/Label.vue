@@ -37,8 +37,8 @@ export default defineComponent({
     font-size: $font-minimum;
     font-weight: normal;
     line-height: $single-line;
-    color: $white;
-    background: $unselected;
+    color: getColor(--color-white);
+    background: getColor(--color-unselected);
     border-radius: $radius-1;
     padding: 0 $spacing-1;
     margin-left: $spacing-2;

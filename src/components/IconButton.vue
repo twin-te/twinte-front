@@ -73,7 +73,7 @@ export default defineComponent({
   align-items: center;
 
   border-radius: $circle;
-  background: $base-liner;
+  background: var(--base-liner);
 
   @include button-cursor;
   @include button-inactive;
@@ -100,18 +100,18 @@ export default defineComponent({
     font-size: 2.4rem;
   }
   &--normal {
-    color: $button-gray;
+    color: getColor(--color-button-gray);
     transition: $transition-box-shadow;
     &:active {
-      color: $white;
+      color: getColor(--color-white);
       @include button-active;
     }
   }
   &--danger {
-    color: $danger;
+    color: getColor(--color-danger);
     transition: $transition-box-shadow;
     &:active {
-      color: $white;
+      color: getColor(--color-white);
       @include button-active-danger;
     }
   }
@@ -122,10 +122,10 @@ export default defineComponent({
     }
     &:active {
       @include button-active;
-      color: $white;
+      color: getColor(--color-white);
       span {
         @include void-text-liner;
-        color: $white;
+        color: getColor(--color-white);
       }
     }
   }

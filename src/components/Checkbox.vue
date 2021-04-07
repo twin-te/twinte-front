@@ -64,16 +64,16 @@ export default defineComponent({
   @include button-cursor;
   &.--unchecked {
     @include button-inactive;
-    background: $base-liner;
-    color: $unselected;
+    background: var(--base-liner);
+    color: getColor(--color-unselected);
     &:hover {
       @include button-hover;
     }
   }
   &.--checked {
     @include button-active;
-    background: $primary-liner;
-    color: $base;
+    background: var(--primary-liner);
+    color: getColor(--color-base);
   }
 }
 </style>

@@ -415,7 +415,7 @@ export default defineComponent({
   }
 
   &__module-text {
-    color: $text-main;
+    color: getColor(--color-text-main);
     font-weight: 500;
     font-size: $font-large;
     margin: auto 0.6rem auto;
@@ -463,12 +463,12 @@ export default defineComponent({
   overflow-y: auto;
 
   &__period {
-    color: $text-sub;
+    color: getColor(--color-text-sub);
     font-size: $font-small;
     font-weight: 500;
     margin: auto auto auto 0;
     &--with-time {
-      background: $undefined;
+      background: getColor(--color-undefined);
       margin: 0;
       overflow-y: auto;
     }
@@ -483,7 +483,7 @@ export default defineComponent({
     font-size: 0.9rem;
     font-weight: normal;
     line-height: $fit;
-    color: $text-sub-light;
+    color: getColor(--color-text-sub-light);
     display: grid;
     gap: $spacing-1;
     &--tilda {
@@ -495,7 +495,7 @@ export default defineComponent({
   }
 
   &__day {
-    color: $text-sub;
+    color: getColor(--color-text-sub);
     font-size: $font-small;
     margin: auto;
   }
@@ -518,7 +518,7 @@ export default defineComponent({
   height: 2rem;
 
   &__label {
-    color: $text-main;
+    color: getColor(--color-text-main);
     font-size: $font-medium;
   }
   &__divider {
@@ -543,7 +543,7 @@ export default defineComponent({
   grid-template-rows: 4.8rem;
   gap: 0.2rem;
   &__module {
-    color: $text-sub;
+    color: getColor(--color-text-sub);
     font-size: $font-small;
     margin-left: $spacing-1;
     display: flex;

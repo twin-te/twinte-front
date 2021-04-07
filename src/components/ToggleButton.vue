@@ -84,11 +84,11 @@ input[type="checkbox"] {
   width: 12rem;
   height: 2.8rem;
   padding: 0 0.3rem;
-  border: solid 0.1rem $base;
+  border: solid 0.1rem getColor(--color-base);
   border-radius: $radius-button;
   box-shadow: $shadow-input-concave, $shadow-convex;
-  background-color: $base;
-  color: $button-gray;
+  background-color: getColor(--color-base);
+  color: getColor(--color-button-gray);
   font-size: $font-small;
   font-weight: 500;
   text-align: center;
@@ -106,8 +106,8 @@ input[type="checkbox"] {
     height: 2.4rem;
     border-radius: $radius-button;
     box-shadow: $shadow-drop;
-    background: $primary-liner;
-    color: $white;
+    background: var(--primary-liner);
+    color: getColor(--color-white);
     line-height: 2.4rem;
     transition: $transition-transform;
     &.--right {

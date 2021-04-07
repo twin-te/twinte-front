@@ -29,7 +29,7 @@ export default defineComponent({
   height: 4rem;
   border-radius: $circle;
   box-shadow: $shadow-p-light-concave;
-  background-color: $primary-light;
+  background-color: getColor(--color-primary-light);
   span {
     @include text-liner;
     line-height: $fit;

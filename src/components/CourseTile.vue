@@ -85,13 +85,13 @@ export default defineComponent({
   transition: $transition-box-shadow;
   overflow: hidden;
   &.--default {
-    background-color: $primary-light;
+    background-color: getColor(--color-primary-light);
     &:active {
       box-shadow: $shadow-tile-concave;
     }
   }
   &.--none {
-    background-color: $undefined;
+    background-color: getColor(--color-undefined);
   }
   &.--under-filter::before {
     content: "";
@@ -101,13 +101,13 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     border-radius: $radius-1;
-    background-color: $filter-darken;
+    background-color: getColor(--color-filter-darken);
   }
   &__course-name {
     line-height: $single-line;
     font-size: $font-minimum;
     font-weight: 500;
-    color: $text-main;
+    color: getColor(--color-text-main);
   }
   &__course-room {
     @include text-course-tile-id;
@@ -124,12 +124,12 @@ export default defineComponent({
     width: calc(100% - 0.8rem);
     padding: $spacing-1 0;
     border-radius: $radius-1;
-    background-color: $base;
+    background-color: getColor(--color-base);
     text-align: center;
     line-height: $fit;
     font-size: $font-minimum;
     font-weight: 500;
-    color: $primary-dull;
+    color: getColor(--color-primary-dull);
   }
 }
 </style>

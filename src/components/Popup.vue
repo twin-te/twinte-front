@@ -21,7 +21,7 @@ export default defineComponent({
   display: inline-block;
   padding: $spacing-2 $spacing-0;
   box-shadow: $shadow-convex-large;
-  background: $base-liner;
+  background: var(--base-liner);
   border-radius: $radius-2;
 }
 </style>

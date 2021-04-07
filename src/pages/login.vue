@@ -114,7 +114,7 @@ export default defineComponent({
     @include text-sub-discription;
     margin-bottom: $spacing-5;
     a {
-      color: $text-link;
+      color: getColor(--color-text-link);
     }
   }
   &__prev-button {
