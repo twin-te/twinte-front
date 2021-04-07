@@ -11,7 +11,7 @@
       <a :href="getLoginUrl('apple')">
         <img
           class="main__login-button"
-          src="../assets/login-page/login-apple.svg"
+          src="../assets/login-page/login-apple.png"
           alt="appleでログイン"
         />
       </a>
@@ -61,7 +61,7 @@ export default defineComponent({
 .login {
   @include center-flex(column);
   width: 100%;
-  height: 100vh;
+  height: calc(#{$vh});
   &__rectangle-logo {
     display: none;
     position: absolute;
