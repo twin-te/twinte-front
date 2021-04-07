@@ -80,9 +80,7 @@ export const moduleToFullModuleJa = (module: FullModule): FullModuleJa =>
 
 /** 任意の値をCourseModuleに変換できるように */
 export const jaToModule = (ja: string): CourseModule =>
-  (Object.keys(fullModuleMap) as CourseModule[]).find(
-    (key) => fullModuleMap[key] === ja
-  ) ?? "Unknown";
+  fullModules.find((key) => fullModuleMap[key] === ja) ?? "Unknown";
 
 /** fullModulesに対応 */
 export type ModuleFlg = [

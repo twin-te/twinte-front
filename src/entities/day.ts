@@ -1,4 +1,4 @@
-import { Course, CourseDay } from "~/api/@types";
+import { CourseDay } from "~/api/@types";
 
 export type WeekDay = Extract<CourseDay, "Mon" | "Tue" | "Wed" | "Thu" | "Fri">;
 export type Day = Extract<
@@ -90,11 +90,10 @@ export const weekdayNum = (day: WeekDay): number => weekdays.indexOf(day);
 export const weekNum = (day: Day): number => week.indexOf(day);
 
 // 消したい
-export const dayToWeekJa = (day: Day): WeekDayJa => weekdayMap[day] ?? "月";
-export const dayToJa = (day: Day): DayJa => weekMap[day] ?? "月";
-export const dayToFullDayja = (day: Day): FullDayJa => fullDayMap[day] ?? "月";
+export const dayToWeekJa = (day: WeekDay): WeekDayJa => weekdayMap[day];
+export const dayToJa = (day: Day): DayJa => weekMap[day];
+export const dayToFullDayja = (day: FullDay): FullDayJa => fullDayMap[day];
 
 /** 任意の値をCourseDayに変換できるように */
 export const jaToDay = (ja: string): CourseDay =>
-  (Object.keys(fullDays) as Day[]).find((key) => fullDayMap[key] === ja) ??
-  "Unknown";
+  fullDays.find((key) => fullDayMap[key] === ja) ?? "Unknown";
