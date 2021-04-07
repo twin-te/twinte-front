@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { Calendar } from "~/entities/calendar";
+import { useDark } from "@vueuse/core";
 
 export default defineComponent({
   name: "PageHeader",
@@ -14,12 +15,16 @@ export default defineComponent({
       default: null,
     },
   },
+
   emits: ["click"],
   setup: (_, { emit }) => {
+    const isDark = useDark({
+      selector: "body",
+    });
     const handleClick = () => {
       emit("click");
     };
-    return { handleClick };
+    return { handleClick, isDark };
   },
 });
 </script>
@@ -35,7 +40,16 @@ export default defineComponent({
         <slot name="left-button-icon"></slot>
       </div>
       <div v-if="atHome">
-        <img class="header__title--logo" src="../assets/twintelogo-color.svg" />
+        <img
+          v-if="isDark"
+          class="header__title--logo"
+          src="../assets/twintelogo-darkmode.svg"
+        />
+        <img
+          v-else
+          class="header__title--logo"
+          src="../assets/twintelogo-color.svg"
+        />
       </div>
       <h1 class="header__title" v-else>
         <slot name="title"></slot>
@@ -79,7 +93,7 @@ export default defineComponent({
     font-size: $font-large;
     font-weight: 500;
     line-height: $single-line;
-    color: $text-main;
+    color: getColor(--color-text-main);
     &--logo {
       position: absolute;
       left: 50%;
@@ -103,11 +117,12 @@ export default defineComponent({
     line-height: $single-line;
   }
   &__date {
+    color: getColor(--color-text-main);
     font-weight: bold;
   }
   &__schedule {
     padding-top: 0.2rem;
-    color: $text-sub;
+    color: getColor(--color-text-sub);
     font-size: $font-small;
   }
 }

@@ -88,7 +88,7 @@ export default defineComponent({
   position: relative;
 
   /* base */
-  background: $base;
+  background: getColor(--color-base);
   /* shadow-convex */
   border-radius: $radius-button;
   vertical-align: middle;
@@ -121,16 +121,16 @@ export default defineComponent({
     line-height: 4.6rem;
   }
   &--base {
-    background: $base;
-    color: $button-gray;
+    background: getColor(--color-base);
+    color: getColor(--color-button-gray);
   }
   &--primary {
-    background: $primary-liner;
-    color: $white;
+    background: var(--primary-liner);
+    color: getColor(--color-white);
   }
   &--danger {
-    background: $danger;
-    color: $white;
+    background: getColor(--color-danger);
+    color: getColor(--color-white);
   }
   &--flexible {
     @include flexible;
@@ -156,7 +156,7 @@ export default defineComponent({
   }
   &.--active,
   &:active {
-    color: $white;
+    color: getColor(--color-white);
     @include button-active;
     &.button--danger {
       @include button-active-danger;

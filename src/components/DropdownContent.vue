@@ -34,10 +34,10 @@ export default defineComponent({
 
 .option {
   @include text-main;
-  font-weight: normal;
+  font-weight: 500;
   @include button-cursor;
   padding: $spacing-2 $spacing-3;
-  background-color: $base;
+  background-color: getColor(--color-base);
   &:active {
     box-shadow: $shadow-concave;
   }

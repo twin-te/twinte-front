@@ -25,8 +25,7 @@ export const courseListToSpecialTable = (
     }
   >(
     (ust, course) => {
-      const schedules =
-        course.schedules ?? (course.course?.schedules as CourseSchedule[]);
+      const schedules = course.schedules ?? course.course?.schedules ?? [];
       /**
        * 各"配列"が表示する講義一個分(SpecialCourse)の元となるデータとなる。
        * schedule.dayが'Intensive', 'Appointment', 'AnyTime'のどれかと一致するものを取り出す。

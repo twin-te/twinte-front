@@ -58,22 +58,22 @@ export default defineComponent({
   border: 0.1rem solid;
   border-radius: $radius-1;
   box-shadow: $shadow-convex-hover;
-  background: $base-liner;
+  background: var(--base-liner);
   &--primary {
-    border-color: $primary;
+    border-color: getColor(--color-primary);
   }
   &--danger {
-    border-color: $danger;
+    border-color: getColor(--color-danger);
   }
   &__text {
     grid-area: text;
     white-space: pre-wrap;
     line-height: $multi-line;
     &--primary {
-      color: $primary;
+      color: getColor(--color-primary);
     }
     &--danger {
-      color: $danger;
+      color: getColor(--color-danger);
     }
   }
   &__close-button {
@@ -81,7 +81,7 @@ export default defineComponent({
     @include center-flex;
     grid-area: close;
     font-size: 2rem;
-    color: $button-gray;
+    color: getColor(--color-button-gray);
   }
 }
 </style>

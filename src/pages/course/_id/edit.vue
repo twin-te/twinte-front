@@ -51,16 +51,15 @@
           </section>
         </div>
       </div>
-      <section class="main__footer">
-        <Button
-          @click="save"
-          size="large"
-          layout="fill"
-          color="primary"
-          :state="submitButton"
-          >変更を保存</Button
-        >
-      </section>
+      <Button
+        class="main__button"
+        @click="save"
+        size="large"
+        layout="fill"
+        color="primary"
+        :state="submitButton"
+        >変更を保存</Button
+      >
     </div>
     <Modal
       class="leave-page-modal"
@@ -250,16 +249,21 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
+
 .edit {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
   @include max-width;
 }
+
 .main {
-  margin-top: $spacing-5;
+  display: grid;
+  grid-auto-rows: 1fr auto;
+  gap: $spacing-3;
+  @include height-without-header;
   &__mask {
-    height: calc(#{$vh} - 16.2rem);
-    @include landscape {
-      height: calc(#{$vh} - 16.6rem);
-    }
     @include scroll-mask;
     overflow-y: auto;
   }
@@ -267,22 +271,18 @@ export default defineComponent({
     display: grid;
     gap: $spacing-8;
     padding: $spacing-3 $spacing-0 $spacing-14;
+    overflow-y: scroll;
   }
   &__period {
     display: grid;
     gap: 1.4rem;
   }
-  &__footer {
-    text-align: center;
-    margin: $spacing-3 $spacing-0 $spacing-6;
-    @include landscape {
-      margin-bottom: $spacing-7;
-    }
-  }
-  .button {
-    display: inline-block;
+  &__button {
+    margin: 0 auto;
+    @include bottom-buttom-bottom-margin;
   }
 }
+
 .method {
   &__checkboxes {
     display: grid;
@@ -290,6 +290,7 @@ export default defineComponent({
     margin-top: 1.4rem;
   }
 }
+
 .leave-page-modal .modal {
   .button {
     width: calc(50% - $spacing-3);

@@ -61,14 +61,14 @@ export default defineComponent({
     box-shadow: $shadow-concave;
   }
   &--normal {
-    color: $button-gray;
+    color: getColor(--color-button-gray);
   }
   &--danger {
-    color: $danger;
+    color: getColor(--color-danger);
   }
   &__link {
     font-size: $font-medium;
-    font-weight: normal;
+    font-weight: 500;
     margin-left: $spacing-2;
     @include text-liner;
   }

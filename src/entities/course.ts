@@ -1,9 +1,7 @@
 import { RegisteredCourse, CourseSchedule } from "~/api/@types";
-import { dayToJa } from "./day";
-import { jaToDay } from "~/entities/day";
+import { scheduleJaToDay } from "./day";
 import { jaToModule } from "~/entities/module";
 import { jaToMethod, MethodJa, methodToJa } from "./method";
-import { moduleToJa } from "./module";
 import {
   apiToDisplaySchedule,
   Schedule,
@@ -107,7 +105,7 @@ export const apiToDisplayCourse = (
 export const formatSchedule = (schedule: Schedule[]): CourseSchedule[] => {
   return schedule.map((v) => ({
     module: jaToModule(v.module),
-    day: jaToDay(v.day),
+    day: scheduleJaToDay(v.day),
     period: Number(v.period),
     room: "",
   }));

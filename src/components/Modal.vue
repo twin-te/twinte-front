@@ -57,7 +57,7 @@ export default defineComponent({
   flex-direction: column;
   z-index: 100;
   padding: $spacing-9 $spacing-8 $spacing-8;
-  background: $base-liner;
+  background: var(--base-liner);
   box-shadow: $shadow-base;
   border-radius: $radius-3;
   text-align: left;
@@ -102,7 +102,7 @@ export default defineComponent({
     position: absolute;
     top: 2rem;
     right: 2rem;
-    color: $button-gray;
+    color: getColor(--color-button-gray);
     @include button-cursor;
     font-size: 2.4rem;
     font-weight: normal;

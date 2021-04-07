@@ -236,10 +236,12 @@ export default defineComponent({
 .footer-button {
   grid-area: footer;
 }
+
 .main {
   grid-area: main;
   &__csv {
-    margin-top: $spacing-8;
+    margin-top: $spacing-3;
+    grid-area: csv;
   }
   &__courses {
     @include scroll-content(calc(#{$vh} - 27rem));
@@ -253,6 +255,7 @@ export default defineComponent({
     margin-bottom: $spacing-4;
   }
 }
+
 .courses {
   &__contents {
     display: grid;
@@ -260,6 +263,7 @@ export default defineComponent({
     margin: $spacing-3 $spacing-0 $spacing-14;
   }
 }
+
 .duplication-modal .modal {
   &__text {
     line-height: $multi-line;
@@ -279,6 +283,7 @@ export default defineComponent({
     }
   }
 }
+
 .duplicated-course {
   @include center-flex(column);
   align-items: flex-start;

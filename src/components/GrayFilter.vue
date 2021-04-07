@@ -26,7 +26,7 @@ export default defineComponent({
   position: fixed;
   top: 0;
   left: 0;
-  background: $filter-gray;
+  background: getColor(--color-filter-gray);
   backdrop-filter: blur(8px);
   z-index: 11;
 }

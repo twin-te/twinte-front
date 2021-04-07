@@ -70,7 +70,7 @@ export default defineComponent({
     width: 20.8rem;
     padding: $spacing-1 $spacing-5 $spacing-1;
     transition: $transition-box-shadow;
-    color: $button-gray;
+    color: getColor(--color-button-gray);
     &--selected {
       #{ $self }__icon {
         @include text-liner;
@@ -95,6 +95,7 @@ export default defineComponent({
     vertical-align: bottom;
     margin-left: $spacing-4;
     font-size: $font-medium;
+    font-weight: 500;
     &--link {
       &::after {
         font-family: "Material Icons";

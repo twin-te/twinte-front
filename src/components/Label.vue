@@ -35,10 +35,10 @@ export default defineComponent({
   line-height: $single-line;
   &__mandatory {
     font-size: $font-minimum;
-    font-weight: normal;
+    font-weight: 400;
     line-height: $single-line;
-    color: $white;
-    background: $unselected;
+    color: getColor(--color-white);
+    background: getColor(--color-unselected);
     border-radius: $radius-1;
     padding: 0 $spacing-1;
     margin-left: $spacing-2;

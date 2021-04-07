@@ -1,5 +1,5 @@
 <template>
-  <div class="course-detail">
+  <div class="detail">
     <PageHeader>
       <template #left-button-icon>
         <IconButton
@@ -344,7 +344,11 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
-.course-detail {
+.detail {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
   @include max-width;
 }
 
@@ -356,11 +360,8 @@ export default defineComponent({
 }
 
 .main {
-  display: block;
-  height: calc(#{$vh} - 8rem /*Headerとmargin-top*/);
-  margin-top: $spacing-5;
   overflow-y: auto;
-  @include max-width;
+  @include height-without-header;
   @include scroll-mask;
   &__contents {
     padding-top: $spacing-3;
@@ -368,15 +369,15 @@ export default defineComponent({
   }
   &__code {
     font-size: $font-small;
-    font-weight: normal;
+    font-weight: 400;
     line-height: $fit;
-    color: $text-sub;
+    color: getColor(--color-text-sub);
   }
   &__name {
     font-size: $font-maximum;
     font-weight: 500;
     line-height: $multi-line;
-    color: $text-main;
+    color: getColor(--color-text-main);
   }
   &__details {
     display: grid;
@@ -393,7 +394,7 @@ export default defineComponent({
     display: grid;
     gap: $spacing-5;
     padding: $spacing-4 $spacing-6;
-    background: $base;
+    background: inherit;
     box-shadow: $shadow-base;
     border-radius: $radius-3;
     &__item {
@@ -408,7 +409,7 @@ export default defineComponent({
       grid-area: state;
       font-size: $font-medium;
       font-weight: 500;
-      color: $text-main;
+      color: getColor(--color-text-main);
     }
     &__plus-btn {
       grid-area: plus-btn;

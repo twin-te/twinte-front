@@ -5,7 +5,8 @@
     </div>
     <div class="login__main">
       <div class="main__square-logo">
-        <img src="../assets/twintelogo-color-b.svg" />
+        <img v-if="isDark" src="../assets/twintelogo-darkmode-b.svg" />
+        <img v-else src="../assets/twintelogo-color-b.svg" />
       </div>
       <div class="main__head">ログイン方法を選択</div>
       <a :href="getLoginUrl('apple')">
@@ -36,6 +37,14 @@
       </div>
       <img
         class="main__prev-button"
+        v-if="isDark"
+        @click="$router.back()"
+        src="../assets/login-page/button-prev_dark.png"
+        alt="元のページへ戻る"
+      />
+      <img
+        class="main__prev-button"
+        v-else
         @click="$router.back()"
         src="../assets/login-page/button-prev.svg"
         alt="元のページへ戻る"
@@ -45,12 +54,16 @@
 </template>
 
 <script lang="ts">
+import { useDark } from "@vueuse/core";
 import { defineComponent } from "vue";
 import { getLoginUrl } from "~/usecases/getLoginUrl";
 
 export default defineComponent({
   setup: () => {
-    return { getLoginUrl };
+    const isDark = useDark({
+      selector: "body",
+    });
+    return { isDark, getLoginUrl };
   },
 });
 </script>
@@ -114,7 +127,7 @@ export default defineComponent({
     @include text-sub-discription;
     margin-bottom: $spacing-5;
     a {
-      color: $text-link;
+      color: getColor(--color-text-link);
     }
   }
   &__prev-button {

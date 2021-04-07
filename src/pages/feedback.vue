@@ -197,6 +197,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
+
 .feedback {
   @include max-width;
   height: $vh;

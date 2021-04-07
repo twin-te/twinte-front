@@ -43,14 +43,14 @@ export default defineComponent({
     grid-area: item;
     line-height: $single-line;
     font-size: $font-small;
-    color: $text-sub;
+    color: getColor(--color-text-sub);
   }
   &__value {
     grid-area: value;
     line-height: $single-line;
     font-size: $font-medium;
     font-weight: 500;
-    color: $text-main;
+    color: getColor(--color-text-main);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

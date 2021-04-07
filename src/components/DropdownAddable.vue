@@ -93,7 +93,7 @@ export default defineComponent({
     }
   }
   &__remove-btn {
-    color: $button-gray;
+    color: getColor(--color-button-gray);
     font-size: 2rem;
     margin-left: $spacing-2;
     @include button-cursor;
@@ -105,7 +105,7 @@ export default defineComponent({
     @include button-cursor;
     width: max-content;
     height: 2.8rem;
-    color: $button-gray;
+    color: getColor(--color-button-gray);
     font-weight: 500;
     line-height: $fit;
     &--icon {

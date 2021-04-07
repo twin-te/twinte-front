@@ -89,7 +89,7 @@ export default defineComponent({
 @import "../scss/main.scss";
 
 .text-field {
-  background: $base;
+  background: getColor(--color-base);
   &__box {
     display: flex;
     align-items: center;
@@ -99,7 +99,7 @@ export default defineComponent({
   }
   &__icon {
     margin-right: $spacing-1;
-    color: $unselected;
+    color: getColor(--color-unselected);
     font-size: 2.2rem;
     font-family: Material Icons;
     .--no-icon {
@@ -111,12 +111,12 @@ export default defineComponent({
     width: 100%;
     font-size: $font-medium;
     line-height: $fit;
-    color: $text-main;
+    color: getColor(--color-text-main);
     &:focus {
       outline: none;
     }
     &::placeholder {
-      color: $unselected;
+      color: getColor(--color-unselected);
     }
   }
 }

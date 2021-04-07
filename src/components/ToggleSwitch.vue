@@ -55,18 +55,18 @@ export default defineComponent({
   align-items: center;
   width: 4.8rem;
   height: 2.8rem;
-  border: solid 0.1rem $base;
+  border: solid 0.1rem getColor(--color-base);
   border-radius: $radius-button;
 
   @include button-cursor;
   &.--unchecked {
     // figma では 3px 3px 6px rgba(165, 186, 199, 0.45); だがとりあえず $shadow-comvex で代用
     box-shadow: $shadow-convex, $shadow-unselected-concave;
-    background: $unselected;
+    background: getColor(--color-unselected);
   }
   &.--checked {
     box-shadow: $shadow-convex, $shadow-primary-concave;
-    background: $primary-liner;
+    background: var(--primary-liner);
   }
 
   &__slider {
@@ -74,7 +74,7 @@ export default defineComponent({
     left: 0.3rem;
     width: 2.2rem;
     height: 2.2rem;
-    background: $base-liner;
+    background: var(--base-liner);
     border-radius: $circle;
     box-shadow: $shadow-drop;
     transition: $transition-all;

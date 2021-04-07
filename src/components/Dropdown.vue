@@ -104,7 +104,7 @@ export default defineComponent({
           :key="option"
           :value="option"
           :isSelected="isSelected(option)"
-          @click="[emitSelectedEvent(option), toggleShown()]"
+          @click="[emitSelectedEvent(option)]"
         ></DropdownContent>
       </div>
     </transition>
@@ -129,9 +129,9 @@ export default defineComponent({
     border-radius: $radius-1;
     box-shadow: $shadow-input-concave;
     padding: $spacing-2;
-    background-color: $base;
+    background-color: getColor(--color-base);
     &__text--unselected {
-      color: $unselected;
+      color: getColor(--color-unselected);
     }
     &__icon {
       transition: $transition-transform;
@@ -148,7 +148,7 @@ export default defineComponent({
     left: 0;
     border-radius: $radius-1;
     padding: $spacing-2 0;
-    background-color: $base;
+    background-color: getColor(--color-base);
     box-shadow: $shadow-convex;
   }
 }

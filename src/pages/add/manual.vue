@@ -259,6 +259,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
+
 .manual {
   @include max-width;
   height: $vh;
@@ -291,13 +292,18 @@ export default defineComponent({
     gap: 1.4rem;
   }
 }
+
 .method {
   &__checkboxes {
+    position: relative;
+    padding-left: 2rem;
+    margin-left: -2rem;
     display: grid;
     gap: $spacing-5;
     margin-top: 1.4rem;
   }
 }
+
 .duplication-modal .modal {
   &__text {
     line-height: $multi-line;
@@ -317,6 +323,7 @@ export default defineComponent({
     }
   }
 }
+
 .duplicated-course {
   @include center-flex(column);
   align-items: flex-start;
