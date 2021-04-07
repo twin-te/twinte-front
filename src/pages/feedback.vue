@@ -13,69 +13,61 @@
     </PageHeader>
     <div class="main">
       <div class="main__mask">
-        <div class="main__feedback">
-          <section class="feedback__row">
-            <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
-            <div class="feedback__note"></div>
-            <Dropdown
-              :options="[
-                'バグの報告',
-                '新機能の要望',
-                'お問い合わせ',
-                'その他',
-              ]"
-              v-model:selectedOption="feedbackType"
-            ></Dropdown>
-          </section>
-          <section class="feedback__row">
-            <Label value="スクリーンショットの添付"></Label>
-            <div class="feedback__note">
-              バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
-            </div>
-            <InputButtonFile
-              name="csv-file"
-              @change-file="screenShot = $event"
-              accept="image/*"
-            >
-              画像をアップロードする
-            </InputButtonFile>
-          </section>
-          <section class="feedback__row">
-            <Label value="内容" :mandatory="true"></Label>
-            <div class="feedback__note"></div>
-            <TextFieldMultilines
-              v-model="feedbackContent"
-              :placeholder="placeholder[feedbackType]"
-              height="20rem"
-            ></TextFieldMultilines>
-          </section>
-          <section
-            class="feedback__row"
-            v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
+        <section class="feedback__row">
+          <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
+          <div class="feedback__note"></div>
+          <Dropdown
+            :options="['バグの報告', '新機能の要望', 'お問い合わせ', 'その他']"
+            v-model:selectedOption="feedbackType"
+          ></Dropdown>
+        </section>
+        <section class="feedback__row">
+          <Label value="スクリーンショットの添付"></Label>
+          <div class="feedback__note">
+            バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
+          </div>
+          <InputButtonFile
+            name="csv-file"
+            @change-file="screenShot = $event"
+            accept="image/*"
           >
-            <Label
-              value="連絡先メールアドレス or Twitterアカウント"
-              :mandatory="feedbackType === 'お問い合わせ'"
-            ></Label>
-            <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
-            <TextFieldSingleLine
-              v-model="email"
-              placeholder="xxx@example.com / @te_twin"
-            ></TextFieldSingleLine>
-          </section>
-        </div>
-      </div>
-      <section class="main__button">
-        <Button
-          @click="sendFeedback()"
-          size="large"
-          layout="fill"
-          color="primary"
-          :pauseActiveStyle="false"
-          :state="btnStatus"
-          >フィードバックを送信</Button
+            画像をアップロードする
+          </InputButtonFile>
+        </section>
+        <section class="feedback__row">
+          <Label value="内容" :mandatory="true"></Label>
+          <div class="feedback__note"></div>
+          <TextFieldMultilines
+            v-model="feedbackContent"
+            :placeholder="placeholder[feedbackType]"
+            height="20rem"
+          ></TextFieldMultilines>
+        </section>
+        <section
+          class="feedback__row"
+          v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
         >
-      </section>
+          <Label
+            value="連絡先メールアドレス or Twitterアカウント"
+            :mandatory="feedbackType === 'お問い合わせ'"
+          ></Label>
+          <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
+          <TextFieldSingleLine
+            v-model="email"
+            placeholder="xxx@example.com / @te_twin"
+          ></TextFieldSingleLine>
+        </section>
+      </div>
+      <Button
+        class="main__button"
+        @click="sendFeedback()"
+        size="large"
+        layout="fill"
+        color="primary"
+        :pauseActiveStyle="false"
+        :state="btnStatus"
+        >フィードバックを送信</Button
+      >
     </div>
   </div>
 </template>
@@ -210,42 +202,36 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-.feedback {
-  @include max-width;
-}
 
-.main {
-  margin-top: $spacing-5;
-  &__mask {
-    height: calc(#{$vh} - 16.2rem);
-    @include landscape {
-      height: calc(#{$vh} - 16.6rem);
-    }
-    @include scroll-mask;
-    overflow-y: auto;
-  }
-  &__feedback {
-    height: calc(#{$vh} - 15rem);
-    padding-top: $spacing-3;
-  }
-  &__button {
-    text-align: center;
-    margin: $spacing-3 $spacing-0 $spacing-6;
-    @include landscape {
-      margin-bottom: $spacing-7;
-    }
-    button {
-      margin: auto;
-    }
-  }
-}
 .feedback {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
+  @include max-width;
   &__row {
     margin-bottom: 3rem;
   }
   &__note {
     @include text-description-sub;
     margin: 1rem 0;
+  }
+}
+
+.main {
+  display: grid;
+  grid-auto-rows: 1fr auto;
+  gap: $spacing-3;
+  @include height-without-header;
+
+  &__mask {
+    overflow-y: auto;
+    @include scroll-mask;
+    padding: $spacing-3 $spacing-0 $spacing-14;
+  }
+  &__button {
+    margin: 0 auto;
+    @include bottom-buttom-bottom-margin;
   }
 }
 </style>

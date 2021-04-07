@@ -59,17 +59,16 @@
           </section>
         </div>
       </div>
-      <section class="main__button">
-        <Button
-          @click="addCourse()"
-          size="large"
-          layout="fill"
-          color="primary"
-          :pauseActiveStyle="false"
-          :state="btnState"
-          >変更を保存</Button
-        >
-      </section>
+      <Button
+        class="main__button"
+        @click="addCourse()"
+        size="large"
+        layout="fill"
+        color="primary"
+        :pauseActiveStyle="false"
+        :state="btnState"
+        >変更を保存</Button
+      >
     </div>
     <Modal
       v-if="duplicationModal"
@@ -264,17 +263,20 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
+
 .manual {
-  @include max-width;
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-5;
 }
 
 .main {
-  margin-top: $spacing-5;
+  display: grid;
+  grid-auto-rows: 1fr auto;
+  gap: $spacing-3;
+  height: calc(100vh - 8rem); // header + gap
   &__mask {
-    height: calc(#{$vh} - 16.2rem);
-    @include landscape {
-      height: calc(#{$vh} - 16.6rem);
-    }
     @include scroll-mask;
     overflow-y: auto;
   }
@@ -282,22 +284,18 @@ export default defineComponent({
     display: grid;
     gap: $spacing-8;
     padding: $spacing-3 $spacing-0 $spacing-14;
+    overflow-y: scroll;
   }
   &__period {
     display: grid;
     gap: 1.4rem;
   }
   &__button {
-    text-align: center;
-    margin: $spacing-3 $spacing-0 $spacing-6;
-    @include landscape {
-      margin-bottom: $spacing-7;
-    }
-  }
-  .button {
-    display: inline-block;
+    margin: 0 auto;
+    @include bottom-buttom-bottom-margin;
   }
 }
+
 .method {
   &__checkboxes {
     position: relative;
@@ -308,6 +306,7 @@ export default defineComponent({
     margin-top: 1.4rem;
   }
 }
+
 .duplication-modal .modal {
   &__text {
     line-height: $multi-line;
@@ -327,6 +326,7 @@ export default defineComponent({
     }
   }
 }
+
 .duplicated-course {
   @include center-flex(column);
   align-items: flex-start;

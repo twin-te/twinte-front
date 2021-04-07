@@ -113,6 +113,23 @@
   );
 }
 
+@mixin scroll-mask-large {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 96.5%,
+    rgba(196, 196, 196, 0) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 96.5%,
+    rgba(196, 196, 196, 0) 100%
+  );
+}
+
 // layout
 
 //  Sidebar直下のページで使う。横向きレイアウトの時にヘッダーの左のボタンを表示しない。
@@ -122,6 +139,19 @@
       display: none;
     }
   }
+}
+
+// 画面下部のボタンのpadding-bottom
+@mixin bottom-buttom-bottom-margin {
+  margin-bottom: $spacing-6;
+  @include landscape {
+    margin-bottom: $spacing-7;
+  }
+}
+
+// header + gap
+@mixin height-without-header {
+  height: calc(100vh - 8rem - #{$safe-area-top});
 }
 
 // Home以外のページで使う。

@@ -130,6 +130,7 @@ export default defineComponent({
   background: var(--base-liner);
   &__article {
     width: 100%;
+    height: 100vh;
     margin: $spacing-0 $spacing-4;
     @include landscape {
       margin: $spacing-0 $spacing-9;

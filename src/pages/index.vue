@@ -384,25 +384,27 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "~/scss/main.scss";
 
+.home {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  gap: $spacing-4;
+}
+
 .main {
   display: grid;
   border-radius: $radius-4 $radius-4 $radius-0 $radius-0;
   box-shadow: $shadow-base;
   padding: $spacing-4 $spacing-3;
-  margin: $spacing-4 (-$spacing-4) $spacing-0; //縦向きの画面でLayoutのpaddingを無視するため
+  margin: $spacing-0 (-$spacing-4); //縦向きの画面でLayoutのpaddingを無視するため
   @include landscape {
-    margin: $spacing-4 $spacing-0 $spacing-0;
+    margin: $spacing-0 $spacing-0 $spacing-5;
+    border-radius: $radius-4;
   }
-  height: calc(100vh - 7.6rem - #{$safe-area-top});
   grid-template:
     "toggle module btn" $spacing-7
     "table table table" 1fr
     / 12rem 1fr 10.4rem;
-
-  @include landscape {
-    border-radius: $spacing-4;
-    height: calc(#{$vh} - 9.6rem);
-  }
 
   &__toggle {
     grid-area: toggle;
@@ -463,6 +465,7 @@ export default defineComponent({
   overflow-y: auto;
 
   &__period {
+    @include center-flex(column);
     color: getColor(--color-text-sub);
     font-size: $font-small;
     font-weight: 500;
@@ -476,8 +479,6 @@ export default defineComponent({
     &--first {
       grid-row-start: 2;
     }
-    @include center-flex(column);
-    gap: 0.5rem;
   }
 
   &__time {
@@ -485,6 +486,7 @@ export default defineComponent({
     font-weight: normal;
     line-height: $fit;
     color: getColor(--color-text-sub-light);
+    margin: 0.5rem 0 0 0;
     display: grid;
     gap: $spacing-1;
     &--tilda {
