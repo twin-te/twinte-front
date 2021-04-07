@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onErrorCaptured, ref } from "vue";
+import { defineComponent, onErrorCaptured, onMounted, ref } from "vue";
 import { isErrorObj } from "~/usecases/error";
 import Error from "~/components/errro.vue";
 import Layout from "~/templates/Layout.vue";
@@ -24,6 +24,15 @@ export default defineComponent({
   name: "App",
   components: { Error, Layout },
   setup: () => {
+    // unregister service worker (v2)
+    onMounted(() => {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    });
+
     const hasError = ref(false);
     const errorMessage = ref("");
     onErrorCaptured((error) => {
