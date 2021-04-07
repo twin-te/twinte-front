@@ -184,6 +184,18 @@
   flex-direction: $direction;
 }
 
+// スクロールバーをつけたい要素の中身に付与する
+// $vh
+// - 6rem                 ヘッダーの高さ
+// - $content-margin-top  ヘッダーとコンテンツの間のマージン
+// - 7rem                 フッダーボタンの高さ
+@mixin scroll-content($height: calc($vh - 6rem - 7rem - $content-margin-top)) {
+  @include scroll-mask;
+  height: $height;
+  padding: $spacing-2 0 $spacing-7;
+  overflow-y: auto;
+}
+
 @mixin sensor-housing {
   @supports (padding-top: $safe-area-top) {
     // iphone上部の切り欠き部分を避ける

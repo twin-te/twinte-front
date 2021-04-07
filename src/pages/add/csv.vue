@@ -12,8 +12,8 @@
       <template #title>CSVファイルから追加</template>
     </PageHeader>
     <div class="main">
-      <div class="main__csv csv">
-        <p class="csv__header">CSVファイル</p>
+      <div class="main__csv _csv">
+        <p class="_csv__header">CSVファイル</p>
         <InputButtonFile
           name="csv-file"
           @change-file="loadCourses"
@@ -34,17 +34,12 @@
           </CardCourse>
         </div>
       </div>
-      <Button
-        class="main__button"
-        @click="addCourse()"
-        size="large"
-        layout="fill"
-        color="primary"
-        :pauseActiveStyle="false"
-        :state="btnState"
-        >選択した授業を追加</Button
-      >
     </div>
+    <FooterButton
+      @button-click="addCourse()"
+      buttonText="選択した授業を追加"
+      :buttonState="btnState"
+    />
     <Modal
       v-if="duplicationModal"
       class="duplication-modal"
@@ -106,6 +101,7 @@ import { useSwitch } from "~/hooks/useSwitch";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
+import FooterButton from "~/components/FooterButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
@@ -117,6 +113,7 @@ export default defineComponent({
     Button,
     CardCourse,
     CourseDetailMini,
+    FooterButton,
     IconButton,
     InputButtonFile,
     Modal,
@@ -210,6 +207,7 @@ export default defineComponent({
       courseToCard,
       duplicatedCourses,
       duplicationModal,
+      FooterButton,
       loadCourses,
       loadedCourses,
       openDuplicationModal,
@@ -221,40 +219,36 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/scss/main.scss";
-
 .csv {
-  height: 100%;
-  display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: $spacing-5;
   @include max-width;
+  height: $vh;
+  display: grid;
+  grid-template:
+    "header" 6rem
+    "...   " $content-margin-top
+    "main  " 1fr
+    "footer" 7rem
+    / 100%;
+}
+.header {
+  grid-area: header;
+}
+.footer-button {
+  grid-area: footer;
 }
 
 .main {
-  display: grid;
-  grid-template:
-    "csv" auto
-    "..." $spacing-5
-    "courses" 1fr
-    "..." $spacing-3
-    "button" auto
-    / auto;
-  @include height-without-header;
+  grid-area: main;
   &__csv {
     margin-top: $spacing-3;
     grid-area: csv;
   }
   &__courses {
-    grid-area: courses;
-  }
-  &__button {
-    grid-area: button;
-    margin: 0 auto;
-    @include bottom-buttom-bottom-margin;
+    @include scroll-content(calc(#{$vh} - 27rem));
+    margin-top: $spacing-5;
   }
 }
-
-.csv {
+._csv {
   &__header {
     font-weight: 500;
     line-height: $single-line;
@@ -263,10 +257,6 @@ export default defineComponent({
 }
 
 .courses {
-  overflow-y: scroll;
-  margin-right: -($spacing-4);
-  padding-right: $spacing-4;
-  @include scroll-mask;
   &__contents {
     display: grid;
     gap: $spacing-3;

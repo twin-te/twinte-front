@@ -88,17 +88,12 @@
           </section>
         </transition>
       </div>
-      <Button
-        class="main__button"
-        @click="addCourse()"
-        size="large"
-        layout="fill"
-        color="primary"
-        :pauseActiveStyle="false"
-        :state="btnState"
-        >選択した授業を追加</Button
-      >
     </div>
+    <FooterButton
+      @button-click="addCourse()"
+      buttonText="選択した授業を追加"
+      :buttonState="btnState"
+    />
     <Modal
       v-if="duplicationModal"
       class="duplication-modal"
@@ -162,6 +157,7 @@ import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import Checkbox from "~/components/Checkbox.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
+import FooterButton from "~/components/FooterButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
@@ -174,6 +170,7 @@ export default defineComponent({
     CardCourse,
     Checkbox,
     CourseDetailMini,
+    FooterButton,
     IconButton,
     Modal,
     PageHeader,
@@ -339,31 +336,37 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 .search {
-  height: 100%;
-  display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: $spacing-5;
   @include max-width;
+  height: $vh;
+  display: grid;
+  grid-template:
+    "header" 6rem
+    "...   " $content-margin-top
+    "main  " 1fr
+    "footer" 7rem
+    / 100%;
+}
+
+.header {
+  grid-area: header;
+}
+
+.footer-button {
+  grid-area: footer;
 }
 
 .main {
-  display: grid;
-  grid-auto-rows: 1fr auto;
-  gap: $spacing-3;
-  @include height-without-header;
-  &__search {
-    padding-top: $spacing-3;
-  }
-  &__button {
-    margin: 0 auto;
-    @include bottom-buttom-bottom-margin;
-  }
+  grid-area: main;
 }
 
 .search {
   &__top {
     display: flex;
     margin-bottom: $spacing-5;
+  }
+  &__accordion {
+    @include scroll-content(calc(#{$vh} - 25rem));
+    padding-bottom: 30rem;
   }
   &__accordion-toggle {
     @include text-button;
@@ -379,10 +382,7 @@ export default defineComponent({
     }
   }
   &__result {
-    height: calc(#{$vh} - 26.6rem);
-    @include scroll-mask;
-    overflow-y: auto;
-    padding: $spacing-2;
+    @include scroll-content(calc(#{$vh} - 25rem));
   }
 }
 

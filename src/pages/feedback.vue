@@ -12,7 +12,7 @@
       <template #title>フィードバック</template>
     </PageHeader>
     <div class="main">
-      <div class="main__mask">
+      <div class="main__feedback">
         <section class="feedback__row">
           <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
           <div class="feedback__note"></div>
@@ -58,17 +58,12 @@
           ></TextFieldSingleLine>
         </section>
       </div>
-      <Button
-        class="main__button"
-        @click="sendFeedback()"
-        size="large"
-        layout="fill"
-        color="primary"
-        :pauseActiveStyle="false"
-        :state="btnStatus"
-        >フィードバックを送信</Button
-      >
     </div>
+    <FooterButton
+      @button-click="sendFeedback()"
+      buttonText="フィードバックを送信"
+      :buttonState="btnStatus"
+    />
   </div>
 </template>
 
@@ -81,8 +76,8 @@ import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useStore } from "~/store";
 import axios, { AxiosError } from "axios";
-import Button from "~/components/Button.vue";
 import Dropdown from "~/components/Dropdown.vue";
+import FooterButton from "~/components/FooterButton.vue";
 import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Label from "~/components/Label.vue";
@@ -92,8 +87,8 @@ import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 
 export default defineComponent({
   components: {
-    Button,
     Dropdown,
+    FooterButton,
     IconButton,
     InputButtonFile,
     Label,
@@ -204,34 +199,33 @@ export default defineComponent({
 @import "~/scss/main.scss";
 
 .feedback {
-  height: 100%;
-  display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: $spacing-5;
   @include max-width;
+  height: $vh;
+  display: grid;
+  grid-template:
+    "header" 6rem
+    "...   " $content-margin-top
+    "main  " 1fr
+    "footer" 7rem
+    / 100%;
+}
+.header {
+  grid-area: header;
+}
+.footer-button {
+  grid-area: footer;
+}
+.main {
+  grid-area: main;
+  @include scroll-content;
+}
+.feedback {
   &__row {
     margin-bottom: 3rem;
   }
   &__note {
     @include text-description-sub;
     margin: 1rem 0;
-  }
-}
-
-.main {
-  display: grid;
-  grid-auto-rows: 1fr auto;
-  gap: $spacing-3;
-  @include height-without-header;
-
-  &__mask {
-    overflow-y: auto;
-    @include scroll-mask;
-    padding: $spacing-3 $spacing-0 $spacing-14;
-  }
-  &__button {
-    margin: 0 auto;
-    @include bottom-buttom-bottom-margin;
   }
 }
 </style>
