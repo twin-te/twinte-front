@@ -1,6 +1,4 @@
-import { RegisteredCourse, CourseSchedule } from "~/api/@types";
-import { jaToDay } from "./day";
-import { jaToModule } from "~/entities/module";
+import { RegisteredCourse } from "~/api/@types";
 import { jaToMethod, MethodJa, methodToJa } from "./method";
 import { apiToSchedule, Schedule, scheduleToApi } from "~/entities/schedule";
 import { periodToString } from "~/usecases/periodToString";
@@ -94,15 +92,3 @@ export const apiToDisplayCourse = (
   ),
   registeredCourse,
 });
-
-/**
- * 日本語の学期名などを api の形式に合うようにフォーマットする
- */
-export const formatSchedule = (schedule: Schedule[]): CourseSchedule[] => {
-  return schedule.map(({ module, day, period }) => ({
-    module: module === "指定なし" ? "Unknown" : jaToModule(module),
-    day: day === "指定なし" || day === "その他" ? "Unknown" : jaToDay(day),
-    period: Number(period),
-    room: "",
-  }));
-};

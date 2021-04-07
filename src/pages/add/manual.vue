@@ -121,12 +121,11 @@ import { addCourseByManual } from "~/usecases/addCourseByManual";
 import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { displayToast } from "~/entities/toast";
-import { formatSchedule } from "~/entities/course";
 import { getYear } from "~/usecases/getYear";
 import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
 import { MethodJa } from "~/entities/method";
 import { periodToString } from "~/usecases/periodToString";
-import { Schedule } from "~/entities/schedule";
+import { Schedule, scheduleToApi } from "~/entities/schedule";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -223,11 +222,7 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value === "disabled") return;
-      course.schedules = formatSchedule(schedules.value);
-      course.schedules = course.schedules.map((v) => ({
-        ...v,
-        room: room.value,
-      }));
+      course.schedules = scheduleToApi(schedules.value, room.value);
       if (showWarning && isCourseDuplicated(ports)(course)) {
         duplicatedCourses.value[0] = course;
         openDuplicationModal();

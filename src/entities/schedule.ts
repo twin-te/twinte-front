@@ -1,12 +1,5 @@
 import { CourseSchedule } from "~/api/@types";
-import {
-  FullDay,
-  jaToDay,
-  ScheduleDayJa,
-  SpecialDay,
-  specialDays,
-  weekMap,
-} from "./day";
+import { dayToFullDayja, FullDay, jaToDay, ScheduleDayJa } from "./day";
 import {
   ScheduleModuleJa,
   jaToModule,
@@ -26,12 +19,7 @@ export type Schedule = {
 export const apiToSchedule = (api: CourseSchedule[]): Schedule[] =>
   api.map(({ day, module, period }) => ({
     module: module === "Unknown" ? defaultValue : moduleToFullModuleJa(module),
-    day:
-      day === "Unknown"
-        ? defaultValue
-        : specialDays.includes(day as SpecialDay)
-        ? "その他"
-        : weekMap[day],
+    day: day === "Unknown" ? defaultValue : dayToFullDayja(day),
     period: period === 0 ? defaultValue : (String(period) as SchedulePeriod),
   }));
 
@@ -40,9 +28,9 @@ export const scheduleToApi = (
   room: string
 ): CourseSchedule[] =>
   schedules.map(({ day, module, period }) => ({
-    module: module === "指定なし" ? "Unknown" : jaToModule(module),
-    day: day === "指定なし" || day === "その他" ? "Unknown" : jaToDay(day),
-    period: period === "指定なし" || period === "その他" ? 0 : Number(period),
+    module: module === defaultValue ? "Unknown" : jaToModule(module),
+    day: day === defaultValue ? "Unknown" : jaToDay(day),
+    period: period === defaultValue ? 0 : Number(period),
     room,
   }));
 
@@ -65,13 +53,13 @@ export const searchWeekMap: Record<FullDay, ScheduleDayJa[]> = {
   Thu: ["木", "指定なし"],
   Fri: ["金", "指定なし"],
   Sat: ["土", "指定なし"],
-  Intensive: ["その他", "指定なし"],
-  Appointment: ["その他", "指定なし"],
-  AnyTime: ["その他", "指定なし"],
+  Intensive: ["集中", "指定なし"],
+  Appointment: ["応談", "指定なし"],
+  AnyTime: ["随時", "指定なし"],
 };
 
 export const searchPeriodMap: Record<string, SchedulePeriod[]> = {
-  "0": ["その他", "指定なし"],
+  "0": ["指定なし"],
   "1": ["1", "指定なし"],
   "2": ["2", "指定なし"],
   "3": ["3", "指定なし"],

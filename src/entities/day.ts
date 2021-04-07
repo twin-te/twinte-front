@@ -15,8 +15,7 @@ export type WeekDayJa = "月" | "火" | "水" | "木" | "金";
 export type DayJa = "月" | "火" | "水" | "木" | "金" | "土" | "日";
 export type SpecialDayJa = "集中" | "応談" | "随時";
 export type FullDayJa = DayJa | SpecialDayJa;
-export type NotWeekDay = "その他";
-export type ScheduleDayJa = DayJa | NotWeekDay | "指定なし";
+export type ScheduleDayJa = FullDayJa | "指定なし";
 
 export const weekdays: WeekDay[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 export const week: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -48,7 +47,9 @@ export const scheduleDayJaList: ScheduleDayJa[] = [
   "金",
   "土",
   "日",
-  "その他",
+  "集中",
+  "応談",
+  "随時",
   "指定なし",
 ];
 
