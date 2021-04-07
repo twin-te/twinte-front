@@ -18,8 +18,7 @@ export const methodMap: Record<CourseMethod, MethodJa> = {
 
 export const methodToJa = (method: CourseMethod): MethodJa => methodMap[method];
 
-/** 任意の値をCourseMethodに変換できるように */
-export const jaToMethod = (method: string): CourseMethod =>
+export const jaToMethod = (method: MethodJa): CourseMethod =>
   methodList.find((key) => methodMap[key] === method) ?? "Others";
 
 /** DropdownAddable */

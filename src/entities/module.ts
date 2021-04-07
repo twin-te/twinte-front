@@ -78,8 +78,7 @@ export const moduleToJa = (module: BaseModule): ModuleJa => moduleMap[module];
 export const moduleToFullModuleJa = (module: FullModule): FullModuleJa =>
   fullModuleMap[module];
 
-/** 任意の値をCourseModuleに変換できるように */
-export const jaToModule = (ja: string): CourseModule =>
+export const jaToModule = (ja: FullModuleJa): CourseModule =>
   fullModules.find((key) => fullModuleMap[key] === ja) ?? "Unknown";
 
 /** fullModulesに対応 */

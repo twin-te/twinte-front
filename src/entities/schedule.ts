@@ -40,9 +40,9 @@ export const scheduleToApi = (
   room: string
 ): CourseSchedule[] =>
   schedules.map(({ day, module, period }) => ({
-    module: jaToModule(module),
-    day: ["指定なし", "その他"].includes(day) ? "Unknown" : jaToDay(day),
-    period: ["指定なし", "その他"].includes(period) ? 0 : Number(period),
+    module: module === "指定なし" ? "Unknown" : jaToModule(module),
+    day: day === "指定なし" || day === "その他" ? "Unknown" : jaToDay(day),
+    period: period === "指定なし" || period === "その他" ? 0 : Number(period),
     room,
   }));
 

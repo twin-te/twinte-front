@@ -100,8 +100,8 @@ export const apiToDisplayCourse = (
  */
 export const formatSchedule = (schedule: Schedule[]): CourseSchedule[] => {
   return schedule.map(({ module, day, period }) => ({
-    module: jaToModule(module),
-    day: ["指定なし", "その他"].includes(day) ? "Unknown" : jaToDay(day),
+    module: module === "指定なし" ? "Unknown" : jaToModule(module),
+    day: day === "指定なし" || day === "その他" ? "Unknown" : jaToDay(day),
     period: Number(period),
     room: "",
   }));

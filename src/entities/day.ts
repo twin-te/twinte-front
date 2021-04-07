@@ -94,6 +94,5 @@ export const dayToWeekJa = (day: WeekDay): WeekDayJa => weekdayMap[day];
 export const dayToJa = (day: Day): DayJa => weekMap[day];
 export const dayToFullDayja = (day: FullDay): FullDayJa => fullDayMap[day];
 
-/** 任意の値をCourseDayに変換できるように */
-export const jaToDay = (ja: string): CourseDay =>
+export const jaToDay = (ja: FullDayJa): CourseDay =>
   fullDays.find((key) => fullDayMap[key] === ja) ?? "Unknown";
