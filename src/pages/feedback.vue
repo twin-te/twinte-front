@@ -58,7 +58,7 @@
           ></TextFieldSingleLine>
         </section>
       </div>
-      <section class="main__button">
+      <section class="main__footer">
         <Button
           @click="sendFeedback()"
           size="large"
@@ -209,18 +209,13 @@ export default defineComponent({
 
 .main {
   margin-top: $spacing-5;
-  &__mask {
-    height: calc(#{$vh} - 16.2rem);
-    @include landscape {
-      height: calc(#{$vh} - 16.6rem);
-    }
+  &__feedback {
+    @include scroll-mask-large;
+    height: calc(#{$vh} - 16rem);
+    padding-top: $spacing-3;
     overflow-y: auto;
   }
-  &__feedback {
-    height: calc(#{$vh} - 15rem);
-    padding-top: $spacing-3;
-  }
-  &__button {
+  &__footer {
     text-align: center;
     margin: $spacing-3 $spacing-0 $spacing-6;
     @include landscape {
