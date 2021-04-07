@@ -68,7 +68,7 @@ export default defineComponent({
   }
   &__link {
     font-size: $font-medium;
-    font-weight: normal;
+    font-weight: 500;
     margin-left: $spacing-2;
     @include text-liner;
   }

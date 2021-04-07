@@ -369,7 +369,7 @@ export default defineComponent({
   }
   &__code {
     font-size: $font-small;
-    font-weight: normal;
+    font-weight: 400;
     line-height: $fit;
     color: getColor(--color-text-sub);
   }
