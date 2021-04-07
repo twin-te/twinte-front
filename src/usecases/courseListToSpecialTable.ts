@@ -1,5 +1,5 @@
 import { RegisteredCourse } from "~/api/@types";
-import { SpecialDay, specialDays } from "~/entities/day";
+import { fullDays, SpecialDay, specialDays } from "~/entities/day";
 import {
   createSpecialCourseStateList,
   SpecialCourseState,
@@ -77,5 +77,9 @@ export const getUndisplayedCourses = (
     (c) => !displayedCourseIdSet.has(c.id)
   );
 
-  return createSpecialCourseStateList(undisplayedCourses);
+  return createSpecialCourseStateList(
+    undisplayedCourses,
+    [...fullDays, "Unknown"],
+    false
+  );
 };

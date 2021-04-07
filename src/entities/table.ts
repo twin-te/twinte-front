@@ -1,5 +1,5 @@
-import { CourseSchedule, RegisteredCourse } from "~/api/@types";
-import { FullDay, fullDays, SpecialDay } from "./day";
+import { CourseDay, CourseSchedule, RegisteredCourse } from "~/api/@types";
+import { SpecialDay } from "./day";
 import { fullModulesNum, ModuleFlg, moduleFlgToDisplay } from "./module";
 
 export type CourseState = {
@@ -32,7 +32,8 @@ export type SpecialTable = {
 
 export const createSpecialCourseStateList = (
   courses: RegisteredCourse[],
-  targetDays = fullDays
+  targetDays: CourseDay[],
+  filter = true
 ): SpecialCourseState[] => {
   const unsortedCourses = courses.reduce<
     {
@@ -46,20 +47,18 @@ export const createSpecialCourseStateList = (
       course.schedules ?? course.course?.schedules ?? [];
     const moduleFlg = schedules.reduce<ModuleFlg>(
       (moduleFlg, schedule) => {
-        if (
-          schedule.module === "Unknown" ||
-          !targetDays.includes(schedule.day as FullDay)
-        )
+        if (schedule.module === "Unknown" || !targetDays.includes(schedule.day))
           return moduleFlg;
         moduleFlg[fullModulesNum(schedule.module)] = true;
         return moduleFlg;
       },
       [false, false, false, false, false, false, false, false]
     );
-    if (moduleFlg.every((flg) => !flg)) return acc;
+    if (filter && moduleFlg.every((flg) => !flg)) return acc;
     const name = course.name ?? course.course?.name ?? "";
     const room = [...new Set(schedules.map((s) => s.room))].join(",");
     acc.push({ moduleFlg, name, room, id: course.id });
+
     return acc;
   }, []);
 
