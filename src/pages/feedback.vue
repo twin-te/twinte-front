@@ -13,57 +13,50 @@
     </PageHeader>
     <div class="main">
       <div class="main__mask">
-        <div class="main__feedback">
-          <section class="feedback__row">
-            <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
-            <div class="feedback__note"></div>
-            <Dropdown
-              :options="[
-                'バグの報告',
-                '新機能の要望',
-                'お問い合わせ',
-                'その他',
-              ]"
-              v-model:selectedOption="feedbackType"
-            ></Dropdown>
-          </section>
-          <section class="feedback__row">
-            <Label value="スクリーンショットの添付"></Label>
-            <div class="feedback__note">
-              バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
-            </div>
-            <InputButtonFile
-              name="csv-file"
-              @change-file="screenShot = $event"
-              accept="image/*"
-            >
-              画像をアップロードする
-            </InputButtonFile>
-          </section>
-          <section class="feedback__row">
-            <Label value="内容" :mandatory="true"></Label>
-            <div class="feedback__note"></div>
-            <TextFieldMultilines
-              v-model="feedbackContent"
-              :placeholder="placeholder[feedbackType]"
-              height="20rem"
-            ></TextFieldMultilines>
-          </section>
-          <section
-            class="feedback__row"
-            v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
+        <section class="feedback__row">
+          <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
+          <div class="feedback__note"></div>
+          <Dropdown
+            :options="['バグの報告', '新機能の要望', 'お問い合わせ', 'その他']"
+            v-model:selectedOption="feedbackType"
+          ></Dropdown>
+        </section>
+        <section class="feedback__row">
+          <Label value="スクリーンショットの添付"></Label>
+          <div class="feedback__note">
+            バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
+          </div>
+          <InputButtonFile
+            name="csv-file"
+            @change-file="screenShot = $event"
+            accept="image/*"
           >
-            <Label
-              value="連絡先メールアドレス or Twitterアカウント"
-              :mandatory="feedbackType === 'お問い合わせ'"
-            ></Label>
-            <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
-            <TextFieldSingleLine
-              v-model="email"
-              placeholder="xxx@example.com / @te_twin"
-            ></TextFieldSingleLine>
-          </section>
-        </div>
+            画像をアップロードする
+          </InputButtonFile>
+        </section>
+        <section class="feedback__row">
+          <Label value="内容" :mandatory="true"></Label>
+          <div class="feedback__note"></div>
+          <TextFieldMultilines
+            v-model="feedbackContent"
+            :placeholder="placeholder[feedbackType]"
+            height="20rem"
+          ></TextFieldMultilines>
+        </section>
+        <section
+          class="feedback__row"
+          v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
+        >
+          <Label
+            value="連絡先メールアドレス or Twitterアカウント"
+            :mandatory="feedbackType === 'お問い合わせ'"
+          ></Label>
+          <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
+          <TextFieldSingleLine
+            v-model="email"
+            placeholder="xxx@example.com / @te_twin"
+          ></TextFieldSingleLine>
+        </section>
       </div>
       <Button
         class="main__button"
@@ -216,6 +209,13 @@ export default defineComponent({
   grid-auto-rows: auto 1fr;
   gap: $spacing-5;
   @include max-width;
+  &__row {
+    margin-bottom: 3rem;
+  }
+  &__note {
+    @include text-description-sub;
+    margin: 1rem 0;
+  }
 }
 
 .main {
@@ -232,16 +232,6 @@ export default defineComponent({
   &__button {
     margin: 0 auto;
     @include bottom-buttom-bottom-margin;
-  }
-}
-
-.feedback {
-  &__row {
-    margin-bottom: 3rem;
-  }
-  &__note {
-    @include text-description-sub;
-    margin: 1rem 0;
   }
 }
 </style>

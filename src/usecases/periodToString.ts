@@ -3,8 +3,8 @@ import {
   dayToJa,
   SpecialDay,
   specialDayMap,
-  weeks,
-  weekdayNum,
+  week,
+  weekNum,
 } from "~/entities/day";
 import { courseModules, moduleToJa } from "~/entities/module";
 
@@ -41,9 +41,9 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
 
   schedules.forEach((schedule) => {
     if (schedule.module === "Unknown" || schedule.day === "Unknown") return;
-    if (weeks.includes(schedule.day)) {
+    if (week.includes(schedule.day)) {
       if (schedule.period < 1 || 8 < schedule.period) return;
-      regularSchedules[schedule.module][weekdayNum(schedule.day)] |=
+      regularSchedules[schedule.module][weekNum(schedule.day)] |=
         1 << (schedule.period - 1);
     } else {
       specialSchedules[schedule.module] = specialDayMap[schedule.day];
@@ -59,10 +59,10 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
         (dayAndPeriod, periodFlg, index, self) => {
           // dayをみる
           if (periodFlg === 0) return dayAndPeriod;
-          let tmp: string = dayToJa(weeks[index]);
+          let tmp: string = dayToJa(week[index]);
           let idx = self.indexOf(periodFlg, index + 1);
           while (idx !== -1) {
-            tmp += dayToJa(weeks[idx]);
+            tmp += dayToJa(week[idx]);
             self[idx] = 0;
             idx = self.indexOf(periodFlg, idx + 1);
           }

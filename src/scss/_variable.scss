@@ -7,6 +7,7 @@ $primary-light: #c8efef99;
 $primary-dull: #66a0b9;
 $text-main: #626a76;
 $text-sub: #838e95;
+$text-sub-light: #8a98a0;
 $button-gray: #889396;
 $danger: #ed7f93;
 $disabled: #adadad;
@@ -92,6 +93,7 @@ $transition-box-shadow: box-shadow 0.18s ease;
 
 $safe-area-top: env(safe-area-inset-top);
 $safe-area-bottom: env(safe-area-inset-bottom);
+$vh: calc(100vh - #{$safe-area-top});
 
 // Media Queries
 $pc-and-tab-height: 860px;

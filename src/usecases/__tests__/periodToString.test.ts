@@ -1042,7 +1042,7 @@ describe(`${periodToString.name} ベース`, () => {
     expect(periodToString(schedules)).toBe("春C 月1 集中");
   });
 
-  it("'夏季休業中 集中'", () => {
+  it("'夏休 集中'", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SummerVacation",
@@ -1051,10 +1051,10 @@ describe(`${periodToString.name} ベース`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("夏季休業中 集中");
+    expect(periodToString(schedules)).toBe("夏休 集中");
   });
 
-  it("'春季休業中 集中'", () => {
+  it("'春休 集中'", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringVacation",
@@ -1063,7 +1063,7 @@ describe(`${periodToString.name} ベース`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("春季休業中 集中");
+    expect(periodToString(schedules)).toBe("春休 集中");
   });
 
   it("'通年 応談'", () => {
@@ -1438,7 +1438,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("秋AB 木1 / 秋C 木2 集中");
   });
 
-  it("'春C 集中 / 夏季休業中 集中'　農業教育法概論", () => {
+  it("'春C 集中 / 夏休 集中'　農業教育法概論", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringC",
@@ -1453,10 +1453,10 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("春C 集中 / 夏季休業中 集中");
+    expect(periodToString(schedules)).toBe("春C 集中 / 夏休 集中");
   });
 
-  it("'夏季休業中 集中 / 秋AB 集中'　教職実事演習（中・高）", () => {
+  it("'夏休 集中 / 秋AB 集中'　教職実事演習（中・高）", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SummerVacation",
@@ -1477,7 +1477,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("夏季休業中 集中 / 秋AB 集中");
+    expect(periodToString(schedules)).toBe("夏休 集中 / 秋AB 集中");
   });
 
   it("'春ABC 月2 / 春C 集中'　博物館学Ⅰ", () => {
@@ -1510,7 +1510,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("春ABC 月2 / 春C 集中");
   });
 
-  it("'春C 金4 / 夏季休業中 集中'　東洋宗教思想史演習Ⅱ-b", () => {
+  it("'春C 金4 / 夏休 集中'　東洋宗教思想史演習Ⅱ-b", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringC",
@@ -1525,7 +1525,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("春C 金4 / 夏季休業中 集中");
+    expect(periodToString(schedules)).toBe("春C 金4 / 夏休 集中");
   });
 
   it("'秋ABC 水6 集中'　民俗学実習-B", () => {
@@ -1600,7 +1600,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("秋ABC 金3 / 秋B 集中");
   });
 
-  it("'春AB 金6 / 夏季休業中 集中 / 秋AB 金6'　日本語方言研究フィールド実習Ⅱ", () => {
+  it("'春AB 金6 / 夏休 集中 / 秋AB 金6'　日本語方言研究フィールド実習Ⅱ", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringA",
@@ -1633,9 +1633,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe(
-      "春AB 金6 / 夏季休業中 集中 / 秋AB 金6"
-    );
+    expect(periodToString(schedules)).toBe("春AB 金6 / 夏休 集中 / 秋AB 金6");
   });
 
   it("'秋AC 随時 / 秋B 集中'　日本語・日本文化実験実習", () => {
@@ -1842,7 +1840,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("春AB 金4-6 / 春ABC 応談");
   });
 
-  it("'春B 木5,6 / 春C 応談 / 夏季休業中 応談'　分子細胞生物学概論", () => {
+  it("'春B 木5,6 / 春C 応談 / 夏休 応談'　分子細胞生物学概論", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringB",
@@ -1869,12 +1867,10 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe(
-      "春B 木5,6 / 春C 応談 / 夏季休業中 応談"
-    );
+    expect(periodToString(schedules)).toBe("春B 木5,6 / 春C 応談 / 夏休 応談");
   });
 
-  it("'春BC 火5 / 夏季休業中 応談'　遺伝学概論", () => {
+  it("'春BC 火5 / 夏休 応談'　遺伝学概論", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringB",
@@ -1895,7 +1891,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("春BC 火5 / 夏季休業中 応談");
+    expect(periodToString(schedules)).toBe("春BC 火5 / 夏休 応談");
   });
 
   it("'春AB 金3 / 春ABC 応談 / 秋AB 火3'　理論生物学の基礎Ⅰ", () => {
@@ -2054,7 +2050,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("秋B 月金4-6 火木4,5");
   });
 
-  it("'春C 水金1-5 / 夏季休業中 応談'　植物バイオテクノロジーⅠ", () => {
+  it("'春C 水金1-5 / 夏休 応談'　植物バイオテクノロジーⅠ", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringC",
@@ -2123,7 +2119,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("春C 水金1-5 / 夏季休業中 応談");
+    expect(periodToString(schedules)).toBe("春C 水金1-5 / 夏休 応談");
   });
 
   it("'春AC 月4-6 火4,5'　人間生物学Ⅰ", () => {
@@ -2402,7 +2398,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("春ABC 水3,4 金5,6 / 春C 集中");
   });
 
-  it("'夏季休業中 集中 / 秋ABC 集中 / 春季休業中 集中'　医学の基礎", () => {
+  it("'夏休 集中 / 秋ABC 集中 / 春休 集中'　医学の基礎", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SummerVacation",
@@ -2436,7 +2432,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
       },
     ];
     expect(periodToString(schedules)).toBe(
-      "夏季休業中 集中 / 秋ABC 集中 / 春季休業中 集中"
+      "夏休 集中 / 秋ABC 集中 / 春休 集中"
     );
   });
 
@@ -2608,7 +2604,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("春ABC 随時 / 秋AB 随時");
   });
 
-  it("'春C 集中 / 夏季休業中 集中'　テラコッタ実習", () => {
+  it("'春C 集中 / 夏休 集中'　テラコッタ実習", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SpringC",
@@ -2623,7 +2619,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("春C 集中 / 夏季休業中 集中");
+    expect(periodToString(schedules)).toBe("春C 集中 / 夏休 集中");
   });
 
   it("'秋A 水4,5 金5,6 / 秋BC 水4,5 金3,4 / 秋C 集中'　Seminars on Global Issues B-Ⅰ", () => {
@@ -3108,7 +3104,7 @@ describe(`${periodToString.name} 組み合わせ`, () => {
     expect(periodToString(schedules)).toBe("春AB 土7,8");
   });
 
-  it("'夏季休業中 土4-6'　大学院生用", () => {
+  it("'夏休 土4-6'　大学院生用", () => {
     const schedules: CourseSchedule[] = [
       {
         module: "SummerVacation",
@@ -3129,6 +3125,6 @@ describe(`${periodToString.name} 組み合わせ`, () => {
         room: "",
       },
     ];
-    expect(periodToString(schedules)).toBe("夏季休業中 土4-6");
+    expect(periodToString(schedules)).toBe("夏休 土4-6");
   });
 });
