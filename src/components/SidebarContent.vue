@@ -95,6 +95,7 @@ export default defineComponent({
     vertical-align: bottom;
     margin-left: $spacing-4;
     font-size: $font-medium;
+    font-weight: 500;
     &--link {
       &::after {
         font-family: "Material Icons";
