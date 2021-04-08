@@ -39,6 +39,8 @@ export type Course = {
   recommendedGrades: number[]
   methods: CourseMethod[]
   schedules: CourseSchedule[]
+  isAnnual: boolean
+  hasParseError: boolean
 }
 
 export type RegisteredCourse = {
