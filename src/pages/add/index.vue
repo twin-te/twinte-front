@@ -26,8 +26,8 @@
         <CardAdd
           @click-next-button="$router.push('/add/twins')"
           iconName="get_app"
-          heading="Twinsからインポート"
-          text="Twinsで登録した授業をモジュール単位でインポートします。"
+          heading="TWINSからインポート"
+          text="TWINSで登録した授業をモジュール単位でインポートします。"
         ></CardAdd>
       </section>
       <section class="main__card">

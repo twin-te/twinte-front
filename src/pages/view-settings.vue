@@ -14,7 +14,7 @@
     <div class="main">
       <div class="main__contents">
         <div class="main__content">
-          ダークモード
+          ダークテーマ
           <ToggleSwitch
             class="switch"
             @click-toggle-switch="toggleDark"
