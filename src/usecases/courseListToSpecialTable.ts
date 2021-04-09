@@ -1,11 +1,12 @@
-import { CourseSchedule, RegisteredCourse } from "~/api/@types";
-import { SpecialDay, specialDays } from "~/entities/day";
+import { RegisteredCourse } from "~/api/@types";
+import { fullDays, SpecialDay, specialDays } from "~/entities/day";
+import { modules } from "~/entities/module";
 import {
-  fullModulesNum,
-  ModuleFlg,
-  moduleFlgToDisplay,
-} from "~/entities/module";
-import { SpecialTable } from "~/entities/table";
+  createSpecialCourseStateList,
+  SpecialCourseState,
+  SpecialTable,
+  Table,
+} from "~/entities/table";
 
 /**
  * ホーム画面の特殊授業のテーブルを作成する。
@@ -13,99 +14,75 @@ import { SpecialTable } from "~/entities/table";
 export const courseListToSpecialTable = (
   courses: RegisteredCourse[]
 ): SpecialTable => {
-  // moduleをフラグで管理(ソートしやすいように、日本語へ変換しやすいようにするため)
-  const unsortedSpecialTable = courses.reduce<
-    {
-      [key in SpecialDay]: {
-        moduleFlg: ModuleFlg;
-        name: string;
-        room: string;
-        id: string;
-      }[];
-    }
+  const targetCourses = courses.reduce<
+    Record<SpecialDay | "Weekend", RegisteredCourse[]>
   >(
-    (ust, course) => {
+    (acc, course) => {
       const schedules = course.schedules ?? course.course?.schedules ?? [];
-      /**
-       * 各"配列"が表示する講義一個分(SpecialCourse)の元となるデータとなる。
-       * schedule.dayが'Intensive', 'Appointment', 'AnyTime'のどれかと一致するものを取り出す。
-       */
-      const specialSchedules = schedules.reduce<
-        { [key in SpecialDay]: CourseSchedule[] }
-      >(
-        (ss, schedule) => {
-          if (specialDays.includes(schedule.day as SpecialDay)) {
-            ss[schedule.day].push(schedule);
-          }
-          return ss;
-        },
-        {
-          Intensive: [],
-          Appointment: [],
-          AnyTime: [],
-        }
-      );
-      // 表示する講義一個分(SpecialCourse)の元となるデータのmoduleとroomの情報を集約し、unsortedSpecialTableに追加する。
-      specialDays.forEach((sd) => {
-        if (specialSchedules[sd].length === 0) return;
-        const moduleFlg: ModuleFlg = [
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-        ];
-        const roomSet: Set<string> = new Set();
-        specialSchedules[sd].forEach((schedule) => {
-          if (schedule.module === "Unknown") return;
-          moduleFlg[fullModulesNum(schedule.module)] = true;
-          roomSet.add(schedule.room);
-        });
-        ust[sd].push({
-          moduleFlg,
-          name: course.name ?? course.course?.name ?? "",
-          room: [...roomSet].join(", "),
-          id: course.id,
-        });
+      [
+        ...new Set(
+          schedules
+            .map((s) => s.day)
+            .filter((day) => [...specialDays, "Sat", "Sun"].includes(day))
+        ),
+      ].forEach((day) => {
+        acc[day === "Sat" || day === "Sun" ? "Weekend" : day].push(course);
       });
-      return ust;
+
+      return acc;
     },
     {
       Intensive: [],
       Appointment: [],
       AnyTime: [],
+      Weekend: [],
     }
   );
-  // unsortedSpecialTableをソートし、SpecilalTableに変換する。
-  return specialDays.reduce<SpecialTable>(
-    (st, sd) => {
-      unsortedSpecialTable[sd].sort((prev, next) => {
-        // "夏休"と"夏休,春休"の大小関係を考慮
-        // モジュールの始まりが同じなら早く終わる方をより上に表示する
-        let hasSame = false;
-        for (let i = 0; i < 8; i++) {
-          if (prev.moduleFlg[i] && next.moduleFlg[i]) hasSame = true;
-          if (prev.moduleFlg[i] === next.moduleFlg[i]) continue;
-          const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);
-          return hasSame ? ans : -ans;
-        }
-        return prev.name.localeCompare(next.name);
-      });
-      st[sd] = unsortedSpecialTable[sd].map((sc) => ({
-        module: moduleFlgToDisplay(sc.moduleFlg),
-        name: sc.name,
-        room: sc.room,
-        id: sc.id,
-      }));
+
+  return [...specialDays, "Weekend"].reduce<SpecialTable>(
+    (st, day) => {
+      st[day] = createSpecialCourseStateList(
+        targetCourses[day],
+        day === "Weekend" ? ["Sat", "Sun"] : [day as SpecialDay]
+      );
       return st;
     },
     {
       Intensive: [],
       Appointment: [],
       AnyTime: [],
+      Weekend: [],
     }
+  );
+};
+
+/**
+ * 現時点で画面に表示されていない講義を抽出し、SpecialCourseStateに変換する
+ */
+export const getUndisplayedCourses = (
+  courses: RegisteredCourse[],
+  table: Table,
+  specialTable: SpecialTable
+): SpecialCourseState[] => {
+  const displayedCourseIdSet = new Set(
+    modules
+      .reduce<string[]>((idList, m) => {
+        return idList.concat(table[m].flat(2).map((c) => c.id));
+      }, [])
+      .concat(
+        [...specialDays, "Weekend"].reduce<string[]>((idList, d) => {
+          return idList.concat(specialTable[d].map((c) => c.id));
+        }, [])
+      )
+  );
+
+  const undisplayedCourses = courses.filter(
+    (c) => !displayedCourseIdSet.has(c.id)
+  );
+
+  return createSpecialCourseStateList(
+    undisplayedCourses,
+    [...fullDays, "Unknown"],
+    false
   );
 };

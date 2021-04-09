@@ -63,13 +63,13 @@
           'main__table--popup': popup,
         }"
         :style="{
-          gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)`,
+          gridTemplateRows: `1.4rem repeat(${bachelorMode ? 8 : 6}, 1fr)`,
           gridTemplateColumns: `${tableTimeMode ? 3.6 : 2}rem repeat(5, 1fr)`,
         }"
         v-if="whichSelected === 'left'"
       >
         <div
-          v-for="period in table[0].length"
+          v-for="period in bachelorMode ? 8 : 6"
           :key="period"
           :class="{
             table__period: true,
@@ -84,7 +84,7 @@
             {{ tableTimeData[period - 1].end }}
           </p>
         </div>
-        <template v-for="(y, d) in table" :key="d">
+        <template v-for="(y, d) in table[jaToBaseModule(module)]" :key="d">
           <div class="table__day">
             {{ weeks[d] }}
           </div>
@@ -103,7 +103,9 @@
       <section class="special" v-else>
         <template v-for="(value, key) in specialTable" :key="key">
           <div class="special-header">
-            <div class="special-header__label">{{ specialDayMap[key] }}</div>
+            <div class="special-header__label">
+              {{ dayToSpecialTableJa(key) }}
+            </div>
             <div class="special-header__divider"></div>
           </div>
           <div class="special-container">
@@ -134,37 +136,30 @@
             </div>
           </div>
         </template>
-        <div class="special-header">
-          <div class="special-header__label">土曜</div>
-          <div class="special-header__divider"></div>
-        </div>
-        <div class="special-container">
-          <div
-            class="special-contents"
-            v-for="course in saturdayCourseList"
-            :key="course.id"
-          >
-            <div class="special-contents__module">
-              <span v-for="m in course.module" :key="m">{{ m }}</span>
+        <template v-if="undisplayedCourses.length !== 0">
+          <div class="special-header">
+            <div class="special-header__label">その他</div>
+            <div class="special-header__divider"></div>
+          </div>
+          <div class="special-container">
+            <div
+              class="special-contents"
+              v-for="course in undisplayedCourses"
+              :key="course.id"
+            >
+              <div class="special-contents__module">
+                <span v-for="m in course.module" :key="m">{{ m }}</span>
+              </div>
+              <CourseTile
+                class="special-contents__course"
+                @click="$router.push(`/course/${course.id}`)"
+                state="default"
+                :name="course.name"
+                :room="course.room"
+              />
             </div>
-            <CourseTile
-              class="special-contents__course"
-              @click="$router.push(`/course/${course.id}`)"
-              state="default"
-              :name="course.name"
-              :room="course.room"
-            />
           </div>
-          <div v-if="saturdayCourseList.length === 0" class="special-contents">
-            <div class="special-contents__module"></div>
-            <CourseTile
-              class="special-contents__course"
-              state="none"
-              name=""
-              room=""
-            />
-          </div>
-        </div>
+        </template>
       </section>
     </section>
   </div>
@@ -184,7 +179,7 @@
       </p>
       <CourseTile
         v-for="course in duplicationState.courses"
-        :key="course.courseId"
+        :key="course.id"
         class="modal__course-tile"
         state="default"
         :name="course.name"
@@ -218,7 +213,7 @@ import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse } from "~/api/@types";
-import { specialDayMap } from "~/entities/day";
+import { dayToSpecialTableJa } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
@@ -232,14 +227,17 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
+import { jaToBaseModule } from "~/entities/module";
 import { useLabel } from "~/usecases/useLabel";
-import { courseListToSpecialTable } from "~/usecases/courseListToSpecialTable";
+import {
+  courseListToSpecialTable,
+  getUndisplayedCourses,
+} from "~/usecases/courseListToSpecialTable";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useHead } from "@vueuse/head";
 import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
-import { getSaturdayCourseList } from "~/usecases/getSaturdayCourseList";
 import { useTableTimeMode } from "~/usecases/useTableTime";
 
 export default defineComponent({
@@ -288,13 +286,13 @@ export default defineComponent({
     const { tableTimeMode } = useTableTimeMode(ports);
     const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
-      courseListToTable(storedCourses, module.value, bachelorMode.value)
+      courseListToTable(storedCourses, bachelorMode.value)
     );
     const specialTable = computed(() =>
       courseListToSpecialTable(storedCourses)
     );
-    const saturdayCourseList = computed(() =>
-      getSaturdayCourseList(storedCourses)
+    const undisplayedCourses = computed(() =>
+      getUndisplayedCourses(storedCourses, table.value, specialTable.value)
     );
     const setCurrentModule = () => {
       setDisplayedModule(currentModule);
@@ -313,7 +311,7 @@ export default defineComponent({
           });
           break;
         case 1:
-          await router.push(`/course/${courses[0].courseId}`);
+          await router.push(`/course/${courses[0].id}`);
           break;
         default:
           duplicationState.value = {
@@ -368,11 +366,13 @@ export default defineComponent({
       isCurrentModule,
       table,
       specialTable,
-      saturdayCourseList,
+      undisplayedCourses,
       weeks,
+      jaToBaseModule,
+      bachelorMode,
       tableTimeMode,
       tableTimeData,
-      specialDayMap,
+      dayToSpecialTableJa,
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
@@ -513,9 +513,11 @@ export default defineComponent({
 }
 
 .special-header {
-  display: flex;
-  margin-bottom: $spacing-4;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: $spacing-3;
   align-items: center;
+  margin-bottom: $spacing-4;
   height: 2rem;
 
   &__label {
@@ -525,8 +527,6 @@ export default defineComponent({
   &__divider {
     border-radius: 0.2rem;
     height: 0.4rem;
-    width: calc(100% - 4rem);
-    margin-left: $spacing-3;
     box-shadow: $shadow-input-concave;
   }
 }
