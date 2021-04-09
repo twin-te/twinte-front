@@ -31,9 +31,7 @@ export type SpecialCourseState = {
  */
 export type Table = Record<BaseModule, CourseState[][][]>;
 
-export type SpecialTable = {
-  [key in SpecialDay | "Weekend"]: SpecialCourseState[];
-};
+export type SpecialTable = Record<SpecialDay | "Weekend", SpecialCourseState[]>;
 
 /**
  * 講義の中からscheudle.dayがtargetDaysに含まれる講義を抽出し、SpecialCourseStateに変換する
