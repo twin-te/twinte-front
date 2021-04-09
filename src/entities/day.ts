@@ -1,27 +1,31 @@
-import { Day } from "~/api/@types";
+import { CourseDay } from "~/api/@types";
 
-/**
- * weekday（平日）には土日を含まない。
- * 基本は、英語表記の型は Day を用いる。（他の英語表記の型を作るとややこしくなるため）
- */
-
-export type SpecialDay = "Intensive" | "Appointment" | "AnyTime";
+export type WeekDay = Extract<CourseDay, "Mon" | "Tue" | "Wed" | "Thu" | "Fri">;
+export type Day = Extract<
+  CourseDay,
+  "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun"
+>;
+export type SpecialDay = Extract<
+  CourseDay,
+  "Intensive" | "Appointment" | "AnyTime"
+>;
+export type FullDay = Day | SpecialDay;
 
 export type WeekDayJa = "月" | "火" | "水" | "木" | "金";
 export type DayJa = "月" | "火" | "水" | "木" | "金" | "土" | "日";
-export type NotWeekDay = "その他";
-export type ScheduleDayJa = DayJa | NotWeekDay | "指定なし";
 export type SpecialDayJa = "集中" | "応談" | "随時";
 export type FullDayJa = DayJa | SpecialDayJa;
+export type NotWeekDay = "その他";
+export type ScheduleDayJa = DayJa | NotWeekDay | "指定なし";
 
-export const weekdays: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+export const weekdays: WeekDay[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 export const week: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export const specialDays: SpecialDay[] = [
   "Intensive",
   "Appointment",
   "AnyTime",
 ];
-export const fullDays: Day[] = [
+export const fullDays: FullDay[] = [
   "Mon",
   "Tue",
   "Wed",
@@ -48,14 +52,14 @@ export const scheduleDayJaList: ScheduleDayJa[] = [
   "指定なし",
 ];
 
-export const weekdayMap: Partial<Record<Day, WeekDayJa>> = {
+export const weekdayMap: Record<WeekDay, WeekDayJa> = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
   Thu: "木",
   Fri: "金",
 };
-export const weekMap: Partial<Record<Day, DayJa>> = {
+export const weekMap: Record<Day, DayJa> = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
@@ -69,7 +73,7 @@ export const specialDayMap: Record<SpecialDay, SpecialDayJa> = {
   Appointment: "応談",
   AnyTime: "随時",
 };
-export const fullDayMap: Partial<Record<Day, FullDayJa>> = {
+export const fullDayMap: Record<FullDay, FullDayJa> = {
   Mon: "月",
   Tue: "火",
   Wed: "水",
@@ -82,15 +86,13 @@ export const fullDayMap: Partial<Record<Day, FullDayJa>> = {
   AnyTime: "随時",
 };
 
-export const weekdayNum = (day: Day): number => weekdays.indexOf(day);
+export const weekdayNum = (day: WeekDay): number => weekdays.indexOf(day);
 export const weekNum = (day: Day): number => week.indexOf(day);
 
-export const weekDayToJa = (day: Day): WeekDayJa => weekdayMap[day] ?? "月";
-export const dayToJa = (day: Day): DayJa => weekMap[day] ?? "月";
+// 消したい
+export const dayToWeekJa = (day: WeekDay): WeekDayJa => weekdayMap[day];
+export const dayToJa = (day: Day): DayJa => weekMap[day];
+export const dayToFullDayja = (day: FullDay): FullDayJa => fullDayMap[day];
 
-export const jaToDay = (ja: DayJa): Day =>
-  week.find((key) => weekMap[key] === ja) ?? "Unknown";
-export const scheduleJaToDay = (ja: ScheduleDayJa): Day =>
-  week.find((key) => weekMap[key] === ja) ?? "Unknown";
-export const fullDayJaToDay = (ja: FullDayJa): Day =>
+export const jaToDay = (ja: FullDayJa): CourseDay =>
   fullDays.find((key) => fullDayMap[key] === ja) ?? "Unknown";

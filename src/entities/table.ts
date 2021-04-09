@@ -1,11 +1,11 @@
-import { Day } from "~/api/@types";
-import { weekdayNum, SpecialDay } from "./day";
+import { SpecialDay } from "./day";
 
-export const getValue = <T = unknown>(
-  target: T[][],
-  day: Day,
-  peirod: number
-) => target[weekdayNum(day)][peirod];
+// 使ってる？
+// export const getValue = <T = unknown>(
+//   target: T[][],
+//   day: Day,
+//   peirod: number
+// ) => target[weekdayNum(day)][peirod];
 
 export type CourseState = {
   name: string;
@@ -13,6 +13,7 @@ export type CourseState = {
   courseId: string;
 };
 
+// Specialはホーム画面の特殊を指す
 export type SpecialCourse = {
   id: string;
   name: string;
@@ -30,8 +31,8 @@ export type SaturdayCourse = {
 /**
  * ```
  * table
- *   [曜日]
- *   [時限 0~5]
+ *   [曜日 月~金]
+ *   [時限 0~7]
  *   [該当する科目は一つとは限らないので配列（重複しなければ0番目に目的の CourseState が入っている）]
  * ```
  */

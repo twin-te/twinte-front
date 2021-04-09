@@ -5,8 +5,8 @@ import {
   RegisteredCourse,
   RegisteredCourseWithoutID,
 } from "~/api/@types";
-import { modules } from "~/entities/module";
-import { week } from "~/entities/day";
+import { BaseModule, modules } from "~/entities/module";
+import { Day, week } from "~/entities/day";
 
 /**
  * 引き数に与えられた schedules が既に登録してあるコース
@@ -22,8 +22,8 @@ export const isSchedulesDuplicated = ({ store }: Ports) => (
         const registeredSchedules = c.schedules ?? c.course?.schedules;
         return registeredSchedules?.some(
           (s: CourseSchedule) =>
-            modules.includes(targetSchedule.module) &&
-            week.includes(targetSchedule.day) &&
+            modules.includes(targetSchedule.module as BaseModule) &&
+            week.includes(targetSchedule.day as Day) &&
             targetSchedule.period !== 0 &&
             targetSchedule.module === s.module &&
             targetSchedule.day === s.day &&

@@ -1,22 +1,22 @@
 /* eslint-disable */
 export type CourseMethod = 'FaceToFace' | 'Synchronous' | 'Asynchronous' | 'Others'
 
-export type CourseModule = 'SpringA' | 'SpringB' | 'SpringC' | 'SummerVacation' | 'FallA' | 'FallB' | 'FallC' | 'SpringVacation' | 'Annual' | 'Unknown'
+export type CourseModule = 'SpringA' | 'SpringB' | 'SpringC' | 'SummerVacation' | 'FallA' | 'FallB' | 'FallC' | 'SpringVacation' | 'Unknown'
 
 export type CourseSchedule = {
   module: CourseModule
-  day: Day
+  day: CourseDay
   period: number
   room: string
 }
 
-export type Day = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Intensive' | 'Appointment' | 'AnyTime' | 'Unknown'
+export type CourseDay = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Intensive' | 'Appointment' | 'AnyTime' | 'Unknown'
 
 export type SchoolCalendarEvent = {
   date: string
   eventType: 'PublicHoliday' | 'Holiday' | 'Exam' | 'SubstituteDay' | 'Other'
   description: string
-  changeTo?: Day
+  changeTo?: CourseDay
 }
 
 export type SchoolCalendarModule = {
@@ -39,6 +39,8 @@ export type Course = {
   recommendedGrades: number[]
   methods: CourseMethod[]
   schedules: CourseSchedule[]
+  isAnnual: boolean
+  hasParseError: boolean
 }
 
 export type RegisteredCourse = {

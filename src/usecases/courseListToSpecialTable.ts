@@ -1,7 +1,7 @@
 import { CourseSchedule, RegisteredCourse } from "~/api/@types";
 import { SpecialDay, specialDays } from "~/entities/day";
 import {
-  courseModulesNum,
+  fullModulesNum,
   ModuleFlg,
   moduleFlgToDisplay,
 } from "~/entities/module";
@@ -57,16 +57,16 @@ export const courseListToSpecialTable = (
           false,
           false,
           false,
-          false,
         ];
         const roomSet: Set<string> = new Set();
         specialSchedules[sd].forEach((schedule) => {
-          moduleFlg[courseModulesNum(schedule.module)] = true;
+          if (schedule.module === "Unknown") return;
+          moduleFlg[fullModulesNum(schedule.module)] = true;
           roomSet.add(schedule.room);
         });
         ust[sd].push({
           moduleFlg,
-          name: course.name ?? (course.course?.name as string),
+          name: course.name ?? course.course?.name ?? "",
           room: [...roomSet].join(", "),
           id: course.id,
         });
@@ -86,7 +86,7 @@ export const courseListToSpecialTable = (
         // "夏休"と"夏休,春休"の大小関係を考慮
         // モジュールの始まりが同じなら早く終わる方をより上に表示する
         let hasSame = false;
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 8; i++) {
           if (prev.moduleFlg[i] && next.moduleFlg[i]) hasSame = true;
           if (prev.moduleFlg[i] === next.moduleFlg[i]) continue;
           const ans = Number(prev.moduleFlg[i]) - Number(next.moduleFlg[i]);
