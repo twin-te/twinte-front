@@ -204,6 +204,44 @@
       </Button>
     </template>
   </Modal>
+  <Modal
+    v-if="isShow"
+    class="duplication-modal"
+    @click="isShow = false"
+    size="large"
+  >
+    <template #title>Twin:teからの新着お知らせ</template>
+    <template #contents>
+      <div class="news-modal__tips">
+        過去のお知らせは <span class="material-icons">campaign</span>お知らせ
+        で確認できます。
+      </div>
+      <div class="news-modal__box">
+        <NewsBox
+          publicationDate="2021.4.4"
+          title="お使いのカレンダーと連携できるようになりました！"
+          content="Twin:te から .isc ファイルの出力ができるようになりました。これを Google カレンダー などのカレンダーアプリにアップロードすることができます！詳しくは<a>外部カレンダーアプリとの連携方法</a>をご覧ください。"
+        ></NewsBox>
+      </div>
+      <div class="news-modal__box">
+        <NewsBox
+          publicationDate="2021.4.4"
+          title="落ちそうな屋根の管理機能が実装されました！"
+          content="落ちそうな屋根を登録、管理ができます。"
+        ></NewsBox>
+      </div>
+    </template>
+    <template #button>
+      <Button
+        @click="clearDuplicationState()"
+        size="medium"
+        layout="fill"
+        color="primary"
+      >
+        OK
+      </Button>
+    </template>
+  </Modal>
 </template>
 
 <script lang="ts">
@@ -223,6 +261,7 @@ import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
 import Modal from "~/components/Modal.vue";
+import NewsBox from "~/components/NewsBox.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
@@ -247,6 +286,7 @@ export default defineComponent({
     CourseTile,
     IconButton,
     Modal,
+    NewsBox,
     PageHeader,
     Popup,
     PopupContent,
@@ -349,6 +389,9 @@ export default defineComponent({
       duplicationState.value = initialDuplicationState;
     };
 
+    /** news modal */
+    const isShow = ref(true);
+
     return {
       toggleSidebar,
       weekdays,
@@ -376,6 +419,7 @@ export default defineComponent({
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
+      isShow,
     };
   },
 });
@@ -565,6 +609,16 @@ export default defineComponent({
   &__course-tile {
     height: 4.8rem;
     margin-bottom: $spacing-2;
+  }
+}
+
+.news-modal {
+  &__tips {
+    @include text-description-sub;
+    margin-bottom: $spacing-3;
+  }
+  &__box {
+    margin-bottom: $spacing-10;
   }
 }
 </style>
