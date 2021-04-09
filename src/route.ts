@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { trackRouter } from "vue-gtag-next";
 
 import App from "./pages/index.vue";
 import Login from "./pages/login.vue";
@@ -42,5 +43,7 @@ export const router = createRouter({
   history,
   routes,
 });
+
+trackRouter(router);
 
 export default router;
