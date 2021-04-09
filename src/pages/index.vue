@@ -63,13 +63,13 @@
           'main__table--popup': popup,
         }"
         :style="{
-          gridTemplateRows: `1.4rem repeat(${table[0].length}, 1fr)`,
+          gridTemplateRows: `1.4rem repeat(${bachelorMode ? 8 : 6}, 1fr)`,
           gridTemplateColumns: `${tableTimeMode ? 3.6 : 2}rem repeat(5, 1fr)`,
         }"
         v-if="whichSelected === 'left'"
       >
         <div
-          v-for="period in table[0].length"
+          v-for="period in bachelorMode ? 8 : 6"
           :key="period"
           :class="{
             table__period: true,
@@ -84,7 +84,7 @@
             {{ tableTimeData[period - 1].end }}
           </p>
         </div>
-        <template v-for="(y, d) in table" :key="d">
+        <template v-for="(y, d) in table[jaToBaseModule(module)]" :key="d">
           <div class="table__day">
             {{ weeks[d] }}
           </div>
@@ -179,7 +179,7 @@
       </p>
       <CourseTile
         v-for="course in duplicationState.courses"
-        :key="course.courseId"
+        :key="course.id"
         class="modal__course-tile"
         state="default"
         :name="course.name"
@@ -227,6 +227,7 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
+import { jaToBaseModule } from "~/entities/module";
 import { useLabel } from "~/usecases/useLabel";
 import {
   courseListToSpecialTable,
@@ -285,7 +286,7 @@ export default defineComponent({
     const { tableTimeMode } = useTableTimeMode(ports);
     const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
-      courseListToTable(storedCourses, module.value, bachelorMode.value)
+      courseListToTable(storedCourses, bachelorMode.value)
     );
     const specialTable = computed(() =>
       courseListToSpecialTable(storedCourses)
@@ -310,7 +311,7 @@ export default defineComponent({
           });
           break;
         case 1:
-          await router.push(`/course/${courses[0].courseId}`);
+          await router.push(`/course/${courses[0].id}`);
           break;
         default:
           duplicationState.value = {
@@ -367,6 +368,8 @@ export default defineComponent({
       specialTable,
       undisplayedCourses,
       weeks,
+      jaToBaseModule,
+      bachelorMode,
       tableTimeMode,
       tableTimeData,
       dayToSpecialTableJa,

@@ -80,6 +80,8 @@ export const moduleToFullModuleJa = (module: FullModule): FullModuleJa =>
 
 export const jaToModule = (ja: FullModuleJa): CourseModule =>
   fullModules.find((key) => fullModuleMap[key] === ja) ?? "Unknown";
+export const jaToBaseModule = (ja: ModuleJa): BaseModule =>
+  modules.find((m) => moduleMap[m] === ja) ?? "SpringA";
 
 /** fullModulesに対応 */
 export type ModuleFlg = [
@@ -96,18 +98,12 @@ export type ModuleFlg = [
 export const moduleFlgToDisplay = (moduleFlg: ModuleFlg): string[] => {
   const result = [] as string[];
   if (moduleFlg.slice(0, 3).some((b) => b)) {
-    result.push(
-      moduleFlg.slice(0, 3).reduce((a, _, i) => {
-        return moduleFlg[0 + i] ? a + ["A", "B", "C"][i] : a;
-      }, "春")
-    );
+    result.push("春" + ["A", "B", "C"].filter((_, i) => moduleFlg[i]).join(""));
   }
   if (moduleFlg[3]) result.push("夏休");
   if (moduleFlg.slice(4, 7).some((b) => b)) {
     result.push(
-      moduleFlg.slice(4, 7).reduce((a, _, i) => {
-        return moduleFlg[4 + i] ? a + ["A", "B", "C"][i] : a;
-      }, "秋")
+      "秋" + ["A", "B", "C"].filter((_, i) => moduleFlg[4 + i]).join("")
     );
   }
   if (moduleFlg[7]) result.push("春休");

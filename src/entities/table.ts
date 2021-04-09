@@ -1,19 +1,24 @@
 import { CourseDay, CourseSchedule, RegisteredCourse } from "~/api/@types";
 import { SpecialDay } from "./day";
-import { fullModulesNum, ModuleFlg, moduleFlgToDisplay } from "./module";
+import {
+  BaseModule,
+  fullModulesNum,
+  ModuleFlg,
+  moduleFlgToDisplay,
+} from "./module";
 
 export type CourseState = {
+  id: string;
   name: string;
   room: string;
-  courseId: string;
 };
 
 // Specialはホーム画面の特殊を指す
 export type SpecialCourseState = {
   id: string;
   name: string;
-  module: string[];
   room: string;
+  module: string[];
 };
 
 /**
@@ -24,12 +29,15 @@ export type SpecialCourseState = {
  *   [該当する科目は一つとは限らないので配列（重複しなければ0番目に目的の CourseState が入っている）]
  * ```
  */
-export type Table = CourseState[][][];
+export type Table = Record<BaseModule, CourseState[][][]>;
 
 export type SpecialTable = {
   [key in SpecialDay | "Weekend"]: SpecialCourseState[];
 };
 
+/**
+ * 講義の中からscheudle.dayがtargetDaysに含まれる講義を抽出し、SpecialCourseStateに変換する
+ */
 export const createSpecialCourseStateList = (
   courses: RegisteredCourse[],
   targetDays: CourseDay[],
