@@ -1,5 +1,6 @@
 import { RegisteredCourse } from "~/api/@types";
 import { fullDays, SpecialDay, specialDays } from "~/entities/day";
+import { modules } from "~/entities/module";
 import {
   createSpecialCourseStateList,
   SpecialCourseState,
@@ -14,7 +15,7 @@ export const courseListToSpecialTable = (
   courses: RegisteredCourse[]
 ): SpecialTable => {
   const targetCourses = courses.reduce<
-    { [key in SpecialDay | "Weekend"]: RegisteredCourse[] }
+    Record<SpecialDay | "Weekend", RegisteredCourse[]>
   >(
     (acc, course) => {
       const schedules = course.schedules ?? course.course?.schedules ?? [];
@@ -55,24 +56,26 @@ export const courseListToSpecialTable = (
   );
 };
 
+/**
+ * 現時点で画面に表示されていない講義を抽出し、SpecialCourseStateに変換する
+ */
 export const getUndisplayedCourses = (
   courses: RegisteredCourse[],
   table: Table,
   specialTable: SpecialTable
 ): SpecialCourseState[] => {
   const displayedCourseIdSet = new Set(
-    table
-      .flat(2)
-      .map((c) => c.courseId)
+    modules
+      .reduce<string[]>((idList, m) => {
+        return idList.concat(table[m].flat(2).map((c) => c.id));
+      }, [])
       .concat(
-        [
-          ...specialTable.Intensive,
-          ...specialTable.Appointment,
-          ...specialTable.AnyTime,
-          ...specialTable.Weekend,
-        ].map((c) => c.id)
+        [...specialDays, "Weekend"].reduce<string[]>((idList, d) => {
+          return idList.concat(specialTable[d].map((c) => c.id));
+        }, [])
       )
   );
+
   const undisplayedCourses = courses.filter(
     (c) => !displayedCourseIdSet.has(c.id)
   );
