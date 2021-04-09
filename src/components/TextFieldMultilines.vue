@@ -36,17 +36,19 @@ export default defineComponent({
 
 <template>
   <div class="text-field-multilines">
-    <textarea
-      @input="handleInput"
-      :value="modelValue"
-      :style="{
-        width,
-        height,
-      }"
-      :placeholder="placeholder"
-      class="text-field-multilines__input"
-    >
-    </textarea>
+    <div class="text-field-multilines__scaling">
+      <textarea
+        @input="handleInput"
+        :value="modelValue"
+        :style="{
+          width,
+          height,
+        }"
+        :placeholder="placeholder"
+        class="text-field-multilines__input"
+      >
+      </textarea>
+    </div>
   </div>
 </template>
 
@@ -55,17 +57,17 @@ export default defineComponent({
 
 .text-field-multilines {
   box-shadow: $shadow-input-concave;
-  padding: $spacing-2 $spacing-4 1rem;
   border-radius: $radius-input;
+  padding: 0 $spacing-4;
   &__input {
-    display: block;
-    width: 100%;
     resize: none;
-
-    background: inherit;
-    font-size: $font-medium;
     line-height: $multi-line;
     color: getColor(--color-text-main);
+    background: inherit;
+    font-size: 1.6rem; //スマホでのinput入力時拡大防止
+    transform: scale(0.875); //$text-mediumにする
+    margin: 0 -6%; //scaleで縮んだ表示領域の調整
+
     &:focus {
       outline: none;
     }

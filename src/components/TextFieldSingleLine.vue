@@ -107,9 +107,10 @@ export default defineComponent({
     }
   }
   &__input {
-    display: block;
     width: 100%;
-    font-size: $font-medium;
+    font-size: 1.6rem; //スマホでのinput入力時拡大防止
+    transform: scale(0.875); //$text-mediumにする
+    margin: 0 -6%; //scaleで縮んだ表示領域の調整
     line-height: $fit;
     color: getColor(--color-text-main);
     &:focus {
