@@ -14,7 +14,7 @@ export const courseListToTable = (
     (prevTable, course) => {
       const name = course.name ?? course.course?.name ?? "";
       const schedules = course.schedules ?? course.course?.schedules ?? [];
-      const room = [...new Set(schedules.map((s) => s.room))];
+      const room = [...new Set(schedules.map((s) => s.room))].join(",");
       schedules
         .filter(
           (schedule) =>
