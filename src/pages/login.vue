@@ -73,8 +73,9 @@ export default defineComponent({
 
 .login {
   @include center-flex(column);
+  padding-top: $safe-area-top;
   width: 100%;
-  height: calc(#{$vh});
+  height: $vh;
   &__rectangle-logo {
     display: none;
     position: absolute;

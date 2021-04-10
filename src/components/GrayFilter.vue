@@ -22,7 +22,7 @@ export default defineComponent({
 
 .grayfilter {
   width: 100%;
-  height: calc(100% - #{$safe-area-top});
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
