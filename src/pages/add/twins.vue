@@ -9,12 +9,12 @@
           icon-name="arrow_back"
         ></IconButton>
       </template>
-      <template #title>Twinsからインポート</template>
+      <template #title>TWINSからインポート</template>
     </PageHeader>
     <div class="main">
       <div class="main__mask">
         <div class="main__description">
-          Twinsに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。データの取り扱いに関しては<a
+          TWINSに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。データの取り扱いに関しては<a
             href="https://www.twinte.net/terms/"
             target="_blank"
             rel="noopener noreferrer"
@@ -27,7 +27,7 @@
         <div class="main__contents">
           <p>
             1.
-            画面最下部の「Twinsへ移動」を押すとTwinsのページへ移動するので、ログインしてください。
+            画面最下部の「TWINSへ移動」を押すとTWINSのページへ移動するので、ログインしてください。
           </p>
           <p>2. 「履修」から「履修登録・登録状況紹介」へ移動します。</p>
           <p>
@@ -44,7 +44,7 @@
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
-          >Twinsに移動</Button
+          >TWINSに移動</Button
         >
       </section>
     </div>
@@ -67,7 +67,7 @@ export default defineComponent({
   },
   setup: async () => {
     useHead({
-      title: "Twin:te | Twinsからインポート",
+      title: "Twin:te | TWINSからインポート",
     });
 
     const openTwins = () => {
