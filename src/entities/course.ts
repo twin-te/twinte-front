@@ -92,3 +92,18 @@ export const apiToDisplayCourse = (
   ),
   registeredCourse,
 });
+
+export const validateCourse = (
+  registeredCource: Required<RegisteredCourse>
+): Required<RegisteredCourse> => {
+  const attendance =
+    registeredCource.attendance < 0 ? 0 : registeredCource.attendance;
+  const absence = registeredCource.absence < 0 ? 0 : registeredCource.absence;
+  const late = registeredCource.late < 0 ? 0 : registeredCource.late;
+  return {
+    ...registeredCource,
+    attendance,
+    absence,
+    late,
+  };
+};
