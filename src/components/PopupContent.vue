@@ -51,7 +51,7 @@ export default defineComponent({
   flex-direction: row;
   align-items: center;
   width: 100%;
-  height: 3.8rem;
+  height: 4.2rem;
   padding: $spacing-2 3.4rem $spacing-2 $spacing-4;
   font-size: $font-large;
   line-height: $single-line;

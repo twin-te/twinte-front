@@ -73,7 +73,7 @@ export default defineComponent({
   &.--checked {
     @include button-active;
     background: var(--primary-liner);
-    color: getColor(--color-base);
+    color: getColor(--color-white);
   }
 }
 </style>
