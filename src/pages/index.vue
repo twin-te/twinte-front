@@ -522,7 +522,7 @@ export default defineComponent({
   }
 
   &__time {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: normal;
     line-height: $fit;
     color: getColor(--color-text-sub-light);

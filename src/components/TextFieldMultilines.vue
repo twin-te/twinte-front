@@ -59,6 +59,7 @@ export default defineComponent({
   box-shadow: $shadow-input-concave;
   border-radius: $radius-input;
   padding: 0 $spacing-4;
+  background: getColor(--color-base);
   &__input {
     resize: none;
     line-height: $multi-line;

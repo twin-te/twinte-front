@@ -33,6 +33,7 @@ export default defineComponent({
   font-size: $font-medium;
   font-weight: 500;
   line-height: $single-line;
+  color: getColor(--color-text-main);
   &__mandatory {
     font-size: $font-minimum;
     font-weight: 400;
