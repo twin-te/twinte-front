@@ -1,7 +1,8 @@
 <template>
   <div class="login">
     <div class="login__rectangle-logo">
-      <img src="../assets/twintelogo-color.svg" />
+      <img v-if="isDark" src="../assets//twintelogo-darkmode.svg" />
+      <img v-else src="../assets/twintelogo-color.svg" />
     </div>
     <div class="login__main">
       <div class="main__square-logo">
@@ -75,7 +76,7 @@ export default defineComponent({
   @include center-flex(column);
   padding-top: $safe-area-top;
   width: 100%;
-  height: $vh;
+  height: 100vh;
   &__rectangle-logo {
     display: none;
     position: absolute;
