@@ -204,36 +204,24 @@
       </Button>
     </template>
   </Modal>
-  <Modal
-    v-if="isShow"
-    class="duplication-modal"
-    @click="isShow = false"
-    size="large"
-  >
+  <Modal v-if="isShow" @click="isShow = false" size="large">
     <template #title>Twin:teからの新着お知らせ</template>
     <template #contents>
       <div class="news-modal__tips">
         過去のお知らせは <span class="material-icons">campaign</span>お知らせ
         で確認できます。
       </div>
-      <div class="news-modal__box">
+      <div class="news-modal__row" v-for="_news in news" :key="_news.id">
         <NewsBox
-          publicationDate="2021.4.4"
-          title="お使いのカレンダーと連携できるようになりました！"
-          content="Twin:te から .isc ファイルの出力ができるようになりました。これを Google カレンダー などのカレンダーアプリにアップロードすることができます！詳しくは<a>外部カレンダーアプリとの連携方法</a>をご覧ください。"
-        ></NewsBox>
-      </div>
-      <div class="news-modal__box">
-        <NewsBox
-          publicationDate="2021.4.4"
-          title="落ちそうな屋根の管理機能が実装されました！"
-          content="落ちそうな屋根を登録、管理ができます。"
+          :title="_news.title"
+          :content="_news.content"
+          :publicationDate="formatDatetime(_news.publishedAt)"
         ></NewsBox>
       </div>
     </template>
     <template #button>
       <Button
-        @click="clearDuplicationState()"
+        @click="isShow = false"
         size="medium"
         layout="fill"
         color="primary"
@@ -250,7 +238,7 @@ import { courseListToTable } from "~/usecases/courseListToTable";
 import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
-import { RegisteredCourse } from "~/api/@types";
+import { RegisteredCourse, Information } from "~/api/@types";
 import { dayToSpecialTableJa } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
@@ -278,6 +266,8 @@ import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
 import { useTableTimeMode } from "~/usecases/useTableTime";
+import { getNews } from "~/usecases/getNews";
+import { formatDatetime } from "~/entities/news";
 
 export default defineComponent({
   name: "Table",
@@ -296,7 +286,6 @@ export default defineComponent({
     useHead({
       title: "Twin:te | ホーム",
     });
-
     const store = useStore();
     const ports = usePorts();
     const router = useRouter();
@@ -390,7 +379,14 @@ export default defineComponent({
     };
 
     /** news modal */
-    const isShow = ref(true);
+    let news: Information[] = [];
+    const isShow = ref(false);
+    getNews(ports)({ ignoreReadNews: true })
+      .then((res) => {
+        news = res;
+        isShow.value = res.length > 0;
+      })
+      .catch();
 
     return {
       toggleSidebar,
@@ -420,6 +416,8 @@ export default defineComponent({
       duplicationState,
       clearDuplicationState,
       isShow,
+      news,
+      formatDatetime,
     };
   },
 });
