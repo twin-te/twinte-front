@@ -154,10 +154,8 @@ export default defineComponent({
       period: "指定なし",
     };
     const schedules = ref<Schedule[]>(apiSchedules.value);
-    const scheduleMax = 4;
     const scheduleMin = 1;
     const addSchedule = () => {
-      if (schedules.value.length >= scheduleMax) return;
       schedules.value.push(blankSchedule);
     };
     const removeSchedule = (index: number) => {
