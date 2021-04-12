@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {},
@@ -44,11 +44,10 @@ export default defineComponent({
   }
   &__content {
     margin-top: $spacing-2;
+    @include text-description;
     // v-html へ style を当てるには deep selector が必要
-    :deep {
-      a {
-        color: getColor(--color-text-link);
-      }
+    ::v-deep(a) {
+      color: getColor(--color-text-link);
     }
   }
 }
