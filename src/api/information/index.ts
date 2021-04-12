@@ -5,7 +5,6 @@ export type Methods = {
   get: {
     query: {
       limit: number
-      offset: number
     }
 
     status: 200
