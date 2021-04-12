@@ -12,7 +12,7 @@ import Edit from "./pages/course/_id/edit.vue";
 import Twins from "./pages/add/twins.vue";
 import ViewSettings from "./pages/view-settings.vue";
 import Feedback from "./pages/feedback.vue";
-import News from "./pages/News.vue";
+import News from "./pages/news.vue";
 
 const history = createWebHistory();
 
