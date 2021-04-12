@@ -147,7 +147,6 @@ export type Information = {
   title: string
   content: string
   publishedAt: string
-  read?: boolean
 }
 
 export type Error = {
