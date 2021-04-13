@@ -53,11 +53,11 @@ export default defineComponent({
       title: "Twin:te | お知らせ",
     });
 
-    const news = await getNews(ports)().catch(() => {
+    const news: Information[] = await getNews(ports)().catch(() => {
       displayToast(ports)(
         "お知らせの更新に失敗しました。ネットワーク環境をご確認ください。"
       );
-      return [] as Information[];
+      return [];
     });
     return {
       formatDatetime,
