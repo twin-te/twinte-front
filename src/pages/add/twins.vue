@@ -97,6 +97,9 @@ export default defineComponent({
   }
   &__description {
     @include text-description;
+    a {
+      color: getColor(--color-text-link);
+    }
   }
   &__description-sub {
     @include text-description-sub;
