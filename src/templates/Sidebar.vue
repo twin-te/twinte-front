@@ -8,12 +8,14 @@ import { isiOS, isMobile } from "~/usecases/ua";
 import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
 import { openUrl } from "~/usecases/openUrl";
 import { getLogoutUrl } from "~/usecases/getLoginUrl";
+import { useDark } from "@vueuse/core";
 
 declare global {
   // eslint-disable-next-line no-unused-vars
   interface Window {
     android?: {
-      openSettings: () => void;
+      // eslint-disable-next-line no-unused-vars
+      openSettings: (theme: string) => void;
       // eslint-disable-next-line no-unused-vars
       share: (message: string) => void;
     };
@@ -125,6 +127,10 @@ export default defineComponent({
       openUrl(getLogoutUrl());
     };
 
+    const isDark = useDark({
+      selector: "body",
+    });
+
     const navigateHandler = async (link: string) => {
       const shareMessage = "#Twinte";
       if (link.startsWith("https://")) {
@@ -135,7 +141,7 @@ export default defineComponent({
             await asyncSetTimeout(300); // アニメーションの関係で必要
             isiOS()
               ? window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("")
-              : window.android?.openSettings();
+              : window.android?.openSettings(isDark.value ? "dark" : "light");
             break;
           case "share":
             closeSidebar();
