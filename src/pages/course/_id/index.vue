@@ -22,14 +22,14 @@
             :isActive="showPopup"
           ></ToggleIconButton>
           <Popup v-show="showPopup">
-            <PopupContent
-              v-for="data in popupData"
-              :key="data.value"
-              @click="data.onClick"
-              :link="data.link"
-              :value="data.value"
-              :color="data.color"
-            ></PopupContent>
+            <div class="popup-row" v-for="data in popupData" :key="data.value">
+              <PopupContent
+                @click="data.onClick"
+                :link="data.link"
+                :value="data.value"
+                :color="data.color"
+              ></PopupContent>
+            </div>
           </Popup>
         </div>
       </template>
@@ -422,6 +422,13 @@ export default defineComponent({
     &__minus-btn {
       grid-area: minus-btn;
     }
+  }
+}
+
+.popup-row {
+  margin: $spacing-3 0;
+  @include tab-and-pc {
+    margin: 0;
   }
 }
 
