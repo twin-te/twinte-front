@@ -16,7 +16,7 @@
       <InputButtonFile
         name="csv-file"
         @change-file="loadCourses"
-        accept="text/csv"
+        accept=".csv"
       >
         アップロードする
       </InputButtonFile>
