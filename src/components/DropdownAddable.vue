@@ -4,8 +4,6 @@ import DropDown from "~/components/Dropdown.vue";
 import { MethodOption, createOption } from "~/entities/method";
 
 type Props = {
-  onClickAddButton: Function;
-  onClickRemoveButton: Function;
   methods: { value: MethodOption }[];
 };
 
@@ -15,14 +13,6 @@ export default defineComponent({
     DropDown,
   },
   props: {
-    onClickAddButton: {
-      type: Function,
-      required: true,
-    },
-    onClickRemoveButton: {
-      type: Function,
-      required: true,
-    },
     methods: {
       type: Array as PropType<{ value: MethodOption }[]>,
       required: true,

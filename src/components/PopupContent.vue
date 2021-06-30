@@ -6,10 +6,6 @@ export type Color = "normal" | "danger";
 export default defineComponent({
   name: "PopupContent",
   props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
     link: {
       type: Boolean,
       default: false,

@@ -4,7 +4,6 @@ import { defineComponent, PropType, ref } from "vue";
 export type State = "active" | "default" | "disabled";
 
 type Props = {
-  onClick: Function;
   size: string;
   layout: string;
   color: string;
@@ -16,10 +15,6 @@ type Props = {
 export default defineComponent({
   name: "Button",
   props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
     size: {
       type: String as PropType<"small" | "medium" | "large">,
       default: "large",

@@ -7,10 +7,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    onChangeFile: {
-      type: Function,
-      required: true,
-    },
     accept: {
       type: String,
       default: "",

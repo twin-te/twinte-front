@@ -9,14 +9,6 @@ import { schedulePeriods } from "~/entities/period";
 export default defineComponent({
   components: { Dropdown },
   props: {
-    onClickAddButton: {
-      type: Function,
-      required: true,
-    },
-    onClickRemoveButton: {
-      type: Function,
-      required: true,
-    },
     schedules: {
       type: Object as PropType<Schedule[]>,
       required: true,

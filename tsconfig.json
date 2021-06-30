@@ -13,8 +13,7 @@
     "paths": {
       "~/*": ["src/*"]
     },
-    "types": ["vite/client", "jest", "node"],
-    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
+    "types": ["vite/client", "jest", "node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

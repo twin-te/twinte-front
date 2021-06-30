@@ -2,17 +2,12 @@
 import { defineComponent } from "vue";
 
 type Props = {
-  onClickCheckbox: Function;
   isChecked: boolean;
   isDisable: boolean;
 };
 
 export default defineComponent({
   props: {
-    onClickCheckbox: {
-      type: Function,
-      required: true,
-    },
     isChecked: {
       type: Boolean,
       default: false,

@@ -3,12 +3,6 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "GrayFilter",
-  props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
-  },
   emits: ["click"],
 });
 </script>
