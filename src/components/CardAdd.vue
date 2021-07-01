@@ -7,10 +7,6 @@ import IconButton from "./IconButton.vue";
 export default defineComponent({
   components: { Card, DecoratedIcon, IconButton },
   props: {
-    onClickNextButton: {
-      type: Function,
-      required: true,
-    },
     iconName: {
       type: String,
       required: true,

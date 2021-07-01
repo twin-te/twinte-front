@@ -3,10 +3,6 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
     value: {
       type: String,
       required: true,

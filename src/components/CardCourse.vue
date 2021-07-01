@@ -10,10 +10,6 @@ import { openUrl } from "~/usecases/openUrl";
 export default defineComponent({
   components: { Card, Button, CourseDetailMini, Checkbox },
   props: {
-    onClickCheckbox: {
-      type: Function,
-      required: true,
-    },
     isChecked: {
       type: Boolean,
       required: true,

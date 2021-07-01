@@ -249,7 +249,7 @@ export default defineComponent({
     /** popup */
     const [showPopup, , closePopup, toggleShowPopup] = useSwitch(false);
     const popupData: {
-      onClick: Function;
+      onClick: () => void;
       link: boolean;
       value: string;
       color: popupContentColor;

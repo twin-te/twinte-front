@@ -2,7 +2,6 @@
 import { defineComponent } from "vue";
 
 type Props = {
-  onClick: Function;
   size: string;
   color: string;
   iconName: string;
@@ -11,10 +10,6 @@ type Props = {
 export default defineComponent({
   name: "IconButton",
   props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
     onKeyup: {
       type: Function,
       default: () => {},
