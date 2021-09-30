@@ -31,8 +31,8 @@ export const getCurrentModule = async ({
     const start = dayjs(info.start);
     const end = dayjs(info.end);
     return (
-      (start.isBefore(now) || start.isSame(now)) &&
-      (end.isAfter(now) || end.isSame(now))
+      (start.isBefore(now, "day") || start.isSame(now, "day")) &&
+      (end.isAfter(now, "day") || end.isSame(now, "day"))
     );
   });
   switch (info?.module) {
