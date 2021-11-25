@@ -15,7 +15,7 @@ export const getSchoolCalendarEventJa = (
 ): string => {
   const now = dayjs();
   const event = events.find((event) => {
-    return now.isSame(dayjs(event.date));
+    return now.isSame(dayjs(event.date), "day");
   });
   return event == null
     ? "通常日課"
