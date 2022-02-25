@@ -1,7 +1,9 @@
 {
-  "*.{json,md,ts,tsx,vue}": [
-    "prettier --write",
-    "eslint --fix"
+  "*.{ts,tsx,vue}": [
+    "yarn lint:fix"
+  ],
+  "*.{md,json}": [
+    "yarn prettier --write"
   ],
   "*.{scss}": []
 }
