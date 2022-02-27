@@ -23,11 +23,6 @@ jobs:
         env:
           CI: true
 
-      - name: format
-        run: yarn format --check
-        env:
-          CI: true
-
       - name: lint
         run: yarn lint
         env:
