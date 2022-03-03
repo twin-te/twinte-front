@@ -8,10 +8,6 @@ export default defineComponent({
     GrayFilter,
   },
   props: {
-    onClick: {
-      type: Function,
-      required: true,
-    },
     size: {
       type: String as PropType<"small" | "large">,
       default: "large",

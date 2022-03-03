@@ -3,10 +3,6 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    onClickToggleSwitch: {
-      type: Function,
-      required: true,
-    },
     isChecked: {
       type: Boolean,
       default: false,

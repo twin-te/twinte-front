@@ -3,16 +3,11 @@ import { defineComponent, PropType } from "vue";
 import { Toast } from "~/entities/toast";
 
 type Props = {
-  onClickCloseButton: Function;
   text: string;
 };
 
 export default defineComponent({
   props: {
-    onClickCloseButton: {
-      type: Function,
-      required: true,
-    },
     text: {
       type: String,
       required: true,

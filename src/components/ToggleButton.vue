@@ -11,10 +11,6 @@ type Props = {
 
 export default defineComponent({
   props: {
-    onClickToggleButton: {
-      type: Function,
-      required: true,
-    },
     labels: {
       type: Object as PropType<Labels>,
       required: true,

@@ -100,7 +100,7 @@ export const searchCourse = (ports: Ports) => async (
     .post({
       body: {
         year,
-        searchMode: "Cover", // TODO: ユーザが選択できるようにする
+        searchMode: onlyBlank ? "Contain" : "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
         timetable: schedulesToTimetable(
           schedules.map(parseSchedules),

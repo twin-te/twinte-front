@@ -33,6 +33,7 @@ app
     property: {
       id: "UA-153429703-1",
     },
+    isEnabled: import.meta.env.PROD,
   })
   .mount("#app");
 

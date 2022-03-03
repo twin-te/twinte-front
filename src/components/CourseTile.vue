@@ -12,10 +12,6 @@ type Props = {
 
 export default defineComponent({
   props: {
-    onClick: {
-      type: Function,
-      default: () => {},
-    },
     name: {
       type: String,
       required: true,
