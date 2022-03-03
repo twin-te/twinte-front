@@ -3,7 +3,6 @@ import VueClickAway from "vue3-click-away";
 import { createHead } from "@vueuse/head";
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";
-import VueGtag from "vue-gtag-next";
 import { createGtm } from "@gtm-support/vue-gtm"
 
 import App from "./App.vue";
@@ -30,12 +29,6 @@ app
   .use(store, StateKey)
   .use(VueClickAway)
   .use(head)
-  .use(VueGtag, {
-    property: {
-      id: "UA-153429703-1",
-    },
-    isEnabled: import.meta.env.PROD,
-  })
   .use(createGtm({
     id: "GTM-PHSLD8B",
     vueRouter: router,
