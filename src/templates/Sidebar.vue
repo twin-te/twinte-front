@@ -76,8 +76,8 @@ export default defineComponent({
         {
           iconName: "campaign",
           item: "お知らせ",
-          link: "/campaign",
-          show: false,
+          link: "/news",
+          show: true,
         },
       ].filter((v) => v.show)
     );

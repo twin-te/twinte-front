@@ -204,6 +204,32 @@
       </Button>
     </template>
   </Modal>
+  <Modal v-if="isShow" @click="isShow = false" size="large">
+    <template #title>Twin:teからの新着お知らせ</template>
+    <template #contents>
+      <div class="news-modal__tips">
+        過去のお知らせは <span class="material-icons">campaign</span>お知らせ
+        で確認できます。
+      </div>
+      <div class="news-modal__row" v-for="_news in news" :key="_news.id">
+        <NewsBox
+          :title="_news.title"
+          :content="_news.content"
+          :publicationDate="formatDatetime(_news.publishedAt)"
+        ></NewsBox>
+      </div>
+    </template>
+    <template #button>
+      <Button
+        @click="isShow = false"
+        size="medium"
+        layout="fill"
+        color="primary"
+      >
+        OK
+      </Button>
+    </template>
+  </Modal>
 </template>
 
 <script lang="ts">
@@ -212,7 +238,7 @@ import { courseListToTable } from "~/usecases/courseListToTable";
 import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
-import { RegisteredCourse } from "~/api/@types";
+import { RegisteredCourse, Information } from "~/api/@types";
 import { dayToSpecialTableJa } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
@@ -223,6 +249,7 @@ import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
 import Modal from "~/components/Modal.vue";
+import NewsBox from "~/components/NewsBox.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
@@ -239,6 +266,8 @@ import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
 import { useTableTimeMode } from "~/usecases/useTableTime";
+import { getNews } from "~/usecases/getNews";
+import { formatDatetime } from "~/entities/news";
 
 export default defineComponent({
   name: "Table",
@@ -247,6 +276,7 @@ export default defineComponent({
     CourseTile,
     IconButton,
     Modal,
+    NewsBox,
     PageHeader,
     Popup,
     PopupContent,
@@ -256,7 +286,6 @@ export default defineComponent({
     useHead({
       title: "Twin:te | ホーム",
     });
-
     const store = useStore();
     const ports = usePorts();
     const router = useRouter();
@@ -349,6 +378,16 @@ export default defineComponent({
       duplicationState.value = initialDuplicationState;
     };
 
+    /** news modal */
+    let news = ref<Information[]>([]);
+    const isShow = ref(false);
+    getNews(ports)({ ignoreReadNews: true })
+      .then((res) => {
+        news.value = res;
+        isShow.value = res.length > 0;
+      })
+      .catch();
+
     return {
       toggleSidebar,
       weekdays,
@@ -376,6 +415,9 @@ export default defineComponent({
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
+      isShow,
+      news,
+      formatDatetime,
     };
   },
 });
@@ -565,6 +607,16 @@ export default defineComponent({
   &__course-tile {
     height: 4.8rem;
     margin-bottom: $spacing-2;
+  }
+}
+
+.news-modal {
+  &__tips {
+    @include text-description-sub;
+    margin-bottom: $spacing-3;
+  }
+  &__row {
+    margin-bottom: $spacing-10;
   }
 }
 </style>

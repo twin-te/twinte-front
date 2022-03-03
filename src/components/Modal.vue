@@ -85,7 +85,7 @@ export default defineComponent({
   }
   &__contents {
     height: 100%;
-    overflow: scroll;
+    overflow-y: auto;
     @include text-discription;
   }
   &__button {
