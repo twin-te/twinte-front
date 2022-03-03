@@ -4,6 +4,7 @@ import { createHead } from "@vueuse/head";
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";
 import VueGtag from "vue-gtag-next";
+import { createGtm } from "@gtm-support/vue-gtm"
 
 import App from "./App.vue";
 import { router } from "./route";
@@ -35,6 +36,12 @@ app
     },
     isEnabled: import.meta.env.PROD,
   })
+  .use(createGtm({
+    id: "GTM-PHSLD8B",
+    vueRouter: router,
+    enabled: import.meta.env.PROD,
+    debug: import.meta.env.DEV,
+  }))
   .mount("#app");
 
 window.addEventListener("error", (event) => {
