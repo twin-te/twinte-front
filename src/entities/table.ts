@@ -13,7 +13,6 @@ export type CourseState = {
   room: string;
 };
 
-// Specialはホーム画面の特殊を指す
 export type SpecialCourseState = {
   id: string;
   name: string;
@@ -23,23 +22,29 @@ export type SpecialCourseState = {
 
 /**
  * ```
- * table
- *   [曜日 月~金]
- *   [時限 0~7]
- *   [該当する科目は一つとは限らないので配列（重複しなければ0番目に目的の CourseState が入っている）]
+ * ホーム画面で通常授業を表示するためのデータ
+ * CourseStateの3次元配列で表現する.
+ *
+ * [ 曜日 : 月,火,水,木,金,(土) ]
+ * [ 時限 : 1,2,3,4,5,6,(7,8) ]
+ * [ 該当する科目の配列 ]
  * ```
  */
 export type Table = Record<BaseModule, CourseState[][][]>;
 
-export type SpecialTable = Record<SpecialDay | "Weekend", SpecialCourseState[]>;
+/**
+ * ホーム画面の特殊授業を表示するためのデータ
+ */
+export type SpecialTable = Record<SpecialDay, SpecialCourseState[]>;
 
 /**
- * 講義の中からscheudle.dayがtargetDaysに含まれる講義を抽出し、SpecialCourseStateに変換する
+ * 授業の中からscheudle.dayがtargetDaysに含まれる授業を抽出し、SpecialCourseStateに変換する.
+ * その際、モジュールを基準にソートを行う.
  */
 export const createSpecialCourseStateList = (
   courses: RegisteredCourse[],
   targetDays: CourseDay[],
-  filter = true
+  filter = true // モジュールが指定されていない授業を除外するかどうか
 ): SpecialCourseState[] => {
   const unsortedCourses = courses.reduce<
     {
@@ -48,7 +53,7 @@ export const createSpecialCourseStateList = (
       room: string;
       id: string;
     }[]
-  >((acc, course) => {
+  >((unsortedCourses, course) => {
     const schedules: CourseSchedule[] =
       course.schedules ?? course.course?.schedules ?? [];
     const moduleFlg = schedules.reduce<ModuleFlg>(
@@ -60,17 +65,18 @@ export const createSpecialCourseStateList = (
       },
       [false, false, false, false, false, false, false, false]
     );
-    if (filter && moduleFlg.every((flg) => !flg)) return acc;
+    if (filter && moduleFlg.every((flg) => !flg)) return unsortedCourses;
     const name = course.name ?? course.course?.name ?? "";
     const room = [...new Set(schedules.map((s) => s.room))].join(",");
-    acc.push({ moduleFlg, name, room, id: course.id });
+    unsortedCourses.push({ moduleFlg, name, room, id: course.id });
 
-    return acc;
+    return unsortedCourses;
   }, []);
 
-  // 比較する インデックス より前に同じ要素が存在するのか (hasSame) で大小関係が異なる
-  // [T, F ...] < [F, T ...] 春A < 春B
-  // [T, F ...] > [T, T ...] 春A < 春AB
+  // 比較するモジュールより前に同じモジュールが存在するのか (hasSame) で大小関係が異なる
+  // ans: [T, F, ...] - [F, T, ...] =  1, hasSame: False -> 春A < 春B
+  // ans: [T, F, ...] - [T, T, ...] = -1, hasSame: True  -> 春A < 春AB
+  // ans: [F, T, ...] - [T, T, ...] = -1, hasSame: False -> 春B > 春AB
   return unsortedCourses
     .sort((prev, next) => {
       let hasSame = false;
