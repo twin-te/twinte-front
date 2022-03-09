@@ -29,7 +29,7 @@ const initState: GlobalState = {
   label: "left",
   bachelorMode: false,
   tableTimeMode: true,
-  saturdayCourseMode: true,
+  saturdayCourseMode: false,
   toasts: [],
   displayedYear: null,
   module: null,

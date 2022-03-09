@@ -3,8 +3,8 @@ import { Ports } from "~/adapter";
 
 export const useSaturdayCourseMode = ({ store }: Ports) => {
   const storedSaturdayCourseMode = localStorage.getItem("saturday-course-mode");
-  if (storedSaturdayCourseMode === "off") {
-    store.commit("setSaturdayCourseMode", false);
+  if (storedSaturdayCourseMode === "on") {
+    store.commit("setSaturdayCourseMode", true);
   }
 
   const saturdayCourseMode = computed<boolean>(
