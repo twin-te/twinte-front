@@ -155,6 +155,7 @@ import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
 import { searchCourse } from "~/usecases/searchCourse";
+import { useGtm } from "@gtm-support/vue-gtm";
 import { usePorts } from "~/usecases";
 import { useRoute, useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -185,6 +186,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const ports = usePorts();
+    const gtm = useGtm();
 
     /** accordion */
     const [isAccordionOpen, toggleOpen] = useToggle(
@@ -247,6 +249,12 @@ export default defineComponent({
       if (_offset === 0) {
         searchResult.value.splice(-searchResult.value.length);
         offset = 0;
+        gtm?.trackEvent({
+          event: "search-courses",
+          term: searchWord.value,
+          use_only_blank: onlyBlank.value,
+          schedules: schedules.value
+        });
       }
       isAccordionOpen.value = false;
       let courses: Course[] = [];
