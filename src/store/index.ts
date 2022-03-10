@@ -14,6 +14,7 @@ export type GlobalState = {
   label: Select;
   bachelorMode: boolean;
   tableTimeMode: boolean;
+  saturdayCourseMode: boolean;
   toasts: Toast[];
   displayedYear: number | null;
   module: ModuleJa | null;
@@ -28,6 +29,7 @@ const initState: GlobalState = {
   label: "left",
   bachelorMode: false,
   tableTimeMode: true,
+  saturdayCourseMode: false,
   toasts: [],
   displayedYear: null,
   module: null,

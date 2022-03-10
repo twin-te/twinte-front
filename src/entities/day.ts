@@ -1,6 +1,9 @@
 import { CourseDay } from "~/api/@types";
 
-export type WeekDay = Extract<CourseDay, "Mon" | "Tue" | "Wed" | "Thu" | "Fri">;
+export type WeekDay = Extract<
+  CourseDay,
+  "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat"
+>;
 export type Day = Extract<
   CourseDay,
   "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun"
@@ -11,13 +14,13 @@ export type SpecialDay = Extract<
 >;
 export type FullDay = Day | SpecialDay;
 
-export type WeekDayJa = "月" | "火" | "水" | "木" | "金";
-export type DayJa = "月" | "火" | "水" | "木" | "金" | "土" | "日";
+export type WeekDayJa = "月" | "火" | "水" | "木" | "金" | "土";
+export type DayJa = WeekDayJa | "日";
 export type SpecialDayJa = "集中" | "応談" | "随時";
 export type FullDayJa = DayJa | SpecialDayJa;
 export type ScheduleDayJa = FullDayJa | "指定なし";
 
-export const weekdays: WeekDay[] = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+export const weekdays: WeekDay[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export const week: Day[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export const specialDays: SpecialDay[] = [
   "Intensive",
@@ -37,7 +40,7 @@ export const fullDays: FullDay[] = [
   "AnyTime",
 ];
 
-export const weekdayJaList: WeekDayJa[] = ["月", "火", "水", "木", "金"];
+export const weekdayJaList: WeekDayJa[] = ["月", "火", "水", "木", "金", "土"];
 export const dayJaList: DayJa[] = ["月", "火", "水", "木", "金", "土", "日"];
 export const scheduleDayJaList: ScheduleDayJa[] = [
   "月",
@@ -59,6 +62,7 @@ export const weekdayMap: Record<WeekDay, WeekDayJa> = {
   Wed: "水",
   Thu: "木",
   Fri: "金",
+  Sat: "土",
 };
 export const weekMap: Record<Day, DayJa> = {
   Mon: "月",
@@ -94,9 +98,7 @@ export const weekNum = (day: Day): number => week.indexOf(day);
 export const dayToWeekJa = (day: WeekDay): WeekDayJa => weekdayMap[day];
 export const dayToJa = (day: Day): DayJa => weekMap[day];
 export const dayToFullDayja = (day: FullDay): FullDayJa => fullDayMap[day];
-
-export const dayToSpecialTableJa = (day: SpecialDay | "Weekend") =>
-  day === "Weekend" ? "土日" : specialDayMap[day];
+export const dayToSpecialDayJa = (day: SpecialDay) => specialDayMap[day];
 
 export const jaToDay = (ja: FullDayJa): CourseDay =>
   fullDays.find((key) => fullDayMap[key] === ja) ?? "Unknown";

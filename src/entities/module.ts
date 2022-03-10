@@ -85,14 +85,14 @@ export const jaToBaseModule = (ja: ModuleJa): BaseModule =>
 
 /** fullModulesに対応 */
 export type ModuleFlg = [
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean
+  boolean, // 春A
+  boolean, // 春B
+  boolean, // 春C
+  boolean, // 夏休
+  boolean, // 秋A
+  boolean, // 秋B
+  boolean, // 秋C
+  boolean // 春休
 ];
 
 export const moduleFlgToDisplay = (moduleFlg: ModuleFlg): string[] => {

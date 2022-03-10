@@ -20,6 +20,9 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   tableTimeMode: (state) => {
     return state.tableTimeMode;
   },
+  saturdayCourseMode: (state) => {
+    return state.saturdayCourseMode;
+  },
   toasts: (state) => {
     return state.toasts;
   },

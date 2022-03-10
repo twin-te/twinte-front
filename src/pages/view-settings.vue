@@ -22,6 +22,14 @@
           />
         </div>
         <div class="main__content">
+          土曜授業を表示する
+          <ToggleSwitch
+            class="switch"
+            @click-toggle-switch="toggleSaturdayCourseMode"
+            :isChecked="saturdayCourseMode"
+          />
+        </div>
+        <div class="main__content">
           8限まで表示する(大学院生用)
           <ToggleSwitch
             class="switch"
@@ -63,6 +71,7 @@ import { usePorts } from "~/usecases";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 import { getCourseList } from "~/usecases/getCourseList";
 import { useTableTimeMode } from "~/usecases/useTableTime";
+import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
 
 export default defineComponent({
   components: {
@@ -78,6 +87,10 @@ export default defineComponent({
 
     const ports = usePorts();
 
+    const {
+      saturdayCourseMode,
+      toggleSaturdayCourseMode,
+    } = useSaturdayCourseMode(ports);
     const { bachelorMode, toggleBachelorMode } = useBachelorMode(ports);
     const { tableTimeMode, toggleTableTimeMode } = useTableTimeMode(ports);
     const isDark = useDark({
@@ -110,6 +123,8 @@ export default defineComponent({
     return {
       isDark,
       toggleDark,
+      saturdayCourseMode,
+      toggleSaturdayCourseMode,
       bachelorMode,
       toggleBachelorMode,
       tableTimeMode,

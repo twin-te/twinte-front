@@ -64,7 +64,9 @@
         }"
         :style="{
           gridTemplateRows: `1.4rem repeat(${bachelorMode ? 8 : 6}, 1fr)`,
-          gridTemplateColumns: `${tableTimeMode ? 3.6 : 2}rem repeat(5, 1fr)`,
+          gridTemplateColumns: `${tableTimeMode ? 3.6 : 2}rem repeat(${
+            saturdayCourseMode ? 6 : 5
+          }, 1fr)`,
         }"
         v-if="whichSelected === 'left'"
       >
@@ -101,17 +103,20 @@
         </template>
       </div>
       <section class="special" v-else>
-        <template v-for="(value, key) in specialTable" :key="key">
+        <template
+          v-for="(courses, specialDay) in specialTable"
+          :key="specialDay"
+        >
           <div class="special-header">
             <div class="special-header__label">
-              {{ dayToSpecialTableJa(key) }}
+              {{ dayToSpecialDayJa(specialDay) }}
             </div>
             <div class="special-header__divider"></div>
           </div>
           <div class="special-container">
             <div
               class="special-contents"
-              v-for="course in value"
+              v-for="course in courses"
               :key="course.id"
             >
               <div class="special-contents__module">
@@ -125,7 +130,7 @@
                 :room="course.room"
               />
             </div>
-            <div v-if="value.length === 0" class="special-contents">
+            <div v-if="courses.length === 0" class="special-contents">
               <div class="special-contents__module"></div>
               <CourseTile
                 class="special-contents__course"
@@ -239,12 +244,12 @@ import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
 import { ModuleJa, moduleJaList } from "~/entities/module";
 import { RegisteredCourse, Information } from "~/api/@types";
-import { dayToSpecialTableJa } from "~/entities/day";
+import { dayToSpecialDayJa } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useSwitch } from "~/hooks/useSwitch";
-import { weekdays, WeekDayJa, weekdayJaList } from "~/entities/day";
+import { WeekDayJa, weekdayJaList } from "~/entities/day";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -268,6 +273,7 @@ import { useDisplayedModule } from "~/usecases/useDisplayedModule";
 import { useTableTimeMode } from "~/usecases/useTableTime";
 import { getNews } from "~/usecases/getNews";
 import { formatDatetime } from "~/entities/news";
+import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
 
 export default defineComponent({
   name: "Table",
@@ -311,11 +317,16 @@ export default defineComponent({
     };
 
     /** table */
+    const { saturdayCourseMode } = useSaturdayCourseMode(ports);
     const { bachelorMode } = useBachelorMode(ports);
     const { tableTimeMode } = useTableTimeMode(ports);
     const storedCourses: RegisteredCourse[] = store.getters.courses;
     const table = computed(() =>
-      courseListToTable(storedCourses, bachelorMode.value)
+      courseListToTable(
+        storedCourses,
+        saturdayCourseMode.value,
+        bachelorMode.value
+      )
     );
     const specialTable = computed(() =>
       courseListToSpecialTable(storedCourses)
@@ -390,7 +401,6 @@ export default defineComponent({
 
     return {
       toggleSidebar,
-      weekdays,
       label,
       whichSelected,
       onClickLabel,
@@ -408,10 +418,11 @@ export default defineComponent({
       undisplayedCourses,
       weeks,
       jaToBaseModule,
+      saturdayCourseMode,
       bachelorMode,
       tableTimeMode,
       tableTimeData,
-      dayToSpecialTableJa,
+      dayToSpecialDayJa,
       onClickCourseTile,
       duplicationState,
       clearDuplicationState,
