@@ -13,3 +13,8 @@ yarn dev # https://localhost:3000
 ```
 
 - 注意: [拡張機能](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf)などでブラウザの CORS を無効にしてください
+
+# イベント測定用のマーカについて
+
+本アプリでは Google Tag Manager によるユーザイベントの測定を行っています。  
+それに伴いデータ属性`data-gtm-marker`やクラス`gtm-marker-*`のイベント発生箇所を特定するためのマーカを各要所に設置してあります。これらを修正する際は Google Tag Manager の設定も合わせて変更して下さい。
