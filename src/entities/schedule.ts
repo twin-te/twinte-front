@@ -26,14 +26,19 @@ export type Schedule = {
 /**
  * `schedules` が有効であるかどうかを判定する。
  * 特殊授業の場合は時限が"指定なし"でもよい。
+ * 同一の `Schedule` を指定することはできない。
  */
 export const isValidSchedules = (schedules: Schedule[]) => {
-  return schedules.some(
-    (schedule) =>
-      schedule.module === "指定なし" ||
-      schedule.day === "指定なし" ||
-      (!specialDayJaList.includes(schedule.day as SpecialDayJa) &&
-        schedule.period === "指定なし")
+  return (
+    !schedules.some(
+      (schedule) =>
+        schedule.module === "指定なし" ||
+        schedule.day === "指定なし" ||
+        (!specialDayJaList.includes(schedule.day as SpecialDayJa) &&
+          schedule.period === "指定なし")
+    ) &&
+    new Set(schedules.map((s) => s.module + s.day + s.period)).size ===
+      schedules.length
   );
 };
 

@@ -155,7 +155,7 @@ export default defineComponent({
 
     /** save button */
     const btnState = computed(() =>
-      displayCourse.name === "" || isValidSchedules(displayCourse.schedules)
+      displayCourse.name === "" || !isValidSchedules(displayCourse.schedules)
         ? "disabled"
         : "default"
     );
