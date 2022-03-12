@@ -288,6 +288,9 @@ export default defineComponent({
       },
     ];
 
+    // 手動で追加した授業はシラバスへ遷移できない
+    if (baseCourse.course == undefined) popupData.splice(1, 1);
+
     return {
       displayCourse,
       updateCounter,
