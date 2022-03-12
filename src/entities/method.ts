@@ -9,6 +9,13 @@ export const methodList: CourseMethod[] = [
   "Others",
 ];
 
+export const methodJaList: MethodJa[] = [
+  "対面",
+  "同時双方向",
+  "オンデマンド",
+  "その他",
+];
+
 export const methodMap: Record<CourseMethod, MethodJa> = {
   FaceToFace: "対面",
   Synchronous: "同時双方向",

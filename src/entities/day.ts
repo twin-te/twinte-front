@@ -42,6 +42,7 @@ export const fullDays: FullDay[] = [
 
 export const weekdayJaList: WeekDayJa[] = ["月", "火", "水", "木", "金", "土"];
 export const dayJaList: DayJa[] = ["月", "火", "水", "木", "金", "土", "日"];
+export const specialDayJaList: SpecialDayJa[] = ["集中", "応談", "随時"];
 export const scheduleDayJaList: ScheduleDayJa[] = [
   "月",
   "火",
@@ -100,5 +101,5 @@ export const dayToJa = (day: Day): DayJa => weekMap[day];
 export const dayToFullDayja = (day: FullDay): FullDayJa => fullDayMap[day];
 export const dayToSpecialDayJa = (day: SpecialDay) => specialDayMap[day];
 
-export const jaToDay = (ja: FullDayJa): CourseDay =>
-  fullDays.find((key) => fullDayMap[key] === ja) ?? "Unknown";
+export const jaToFullDay = (ja: FullDayJa): FullDay =>
+  fullDays.find((key) => fullDayMap[key] === ja) ?? "Mon";
