@@ -1,7 +1,5 @@
 import { RegisteredCourse } from "~/api/@types";
 import { store } from "~/store";
-import { reactive, ToRefs, toRefs } from "vue-demi";
-import { apiToDisplayCourse, DisplayCourse } from "~/entities/course";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
@@ -15,9 +13,8 @@ export const getCourseById = ({ api }: Ports) => async (
   const storedCourse = (store.getters.courses as Array<RegisteredCourse>).find(
     (c) => id === c.id
   );
-  if (storedCourse) {
-    return storedCourse;
-  }
+  if (storedCourse) return storedCourse;
+
   const { body, status, originalResponse } = await api.registered_courses
     ._id(id)
     .get()
@@ -30,13 +27,4 @@ export const getCourseById = ({ api }: Ports) => async (
     console.error(body);
     throw new NetworkAccessError(originalResponse);
   }
-};
-
-export const useDisplayCourse = (ports: Ports) => async (
-  id: string,
-  char: string
-): Promise<ToRefs<DisplayCourse>> => {
-  const course = await getCourseById(ports)(id);
-  const displayedCourse = apiToDisplayCourse(course, char);
-  return toRefs(reactive(displayedCourse));
 };

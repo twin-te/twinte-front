@@ -1,26 +1,13 @@
 import { isValidStatus } from "~/usecases/api";
-import { Methods } from "~/api/registered-courses/index";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import { RegisteredCourseWithoutID } from "~/api/@types";
 
-export const adaptToApi = (
-  course: RegisteredCourseWithoutID
-): Methods["post"]["reqBody"] => ({
-  year: course.year,
-  name: course.name ?? "",
-  instructor: course.instructor ?? "",
-  credit: course.credit ?? 0,
-  methods: course.methods ?? [],
-  schedules: course.schedules ?? [],
-  tags: course.tags,
-});
-
 /**
- * 講義情報をサーバに登録し、成功すれば Vuex にも登録する。
+ * 手動で作成した授業を登録する。
  */
 export const addCourseByManual = ({ api, store }: Ports) => async (
-  course: Methods["post"]["reqBody"]
+  course: Required<RegisteredCourseWithoutID>
 ) => {
   const { body, status, originalResponse } = await api.registered_courses
     .post({

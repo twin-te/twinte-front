@@ -1,19 +1,24 @@
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
-import { RegisteredCourse } from "~/api/@types";
-import { validateCourse } from "~/entities/course";
+import {
+  Course,
+  RegisteredCourse,
+  RegisteredCourseWithoutID,
+} from "~/api/@types";
 
 /**
- * 出欠カウントを更新する。
+ * 講義情報を更新する
  */
 export const updateCourse = ({ api, store }: Ports) => async (
-  course: Required<RegisteredCourse>
+  id: string,
+  course: { course?: Course } & RegisteredCourseWithoutID
 ): Promise<RegisteredCourse> => {
-  const validCourse = validateCourse(course);
   const { body, status, originalResponse } = await api.registered_courses
-    ._id(course.id)
-    .put({ body: validCourse })
+    ._id(id)
+    .put({
+      body: course as { course: { id: string } } & RegisteredCourseWithoutID,
+    })
     .catch(() => {
       throw new NetworkError();
     });
