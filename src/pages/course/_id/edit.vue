@@ -166,7 +166,13 @@ export default defineComponent({
       displayCourse.methods = methodContents
         .filter((c) => c.checked)
         .map((c) => c.label);
-      const course = displayCourseToApi(displayCourse, registeredCourse);
+      const course = displayCourseToApi(displayCourse, registeredCourse, [
+        "name",
+        "instructor",
+        "credit",
+        "methods",
+        "schedules",
+      ]);
 
       try {
         await updateCourse(ports)(id, course);

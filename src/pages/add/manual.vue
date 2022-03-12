@@ -34,7 +34,7 @@
             <LabeledTextField label="担当教員">
               <TextFieldSingleLine
                 v-model="displayCourse.instructor"
-                placeholder="例) 山田太郎"
+                placeholder="例) 山田 太郎"
               ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
@@ -174,7 +174,7 @@ export default defineComponent({
       late: 0,
       tags: [],
     };
-    const displayCourse = apiToDisplayCourse(baseCourse, "");
+    const displayCourse = reactive(apiToDisplayCourse(baseCourse, ""));
 
     /** schedule-editor */
     if (displayCourse.schedules.length === 0)
@@ -214,10 +214,13 @@ export default defineComponent({
       displayCourse.methods = methodContents
         .filter((c) => c.checked)
         .map((c) => c.label);
-      const course = displayCourseToApi(
-        displayCourse,
-        baseCourse
-      ) as Required<RegisteredCourseWithoutID>;
+      const course = displayCourseToApi(displayCourse, baseCourse, [
+        "name",
+        "instructor",
+        "credit",
+        "methods",
+        "schedules",
+      ]) as Required<RegisteredCourseWithoutID>;
 
       // 開講時限が重複しているかどうか？
       if (showWarning && isCourseDuplicated(ports)(course)) {
