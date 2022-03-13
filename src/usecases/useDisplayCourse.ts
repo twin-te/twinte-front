@@ -125,7 +125,7 @@ export const apiToDisplayCourse = (
     periodToString(baseCourse?.schedules ?? baseCourse.course?.schedules ?? []),
     char
   ),
-  credit: (baseCourse.credit ?? baseCourse.course?.credit ?? 0).toFixed(),
+  credit: (baseCourse.credit ?? baseCourse.course?.credit ?? 0).toFixed(1),
   instructor: blankToChar(
     baseCourse.instructor ?? baseCourse.course?.instructor,
     char

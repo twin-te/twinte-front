@@ -42,6 +42,9 @@
           <CourseDetail item="開講時限" :value="displayCourse.date">
             <DecoratedIcon iconName="schedule"></DecoratedIcon>
           </CourseDetail>
+          <CourseDetail item="単位数" :value="displayCourse.credit">
+            <DecoratedIcon iconName="payments"></DecoratedIcon>
+          </CourseDetail>
           <CourseDetail item="担当教員" :value="displayCourse.instructor">
             <DecoratedIcon iconName="person"></DecoratedIcon>
           </CourseDetail>

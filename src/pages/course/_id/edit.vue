@@ -30,6 +30,14 @@
               :onClickRemoveButton="removeSchedule"
             ></ScheduleEditer>
           </section>
+          <section class="main__credit">
+            <LabeledTextField label="単位数">
+              <TextFieldSingleLine
+                v-model.trim="displayCourse.credit"
+                placeholder="例) 1.0"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </section>
           <section class="main__instructor">
             <LabeledTextField label="担当教員">
               <TextFieldSingleLine
@@ -103,6 +111,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { isValidCredit } from "~/entities/credit";
 import { methodJaList } from "~/entities/method";
 import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
 import { displayToast } from "~/entities/toast";
@@ -155,7 +164,9 @@ export default defineComponent({
 
     /** save button */
     const btnState = computed(() =>
-      displayCourse.name === "" || !isValidSchedules(displayCourse.schedules)
+      displayCourse.name === "" ||
+      !isValidSchedules(displayCourse.schedules) ||
+      !isValidCredit(displayCourse.credit)
         ? "disabled"
         : "default"
     );
