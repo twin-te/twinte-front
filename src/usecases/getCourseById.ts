@@ -1,6 +1,6 @@
 import { RegisteredCourse } from "~/api/@types";
 import { store } from "~/store";
-import { reactive, ToRefs, toRefs } from "vue-demi";
+import { reactive, ToRefs, toRefs } from "vue";
 import { apiToDisplayCourse, DisplayCourse } from "~/entities/course";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
