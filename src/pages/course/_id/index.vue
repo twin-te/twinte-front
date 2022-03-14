@@ -36,25 +36,25 @@
     </PageHeader>
     <article class="main">
       <div class="main__contents">
-        <p class="main__code">{{ code }}</p>
-        <h1 class="main__name">{{ name }}</h1>
+        <p class="main__code">{{ displayCourse.code }}</p>
+        <h1 class="main__name">{{ displayCourse.name }}</h1>
         <section class="main__details">
-          <CourseDetail item="開講時限" :value="date">
+          <CourseDetail item="開講時限" :value="displayCourse.date">
             <DecoratedIcon iconName="schedule"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="担当教員" :value="instructor">
+          <CourseDetail item="担当教員" :value="displayCourse.instructor">
             <DecoratedIcon iconName="person"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="授業場所" :value="room">
+          <CourseDetail item="授業場所" :value="displayCourse.room">
             <DecoratedIcon iconName="room"></DecoratedIcon>
           </CourseDetail>
-          <CourseDetail item="授業形式" :value="method">
+          <CourseDetail item="授業形式" :value="displayCourse.method">
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
         <TextFieldMultilines
           class="main__memo"
-          v-model="memo"
+          v-model="displayCourse.memo"
           @update:modelValue="update"
           placeholder="メモを入力"
           height="10.3rem"
@@ -70,7 +70,7 @@
               color="primary"
               iconName="remove"
             ></IconButton>
-            <p class="attendance__count">{{ attendance }}</p>
+            <p class="attendance__count">{{ displayCourse.attendance }}</p>
             <IconButton
               class="attendance__plus-btn"
               @click="updateCounter('attendance', 1)"
@@ -88,7 +88,7 @@
               color="primary"
               iconName="remove"
             ></IconButton>
-            <p class="attendance__count">{{ absence }}</p>
+            <p class="attendance__count">{{ displayCourse.absence }}</p>
             <IconButton
               class="attendance__plus-btn"
               @click="updateCounter('absence', 1)"
@@ -106,7 +106,7 @@
               color="primary"
               iconName="remove"
             ></IconButton>
-            <p class="attendance__count">{{ late }}</p>
+            <p class="attendance__count">{{ displayCourse.late }}</p>
             <IconButton
               class="attendance__plus-btn"
               @click="updateCounter('late', 1)"
@@ -128,7 +128,7 @@
       <template #contents>
         <p class="modal__text">
           「{{
-            name
+            displayCourse.name
           }}」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
         </p>
       </template>
@@ -155,9 +155,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
@@ -170,15 +169,18 @@ import PopupContent, {
 } from "~/components/PopupContent.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
-import { displayCourseToApi } from "~/entities/course";
 import { displayToast } from "~/entities/toast";
 import { getSyllbusUrl } from "~/entities/courseCard";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
 import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
-import { useDisplayCourse } from "~/usecases/getCourseById";
+import { getCourseById } from "~/usecases/getCourseById";
 import { openUrl } from "~/usecases/openUrl";
 import { updateCourse } from "~/usecases/updateCourse";
+import {
+  apiToDisplayCourse,
+  displayCourseToApi,
+} from "~/usecases/useDisplayCourse";
 
 export default defineComponent({
   name: "Details",
@@ -200,32 +202,27 @@ export default defineComponent({
     const router = useRouter();
     const { id } = route.params as { id: string };
 
-    const {
-      absence,
-      attendance,
-      code,
-      courseId,
-      date,
-      instructor,
-      late,
-      memo,
-      method,
-      name,
-      registeredCourse,
-      room,
-      schedules,
-    } = await useDisplayCourse(ports)(id, "-");
+    const baseCourse = await getCourseById(ports)(id);
+    const displayCourse = reactive(apiToDisplayCourse(baseCourse, "-"));
 
     const updateCounter = (
-      tag: "attendance" | "late" | "absence",
+      key: "attendance" | "late" | "absence",
       value: number
     ) => {
-      ({
-        attendance,
-        late,
-        absence,
-      }[tag].value += value);
+      if (displayCourse[key] + value < 0) return;
+      displayCourse[key] += value;
       update();
+    };
+
+    const update = async () => {
+      const course = displayCourseToApi(displayCourse, baseCourse);
+      try {
+        await updateCourse(ports)(id, course);
+      } catch (error) {
+        console.error(error);
+        displayToast(ports)(error.message);
+        return;
+      }
     };
 
     /** delete-course-modal */
@@ -234,12 +231,14 @@ export default defineComponent({
       openDeleteCourseModal,
       closeDeleteCourseModal,
     ] = useSwitch();
+
+    /** 授業を削除する */
     const deleteCourse = async () => {
       try {
         await apiDeleteCourse(ports)(id);
       } catch (error) {
         console.error(error);
-        displayToast(error)(error.message);
+        displayToast(ports)(error.message);
         return;
       }
       closeDeleteCourseModal();
@@ -261,7 +260,7 @@ export default defineComponent({
         color: "normal",
       },
       {
-        onClick: () => openUrl(getSyllbusUrl(code.value)),
+        onClick: () => openUrl(getSyllbusUrl(displayCourse.code)),
         link: true,
         value: "シラバス",
         color: "normal",
@@ -274,7 +273,9 @@ export default defineComponent({
       },
       {
         onClick: () =>
-          openUrl(`https://www.google.com/maps/search/筑波大学+${room.value}`),
+          openUrl(
+            `https://www.google.com/maps/search/筑波大学+${displayCourse.room}`
+          ),
         link: true,
         value: "地図",
         color: "normal",
@@ -287,45 +288,11 @@ export default defineComponent({
       },
     ];
 
-    const update = async () => {
-      const course = displayCourseToApi({
-        code: code.value,
-        courseId: courseId.value,
-        date: date.value,
-        instructor: instructor.value,
-        method: method.value,
-        name: name.value,
-        room: room.value,
-        attendance: attendance.value,
-        absence: absence.value,
-        late: late.value,
-        memo: memo.value,
-        schedules: schedules.value,
-        registeredCourse: registeredCourse.value,
-      });
-      // TODO: as を使わない実装
-      try {
-        await updateCourse(ports)(course as Required<RegisteredCourse>);
-      } catch (error) {
-        console.error(error);
-        displayToast(error)(error.message);
-        return;
-      }
-    };
+    // 手動で追加した授業はシラバスへ遷移できない
+    if (baseCourse.course == undefined) popupData.splice(1, 1);
 
     return {
-      absence,
-      attendance,
-      code,
-      courseId,
-      date,
-      instructor,
-      late,
-      memo,
-      method,
-      name,
-      registeredCourse,
-      room,
+      displayCourse,
       updateCounter,
       showPopup,
       closePopup,

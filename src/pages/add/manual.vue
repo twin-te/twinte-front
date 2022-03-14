@@ -17,7 +17,7 @@
           <section class="main__course-name">
             <LabeledTextField label="授業名" mandatory>
               <TextFieldSingleLine
-                v-model="course.name"
+                v-model="displayCourse.name"
                 placeholder="例) ゼミ"
               ></TextFieldSingleLine>
             </LabeledTextField>
@@ -25,7 +25,7 @@
           <section class="main__period">
             <Label value="開講時限" mandatory></Label>
             <ScheduleEditer
-              v-model:schedules="schedules"
+              v-model:schedules="displayCourse.schedules"
               :onClickAddButton="addSchedule"
               :onClickRemoveButton="removeSchedule"
             ></ScheduleEditer>
@@ -33,15 +33,15 @@
           <section class="main__instructor">
             <LabeledTextField label="担当教員">
               <TextFieldSingleLine
-                v-model="course.instructor"
-                placeholder="例) 山田太郎"
+                v-model="displayCourse.instructor"
+                placeholder="例) 山田 太郎"
               ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
           <section class="main__room">
             <LabeledTextField label="授業場所">
               <TextFieldSingleLine
-                v-model="room"
+                v-model="displayCourse.room"
                 placeholder="例) 研究室"
               ></TextFieldSingleLine>
             </LabeledTextField>
@@ -50,10 +50,10 @@
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
               <CheckContent
-                v-for="method in methods"
-                :key="method.value"
-                v-model:checked="method.checked"
-                >{{ method.lavel }}</CheckContent
+                v-for="content in methodContents"
+                :key="content.label"
+                v-model:checked="content.checked"
+                >{{ content.label }}</CheckContent
               >
             </div>
           </section>
@@ -118,14 +118,14 @@
 
 <script lang="ts">
 import { addCourseByManual } from "~/usecases/addCourseByManual";
-import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
+import { RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { displayToast } from "~/entities/toast";
 import { getYear } from "~/usecases/getYear";
 import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
-import { MethodJa } from "~/entities/method";
+import { methodJaList } from "~/entities/method";
 import { periodToString } from "~/usecases/periodToString";
-import { Schedule, scheduleToApi } from "~/entities/schedule";
+import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
 import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
 import { useSwitch } from "~/hooks/useSwitch";
@@ -139,6 +139,10 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import {
+  apiToDisplayCourse,
+  displayCourseToApi,
+} from "~/usecases/useDisplayCourse";
 
 export default defineComponent({
   components: {
@@ -156,63 +160,48 @@ export default defineComponent({
   setup: async () => {
     const router = useRouter();
     const ports = usePorts();
-    const course = reactive<Required<RegisteredCourseWithoutID>>({
-      absence: 0,
-      attendance: 0,
-      credit: 0,
-      instructor: "",
-      late: 0,
-      memo: "",
-      methods: [],
-      name: "",
-      schedules: [],
-      tags: [],
+
+    const baseCourse: Required<RegisteredCourseWithoutID> = {
       year: await getYear(ports),
-    });
-    const room = ref("");
+      name: "",
+      instructor: "",
+      credit: 0,
+      methods: [],
+      schedules: [],
+      memo: "",
+      attendance: 0,
+      absence: 0,
+      late: 0,
+      tags: [],
+    };
+    const displayCourse = reactive(apiToDisplayCourse(baseCourse, ""));
 
     /** schedule-editor */
-    const schedules = ref<Schedule[]>([
-      { module: "指定なし", day: "指定なし", period: "指定なし" },
-    ]);
+    if (displayCourse.schedules.length === 0)
+      displayCourse.schedules.push(createBlankSchedule());
     const addSchedule = () => {
-      schedules.value.push({
-        module: "指定なし",
-        day: "指定なし",
-        period: "指定なし",
-      });
+      displayCourse.schedules.push(createBlankSchedule());
     };
     const removeSchedule = (index: number) => {
-      schedules.value.splice(index, 1);
+      displayCourse.schedules.splice(index, 1);
     };
 
-    /** checkbox */
-    const methods = reactive<
-      {
-        checked: boolean;
-        value: CourseMethod;
-        lavel: MethodJa;
-      }[]
-    >([
-      { checked: false, value: "FaceToFace", lavel: "対面" },
-      { checked: false, value: "Synchronous", lavel: "同時双方向" },
-      { checked: false, value: "Asynchronous", lavel: "オンデマンド" },
-      { checked: false, value: "Others", lavel: "その他" },
-    ]);
+    /** method checkbox */
+    const methodContents = reactive(
+      methodJaList.map((m) => ({
+        label: m,
+        checked: displayCourse.methods.includes(m),
+      }))
+    );
 
-    /** button */
-    const btnState = computed(() => {
-      if (
-        course.name === "" ||
-        schedules.value.some((obj) =>
-          Object.keys(obj).some((key) => obj[key] === "指定なし")
-        )
-      )
-        return "disabled";
-      else return "default";
-    });
+    /** save button */
+    const btnState = computed(() =>
+      displayCourse.name === "" || !isValidSchedules(displayCourse.schedules)
+        ? "disabled"
+        : "default"
+    );
 
-    /** deulpication modal */
+    /** duplication modal */
     const [
       duplicationModal,
       openDuplicationModal,
@@ -222,12 +211,25 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value === "disabled") return;
-      course.schedules = scheduleToApi(schedules.value, room.value);
+      displayCourse.methods = methodContents
+        .filter((c) => c.checked)
+        .map((c) => c.label);
+      const course = displayCourseToApi(displayCourse, baseCourse, [
+        "name",
+        "instructor",
+        "credit",
+        "methods",
+        "schedules",
+      ]) as Required<RegisteredCourseWithoutID>;
+
+      // 開講時限が重複しているかどうか？
       if (showWarning && isCourseDuplicated(ports)(course)) {
         duplicatedCourses.value[0] = course;
         openDuplicationModal();
         return;
       }
+
+      // 授業を追加する
       try {
         await addCourseByManual(ports)(course);
       } catch (error) {
@@ -243,15 +245,13 @@ export default defineComponent({
       addSchedule,
       btnState,
       closeDuplicationModal,
-      course,
+      displayCourse,
       duplicatedCourses,
       duplicationModal,
-      methods,
+      methodContents,
       openDuplicationModal,
       periodToString,
       removeSchedule,
-      room,
-      schedules,
     };
   },
 });
