@@ -1,3 +1,4 @@
+import { isContainedIn } from "~/util";
 import { CourseDay } from "~/api/@types";
 
 export type WeekDay = Extract<
@@ -39,6 +40,12 @@ export const fullDays: FullDay[] = [
   "Appointment",
   "AnyTime",
 ];
+
+export const isDay = (day: string): day is Day => isContainedIn(day, week);
+export const isWeekDay = (day: string): day is WeekDay =>
+  isContainedIn(day, weekdays);
+export const isSpecialDay = (day: string): day is SpecialDay =>
+  isContainedIn(day, specialDays);
 
 export const weekdayJaList: WeekDayJa[] = ["月", "火", "水", "木", "金", "土"];
 export const dayJaList: DayJa[] = ["月", "火", "水", "木", "金", "土", "日"];

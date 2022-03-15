@@ -1,5 +1,10 @@
-import { RegisteredCourse } from "~/api/@types";
-import { fullDays, SpecialDay, specialDays } from "~/entities/day";
+import { CourseSchedule, RegisteredCourse } from "~/api/@types";
+import {
+  fullDays,
+  isSpecialDay,
+  SpecialDay,
+  specialDays,
+} from "~/entities/day";
 import { modules } from "~/entities/module";
 import {
   createSpecialCourseStateList,
@@ -18,7 +23,9 @@ export const courseListToSpecialTable = (
     (targetCourses, course) => {
       const schedules = course.schedules ?? course.course?.schedules ?? [];
       schedules
-        .filter((schedule) => specialDays.includes(schedule.day as SpecialDay))
+        .filter((schedule): schedule is CourseSchedule & { day: SpecialDay } =>
+          isSpecialDay(schedule.day)
+        )
         .forEach((schedule) => {
           targetCourses[schedule.day].push(course);
         });

@@ -1,4 +1,5 @@
 import { CourseModule } from "~/api/@types";
+import { isContainedIn } from "~/util";
 
 export type BaseModule = Exclude<
   CourseModule,
@@ -49,6 +50,9 @@ export const scheduleModuleJaList: ScheduleModuleJa[] = [
   "春休",
   "指定なし",
 ];
+
+export const isBaseModule = (module: string): module is BaseModule =>
+  isContainedIn(module, modules);
 
 export const moduleMap: Record<BaseModule, ModuleJa> = {
   SpringA: "春A",
