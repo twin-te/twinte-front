@@ -8,6 +8,7 @@ import {
   CourseDay,
   SearchCourseTimetableQuery,
   SearchCourseTimetableQueryDays,
+  SearchCourseTimetableQueryPeriods,
 } from "~/api/@types";
 import { fullDays } from "~/entities/day";
 import { fullModules } from "~/entities/module";
@@ -16,7 +17,6 @@ import { getYear } from "./getYear";
 import { isSchedulesDuplicated } from "./getDuplicatedCourses";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
-import { periods } from "~/entities/period";
 import { Ports } from "~/adapter";
 import { Schedule } from "~/entities/schedule";
 
@@ -58,6 +58,18 @@ const isWishinSchedules = (
   );
 };
 
+const periods: (keyof SearchCourseTimetableQueryPeriods)[] = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+];
+
 /**
  * scheduels から timetable形式 のデータを生成する。
  */
@@ -71,21 +83,21 @@ const schedulesToTimetable = (
   for (const module of fullModules) {
     timetable[module] = {} as SearchCourseTimetableQueryDays;
     for (const day of fullDays) {
-      timetable[module][day] = {};
-      for (const period of [0, ...periods]) {
+      timetable[module][day] = {} as SearchCourseTimetableQueryPeriods;
+      for (const period of periods) {
         // とりあえず空白検索とドロップダウン検索は or で実装
         // HACK: backend の要望により timetable が全て true の場合 undedined を返す。
         const ret = onlyBlank
-          ? !isSchedulesDuplicated(ports)([{ module, day, period, room: "" }])
-          : isWishinSchedules(schedules, module, day, period);
+          ? !isSchedulesDuplicated(ports)([
+              { module, day, period: parseInt(period), room: "" },
+            ])
+          : isWishinSchedules(schedules, module, day, parseInt(period));
         timetable[module][day][period] = ret;
         if (ret === false) allTrue = false;
       }
     }
   }
-  return allTrue === true
-    ? undefined
-    : (timetable as SearchCourseTimetableQuery);
+  return allTrue === true ? undefined : timetable;
 };
 
 export const searchCourse = (ports: Ports) => async (
