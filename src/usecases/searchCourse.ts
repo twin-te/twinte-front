@@ -11,6 +11,7 @@ import {
 } from "~/api/@types";
 import { fullDays } from "~/entities/day";
 import { fullModules } from "~/entities/module";
+import { getKeysFromObj } from "~/util";
 import { getYear } from "./getYear";
 import { isSchedulesDuplicated } from "./getDuplicatedCourses";
 import { isValidStatus } from "~/usecases/api";
@@ -29,13 +30,13 @@ type ParsedSchedule = {
  * ex) module: "その他" -> modules: ["SummerVacation", "SpringVacation"]
  */
 const parseSchedules = (schedule: Schedule): ParsedSchedule => ({
-  modules: Object.keys(searchModuleMap).filter((k) =>
+  modules: getKeysFromObj(searchModuleMap).filter((k) =>
     searchModuleMap[k].includes(schedule.module)
   ),
-  days: Object.keys(searchWeekMap).filter((k) =>
+  days: getKeysFromObj(searchWeekMap).filter((k) =>
     searchWeekMap[k].includes(schedule.day)
   ),
-  periods: Object.keys(searchPeriodMap).filter((k) =>
+  periods: getKeysFromObj(searchPeriodMap).filter((k) =>
     searchPeriodMap[k].includes(schedule.period)
   ),
 });

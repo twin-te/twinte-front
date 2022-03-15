@@ -110,6 +110,7 @@ import { Schedule } from "~/entities/schedule";
 import { usePorts } from "~/usecases";
 import { useDisplayCourse } from "~/usecases/getCourseById";
 import { updateCourse } from "~/usecases/updateCourse";
+import { getKeysFromObj } from "~/util";
 
 export default defineComponent({
   components: {
@@ -199,7 +200,7 @@ export default defineComponent({
     const submitButton = computed(() => {
       return !name.value ||
         schedules.value.every((obj) =>
-          Object.keys(obj).every((key) => obj[key] === "指定なし")
+          getKeysFromObj(obj).every((key) => obj[key] === "指定なし")
         )
         ? "disabled"
         : "default";

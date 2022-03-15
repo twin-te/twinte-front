@@ -122,6 +122,7 @@ import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { displayToast } from "~/entities/toast";
 import { extractMessageOrDefault } from "~/usecases/error";
+import { getKeysFromObj } from "~/util";
 import { getYear } from "~/usecases/getYear";
 import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
 import { MethodJa } from "~/entities/method";
@@ -206,7 +207,7 @@ export default defineComponent({
       if (
         course.name === "" ||
         schedules.value.some((obj) =>
-          Object.keys(obj).some((key) => obj[key] === "指定なし")
+          getKeysFromObj(obj).some((key) => obj[key] === "指定なし")
         )
       )
         return "disabled";
