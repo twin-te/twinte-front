@@ -151,6 +151,7 @@ import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
 import { displayToast } from "~/entities/toast";
+import { extractMessageOrDefault } from "~/usecases/error";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
@@ -260,7 +261,7 @@ export default defineComponent({
         );
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       offset += limit;
@@ -303,7 +304,7 @@ export default defineComponent({
         );
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       router.push("/");

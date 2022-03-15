@@ -179,6 +179,7 @@ import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
 import { useDisplayCourse } from "~/usecases/getCourseById";
 import { openUrl } from "~/usecases/openUrl";
 import { updateCourse } from "~/usecases/updateCourse";
+import { extractMessageOrDefault } from "~/usecases/error";
 
 export default defineComponent({
   name: "Details",
@@ -239,7 +240,7 @@ export default defineComponent({
         await apiDeleteCourse(ports)(id);
       } catch (error) {
         console.error(error);
-        displayToast(error)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       closeDeleteCourseModal();
@@ -308,7 +309,7 @@ export default defineComponent({
         await updateCourse(ports)(course as Required<RegisteredCourse>);
       } catch (error) {
         console.error(error);
-        displayToast(error)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
     };

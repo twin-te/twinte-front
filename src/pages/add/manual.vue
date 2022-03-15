@@ -121,6 +121,7 @@ import { addCourseByManual } from "~/usecases/addCourseByManual";
 import { CourseMethod, RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { displayToast } from "~/entities/toast";
+import { extractMessageOrDefault } from "~/usecases/error";
 import { getYear } from "~/usecases/getYear";
 import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
 import { MethodJa } from "~/entities/method";
@@ -232,7 +233,7 @@ export default defineComponent({
         await addCourseByManual(ports)(course);
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       router.push("/");
