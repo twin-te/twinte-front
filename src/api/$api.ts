@@ -1,27 +1,50 @@
 /* eslint-disable */
+// prettier-ignore
 import { AspidaClient, BasicHeaders, dataToURLString } from 'aspida'
+// prettier-ignore
 import { Methods as Methods0 } from './courses'
+// prettier-ignore
 import { Methods as Methods1 } from './courses/_year@number/_code@string'
+// prettier-ignore
 import { Methods as Methods2 } from './courses/search'
+// prettier-ignore
 import { Methods as Methods3 } from './donation/aggregate/totalAmount'
+// prettier-ignore
 import { Methods as Methods4 } from './donation/aggregate/users'
+// prettier-ignore
 import { Methods as Methods5 } from './donation/payment'
+// prettier-ignore
 import { Methods as Methods6 } from './donation/session/onetime'
+// prettier-ignore
 import { Methods as Methods7 } from './donation/session/subscription'
+// prettier-ignore
 import { Methods as Methods8 } from './donation/subscriptions'
+// prettier-ignore
 import { Methods as Methods9 } from './donation/subscriptions/_id@string'
+// prettier-ignore
 import { Methods as Methods10 } from './donation/users/me'
+// prettier-ignore
 import { Methods as Methods11 } from './information'
+// prettier-ignore
 import { Methods as Methods12 } from './information/_id@string'
+// prettier-ignore
 import { Methods as Methods13 } from './registered-courses'
+// prettier-ignore
 import { Methods as Methods14 } from './registered-courses/_id@string'
+// prettier-ignore
 import { Methods as Methods15 } from './school-calendar/events'
+// prettier-ignore
 import { Methods as Methods16 } from './school-calendar/modules'
+// prettier-ignore
 import { Methods as Methods17 } from './tags'
+// prettier-ignore
 import { Methods as Methods18 } from './tags/_id@string'
+// prettier-ignore
 import { Methods as Methods19 } from './timetable/_date@string'
+// prettier-ignore
 import { Methods as Methods20 } from './users/me'
 
+// prettier-ignore
 const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
   const prefix = (baseURL === undefined ? 'http://localhost:3000/' : baseURL).replace(/\/$/, '')
   const PATH0 = '/courses'
@@ -412,5 +435,7 @@ const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
   }
 }
 
+// prettier-ignore
 export type ApiInstance = ReturnType<typeof api>
+// prettier-ignore
 export default api
