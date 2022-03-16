@@ -12,6 +12,6 @@ const typecheckOnlyStaged = (stagedFilenames) => {
 
 module.exports = {
   "*.{ts,tsx,vue}": [typecheckOnlyStaged, "yarn lint:fix"],
-  "*.{md,json}": ["yarn prettier --write ${filename}"],
+  "*.{md,json}": ["yarn prettier --write"],
   "*.{scss}": [],
 };
