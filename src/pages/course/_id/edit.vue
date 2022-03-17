@@ -17,7 +17,7 @@
           <section class="main__course-name">
             <LabeledTextField label="授業名" mandatory>
               <TextFieldSingleLine
-                v-model="name"
+                v-model="displayCourse.name"
                 placeholder="例) ゼミ"
               ></TextFieldSingleLine>
             </LabeledTextField>
@@ -25,16 +25,24 @@
           <section class="main__period">
             <Label value="開講時限" mandatory></Label>
             <ScheduleEditer
-              v-model:schedules="schedules"
+              v-model:schedules="displayCourse.schedules"
               :onClickAddButton="addSchedule"
               :onClickRemoveButton="removeSchedule"
             ></ScheduleEditer>
           </section>
+          <section class="main__credit">
+            <LabeledTextField label="単位数">
+              <TextFieldSingleLine
+                v-model.trim="displayCourse.credit"
+                placeholder="例) 1.0"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
+          </section>
           <section class="main__instructor">
             <LabeledTextField label="担当教員">
               <TextFieldSingleLine
-                v-model="instructor"
-                placeholder="例) 山田太郎"
+                v-model="displayCourse.instructor"
+                placeholder="例) 筑波 太郎"
               ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
@@ -42,10 +50,10 @@
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
               <CheckContent
-                v-for="data in methodData"
-                :key="data.value"
-                v-model:checked="data.checked.value"
-                >{{ data.value }}</CheckContent
+                v-for="content in methodContents"
+                :key="content.label"
+                v-model:checked="content.checked"
+                >{{ content.label }}</CheckContent
               >
             </div>
           </section>
@@ -57,7 +65,7 @@
           size="large"
           layout="fill"
           color="primary"
-          :state="submitButton"
+          :state="btnState"
           >変更を保存</Button
         >
       </section>
@@ -92,9 +100,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, Ref } from "vue";
+import { defineComponent, ref, computed, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { CourseMethod, RegisteredCourse } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -104,13 +111,18 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { displayCourseToApi } from "~/entities/course";
-import { MethodJa } from "~/entities/method";
-import { Schedule } from "~/entities/schedule";
+import { isValidCredit } from "~/entities/credit";
+import { methodJaList } from "~/entities/method";
+import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
+import { displayToast } from "~/entities/toast";
 import { usePorts } from "~/usecases";
-import { useDisplayCourse } from "~/usecases/getCourseById";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getCourseById } from "~/usecases/getCourseById";
 import { updateCourse } from "~/usecases/updateCourse";
-import { getKeysFromObj } from "~/util";
+import {
+  apiToDisplayCourse,
+  displayCourseToApi,
+} from "~/usecases/useDisplayCourse";
 
 export default defineComponent({
   components: {
@@ -130,101 +142,57 @@ export default defineComponent({
     const router = useRouter();
     const { id } = route.params as { id: string };
 
-    const {
-      absence,
-      attendance,
-      code,
-      courseId,
-      date,
-      instructor,
-      late,
-      memo,
-      name,
-      room,
-      schedules: apiSchedules,
-      registeredCourse,
-    } = await useDisplayCourse(ports)(id, "").catch((error) => {
-      // TODO: エラー表示処理を追加
-      throw error;
-    });
+    const registeredCourse = await getCourseById(ports)(id);
+    const displayCourse = reactive(apiToDisplayCourse(registeredCourse, ""));
 
     /** schedule-editor */
-    const blankSchedule: Schedule = {
-      module: "指定なし",
-      day: "指定なし",
-      period: "指定なし",
-    };
-    const schedules = ref<Schedule[]>(apiSchedules.value);
-    const scheduleMin = 1;
+    if (displayCourse.schedules.length === 0)
+      displayCourse.schedules.push(createBlankSchedule());
     const addSchedule = () => {
-      schedules.value.push(blankSchedule);
+      displayCourse.schedules.push(createBlankSchedule());
     };
     const removeSchedule = (index: number) => {
-      if (schedules.value.length <= scheduleMin) return;
-      schedules.value.splice(index, 1);
+      displayCourse.schedules.splice(index, 1);
     };
 
-    const methods =
-      registeredCourse.value.methods ??
-      registeredCourse.value.course?.methods ??
-      [];
+    /** method checkbox */
+    const methodContents = reactive(
+      methodJaList.map((m) => ({
+        label: m,
+        checked: displayCourse.methods.includes(m),
+      }))
+    );
 
-    const methodData: {
-      checked: Ref<boolean>;
-      name: CourseMethod;
-      value: MethodJa;
-    }[] = [
-      {
-        checked: ref(methods.includes("FaceToFace")),
-        name: "FaceToFace",
-        value: "対面",
-      },
-      {
-        checked: ref(methods.includes("Synchronous")),
-        name: "Synchronous",
-        value: "同時双方向",
-      },
-      {
-        checked: ref(methods.includes("Asynchronous")),
-        name: "Asynchronous",
-        value: "オンデマンド",
-      },
-      {
-        checked: ref(methods.includes("Others")),
-        name: "Others",
-        value: "その他",
-      },
-    ];
-
-    /** submit button */
-    const submitButton = computed(() => {
-      return !name.value ||
-        schedules.value.every((obj) =>
-          getKeysFromObj(obj).every((key) => obj[key] === "指定なし")
-        )
+    /** save button */
+    const btnState = computed(() =>
+      displayCourse.name === "" ||
+      !isValidSchedules(displayCourse.schedules) ||
+      !isValidCredit(displayCourse.credit)
         ? "disabled"
-        : "default";
-    });
+        : "default"
+    );
+
+    /** 授業を更新する */
     const save = async () => {
-      if (submitButton.value === "disabled") return;
-      const course = displayCourseToApi(
-        {
-          code: code.value,
-          courseId: courseId.value,
-          date: date.value,
-          instructor: instructor.value,
-          name: name.value,
-          room: room.value,
-          attendance: attendance.value,
-          absence: absence.value,
-          late: late.value,
-          memo: memo.value,
-          schedules: apiSchedules.value,
-          registeredCourse: registeredCourse.value,
-        },
-        methodData.filter((m) => m.checked.value).map((v) => v.value)
-      );
-      await updateCourse(ports)(course as Required<RegisteredCourse>);
+      if (btnState.value === "disabled") return;
+      displayCourse.methods = methodContents
+        .filter((c) => c.checked)
+        .map((c) => c.label);
+      const course = displayCourseToApi(displayCourse, registeredCourse, [
+        "name",
+        "instructor",
+        "credit",
+        "methods",
+        "schedules",
+      ]);
+
+      try {
+        await updateCourse(ports)(id, course);
+      } catch (error) {
+        console.error(error);
+        displayToast(ports)(extractMessageOrDefault(error));
+        return;
+      }
       router.push(`/course/${id}`);
     };
 
@@ -232,15 +200,12 @@ export default defineComponent({
     const modal = ref(false);
 
     return {
-      instructor,
-      methods,
-      name,
-      schedules,
+      displayCourse,
       addSchedule,
       removeSchedule,
-      methodData,
+      methodContents,
+      btnState,
       save,
-      submitButton,
       modal,
     };
   },

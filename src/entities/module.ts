@@ -82,7 +82,7 @@ export const moduleToJa = (module: BaseModule): ModuleJa => moduleMap[module];
 export const moduleToFullModuleJa = (module: FullModule): FullModuleJa =>
   fullModuleMap[module];
 
-export const jaToModule = (ja: FullModuleJa): CourseModule =>
+export const jaToFullModule = (ja: FullModuleJa): CourseModule =>
   fullModules.find((key) => fullModuleMap[key] === ja) ?? "Unknown";
 export const jaToBaseModule = (ja: ModuleJa): BaseModule =>
   modules.find((m) => moduleMap[m] === ja) ?? "SpringA";

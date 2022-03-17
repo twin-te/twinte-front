@@ -100,6 +100,7 @@ export default defineComponent({
 
     const displayedYearOptions = [
       "自動(現在の年度)",
+      "2022年度",
       "2021年度",
       "2020年度",
       "2019年度",
