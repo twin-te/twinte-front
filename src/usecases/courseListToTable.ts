@@ -1,6 +1,7 @@
-import { RegisteredCourse } from "~/api/@types";
-import { WeekDay, weekdayNum, weekdays } from "~/entities/day";
-import { BaseModule, modules } from "~/entities/module";
+import { CourseSchedule, RegisteredCourse } from "~/api/@types";
+import { isWeekDay, WeekDay, weekdayNum, weekdays } from "~/entities/day";
+import { BaseModule, isBaseModule, modules } from "~/entities/module";
+import { Period } from "~/entities/period";
 import { Table } from "~/entities/table";
 
 /**
@@ -25,6 +26,18 @@ export const createNdarray = (
   return ret;
 };
 
+type OrdinarySchedule = CourseSchedule & {
+  module: BaseModule;
+  day: WeekDay;
+  period: Period;
+};
+
+const isOrdinarySchedule = (schedule: CourseSchedule) => 
+  isBaseModule(schedule.module) &&
+  isWeekDay(schedule.day) &&
+  1 <= schedule.period &&
+  schedule.period <= 8;
+
 /**
  * ホーム画面の通常授業のテーブルを作成する.
  * 院生モードのときは7,8限を表示する.
@@ -41,13 +54,7 @@ export const courseListToTable = (
       const schedules = course.schedules ?? course.course?.schedules ?? [];
       const room = [...new Set(schedules.map((s) => s.room))].join(",");
       schedules
-        .filter(
-          (schedule) =>
-            modules.includes(schedule.module as BaseModule) &&
-            weekdays.includes(schedule.day as WeekDay) &&
-            1 <= schedule.period &&
-            schedule.period <= 8
-        )
+        .filter((schedule): schedule is OrdinarySchedule => isOrdinarySchedule(schedule))
         .forEach((schedule) =>
           table[schedule.module][weekdayNum(schedule.day as WeekDay)][
             schedule.period - 1

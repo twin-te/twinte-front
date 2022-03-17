@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { SchoolCalendarEvent } from "~/api/@types";
-import { Day, week, weekMap } from "./day";
+import { weekMap, isDay } from "./day";
 import { EventMap } from "./event";
 
 export type Calendar = {
@@ -21,7 +21,7 @@ export const getSchoolCalendarEventJa = (
     ? "通常日課"
     : event.eventType === "SubstituteDay" &&
       event.changeTo != null &&
-      week.includes(event.changeTo as Day)
+      isDay(event.changeTo)
     ? `${weekMap[event.changeTo]}曜日課`
     : EventMap[event.eventType];
 };

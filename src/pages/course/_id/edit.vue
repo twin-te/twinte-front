@@ -116,6 +116,7 @@ import { methodJaList } from "~/entities/method";
 import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
 import { displayToast } from "~/entities/toast";
 import { usePorts } from "~/usecases";
+import { extractMessageOrDefault } from "~/usecases/error";
 import { getCourseById } from "~/usecases/getCourseById";
 import { updateCourse } from "~/usecases/updateCourse";
 import {
@@ -189,7 +190,7 @@ export default defineComponent({
         await updateCourse(ports)(id, course);
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       router.push(`/course/${id}`);

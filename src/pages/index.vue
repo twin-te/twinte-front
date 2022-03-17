@@ -238,7 +238,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue-demi";
+import { computed, defineComponent, ref } from "vue";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";

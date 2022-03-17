@@ -13,3 +13,12 @@ yarn dev # https://localhost:3000
 ```
 
 - 注意: [拡張機能](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf)などでブラウザの CORS を無効にしてください
+
+# 推奨開発環境
+
+本開発には [VSCode](https://code.visualstudio.com/) および VSCode の拡張機能 [Vue Language Features (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) を推奨します。  
+また Vue Language Features (Volar) は [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471) を有効にすることを推奨します。
+
+推奨理由は Vue Language Features (Volar) により Single File Components 内の型検査結果が視覚的に示されるためです。
+
+なお IDE の型検査はあくまで開発補助機能であり `yarn typecheck` により同様の型検査が行えます。

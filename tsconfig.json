@@ -1,19 +1,16 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "noImplicitAny": false,
-    "jsx": "preserve",
     "sourceMap": true,
-    "lib": ["esnext", "dom"],
+    "preserveValueImports": false,
+    "isolatedModules": true,
+    "importsNotUsedAsValues": "remove",
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
     },
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
     "types": ["vite/client", "jest", "node"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  }
 }

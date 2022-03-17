@@ -45,5 +45,13 @@ export class NetworkAccessError extends BaseError {
   }
 }
 
-export const isErrorObj = (x): x is Error =>
-  x.name !== undefined && x.message !== undefined;
+export const isErrorObj = (x: unknown): x is Error => {
+  if (x == null || typeof x !== "object") return false;
+  // x が null ではない object の場合は任意の文字列でプロパティアクセスしても
+  // ランタイムエラーは発生しないので Record<string, unknown> と見なせる
+  const record = x as Record<string, unknown>;
+  return typeof record.name === "string" && typeof record.message === "string";
+};
+
+export const extractMessageOrDefault = (error: unknown) =>
+  isErrorObj(error) ? error.message : "エラーが発生しました。";

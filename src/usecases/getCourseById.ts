@@ -1,5 +1,6 @@
 import { RegisteredCourse } from "~/api/@types";
 import { store } from "~/store";
+import { reactive, ToRefs, toRefs } from "vue";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
