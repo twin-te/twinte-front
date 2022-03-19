@@ -2,7 +2,8 @@ import { CourseModule, CourseSchedule } from "~/api/@types";
 import {
   Day,
   dayToJa,
-  SpecialDay,
+  isDay,
+  SpecialDayJa,
   specialDayMap,
   week,
   weekNum,
@@ -40,7 +41,7 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
   };
 
   const specialSchedules: {
-    [key in FullModule]?: SpecialDay;
+    [key in FullModule]?: SpecialDayJa;
   } = {};
   /**
    * ex.) { SpringC: "応談" }
@@ -48,7 +49,7 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
 
   schedules.forEach((schedule) => {
     if (schedule.module === "Unknown" || schedule.day === "Unknown") return;
-    if (week.includes(schedule.day as Day)) {
+    if (isDay(schedule.day)) {
       if (schedule.period < 1 || 8 < schedule.period) return;
       regularSchedules[schedule.module][weekNum(schedule.day as Day)] |=
         1 << (schedule.period - 1);

@@ -1,8 +1,15 @@
 import { CourseSchedule } from "~/api/@types";
-import { dayToFullDayja, FullDay, jaToDay, ScheduleDayJa } from "./day";
+import {
+  dayToFullDayja,
+  FullDay,
+  jaToFullDay,
+  ScheduleDayJa,
+  SpecialDayJa,
+  specialDayJaList,
+} from "./day";
 import {
   ScheduleModuleJa,
-  jaToModule,
+  jaToFullModule,
   moduleToFullModuleJa,
   FullModule,
 } from "./module";
@@ -14,6 +21,25 @@ export type Schedule = {
   module: ScheduleModuleJa;
   day: ScheduleDayJa;
   period: SchedulePeriod;
+};
+
+/**
+ * `schedules` が有効であるかどうかを判定する。
+ * 特殊授業の場合は時限が"指定なし"でもよい。
+ * 同一の `Schedule` を指定することはできない。
+ */
+export const isValidSchedules = (schedules: Schedule[]) => {
+  return (
+    !schedules.some(
+      (schedule) =>
+        schedule.module === "指定なし" ||
+        schedule.day === "指定なし" ||
+        (!specialDayJaList.includes(schedule.day as SpecialDayJa) &&
+          schedule.period === "指定なし")
+    ) &&
+    new Set(schedules.map((s) => s.module + s.day + s.period)).size ===
+      schedules.length
+  );
 };
 
 export const apiToSchedule = (api: CourseSchedule[]): Schedule[] =>
@@ -28,11 +54,17 @@ export const scheduleToApi = (
   room: string
 ): CourseSchedule[] =>
   schedules.map(({ day, module, period }) => ({
-    module: module === defaultValue ? "Unknown" : jaToModule(module),
-    day: day === defaultValue ? "Unknown" : jaToDay(day),
+    module: module === defaultValue ? "Unknown" : jaToFullModule(module),
+    day: day === defaultValue ? "Unknown" : jaToFullDay(day),
     period: period === defaultValue ? 0 : Number(period),
     room,
   }));
+
+export const createBlankSchedule = (): Schedule => ({
+  module: "指定なし",
+  day: "指定なし",
+  period: "指定なし",
+});
 
 export const searchModuleMap: Record<FullModule, ScheduleModuleJa[]> = {
   SpringA: ["春A", "指定なし"],

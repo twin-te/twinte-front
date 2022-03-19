@@ -111,7 +111,9 @@ export default defineComponent({
       title: "Twin:te | フィードバック",
     });
 
-    const feedbackType = ref("バグの報告");
+    const feedbackType = ref<
+      "バグの報告" | "新機能の要望" | "お問い合わせ" | "その他"
+    >("バグの報告");
     const screenShot = ref<File>();
     const feedbackContent = ref("");
     const email = ref("");
@@ -127,8 +129,10 @@ export default defineComponent({
     const emailNote = {
       バグの報告:
         "より詳しい原因解明のため開発チームから連絡を差し上げる場合がございます。ご協力いただける場合はメールアドレスまたはTwitterアカウントをご記入ください。",
+      新機能の要望: "",
       お問い合わせ:
         "返信用のメールアドレスまたはTwitterアカウントをご記入下さい。",
+      その他: "",
     };
 
     const btnStatus = computed(() => {

@@ -95,6 +95,7 @@ import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
 import { displayToast } from "~/entities/toast";
+import { extractMessageOrDefault } from "~/usecases/error";
 import { getCoursesByCode } from "~/usecases/getCourseByCode";
 import { getCoursesIdByFile } from "~/usecases/readCSV";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
@@ -159,7 +160,7 @@ export default defineComponent({
         router.push("/");
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
       }
     };
 
@@ -182,7 +183,7 @@ export default defineComponent({
         missingCourseCodes = res.missingCourseCodes;
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       loadedCourses.value = fetchedCourses.map((course) => ({

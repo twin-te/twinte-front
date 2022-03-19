@@ -149,8 +149,9 @@
 import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { Course } from "~/api/@types";
 import { courseToCard } from "~/entities/courseCard";
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
 import { displayToast } from "~/entities/toast";
+import { extractMessageOrDefault } from "~/usecases/error";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
 import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
@@ -226,7 +227,13 @@ export default defineComponent({
       rootMargin: "0px 0px 500px 0px",
       threshold: 0,
     };
-    const setSearchResultRef = (el, index) => {
+    const setSearchResultRef = (
+      el: Element | null | ComponentPublicInstance,
+      index: number
+    ) => {
+      // TODO: el === null のエラーハンドリングを実装
+      // TODO: ComponentPublicInstance と Element で振る舞いを分ける必要があるか調査
+      if (!el) return;
       if (index + 1 == searchResult.value.length) {
         useIntersectionObserver(
           el,
@@ -268,7 +275,7 @@ export default defineComponent({
         );
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       offset += limit;
@@ -311,7 +318,7 @@ export default defineComponent({
         );
       } catch (error) {
         console.error(error);
-        displayToast(ports)(error.message);
+        displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
       router.push("/");

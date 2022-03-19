@@ -70,7 +70,7 @@ export type SearchCourseTimetableQueryDays = {
   Sat: SearchCourseTimetableQueryPeriods
   Intensive: SearchCourseTimetableQueryPeriods
   Appointment: SearchCourseTimetableQueryPeriods
-  AntTime: SearchCourseTimetableQueryPeriods
+  AnyTime: SearchCourseTimetableQueryPeriods
 }
 
 /** 指定しなかった場合はfalseとみなされます */

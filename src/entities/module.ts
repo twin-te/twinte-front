@@ -1,4 +1,5 @@
 import { CourseModule } from "~/api/@types";
+import { isContainedIn } from "~/util";
 
 export type BaseModule = Exclude<
   CourseModule,
@@ -50,6 +51,9 @@ export const scheduleModuleJaList: ScheduleModuleJa[] = [
   "指定なし",
 ];
 
+export const isBaseModule = (module: string): module is BaseModule =>
+  isContainedIn(module, modules);
+
 export const moduleMap: Record<BaseModule, ModuleJa> = {
   SpringA: "春A",
   SpringB: "春B",
@@ -78,21 +82,21 @@ export const moduleToJa = (module: BaseModule): ModuleJa => moduleMap[module];
 export const moduleToFullModuleJa = (module: FullModule): FullModuleJa =>
   fullModuleMap[module];
 
-export const jaToModule = (ja: FullModuleJa): CourseModule =>
+export const jaToFullModule = (ja: FullModuleJa): CourseModule =>
   fullModules.find((key) => fullModuleMap[key] === ja) ?? "Unknown";
 export const jaToBaseModule = (ja: ModuleJa): BaseModule =>
   modules.find((m) => moduleMap[m] === ja) ?? "SpringA";
 
 /** fullModulesに対応 */
 export type ModuleFlg = [
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean
+  boolean, // 春A
+  boolean, // 春B
+  boolean, // 春C
+  boolean, // 夏休
+  boolean, // 秋A
+  boolean, // 秋B
+  boolean, // 秋C
+  boolean // 春休
 ];
 
 export const moduleFlgToDisplay = (moduleFlg: ModuleFlg): string[] => {
