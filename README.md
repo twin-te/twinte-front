@@ -22,3 +22,8 @@ yarn dev # https://localhost:3000
 推奨理由は Vue Language Features (Volar) により Single File Components 内の型検査結果が視覚的に示されるためです。
 
 なお IDE の型検査はあくまで開発補助機能であり `yarn typecheck` により同様の型検査が行えます。
+
+# イベント測定用のマーカについて
+
+本アプリでは Google Tag Manager によるユーザイベントの測定を行っています。  
+それに伴いデータ属性`data-gtm-marker`やクラス`gtm-marker-*`のイベント発生箇所を特定するためのマーカを各要所に設置してあります。これらを修正する際は Google Tag Manager の設定も合わせて変更して下さい。

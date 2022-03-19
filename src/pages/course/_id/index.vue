@@ -29,6 +29,7 @@
               :link="data.link"
               :value="data.value"
               :color="data.color"
+              :gtm-marker="data.gtmMarker"
             ></PopupContent>
           </Popup>
         </div>
@@ -72,6 +73,7 @@
               size="small"
               color="primary"
               iconName="remove"
+              data-gtm-marker="attendance-record-button"
             ></IconButton>
             <p class="attendance__count">{{ displayCourse.attendance }}</p>
             <IconButton
@@ -80,6 +82,7 @@
               size="small"
               color="primary"
               iconName="add"
+              data-gtm-marker="attendance-record-button"
             ></IconButton>
           </div>
           <div class="attendance__item">
@@ -90,6 +93,7 @@
               size="small"
               color="primary"
               iconName="remove"
+              data-gtm-marker="attendance-record-button"
             ></IconButton>
             <p class="attendance__count">{{ displayCourse.absence }}</p>
             <IconButton
@@ -98,6 +102,7 @@
               size="small"
               color="primary"
               iconName="add"
+              data-gtm-marker="attendance-record-button"
             ></IconButton>
           </div>
           <div class="attendance__item">
@@ -108,6 +113,7 @@
               size="small"
               color="primary"
               iconName="remove"
+              data-gtm-marker="attendance-record-button"
             ></IconButton>
             <p class="attendance__count">{{ displayCourse.late }}</p>
             <IconButton
@@ -116,6 +122,7 @@
               size="small"
               color="primary"
               iconName="add"
+              data-gtm-marker="attendance-record-button"
             ></IconButton>
           </div>
         </section>
@@ -256,24 +263,28 @@ export default defineComponent({
       link: boolean;
       value: string;
       color: popupContentColor;
+      gtmMarker: string;
     }[] = [
       {
         onClick: () => router.push(`/course/${id}/edit`),
         link: false,
         value: "編集する",
         color: "normal",
+        gtmMarker: "course-edit",
       },
       {
         onClick: () => openUrl(getSyllbusUrl(displayCourse.code)),
         link: true,
         value: "シラバス",
         color: "normal",
+        gtmMarker: "course-syllabus",
       },
       {
         onClick: () => openUrl("https://atmnb.tsukuba.ac.jp"),
         link: true,
         value: "出席(respon)",
         color: "normal",
+        gtmMarker: "course-respon",
       },
       {
         onClick: () =>
@@ -283,12 +294,14 @@ export default defineComponent({
         link: true,
         value: "地図",
         color: "normal",
+        gtmMarker: "course-map",
       },
       {
         onClick: openDeleteCourseModal,
         link: false,
         value: "削除する",
         color: "danger",
+        gtmMarker: "course-delete",
       },
     ];
 

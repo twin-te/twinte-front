@@ -33,6 +33,7 @@
             size="small"
             color="normal"
             icon-name="expand_more"
+            data-gtm-marker="selection-module-button"
             :is-active="false"
           />
           <Popup class="main__module-popup" v-show="popup">
@@ -102,7 +103,7 @@
           />
         </template>
       </div>
-      <section class="special" v-else>
+      <section class="special gtm-marker-special" v-else>
         <template
           v-for="(courses, specialDay) in specialTable"
           :key="specialDay"

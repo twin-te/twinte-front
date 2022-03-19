@@ -21,6 +21,10 @@ export default defineComponent({
         return ["normal", "danger"].includes(value);
       },
     },
+    gtmMarker: {
+      type: String,
+      default: ""
+    }
   },
   emits: ["click"],
 });
@@ -33,6 +37,7 @@ export default defineComponent({
       'popup-content': true,
       [`popup-content--${color}`]: true,
     }"
+    :data-gtm-marker="gtmMarker"
   >
     {{ value }}
     <span v-if="link" class="material-icons popup-content__link">launch</span>
