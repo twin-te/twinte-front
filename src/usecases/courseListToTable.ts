@@ -32,7 +32,7 @@ type OrdinarySchedule = CourseSchedule & {
   period: Period;
 };
 
-const isOrdinarySchedule = (schedule: CourseSchedule) => 
+const isOrdinarySchedule = (schedule: CourseSchedule) =>
   isBaseModule(schedule.module) &&
   isWeekDay(schedule.day) &&
   1 <= schedule.period &&
@@ -54,7 +54,9 @@ export const courseListToTable = (
       const schedules = course.schedules ?? course.course?.schedules ?? [];
       const room = [...new Set(schedules.map((s) => s.room))].join(",");
       schedules
-        .filter((schedule): schedule is OrdinarySchedule => isOrdinarySchedule(schedule))
+        .filter((schedule): schedule is OrdinarySchedule =>
+          isOrdinarySchedule(schedule)
+        )
         .forEach((schedule) =>
           table[schedule.module][weekdayNum(schedule.day as WeekDay)][
             schedule.period - 1

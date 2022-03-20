@@ -23,8 +23,8 @@ export default defineComponent({
     },
     gtmMarker: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   emits: ["click"],
 });
