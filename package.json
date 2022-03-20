@@ -7,6 +7,8 @@
     "typecheck": "vue-tsc --noEmit",
     "build": "yarn typecheck && vite build",
     "build:staging": "vite build --mode staging",
+    "format": "prettier ./src --check",
+    "format:fix": "prettier ./src --write",
     "lint": "eslint --ext .ts,.tsx,.vue ./src",
     "lint:fix": "yarn lint --fix",
     "test": "jest",
