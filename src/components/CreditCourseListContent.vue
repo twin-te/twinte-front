@@ -1,21 +1,9 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from "vue";
+import { CreditCourseState } from "~/entities/course";
+import { DisplayTag } from "~/entities/tag";
 import Tag from "./Tag.vue";
 import TagEditor from "./TagEditor.vue";
-
-export type CreditCourseListContentState = "default" | "selected";
-export type CreditCourseListContentTag = {
-  id: string;
-  name: string;
-  assign: boolean;
-};
-export type CreditCourseListContentProps = {
-  state: CreditCourseListContentState;
-  code: string;
-  name: string;
-  credit: string;
-  tags: CreditCourseListContentTag[];
-};
 
 export default defineComponent({
   name: "CreditCourseListContent",
@@ -25,7 +13,7 @@ export default defineComponent({
   },
   props: {
     state: {
-      type: String as PropType<CreditCourseListContentState>,
+      type: String as PropType<CreditCourseState>,
       default: "default",
     },
     code: {
@@ -44,7 +32,7 @@ export default defineComponent({
       required: true,
     },
     tags: {
-      type: Object as PropType<CreditCourseListContentTag[]>,
+      type: Object as PropType<DisplayTag[]>,
       required: true,
     },
   },

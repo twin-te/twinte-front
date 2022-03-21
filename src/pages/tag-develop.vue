@@ -139,13 +139,10 @@ import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import IconButton from "~/components/IconButton.vue";
 import TagEditor from "~/components/TagEditor.vue";
-import CreditCourseListContent, {
-  CreditCourseListContentProps,
-} from "~/components/CreditCourseListContent.vue";
-import CreditFilter, {
-  CreditFilterMode,
-  CreditFilterTag,
-} from "~/components/CreditFilter.vue";
+import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
+import CreditFilter, { CreditFilterMode } from "~/components/CreditFilter.vue";
+import { CreditTag } from "~/entities/tag";
+import { CreditCourseWithState } from "~/entities/course";
 
 export default defineComponent({
   name: "TagDevelop",
@@ -187,9 +184,7 @@ export default defineComponent({
     };
 
     /** credit-course-list-content */
-    const creditCourseListContents: (CreditCourseListContentProps & {
-      id: string;
-    })[] = reactive([
+    const creditCourseListContents: CreditCourseWithState[] = reactive([
       {
         id: "1",
         state: "default",
@@ -236,7 +231,7 @@ export default defineComponent({
     const selectedYear = ref(yearOptions[0]);
     const totalCredit = ref("20.0");
     const selectedTagId = ref<string | undefined>(undefined);
-    const creditFilterTags = reactive<CreditFilterTag[]>([
+    const creditFilterTags = reactive<CreditTag[]>([
       { id: "0", name: "選択", credit: "7.0" },
       { id: "1", name: "選択必修", credit: "7.0" },
       { id: "2", name: "必修", credit: "0.0" },

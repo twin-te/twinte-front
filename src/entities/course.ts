@@ -1,5 +1,6 @@
 import { MethodJa } from "./method";
 import { Schedule } from "~/entities/schedule";
+import { DisplayTag } from "./tag";
 
 export type DisplayCourse = {
   code: string; // 科目コード
@@ -15,4 +16,19 @@ export type DisplayCourse = {
   late: number; // 遅刻
   schedules: Schedule[]; // スケジュールの編集用
   methods: MethodJa[]; // 授業形式の編集用
+};
+
+// 単位数のページで使用
+export type CreditCourse = {
+  id: string;
+  code: string;
+  name: string;
+  credit: string;
+  tags: DisplayTag[];
+};
+
+export type CreditCourseState = "default" | "selected";
+
+export type CreditCourseWithState = CreditCourse & {
+  state: CreditCourseState;
 };
