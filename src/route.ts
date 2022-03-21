@@ -12,6 +12,8 @@ import Twins from "./pages/add/twins.vue";
 import ViewSettings from "./pages/view-settings.vue";
 import Feedback from "./pages/feedback.vue";
 import News from "./pages/news.vue";
+// import Credit from "./pages/credit.vue";
+import TagDevelop from "./pages/tag-develop.vue";
 
 const history = createWebHistory();
 
@@ -35,6 +37,8 @@ const routes: RouteRecordRaw[] = [
   { path: "/course/:id", component: Details },
   { path: "/Feedback", component: Feedback },
   { path: "/news", component: News },
+  // { path: "/credit", component: Credit },
+  { path: "/tag-develop", component: TagDevelop },
 ];
 
 // 3. Create the router instance and pass the `routes` option
