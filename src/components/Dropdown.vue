@@ -10,6 +10,7 @@ type Props = {
   selectedOption: string;
   label: string;
   placeholder: string;
+  state: string;
 };
 
 export default defineComponent({
@@ -30,6 +31,10 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "指定なし",
+    },
+    state: {
+      type: String as PropType<"default" | "disabled">,
+      default: "default",
     },
   },
   emits: ["update:selectedOption"],
@@ -62,6 +67,7 @@ export default defineComponent({
     };
 
     const emitSelectedEvent = (option: string) => {
+      if (props.state === "disabled") return;
       emit("update:selectedOption", option);
     };
 
@@ -80,9 +86,17 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="dropdown">
+  <div :class="{ dropdown: true, '--disabled': state === 'disabled' }">
     <div v-if="hasLabel" class="dropdown__label">{{ label }}</div>
-    <div @click="toggleShown" v-click-away="closeOptions" class="dropdown__box">
+    <div
+      @click="
+        () => {
+          if (state === 'default') toggleShown();
+        }
+      "
+      v-click-away="closeOptions"
+      class="dropdown__box"
+    >
       <div v-if="isDefault" class="dropdown__box__text--unselected">
         {{ placeholder }}
       </div>
@@ -117,9 +131,13 @@ export default defineComponent({
 .dropdown {
   position: relative;
   width: 100%;
+  &.--disabled {
+    opacity: 0.2;
+  }
   &__label {
     @include text-main;
     margin-bottom: $spacing-2;
+    user-select: none;
   }
   &__box {
     @include button-cursor;
