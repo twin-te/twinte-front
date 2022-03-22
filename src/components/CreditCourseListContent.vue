@@ -160,6 +160,7 @@ export default defineComponent({
   &__name {
     margin-top: 0.2rem;
     font-weight: 500;
+    line-height: $multi-line;
   }
 
   &__tags {
