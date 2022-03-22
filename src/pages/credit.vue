@@ -282,7 +282,7 @@ export default defineComponent({
     flex-grow: 1;
     padding: $spacing-3 $spacing-0;
 
-    overflow-y: scroll;
+    overflow-y: auto;
     @include scroll-mask;
 
     border-radius: $radius-2;

@@ -335,7 +335,7 @@ export default defineComponent({
     max-height: calc(3.4rem * 6.5 + 0.8rem); // タグ6個半 + padding
     padding: $spacing-2 $spacing-0;
 
-    overflow-y: scroll;
+    overflow-y: auto;
     @include scroll-mask;
   }
 

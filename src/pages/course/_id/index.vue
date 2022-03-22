@@ -348,7 +348,7 @@ export default defineComponent({
   @include scroll-mask;
   &__contents {
     padding-top: $spacing-3;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   &__code {
     font-size: $font-small;
