@@ -270,6 +270,10 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/scss/main.scss";
 
+.credit {
+  @include max-width;
+}
+
 .main {
   height: calc(100vh - 6rem);
   padding: 2.4rem 0 1.6rem;
