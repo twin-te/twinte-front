@@ -26,23 +26,23 @@
       </CreditFilter>
       <div :class="{ main__mask: true, '--disabled': mode === 'edit' }">
         <CreditCourseListContent
-          v-for="ccws in displayCreditCourseWithStateList"
-          :key="ccws.id"
+          v-for="course in displayCreditCourseWithStateList"
+          :key="course.id"
           @click="
-            ccws.state =
-              mode === 'edit' || ccws.state === 'selected'
+            course.state =
+              mode === 'edit' || course.state === 'selected'
                 ? 'default'
                 : 'selected'
           "
           @create-tag="
-            (tagName) => onCreditCourseListContentCreateTag(ccws, tagName)
+            (tagName) => onCreditCourseListContentCreateTag(course, tagName)
           "
-          @click-tag="(tag) => onCreditCourseListContentClickTag(ccws, tag)"
-          :state="ccws.state"
-          :code="ccws.code"
-          :name="ccws.name"
-          :credit="ccws.credit"
-          :tags="ccws.tags"
+          @click-tag="(tag) => onCreditCourseListContentClickTag(course, tag)"
+          :state="course.state"
+          :code="course.code"
+          :name="course.name"
+          :credit="course.credit"
+          :tags="course.tags"
         ></CreditCourseListContent>
       </div>
     </section>
@@ -50,7 +50,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from "vue";
+import { computed, defineComponent, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
 import CreditFilter, { CreditFilterMode } from "~/components/CreditFilter.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -80,6 +81,9 @@ export default defineComponent({
     PageHeader,
   },
   setup() {
+    // TODO: 消したい
+    const router = useRouter();
+
     // api とか usecase の代わりです。
     // 後で消します
     const courseRepo: CourseRepositoryInMemory = new CourseRepositoryInMemory();
@@ -196,14 +200,16 @@ export default defineComponent({
     const displayCreditCourseWithStateList = computed(() => {
       return selectedTagId.value == undefined
         ? creditCourseWithStateList
-        : creditCourseWithStateList.filter((ccws) => {
-            const tag = ccws.tags.find((tag) => tag.id === selectedTagId.value);
+        : creditCourseWithStateList.filter((course) => {
+            const tag = course.tags.find(
+              (tag) => tag.id === selectedTagId.value
+            );
             return tag != undefined && tag.assign;
           });
     });
 
     const onCreditCourseListContentCreateTag = (
-      ccws: CreditCourseWithState,
+      course: CreditCourseWithState,
       tagName: string
     ) => {
       // TODO: api につなぐ
@@ -212,13 +218,13 @@ export default defineComponent({
         order: creditTags.length,
       });
 
-      const assignedTagIds = ccws.tags
+      const assignedTagIds = course.tags
         .filter((tag) => tag.assign)
         .map(({ id }) => id);
       assignedTagIds.push(newTag.id);
 
       // TODO: api につなぐ
-      courseRepo.updateTags(ccws.id, assignedTagIds);
+      courseRepo.updateTags(course.id, assignedTagIds);
 
       updateApiCourses();
       updateApiTags();
@@ -226,30 +232,24 @@ export default defineComponent({
     };
 
     const onCreditCourseListContentClickTag = (
-      ccws: CreditCourseWithState,
+      course: CreditCourseWithState,
       clickedTag: DisplayTag
     ) => {
       if (mode.value === "edit") return;
-      const assignedTagIds = ccws.tags
+      const assignedTagIds = course.tags
         .filter((tag) => tag.id !== clickedTag.id && tag.assign)
         .map(({ id }) => id);
       if (!clickedTag.assign) assignedTagIds.push(clickedTag.id);
 
       // TODO: api につなぐ
-      courseRepo.updateTags(ccws.id, assignedTagIds);
+      courseRepo.updateTags(course.id, assignedTagIds);
 
       updateApiCourses();
       updateView();
     };
 
-    watch(
-      () => mode.value,
-      () => {
-        creditCourseWithStateList.forEach((ccws) => (ccws.state = "default"));
-      }
-    );
-
     return {
+      router,
       mode,
       yearOptions,
       selectedYear,
