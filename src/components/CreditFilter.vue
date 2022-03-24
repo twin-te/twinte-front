@@ -81,7 +81,7 @@ export default defineComponent({
         innerTags.value.splice(innerTags.value.length - 1, 1);
         edittingTagId.value = "";
       } else {
-        emit("delete-tag", tag.id);
+        emit("delete-tag", tag);
       }
     };
 

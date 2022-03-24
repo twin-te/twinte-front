@@ -15,7 +15,11 @@
       <CreditFilter
         @create-tag="onCreditFilterCreateTag"
         @update-tag-name="onCreditFilterUpdateTagName"
-        @delete-tag="onCreditFilterDeleteTag"
+        @delete-tag="
+          (tag) => {
+            deleteTag = tag;
+          }
+        "
         @change-tag-order="onCreditFilterChangeTagOrder"
         v-model:mode="mode"
         :year-options="yearOptions"
@@ -47,15 +51,50 @@
         ></CreditCourseListContent>
       </div>
     </section>
+    <Modal
+      v-if="deleteTag != undefined"
+      class="delete-tag-modal"
+      @click="deleteTag = undefined"
+      size="small"
+    >
+      <template #title>タグを削除しますか？</template>
+      <template #contents>
+        タグ「{{ deleteTag.name }}」を削除しますか？<br />
+        現在このタグを{{
+          numberOfCourseAssignedDeletedTag
+        }}件の授業に割り当てています。<br />
+        タグを削除すると、割り当てた全ての授業との紐付けが解除されます。
+      </template>
+      <template #button>
+        <Button
+          @click="deleteTag = undefined"
+          size="medium"
+          layout="fill"
+          color="base"
+        >
+          キャンセル
+        </Button>
+        <Button
+          @click="() => onClickDeleteModal(deleteTag?.id ?? '')"
+          size="medium"
+          layout="fill"
+          color="danger"
+        >
+          削除
+        </Button>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import Button from "~/components/Button.vue";
 import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
 import CreditFilter, { CreditFilterMode } from "~/components/CreditFilter.vue";
 import IconButton from "~/components/IconButton.vue";
+import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { CreditCourseWithState } from "~/entities/course";
 import { CreditTag, DisplayTag } from "~/entities/tag";
@@ -76,9 +115,11 @@ import {
 export default defineComponent({
   name: "Credit",
   components: {
+    Button,
     CreditCourseListContent,
     CreditFilter,
     IconButton,
+    Modal,
     PageHeader,
   },
   setup() {
@@ -178,21 +219,6 @@ export default defineComponent({
       updateApiTags();
       updateView();
     };
-    const onCreditFilterDeleteTag = (id: string) => {
-      // TODO: api につなぐ
-      tagRepo.deleteTag(id);
-      courseRepo.deleteTag(id);
-
-      const tags = creditTags
-        .filter((tag) => tag.id !== id)
-        .map((tag, i) => ({ id: tag.id, order: i }));
-
-      // TODO: api につなぐ
-      tagRepo.changeOrders(tags);
-
-      updateApiTags();
-      updateView();
-    };
     const onCreditFilterChangeTagOrder = (ids: string[]) => {
       const tags = ids.map((id, i) => ({ id, order: i }));
       tagRepo.changeOrders(tags);
@@ -256,6 +282,35 @@ export default defineComponent({
       updateView();
     };
 
+    /** delete tag modal */
+    const deleteTag = ref<CreditTag | undefined>(undefined);
+    // TODO: 表示している年度以外の授業も考慮する
+    const numberOfCourseAssignedDeletedTag = computed(
+      () =>
+        creditCourseWithStateList.filter(({ tags }) =>
+          tags.some(
+            (tag) => tag.id === (deleteTag.value?.id ?? "") && tag.assign
+          )
+        ).length
+    );
+    const onClickDeleteModal = (id: string) => {
+      // TODO: api につなぐ
+      tagRepo.deleteTag(id);
+      courseRepo.deleteTag(id);
+
+      const tags = creditTags
+        .filter((tag) => tag.id !== id)
+        .map((tag, i) => ({ id: tag.id, order: i }));
+
+      // TODO: api につなぐ
+      tagRepo.changeOrders(tags);
+
+      deleteTag.value = undefined;
+
+      updateApiTags();
+      updateView();
+    };
+
     return {
       router,
       mode,
@@ -266,11 +321,13 @@ export default defineComponent({
       creditTags,
       onCreditFilterCreateTag,
       onCreditFilterUpdateTagName,
-      onCreditFilterDeleteTag,
       onCreditFilterChangeTagOrder,
       displayCreditCourseWithStateList,
       onCreditCourseListContentCreateTag,
       onCreditCourseListContentClickTag,
+      deleteTag,
+      numberOfCourseAssignedDeletedTag,
+      onClickDeleteModal,
     };
   },
 });
@@ -304,6 +361,18 @@ export default defineComponent({
       opacity: 0.2;
       background: var(--base-liner);
       box-shadow: $shadow-base;
+    }
+  }
+}
+
+.delete-tag-modal {
+  .button {
+    width: calc(50% - $spacing-3);
+    &:first-child {
+      margin-right: $spacing-3;
+    }
+    &:last-child {
+      margin-left: $spacing-3;
     }
   }
 }
