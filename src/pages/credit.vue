@@ -16,6 +16,7 @@
         @create-tag="onCreditFilterCreateTag"
         @update-tag-name="onCreditFilterUpdateTagName"
         @delete-tag="onCreditFilterDeleteTag"
+        @change-tag-order="onCreditFilterChangeTagOrder"
         v-model:mode="mode"
         :year-options="yearOptions"
         v-model:selected-year="selectedYear"
@@ -192,6 +193,13 @@ export default defineComponent({
       updateApiTags();
       updateView();
     };
+    const onCreditFilterChangeTagOrder = (ids: string[]) => {
+      const tags = ids.map((id, i) => ({ id, order: i }));
+      tagRepo.changeOrders(tags);
+
+      updateApiTags();
+      updateView();
+    };
 
     /** credit-course-list-content */
     const creditCourseWithStateList: CreditCourseWithState[] = reactive(
@@ -259,6 +267,7 @@ export default defineComponent({
       onCreditFilterCreateTag,
       onCreditFilterUpdateTagName,
       onCreditFilterDeleteTag,
+      onCreditFilterChangeTagOrder,
       displayCreditCourseWithStateList,
       onCreditCourseListContentCreateTag,
       onCreditCourseListContentClickTag,

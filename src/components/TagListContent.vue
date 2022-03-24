@@ -56,7 +56,11 @@ export default defineComponent({
     >
       <div
         v-show="mode == 'edit' && dragHandle !== 'hide'"
-        class="tag-list-content__drag-icon material-icons"
+        :class="{
+          'tag-list-content__drag-icon': true,
+          'material-icons': true,
+          '--disabled': dragHandle === 'disabled',
+        }"
       >
         drag_handle
       </div>
@@ -126,6 +130,10 @@ export default defineComponent({
     margin-right: $spacing-3;
 
     @include button-cursor;
+
+    &.--disabled {
+      opacity: 0.3;
+    }
   }
 
   &__textfield {

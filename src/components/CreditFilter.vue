@@ -1,5 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, reactive, ref } from "vue";
+import draggable from "vuedraggable";
 import { CreditTag } from "~/entities/tag";
 import Button from "./Button.vue";
 import Dropdown from "./Dropdown.vue";
@@ -12,6 +13,7 @@ export type CreditFilterMode = "filtering" | "edit";
 export default defineComponent({
   name: "CreditFilter",
   components: {
+    draggable,
     Button,
     Dropdown,
     IconButton,
@@ -55,70 +57,49 @@ export default defineComponent({
   ],
   setup(props, { emit }) {
     const opened = ref(true);
+    const textfieldValue = ref<string>("");
+    const edittingTagId = ref<string>("");
+    const dragging = ref(false);
+    const innerTags = computed<CreditTag[]>(() => reactive(props.tags));
+    const NEW_TAG_ID = "new-tag";
 
-    type TagListContent = CreditTag & {
-      textfieldValue: string;
-      normalBtn: "edit" | "check";
-      dangerBtn: "delete" | "clear";
-    };
-
-    const tagListContents = computed<TagListContent[]>(() =>
-      reactive(
-        props.tags.map((tag) => ({
-          id: tag.id,
-          name: tag.name,
-          credit: tag.credit,
-          textfieldValue: tag.name,
-          normalBtn: "edit",
-          dangerBtn: "delete",
-        }))
-      )
-    );
-
-    const btnDisabled = computed(() =>
-      tagListContents.value.some(({ normalBtn }) => normalBtn === "check")
-    );
-
-    const isNewTag = (id: string) => id.slice(0, 7) === "new-tag";
-
-    const handleNormalBtnClick = (content: TagListContent) => {
-      if (content.normalBtn === "edit") {
-        content.normalBtn = "check";
-      } else if (content.textfieldValue !== "") {
-        if (isNewTag(content.id)) emit("create-tag", content.textfieldValue);
-        else emit("update-tag-name", content.id, content.textfieldValue);
-        content.normalBtn = "edit";
-      }
-    };
-
-    const handleDangerBtnClick = (content: TagListContent) => {
-      if (content.dangerBtn === "clear") {
-        const idx = tagListContents.value.findIndex(
-          (tag) => tag.id === content.id
-        );
-        if (idx == -1) return;
-        tagListContents.value.splice(idx, 1);
+    const onClickNormalBtn = (tag: CreditTag) => {
+      if (edittingTagId.value === "") {
+        edittingTagId.value = tag.id;
+        textfieldValue.value = tag.name;
+      } else if (edittingTagId.value === NEW_TAG_ID) {
+        emit("create-tag", textfieldValue.value);
+        edittingTagId.value = "";
       } else {
-        emit("delete-tag", content.id);
+        emit("update-tag-name", tag.id, textfieldValue.value);
+        edittingTagId.value = "";
       }
     };
 
-    const newTagCount = ref(0);
+    const onClickDangerBtn = (tag: CreditTag) => {
+      if (edittingTagId.value === NEW_TAG_ID) {
+        innerTags.value.splice(innerTags.value.length - 1, 1);
+        edittingTagId.value = "";
+      } else {
+        emit("delete-tag", tag.id);
+      }
+    };
 
-    const addBlankTagListContent = () => {
-      const content: TagListContent = {
-        id: `new-tag-${(newTagCount.value += 1)}`,
+    const onChangeOrder = (tags: CreditTag[]) => {
+      const tagIds = tags.map(({ id }) => id);
+      emit("change-tag-order", tagIds);
+    };
+
+    const addNewCreditTag = () => {
+      if (edittingTagId.value !== "") return;
+      const tag: CreditTag = {
+        id: NEW_TAG_ID,
         name: "",
         credit: "0.0",
-        textfieldValue: "",
-        normalBtn: "check",
-        dangerBtn: "clear",
       };
-      tagListContents.value.push(content);
-    };
-
-    const changeMode = () => {
-      emit("update:mode", props.mode === "filtering" ? "edit" : "filtering");
+      innerTags.value.push(tag);
+      edittingTagId.value = NEW_TAG_ID;
+      textfieldValue.value = "";
     };
 
     const info = computed<{ year: string; tag: string; credit: string }>(() => {
@@ -143,12 +124,15 @@ export default defineComponent({
 
     return {
       opened,
-      tagListContents,
-      handleNormalBtnClick,
-      handleDangerBtnClick,
-      btnDisabled,
-      addBlankTagListContent,
-      changeMode,
+      textfieldValue,
+      edittingTagId,
+      dragging,
+      innerTags,
+      NEW_TAG_ID,
+      onClickNormalBtn,
+      onClickDangerBtn,
+      onChangeOrder,
+      addNewCreditTag,
       info,
     };
   },
@@ -196,48 +180,69 @@ export default defineComponent({
           作成されたタグがありません
         </div>
         <div v-if="mode === 'edit' || tags.length > 0" class="filter-tag__mask">
-          <TagListContent
-            v-for="content in tagListContents"
-            :key="content.id"
-            @click="$emit('update:selected-tag-id', content.id)"
-            :name="content.name"
-            :credit="content.credit"
-            :mode="mode"
-            :selected="selectedTagId === content.id"
-            :textfield="mode === 'edit' && content.normalBtn === 'check'"
-            drag-handle="show"
+          <draggable
+            @update:model-value="onChangeOrder"
+            :model-value="innerTags"
+            item-key="id"
+            :animation="250"
+            handle=".tag-list-content__drag-icon"
+            :disabled="edittingTagId !== ''"
+            @start="dragging = true"
+            @end="dragging = false"
           >
-            <template #textfiled>
-              <TextFieldSingleLine
-                @enter-text-field="() => handleNormalBtnClick(content)"
-                v-model.trim="content.textfieldValue"
-                placeholder="タグ名"
-              ></TextFieldSingleLine>
+            <template #item="{ element }">
+              <TagListContent
+                @click="$emit('update:selected-tag-id', element.id)"
+                :name="element.name"
+                :credit="element.credit"
+                :mode="mode"
+                :selected="selectedTagId === element.id"
+                :textfield="edittingTagId === element.id"
+                :drag-handle="edittingTagId === '' ? 'show' : 'disabled'"
+              >
+                <template #textfiled>
+                  <TextFieldSingleLine
+                    @enter-text-field="() => onClickNormalBtn(element)"
+                    v-model.trim="textfieldValue"
+                    placeholder="タグ名"
+                  ></TextFieldSingleLine>
+                </template>
+                <template #btns>
+                  <IconButton
+                    @click="() => onClickNormalBtn(element)"
+                    size="small"
+                    color="normal"
+                    :icon-name="edittingTagId === element.id ? 'check' : 'edit'"
+                    :state="
+                      edittingTagId === '' ||
+                      (edittingTagId === element.id && textfieldValue !== '')
+                        ? 'default'
+                        : 'disabled'
+                    "
+                  ></IconButton>
+                  <IconButton
+                    @click="() => onClickDangerBtn(element)"
+                    size="small"
+                    color="danger"
+                    :icon-name="element.id === NEW_TAG_ID ? 'clear' : 'delete'"
+                    :state="
+                      element.id === NEW_TAG_ID || edittingTagId === ''
+                        ? 'default'
+                        : 'disabled'
+                    "
+                  ></IconButton>
+                </template>
+              </TagListContent>
             </template>
-            <template #btns>
-              <IconButton
-                @click="() => handleNormalBtnClick(content)"
-                size="small"
-                color="normal"
-                :icon-name="content.normalBtn"
-                :state="
-                  content.normalBtn === 'check' && content.textfieldValue === ''
-                    ? 'disabled'
-                    : 'default'
-                "
-              ></IconButton>
-              <IconButton
-                @click="() => handleDangerBtnClick(content)"
-                size="small"
-                color="danger"
-                :icon-name="content.dangerBtn"
-              ></IconButton>
-            </template>
-          </TagListContent>
+          </draggable>
           <div
             v-show="mode === 'edit'"
-            @click="addBlankTagListContent"
-            class="filter-tag__add-btn add-btn"
+            @click="addNewCreditTag"
+            :class="{
+              'filter-tag__add-btn': true,
+              'add-btn': true,
+              '--disabled': dragging || edittingTagId !== '',
+            }"
           >
             <div class="add-btn__icon material-icons">add</div>
             <div class="add-btn__value">タグを新たに作成する</div>
@@ -245,9 +250,11 @@ export default defineComponent({
         </div>
       </div>
       <Button
-        @click="changeMode"
+        @click="
+          $emit('update:mode', mode === 'filtering' ? 'edit' : 'filtering')
+        "
         size="small"
-        :state="btnDisabled ? 'disabled' : 'default'"
+        :state="edittingTagId !== '' || dragging ? 'disabled' : 'default'"
         class="credit-filter__edit-btn"
         >{{
           mode === "filtering" ? "タグの作成・編集" : "タグの作成・編集を終わる"
@@ -358,6 +365,10 @@ export default defineComponent({
 
   font-size: $font-small;
   color: getColor(--color-button-gray);
+
+  &.--disabled {
+    opacity: 0.3;
+  }
 
   &__value {
     font-weight: 500;
