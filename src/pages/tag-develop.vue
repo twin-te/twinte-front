@@ -129,11 +129,31 @@
       :tags="creditFilterTags"
     >
     </CreditFilter>
+    <draggable
+      :model-value="list"
+      @update:model-value="updateList"
+      item-key="id"
+      :animation="250"
+      handle=".handle"
+      @start="drag = true"
+      @end="drag = false"
+    >
+      <template #item="{ element }">
+        <div
+          class="list-item"
+          :style="{ padding: '2rem', border: '1px solid black' }"
+        >
+          <span class="handle">handle</span>
+          {{ element.name }}
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import draggable from "vuedraggable";
 import Tag from "~/components/Tag.vue";
 import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
@@ -147,6 +167,7 @@ import { CreditCourseWithState } from "~/entities/course";
 export default defineComponent({
   name: "TagDevelop",
   components: {
+    draggable,
     Tag,
     TagListContent,
     TextFieldSingleLine,
@@ -262,6 +283,18 @@ export default defineComponent({
       creditFilterTags.splice(idx, 1);
     };
 
+    /** vue draggable */
+    // https://sortablejs.github.io/vue.draggable.next/#/transition-example-2
+    const list = ref([
+      { id: "0", name: "選択" },
+      { id: "1", name: "必修" },
+      { id: "2", name: "自由" },
+    ]);
+    const updateList = (newList: any[]) => {
+      list.value = newList;
+    };
+    const drag = ref(false);
+
     return {
       textfieldValue1,
       textfieldValue2,
@@ -278,6 +311,9 @@ export default defineComponent({
       createCreditFilterTag,
       updateCreditFilterTagName,
       deleteCreditFilterTag,
+      list,
+      updateList,
+      drag,
     };
   },
 });
