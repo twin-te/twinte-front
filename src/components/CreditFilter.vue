@@ -1,5 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, reactive, ref } from "vue";
+import { CreditTag } from "~/entities/tag";
 import Button from "./Button.vue";
 import Dropdown from "./Dropdown.vue";
 import IconButton from "./IconButton.vue";
@@ -7,7 +8,6 @@ import TagListContent from "./TagListContent.vue";
 import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 
 export type CreditFilterMode = "filtering" | "edit";
-export type CreditFilterTag = { id: string; name: string; credit: string };
 
 export default defineComponent({
   name: "CreditFilter",
@@ -40,7 +40,7 @@ export default defineComponent({
       default: undefined,
     },
     tags: {
-      type: Object as PropType<CreditFilterTag[]>,
+      type: Object as PropType<CreditTag[]>,
       required: true,
     },
   },
@@ -56,10 +56,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const opened = ref(true);
 
-    type TagListContent = {
-      id: string;
-      name: string;
-      credit: string;
+    type TagListContent = CreditTag & {
       textfieldValue: string;
       normalBtn: "edit" | "check";
       dangerBtn: "delete" | "clear";
@@ -338,7 +335,7 @@ export default defineComponent({
     max-height: calc(3.4rem * 6.5 + 0.8rem); // タグ6個半 + padding
     padding: $spacing-2 $spacing-0;
 
-    overflow-y: scroll;
+    overflow-y: auto;
     @include scroll-mask;
   }
 

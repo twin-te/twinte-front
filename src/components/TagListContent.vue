@@ -100,6 +100,7 @@ export default defineComponent({
       font-size: $font-medium;
 
       background: var(--primary-liner);
+      box-shadow: $shadow-primary-concave;
     }
 
     &.--filtering {

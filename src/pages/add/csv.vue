@@ -262,7 +262,7 @@ export default defineComponent({
   @include landscape {
     height: calc(#{$vh} - 26.1rem);
   }
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-right: -($spacing-4);
   padding-right: $spacing-4;
   @include scroll-mask;
