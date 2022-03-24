@@ -37,14 +37,20 @@ export default defineComponent({
     },
   },
   emits: ["click", "click-tag", "create-tag"],
-  setup(props) {
+  setup(props, { emit }) {
     const assignedTags = computed(() => props.tags.filter((tag) => tag.assign));
+
+    const onClick = () => {
+      add.value = false;
+      emit("click");
+    };
 
     /** tag-editor */
     const add = ref(false);
 
     return {
       assignedTags,
+      onClick,
       add,
     };
   },
@@ -59,7 +65,7 @@ export default defineComponent({
     }"
   >
     <div
-      @click="$emit('click')"
+      @click="onClick"
       class="credit-course-list-content__course-info course-info"
     >
       <div class="course-info__container">
