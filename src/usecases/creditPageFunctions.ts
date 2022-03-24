@@ -76,7 +76,7 @@ export const updateReactiveTags = <T extends CreditTag | DisplayTag>(
   const reactiveTagIds = reactiveTags.map((tag) => tag.id);
   const compTagIds = compTags.map((tag) => tag.id);
 
-  const commonTagIds = reactiveTagIds.filter((id) => compTagIds.includes(id));
+  const commonTagIds = compTagIds.filter((id) => reactiveTagIds.includes(id));
   const newTagIds = compTagIds.filter((id) => !commonTagIds.includes(id));
   const deletedTagIds = reactiveTagIds.filter(
     (id) => !commonTagIds.includes(id)
@@ -92,18 +92,23 @@ export const updateReactiveTags = <T extends CreditTag | DisplayTag>(
   );
   deleteTagIndices.reverse().forEach((i) => reactiveTags.splice(i, 1));
 
-  // add tags
-  const newTags = compTags.filter((tag) => newTagIds.includes(tag.id));
-  newTags.forEach((tag) => reactiveTags.push(tag));
+  // この時点で、 reactiveTags に含まれるのは共通のタグのみ
 
-  // update tag property
-  const reactiveCommonTags = reactiveTags.filter((tag) =>
-    commonTagIds.includes(tag.id)
-  );
+  // reactiveTags の要素の順番が compCommonTags の要素の順番と一致するようにソートする。
   const compCommonTags = compTags.filter((tag) =>
     commonTagIds.includes(tag.id)
   );
-  reactiveCommonTags.forEach((reactiveTag, idx) => {
+  const idToOrder = compCommonTags.reduce<Record<string, number>>(
+    (idToOrder, tag, i) => {
+      idToOrder[tag.id] = i;
+      return idToOrder;
+    },
+    {}
+  );
+  reactiveTags.sort((a, b) => idToOrder[a.id] - idToOrder[b.id]);
+
+  // update tag property
+  reactiveTags.forEach((reactiveTag, idx) => {
     const compTag = compCommonTags[idx];
     reactiveTag.name = compTag.name;
     if (isCreditTag(reactiveTag) && isCreditTag(compTag))
@@ -112,17 +117,9 @@ export const updateReactiveTags = <T extends CreditTag | DisplayTag>(
       reactiveTag.assign = compTag.assign;
   });
 
-  // この時点で reactiveTags に変更が行われたため、 reactiveTags と compTags の要素は一致しており、順番のみが異なる。
-
-  // update order
-  const idToOrder = compTags.reduce<Record<string, number>>(
-    (idToOrder, tag, i) => {
-      idToOrder[tag.id] = i;
-      return idToOrder;
-    },
-    {}
-  );
-  reactiveTags.sort((a, b) => idToOrder[a.id] - idToOrder[b.id]);
+  // add tags
+  const newTags = compTags.filter((tag) => newTagIds.includes(tag.id));
+  newTags.forEach((tag) => reactiveTags.push(tag));
 };
 
 /**
