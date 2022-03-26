@@ -113,6 +113,8 @@ export default defineComponent({
     flex-wrap: wrap;
     justify-content: left;
     gap: $spacing-3 $spacing-2;
+
+    color: getColor(--color-text-sub);
   }
 }
 

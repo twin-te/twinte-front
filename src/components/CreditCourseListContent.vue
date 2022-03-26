@@ -101,6 +101,9 @@ export default defineComponent({
           :assign="tag.assign"
           >{{ tag.name }}
         </Tag>
+        <template v-if="tags.length === 0">
+          作成されたタグがありません
+        </template>
       </template>
       <template #btn>タグを新たに作成する</template>
     </TagEditor>

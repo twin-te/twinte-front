@@ -105,6 +105,10 @@
       </template>
       <template #btn>タグを新たに作成する</template>
     </TagEditor>
+    <TagEditor @create-tag="createTag" v-model:add="add">
+      <template #tags>作成されたタグがありません</template>
+      <template #btn>タグを新たに作成する</template>
+    </TagEditor>
     <CreditCourseListContent
       v-for="content in creditCourseListContents"
       :key="content.id"
@@ -116,6 +120,18 @@
       :name="content.name"
       :credit="content.credit"
       :tags="content.tags"
+    ></CreditCourseListContent>
+    <CreditCourseListContent
+      v-for="content in creditCourseListContents"
+      :key="content.id"
+      @click="
+        content.state = content.state === 'selected' ? 'default' : 'selected'
+      "
+      :state="content.state"
+      :code="content.code"
+      :name="content.name"
+      :credit="content.credit"
+      :tags="[]"
     ></CreditCourseListContent>
     <CreditFilter
       @create-tag="createCreditFilterTag"
