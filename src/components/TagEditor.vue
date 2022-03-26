@@ -102,7 +102,9 @@ export default defineComponent({
 .tag-editor {
   width: 100%;
   display: grid;
-  row-gap: $spacing-3;
+  row-gap: $spacing-2;
+
+  padding: $spacing-2;
 
   &__tags {
     width: 100%;
