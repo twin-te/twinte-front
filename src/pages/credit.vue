@@ -305,6 +305,10 @@ export default defineComponent({
       // TODO: api につなぐ
       tagRepo.changeOrders(tags);
 
+      // 選択されているタグが削除された場合
+      if (selectedTagId.value == deleteTag.value?.id)
+        selectedTagId.value = undefined;
+
       deleteTag.value = undefined;
 
       updateApiTags();
