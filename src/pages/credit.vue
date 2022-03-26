@@ -350,7 +350,7 @@ export default defineComponent({
 
   &__mask {
     flex-grow: 1;
-    padding: $spacing-3 $spacing-0;
+    padding: $spacing-3 $spacing-2;
 
     overflow-y: auto;
     @include scroll-mask;

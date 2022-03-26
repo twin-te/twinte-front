@@ -117,12 +117,6 @@ export default defineComponent({
 .credit-course-list-content {
   width: 100%;
 
-  &.--selected {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-2;
-  }
-
   &__border {
     width: 100%;
     height: 0.4rem;
