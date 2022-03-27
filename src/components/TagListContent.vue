@@ -97,12 +97,8 @@ export default defineComponent({
     padding: $spacing-1 $spacing-2;
     border-radius: $radius-1;
 
-    font-size: $font-small;
-
     &.--selected {
       color: getColor(--color-white);
-      font-size: $font-medium;
-
       background: var(--primary-liner);
       box-shadow: $shadow-primary-concave;
     }
@@ -116,11 +112,8 @@ export default defineComponent({
 
   &__name {
     flex-grow: 1;
+    font-size: $font-small;
     user-select: none;
-  }
-
-  &__credit {
-    font-size: $font-medium;
   }
 
   &__drag-icon {
