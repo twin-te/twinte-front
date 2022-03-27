@@ -67,7 +67,6 @@ export default defineComponent({
     };
 
     const emitSelectedEvent = (option: string) => {
-      if (props.state === "disabled") return;
       emit("update:selectedOption", option);
     };
 

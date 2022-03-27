@@ -105,6 +105,10 @@
       </template>
       <template #btn>タグを新たに作成する</template>
     </TagEditor>
+    <TagEditor @create-tag="createTag" v-model:add="add">
+      <template #tags>作成されたタグがありません</template>
+      <template #btn>タグを新たに作成する</template>
+    </TagEditor>
     <CreditCourseListContent
       v-for="content in creditCourseListContents"
       :key="content.id"
@@ -116,6 +120,18 @@
       :name="content.name"
       :credit="content.credit"
       :tags="content.tags"
+    ></CreditCourseListContent>
+    <CreditCourseListContent
+      v-for="content in creditCourseListContents"
+      :key="content.id"
+      @click="
+        content.state = content.state === 'selected' ? 'default' : 'selected'
+      "
+      :state="content.state"
+      :code="content.code"
+      :name="content.name"
+      :credit="content.credit"
+      :tags="[]"
     ></CreditCourseListContent>
     <CreditFilter
       @create-tag="createCreditFilterTag"
@@ -129,11 +145,31 @@
       :tags="creditFilterTags"
     >
     </CreditFilter>
+    <draggable
+      :model-value="list"
+      @update:model-value="updateList"
+      item-key="id"
+      :animation="250"
+      handle=".handle"
+      @start="drag = true"
+      @end="drag = false"
+    >
+      <template #item="{ element }">
+        <div
+          class="list-item"
+          :style="{ padding: '2rem', border: '1px solid black' }"
+        >
+          <span class="handle">handle</span>
+          {{ element.name }}
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import draggable from "vuedraggable";
 import Tag from "~/components/Tag.vue";
 import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
@@ -147,6 +183,7 @@ import { CreditCourseWithState } from "~/entities/course";
 export default defineComponent({
   name: "TagDevelop",
   components: {
+    draggable,
     Tag,
     TagListContent,
     TextFieldSingleLine,
@@ -262,6 +299,18 @@ export default defineComponent({
       creditFilterTags.splice(idx, 1);
     };
 
+    /** vue draggable */
+    // https://sortablejs.github.io/vue.draggable.next/#/transition-example-2
+    const list = ref([
+      { id: "0", name: "選択" },
+      { id: "1", name: "必修" },
+      { id: "2", name: "自由" },
+    ]);
+    const updateList = (newList: any[]) => {
+      list.value = newList;
+    };
+    const drag = ref(false);
+
     return {
       textfieldValue1,
       textfieldValue2,
@@ -278,6 +327,9 @@ export default defineComponent({
       createCreditFilterTag,
       updateCreditFilterTagName,
       deleteCreditFilterTag,
+      list,
+      updateList,
+      drag,
     };
   },
 });

@@ -102,7 +102,9 @@ export default defineComponent({
 .tag-editor {
   width: 100%;
   display: grid;
-  row-gap: $spacing-3;
+  row-gap: $spacing-2;
+
+  padding: $spacing-2;
 
   &__tags {
     width: 100%;
@@ -111,6 +113,8 @@ export default defineComponent({
     flex-wrap: wrap;
     justify-content: left;
     gap: $spacing-3 $spacing-2;
+
+    color: getColor(--color-text-sub);
   }
 }
 
