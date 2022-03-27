@@ -30,25 +30,27 @@
       >
       </CreditFilter>
       <div :class="{ main__mask: true, '--disabled': mode === 'edit' }">
-        <CreditCourseListContent
-          v-for="course in displayCreditCourseWithStateList"
-          :key="course.id"
-          @click="
-            course.state =
-              mode === 'edit' || course.state === 'selected'
-                ? 'default'
-                : 'selected'
-          "
-          @create-tag="
-            (tagName) => onCreditCourseListContentCreateTag(course, tagName)
-          "
-          @click-tag="(tag) => onCreditCourseListContentClickTag(course, tag)"
-          :state="course.state"
-          :code="course.code"
-          :name="course.name"
-          :credit="course.credit"
-          :tags="course.tags"
-        ></CreditCourseListContent>
+        <div class="main__courses">
+          <CreditCourseListContent
+            v-for="course in displayCreditCourseWithStateList"
+            :key="course.id"
+            @click="
+              course.state =
+                mode === 'edit' || course.state === 'selected'
+                  ? 'default'
+                  : 'selected'
+            "
+            @create-tag="
+              (tagName) => onCreditCourseListContentCreateTag(course, tagName)
+            "
+            @click-tag="(tag) => onCreditCourseListContentClickTag(course, tag)"
+            :state="course.state"
+            :code="course.code"
+            :name="course.name"
+            :credit="course.credit"
+            :tags="course.tags"
+          ></CreditCourseListContent>
+        </div>
       </div>
     </section>
     <Modal
@@ -345,7 +347,7 @@ export default defineComponent({
 }
 
 .main {
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 6rem); // header 部分を差し引いた値
   padding: 2.4rem 0 1.6rem;
 
   display: flex;
@@ -359,13 +361,16 @@ export default defineComponent({
     overflow-y: auto;
     @include scroll-mask;
 
-    border-radius: $radius-2;
-
     &.--disabled {
       opacity: 0.2;
       background: var(--base-liner);
-      box-shadow: $shadow-base;
     }
+  }
+
+  &__courses {
+    padding: $spacing-2;
+    box-shadow: $shadow-base;
+    border-radius: $radius-2;
   }
 }
 
