@@ -41,7 +41,7 @@
       <section class="main__card">
         <CardAdd
           @click-next-button="$router.push('/add/manual')"
-          iconName="style"
+          iconName="styles"
           heading="手動で授業を作成"
           text="手入力でカスタマイズして授業を作成します。"
         ></CardAdd>
@@ -92,7 +92,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "~/scss/main.scss";
+@import "~/styles";
 
 @include header-left-button-delete;
 

@@ -213,7 +213,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 .edit {
   @include max-width;
 }

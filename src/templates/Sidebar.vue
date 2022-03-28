@@ -218,7 +218,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-@import "~/scss/main.scss";
+@import "~/styles";
 .sidebar {
   display: flex;
   flex-direction: column;

@@ -46,7 +46,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "../scss/main.scss";
+@import "~/styles";
 
 .modal {
   display: flex;
