@@ -99,7 +99,7 @@ export default defineComponent({
       height: calc(#{$vh} - 16.6rem);
     }
     @include scroll-mask;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 0.9rem 0;
   }
   &__description {
