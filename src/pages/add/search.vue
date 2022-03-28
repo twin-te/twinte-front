@@ -83,7 +83,7 @@
             </div>
             <!-- </template> -->
             <div class="result__not-found" v-if="isNoResultShow">
-              一致する授業がありません。
+              {{ searchWord }}に一致する授業がありません。
             </div>
           </section>
         </transition>
