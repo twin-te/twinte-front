@@ -14,15 +14,22 @@
     <div class="main">
       <div class="main__mask">
         <div class="main__description">
-          TWINSに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。データの取り扱いに関しては<a
-            href="https://www.twinte.net/terms/"
+          TWINSに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。
+          この機能は筑波大学非公式の機能であり、認可されたものではありません。
+          動作の仕組みは<a
+            href="https://www.twinte.net/policy"
             target="_blank"
             rel="noopener noreferrer"
-            >利用規約</a
+            >こちら</a
+          >をご覧の上、自己責任でご利用ください。 データの取り扱いに関しては<a
+            href="https://www.twinte.net/policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            >プライバシーポリシー</a
           >をご確認ください。
         </div>
         <p class="main__description-sub">
-          ※Twin:te側がユーザーの学籍番号・パスワードを取得することはございません。
+          ※Twin:teがユーザーの学籍番号・パスワードなど、履修している授業番号以外の情報を取得することはございません。
         </p>
         <div class="main__contents">
           <p>
@@ -32,7 +39,7 @@
           <p>2. 「履修」から「履修登録・登録状況照会」へ移動します。</p>
           <p>
             3.
-            インポートしたい学期を表示し、「Twin:teへインポート」ボタンを押すと、その学期の時間割がインポートされます。
+            インポートしたい学期を表示し、「Twin:teにインポート」ボタンを押すと、その学期の時間割がインポートされます。
           </p>
         </div>
         <img src="../../assets/twins-to-twinte.png" alt="twins-to-twinte" />
@@ -87,7 +94,7 @@ export default defineComponent({
 .main {
   margin-top: $spacing-5;
   &__mask {
-    height: calc(#{$vh} - 16.2rem);
+    height: calc(#{$vh});
     @include landscape {
       height: calc(#{$vh} - 16.6rem);
     }
