@@ -1,8 +1,13 @@
 @charset "utf-8";
 
-@import "tailwindcss/base";
+@forward "tailwindcss/base";
 
-@import "variable", "mixin", "reset", "transition";
+@forward "variable";
+@forward "mixin";
+@forward "reset";
+@forward "transition";
+@use "variable";
+@use "mixin";
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap&subset=japanese");
 
@@ -11,26 +16,26 @@ html {
   font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: getColor(--color-text-main);
-  @include tab-and-pc {
+  @include mixin.tab-and-pc {
     font-size: 75%; //1rem=12px
   }
 }
 body {
-  font-size: $font-medium;
+  font-size: variable.$font-medium;
 }
 .material-icons {
   font-family: Material Icons;
 }
 .preview {
-  padding: $spacing-10;
+  padding: variable.$spacing-10;
   display: flex;
   flex-direction: column;
   flex-basis: 0;
   flex-shrink: 1;
   &__content {
-    margin: $spacing-5;
+    margin: variable.$spacing-5;
     &--flex {
-      margin: $spacing-5;
+      margin: variable.$spacing-5;
       display: flex;
       flex-direction: row;
     }
