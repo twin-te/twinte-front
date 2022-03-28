@@ -94,12 +94,12 @@ export default defineComponent({
 .main {
   margin-top: $spacing-5;
   &__mask {
-    height: calc(#{$vh});
+    height: calc(#{$vh} - 16.2rem);
     @include landscape {
       height: calc(#{$vh} - 16.6rem);
     }
     @include scroll-mask;
-    overflow-y: auto;
+    overflow-y: scroll;
     padding: 0.9rem 0;
   }
   &__description {
