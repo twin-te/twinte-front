@@ -260,7 +260,7 @@ export default defineComponent({
           event: "search-courses",
           term: searchWord.value,
           use_only_blank: onlyBlank.value,
-          schedules: schedules.value,
+          schedules: JSON.stringify(schedules.value),
         });
       }
       isAccordionOpen.value = false;
