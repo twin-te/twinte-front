@@ -56,6 +56,16 @@ export const mutations: MutationTree<GlobalState> = {
   deleteTag(state, id: string) {
     if (state.tags == undefined) return;
     state.tags = state.tags.filter((tag) => tag.id !== id);
+    const years = getKeysFromObj<Record<number, RegisteredCourse[]>>(
+      state.courses
+    );
+    const courses = years.reduce<RegisteredCourse[]>(
+      (courses, year) => [...courses, ...state.courses[year]],
+      []
+    );
+    courses.forEach(
+      (course) => (course.tags = course.tags.filter((tag) => tag.id !== id))
+    );
   },
   deleteToast(state, id: number) {
     state.toasts = state.toasts.filter((toast) => toast.id != id);

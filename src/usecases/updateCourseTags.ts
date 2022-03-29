@@ -22,11 +22,11 @@ export const updateCourseTags = (ports: Ports) => async ({
   if (course == undefined)
     throw new Error("該当する授業が登録されていません。");
   const { api, store } = ports;
-  course.tags = assignedTags;
+  const newCourses = { ...course, tags: assignedTags };
   const { body, status, originalResponse } = await api.registered_courses
     ._id(courseId)
     .put({
-      body: course as {
+      body: newCourses as {
         course: { id: string };
       } & RegisteredCourseWithoutID,
     })

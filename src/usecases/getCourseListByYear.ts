@@ -10,7 +10,7 @@ export const getCourseListByYear = ({ api, store }: Ports) => async (
   year: number
 ): Promise<RegisteredCourse[]> => {
   const courses: RegisteredCourse[] = store.state.courses[year];
-  if (courses.length > 0) return courses;
+  if (courses != undefined && courses.length > 0) return courses;
   const { body, status, originalResponse } = await api.registered_courses
     .get({
       query: { year },

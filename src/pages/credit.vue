@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from "vue";
+import { computed, defineComponent, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { RegisteredCourse, TagIdOnly, TagPositionOnly } from "~/api/@types";
 import Button from "~/components/Button.vue";
@@ -101,7 +101,6 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { CreditCourseWithState } from "~/entities/course";
 import { CreditTag, DisplayTag } from "~/entities/tag";
-import { useStore } from "~/store";
 import { usePorts } from "~/usecases";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
 import { createTag } from "~/usecases/createTag";
@@ -109,10 +108,10 @@ import {
   apiToCreditCourseWithStateList,
   apiToCreditTags,
   getTotalCredit,
-  updateCreditCourseWithStateList,
-  updateReactiveTags,
   ApiTag,
   ApiCourseForCredit,
+  updateReactiveTags,
+  updateCreditCourseWithStateList,
 } from "~/usecases/creditPageFunctions";
 import { deleteTag } from "~/usecases/deleteTag";
 import { getCourseListByYear } from "~/usecases/getCourseListByYear";
@@ -134,10 +133,6 @@ export default defineComponent({
     const ports = usePorts();
     // TODO: 消したい
     const router = useRouter();
-    const store = useStore();
-
-    const years = [2019, 2020, 2021, 2022];
-    years.forEach(async (year) => await getCourseListByYear(ports)(year));
 
     const sortApiTagsInPlace = (apiTags: ApiTag[]): ApiTag[] => {
       return apiTags.sort((a, b) => a.order - b.order);
@@ -158,15 +153,33 @@ export default defineComponent({
     const apiCourses = ref<ApiCourseForCredit[]>([]);
     const apiTags = ref<ApiTag[]>([]);
 
-    const updateApiCourses = async () => {
-      console.log("update api courses");
+    const yearOptions: string[] = [
+      "すべての年度",
+      "2022年度",
+      "2021年度",
+      "2020年度",
+      "2019年度",
+    ];
+    const selectedYear = ref(yearOptions[0]);
+    watch(selectedYear, async () => {
+      await updateApiCourses();
+      updateView();
+    });
+    const years = [2019, 2020, 2021, 2022];
 
-      const registerdCourses =
-        selectedYear.value == "すべての年度"
-          ? (store.getters.courses as RegisteredCourse[])
-          : await getCourseListByYear(ports)(
-              Number(selectedYear.value.slice(0, 4))
-            );
+    const updateApiCourses = async () => {
+      const registerdCourses: RegisteredCourse[] = [];
+      if (selectedYear.value === "すべての年度") {
+        for (const year of years)
+          registerdCourses.push(...(await getCourseListByYear(ports)(year)));
+      } else {
+        registerdCourses.push(
+          ...(await getCourseListByYear(ports)(
+            Number(selectedYear.value.slice(0, 4))
+          ))
+        );
+      }
+
       apiCourses.value = registerdCourses.map((course) => ({
         id: course.id,
         name: course.name ?? course.course?.name ?? "-",
@@ -202,11 +215,14 @@ export default defineComponent({
       const newCreditTags = apiToCreditTags(apiCourses.value, apiTags.value);
       updateReactiveTags(creditTags, newCreditTags);
 
-      // update creditCourseWithStateList
-      updateCreditCourseWithStateList(
-        creditCourseWithStateList,
+      // // update creditCourseWithStateList
+      const newCreditCourseWithStateList = apiToCreditCourseWithStateList(
         apiCourses.value,
         apiTags.value
+      );
+      updateCreditCourseWithStateList(
+        creditCourseWithStateList,
+        newCreditCourseWithStateList
       );
 
       console.log("creditTags", creditTags);
@@ -215,37 +231,28 @@ export default defineComponent({
 
     /** credit-filter */
     const mode = ref<CreditFilterMode>("filtering");
-    const yearOptions: string[] = [
-      "すべての年度",
-      "2022年度",
-      "2021年度",
-      "2020年度",
-      "2019年度",
-    ];
-    const selectedYear = ref(yearOptions[0]);
-    const totalCredit = ref(getTotalCredit(apiCourses.value));
+    const totalCredit = computed(() => getTotalCredit(apiCourses.value));
     const selectedTagId = ref<string | undefined>(undefined);
-    const creditTags = reactive<CreditTag[]>(
+    const creditTags: CreditTag[] = reactive(
       apiToCreditTags(apiCourses.value, apiTags.value)
     );
-
     const onCreditFilterCreateTag = async (name: string) => {
       await createTag(ports)(name);
 
-      updateApiTags();
+      await updateApiTags();
       updateView();
     };
     const onCreditFilterUpdateTagName = async (id: string, name: string) => {
       await updateTagName(ports)({ id, name });
 
-      updateApiTags();
+      await updateApiTags();
       updateView();
     };
     const onCreditFilterChangeTagOrder = async (ids: string[]) => {
       const tags: TagPositionOnly[] = ids.map((id, i) => ({ id, position: i }));
       await changeTagOrders(ports)(tags);
 
-      updateApiTags();
+      await updateApiTags();
       updateView();
     };
 
@@ -280,8 +287,8 @@ export default defineComponent({
         assignedTags: assignedTagIds,
       });
 
-      updateApiCourses();
-      updateApiTags();
+      await updateApiCourses();
+      await updateApiTags();
       updateView();
     };
 
@@ -293,11 +300,12 @@ export default defineComponent({
       const assignedTags: TagIdOnly[] = course.tags
         .filter((tag) => tag.id !== clickedTag.id && tag.assign)
         .map(({ id }) => ({ id }));
+
       if (!clickedTag.assign) assignedTags.push({ id: clickedTag.id });
 
       await updateCourseTags(ports)({ courseId: course.id, assignedTags });
 
-      updateApiCourses();
+      await updateApiCourses();
       updateView();
     };
 
@@ -321,7 +329,8 @@ export default defineComponent({
 
       deletedTag.value = undefined;
 
-      updateApiTags();
+      await updateApiTags();
+      await updateApiCourses();
       updateView();
     };
 
