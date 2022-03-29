@@ -69,7 +69,7 @@ import { useDark, useToggle } from "@vueuse/core";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { usePorts } from "~/usecases";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
-import { getCourseList } from "~/usecases/getCourseList";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
 import { useTableTimeMode } from "~/usecases/useTableTime";
 import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
 
@@ -118,7 +118,7 @@ export default defineComponent({
           ? null
           : Number(selectedYear.value.slice(0, 4))
       );
-      getCourseList(ports);
+      getCourseListByYear(ports)(Number(selectedYear.value.slice(0, 4)));
     };
 
     return {

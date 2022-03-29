@@ -3,6 +3,7 @@ import { User, RegisteredCourse, Tag } from "~/api/@types";
 import { Select } from "~/components/ToggleButton.vue";
 import { GlobalState } from ".";
 import { Toast } from "~/entities/toast";
+import { getKeysFromObj } from "~/util";
 
 export const mutations: MutationTree<GlobalState> = {
   setUser(state, user: User) {
@@ -14,8 +15,11 @@ export const mutations: MutationTree<GlobalState> = {
   setSidebar(state, show: boolean) {
     state.sidebar = show;
   },
-  setCourses(state, courses: RegisteredCourse[]) {
-    state.courses = courses;
+  setCourses(
+    state,
+    { year, courses }: { year: number; courses: RegisteredCourse[] }
+  ) {
+    state.courses[year] = courses;
   },
   setTags(state, tags: Tag[]) {
     state.tags = tags;
@@ -39,7 +43,15 @@ export const mutations: MutationTree<GlobalState> = {
     state.module = module;
   },
   deleteCourse(state, id: string) {
-    state.courses = state.courses.filter((course) => course.id !== id);
+    const years = getKeysFromObj<Record<number, RegisteredCourse[]>>(
+      state.courses
+    );
+    years.forEach(
+      (year) =>
+        (state.courses[year] = state.courses[year].filter(
+          (course) => course.id !== id
+        ))
+    );
   },
   deleteTag(state, id: string) {
     if (state.tags == undefined) return;
@@ -49,7 +61,7 @@ export const mutations: MutationTree<GlobalState> = {
     state.toasts = state.toasts.filter((toast) => toast.id != id);
   },
   addCourse(state, course: RegisteredCourse) {
-    state.courses.push(course);
+    state.courses[course.year].push(course);
   },
   addTag(state, tag: Tag) {
     if (state.tags == undefined) state.tags = [tag];
@@ -59,8 +71,9 @@ export const mutations: MutationTree<GlobalState> = {
     state.toasts.push(toast);
   },
   updateCourse(state, newCourse: RegisteredCourse) {
-    const idx = state.courses.findIndex((c) => c.id === newCourse.id);
-    if (idx !== -1) state.courses.splice(idx, 1, newCourse);
+    const year = newCourse.year;
+    const idx = state.courses[year].findIndex((c) => c.id === newCourse.id);
+    if (idx !== -1) state.courses[year].splice(idx, 1, newCourse);
   },
   updateTag(
     state,

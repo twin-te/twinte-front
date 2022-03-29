@@ -10,7 +10,7 @@ import { ModuleJa } from "~/entities/module";
 export type GlobalState = {
   user: User | null;
   sidebar: boolean;
-  courses: RegisteredCourse[];
+  courses: Record<number, RegisteredCourse[]>;
   label: Select;
   bachelorMode: boolean;
   tableTimeMode: boolean;
@@ -26,7 +26,7 @@ export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
 const initState: GlobalState = {
   user: null,
   sidebar: false,
-  courses: [],
+  courses: {},
   label: "left",
   bachelorMode: false,
   tableTimeMode: true,

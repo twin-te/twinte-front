@@ -268,13 +268,14 @@ import {
 } from "~/usecases/courseListToSpecialTable";
 import { getCalendar } from "~/usecases/getCalendar";
 import { useHead } from "@vueuse/head";
-import { useStore } from "~/store";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
 import { useTableTimeMode } from "~/usecases/useTableTime";
 import { getNews } from "~/usecases/getNews";
 import { formatDatetime } from "~/entities/news";
 import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   name: "Table",
@@ -293,7 +294,6 @@ export default defineComponent({
     useHead({
       title: "Twin:te | ホーム",
     });
-    const store = useStore();
     const ports = usePorts();
     const router = useRouter();
 
@@ -321,7 +321,10 @@ export default defineComponent({
     const { saturdayCourseMode } = useSaturdayCourseMode(ports);
     const { bachelorMode } = useBachelorMode(ports);
     const { tableTimeMode } = useTableTimeMode(ports);
-    const storedCourses: RegisteredCourse[] = store.getters.courses;
+    const year = await getYear(ports);
+    const storedCourses: RegisteredCourse[] = await getCourseListByYear(ports)(
+      year
+    );
     const table = computed(() =>
       courseListToTable(
         storedCourses,
