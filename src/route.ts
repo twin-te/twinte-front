@@ -12,6 +12,7 @@ import Twins from "./pages/add/twins.vue";
 import ViewSettings from "./pages/view-settings.vue";
 import Feedback from "./pages/feedback.vue";
 import News from "./pages/news.vue";
+import Error404 from "./pages/404.vue";
 
 const history = createWebHistory();
 
@@ -35,6 +36,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/course/:id", component: Details },
   { path: "/Feedback", component: Feedback },
   { path: "/news", component: News },
+  { path: "/:pathMatch(.*)*", component: Error404 },
 ];
 
 // 3. Create the router instance and pass the `routes` option
