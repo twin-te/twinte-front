@@ -5,7 +5,16 @@ import {
   isCreditTag,
   isDisplayTag,
 } from "~/entities/tag";
-import { ApiCourseForCredit, ApiTag } from "./dummyRepo";
+
+export type ApiCourseForCredit = {
+  id: string;
+  name: string;
+  code: string;
+  credit: number;
+  tags: string[];
+};
+export type TagWithoutId = { name: string; order: number };
+export type ApiTag = { id: string } & TagWithoutId;
 
 /**
  * `CreditTag[]` を作成する。
