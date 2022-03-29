@@ -17,7 +17,7 @@
         @update-tag-name="onCreditFilterUpdateTagName"
         @delete-tag="
           (tag) => {
-            deleteTag = tag;
+            deletedTag = tag;
           }
         "
         @change-tag-order="onCreditFilterChangeTagOrder"
@@ -54,14 +54,14 @@
       </div>
     </section>
     <Modal
-      v-if="deleteTag != undefined"
+      v-if="deletedTag != undefined"
       class="delete-tag-modal"
-      @click="deleteTag = undefined"
+      @click="deletedTag = undefined"
       size="small"
     >
       <template #title>タグを削除しますか？</template>
       <template #contents>
-        タグ「{{ deleteTag.name }}」を削除しますか？<br />
+        タグ「{{ deletedTag.name }}」を削除しますか？<br />
         現在このタグを{{
           numberOfCourseAssignedDeletedTag
         }}件の授業に割り当てています。<br />
@@ -69,7 +69,7 @@
       </template>
       <template #button>
         <Button
-          @click="deleteTag = undefined"
+          @click="deletedTag = undefined"
           size="medium"
           layout="fill"
           color="base"
@@ -77,7 +77,7 @@
           キャンセル
         </Button>
         <Button
-          @click="() => onClickDeleteModal(deleteTag?.id ?? '')"
+          @click="() => onClickDeleteModal(deletedTag?.id ?? '')"
           size="medium"
           layout="fill"
           color="danger"
@@ -92,6 +92,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { RegisteredCourse, TagIdOnly, TagPositionOnly } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
 import CreditFilter, { CreditFilterMode } from "~/components/CreditFilter.vue";
@@ -100,19 +101,24 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { CreditCourseWithState } from "~/entities/course";
 import { CreditTag, DisplayTag } from "~/entities/tag";
+import { useStore } from "~/store";
+import { usePorts } from "~/usecases";
+import { changeTagOrders } from "~/usecases/changeTagOrders";
+import { createTag } from "~/usecases/createTag";
 import {
   apiToCreditCourseWithStateList,
   apiToCreditTags,
   getTotalCredit,
   updateCreditCourseWithStateList,
   updateReactiveTags,
-} from "~/usecases/creditPageFunctions";
-import {
-  ApiCourseForCredit,
   ApiTag,
-  CourseRepositoryInMemory,
-  TagRepositoryInMemory,
-} from "~/usecases/dummyRepo";
+  ApiCourseForCredit,
+} from "~/usecases/creditPageFunctions";
+import { deleteTag } from "~/usecases/deleteTag";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getTags } from "~/usecases/getTags";
+import { updateCourseTags } from "~/usecases/updateCourseTags";
+import { updateTagName } from "~/usecases/updateTagName";
 
 export default defineComponent({
   name: "Credit",
@@ -124,14 +130,14 @@ export default defineComponent({
     Modal,
     PageHeader,
   },
-  setup() {
+  async setup() {
+    const ports = usePorts();
     // TODO: 消したい
     const router = useRouter();
+    const store = useStore();
 
-    // api とか usecase の代わりです。
-    // 後で消します
-    const courseRepo: CourseRepositoryInMemory = new CourseRepositoryInMemory();
-    const tagRepo: TagRepositoryInMemory = new TagRepositoryInMemory();
+    const years = [2019, 2020, 2021, 2022];
+    years.forEach(async (year) => await getCourseListByYear(ports)(year));
 
     const sortApiTagsInPlace = (apiTags: ApiTag[]): ApiTag[] => {
       return apiTags.sort((a, b) => a.order - b.order);
@@ -152,22 +158,38 @@ export default defineComponent({
     const apiCourses = ref<ApiCourseForCredit[]>([]);
     const apiTags = ref<ApiTag[]>([]);
 
-    const updateApiCourses = () => {
+    const updateApiCourses = async () => {
       console.log("update api courses");
 
-      // TODO: api につなぐ
-      apiCourses.value = courseRepo.getCourses();
+      const registerdCourses =
+        selectedYear.value == "すべての年度"
+          ? (store.getters.courses as RegisteredCourse[])
+          : await getCourseListByYear(ports)(
+              Number(selectedYear.value.slice(0, 4))
+            );
+      apiCourses.value = registerdCourses.map((course) => ({
+        id: course.id,
+        name: course.name ?? course.course?.name ?? "-",
+        code: course.course?.code ?? "-",
+        credit: course.credit ?? course.course?.credit ?? 0,
+        tags: course.tags.map(({ id }) => id),
+      }));
     };
-    const updateApiTags = () => {
+    const updateApiTags = async () => {
       console.log("update api tags");
 
-      // TODO: api につなぐ
-      apiTags.value = sortApiTagsInPlace(tagRepo.getTags());
+      apiTags.value = sortApiTagsInPlace(
+        (await getTags(ports)).map((tag) => ({
+          id: tag.id,
+          name: tag.name,
+          order: tag.position ?? 0,
+        }))
+      );
     };
 
     // initialize
-    updateApiCourses();
-    updateApiTags();
+    await updateApiCourses();
+    await updateApiTags();
 
     /**
      * - view を更新する。
@@ -207,23 +229,21 @@ export default defineComponent({
       apiToCreditTags(apiCourses.value, apiTags.value)
     );
 
-    const onCreditFilterCreateTag = (name: string) => {
-      // TODO: api につなぐ
-      tagRepo.createTag({ name, order: creditTags.length });
+    const onCreditFilterCreateTag = async (name: string) => {
+      await createTag(ports)(name);
 
       updateApiTags();
       updateView();
     };
-    const onCreditFilterUpdateTagName = (id: string, name: string) => {
-      // TODO: api につなぐ
-      tagRepo.updateTag(id, { name });
+    const onCreditFilterUpdateTagName = async (id: string, name: string) => {
+      await updateTagName(ports)({ id, name });
 
       updateApiTags();
       updateView();
     };
-    const onCreditFilterChangeTagOrder = (ids: string[]) => {
-      const tags = ids.map((id, i) => ({ id, order: i }));
-      tagRepo.changeOrders(tags);
+    const onCreditFilterChangeTagOrder = async (ids: string[]) => {
+      const tags: TagPositionOnly[] = ids.map((id, i) => ({ id, position: i }));
+      await changeTagOrders(ports)(tags);
 
       updateApiTags();
       updateView();
@@ -244,74 +264,62 @@ export default defineComponent({
           });
     });
 
-    const onCreditCourseListContentCreateTag = (
+    const onCreditCourseListContentCreateTag = async (
       course: CreditCourseWithState,
       tagName: string
     ) => {
-      // TODO: api につなぐ
-      const newTag = tagRepo.createTag({
-        name: tagName,
-        order: creditTags.length,
-      });
+      const newTag = await createTag(ports)(tagName);
 
-      const assignedTagIds = course.tags
+      const assignedTagIds: TagIdOnly[] = course.tags
         .filter((tag) => tag.assign)
-        .map(({ id }) => id);
-      assignedTagIds.push(newTag.id);
+        .map(({ id }) => ({ id }));
+      assignedTagIds.push({ id: newTag.id });
 
-      // TODO: api につなぐ
-      courseRepo.updateTags(course.id, assignedTagIds);
+      await updateCourseTags(ports)({
+        courseId: course.id,
+        assignedTags: assignedTagIds,
+      });
 
       updateApiCourses();
       updateApiTags();
       updateView();
     };
 
-    const onCreditCourseListContentClickTag = (
+    const onCreditCourseListContentClickTag = async (
       course: CreditCourseWithState,
       clickedTag: DisplayTag
     ) => {
       if (mode.value === "edit") return;
-      const assignedTagIds = course.tags
+      const assignedTags: TagIdOnly[] = course.tags
         .filter((tag) => tag.id !== clickedTag.id && tag.assign)
-        .map(({ id }) => id);
-      if (!clickedTag.assign) assignedTagIds.push(clickedTag.id);
+        .map(({ id }) => ({ id }));
+      if (!clickedTag.assign) assignedTags.push({ id: clickedTag.id });
 
-      // TODO: api につなぐ
-      courseRepo.updateTags(course.id, assignedTagIds);
+      await updateCourseTags(ports)({ courseId: course.id, assignedTags });
 
       updateApiCourses();
       updateView();
     };
 
     /** delete tag modal */
-    const deleteTag = ref<CreditTag | undefined>(undefined);
+    const deletedTag = ref<CreditTag | undefined>(undefined);
     // TODO: 表示している年度以外の授業も考慮する
     const numberOfCourseAssignedDeletedTag = computed(
       () =>
         creditCourseWithStateList.filter(({ tags }) =>
           tags.some(
-            (tag) => tag.id === (deleteTag.value?.id ?? "") && tag.assign
+            (tag) => tag.id === (deletedTag.value?.id ?? "") && tag.assign
           )
         ).length
     );
-    const onClickDeleteModal = (id: string) => {
-      // TODO: api につなぐ
-      tagRepo.deleteTag(id);
-      courseRepo.deleteTag(id);
-
-      const tags = creditTags
-        .filter((tag) => tag.id !== id)
-        .map((tag, i) => ({ id: tag.id, order: i }));
-
-      // TODO: api につなぐ
-      tagRepo.changeOrders(tags);
+    const onClickDeleteModal = async (id: string) => {
+      await deleteTag(ports)(id);
 
       // 選択されているタグが削除された場合
-      if (selectedTagId.value == deleteTag.value?.id)
+      if (selectedTagId.value == deletedTag.value?.id)
         selectedTagId.value = undefined;
 
-      deleteTag.value = undefined;
+      deletedTag.value = undefined;
 
       updateApiTags();
       updateView();
@@ -331,7 +339,7 @@ export default defineComponent({
       displayCreditCourseWithStateList,
       onCreditCourseListContentCreateTag,
       onCreditCourseListContentClickTag,
-      deleteTag,
+      deletedTag,
       numberOfCourseAssignedDeletedTag,
       onClickDeleteModal,
     };

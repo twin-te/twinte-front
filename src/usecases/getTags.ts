@@ -4,9 +4,9 @@ import { isValidStatus } from "./api";
 import { NetworkAccessError, NetworkError } from "./error";
 
 /**
- * タグを取得する
+ * タグを取得する。
  */
-export const getTags = ({ api, store }: Ports) => async (): Promise<Tag[]> => {
+export const getTags = async ({ api, store }: Ports): Promise<Tag[]> => {
   const storedTags = store.getters.tags;
   if (storedTags != undefined) return storedTags;
   const { body, status, originalResponse } = await api.tags.get().catch(() => {
