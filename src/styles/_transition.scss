@@ -1,3 +1,5 @@
+@use "variable";
+
 // 下に広がるアニメーション
 .spread-down {
   &-enter-from,
@@ -13,7 +15,7 @@
 
   &-enter-active,
   &-leave-active {
-    transition: $transition-all;
+    transition: variable.$transition-all;
   }
 }
 
@@ -37,10 +39,10 @@
 
   &-enter-active,
   &-leave-active {
-    transition: $transition-all;
+    transition: variable.$transition-all;
   }
 
   &-move {
-    transition: $transition-all;
+    transition: variable.$transition-all;
   }
 }

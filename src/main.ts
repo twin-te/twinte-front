@@ -8,7 +8,7 @@ import { createGtm } from "@gtm-support/vue-gtm";
 import App from "./App.vue";
 import { router } from "./route";
 import { store, StateKey } from "./store";
-import "./scss/main.scss";
+import "./styles/_index.scss";
 
 Sentry.init({
   dsn: String(import.meta.env.VITE_APP_SENTRY_URL ?? ""),

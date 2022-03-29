@@ -68,7 +68,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 .news {
   @include max-width;
 }

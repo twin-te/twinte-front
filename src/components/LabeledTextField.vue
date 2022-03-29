@@ -37,7 +37,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .labeled-text-field {
   height: 6.8rem;

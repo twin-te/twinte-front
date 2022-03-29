@@ -124,7 +124,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 .layout {
   display: flex;
   background: var(--base-liner);

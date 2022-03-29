@@ -82,7 +82,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "../scss/main.scss";
+@import "~/styles";
 
 .text-field {
   background: getColor(--color-base);
