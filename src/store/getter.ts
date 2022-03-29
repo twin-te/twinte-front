@@ -32,4 +32,7 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   module: (state) => {
     return state.module;
   },
+  tags: (state) => {
+    return state.tags;
+  },
 };
