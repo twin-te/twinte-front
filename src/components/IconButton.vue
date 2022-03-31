@@ -61,8 +61,8 @@ export default defineComponent({
       [`icon-button--${color}`]: true,
     }"
   >
-    <span v-if="!loading" class="material-icons">{{ iconName }}</span>
     <Loader v-if="loading" size="100%" />
+    <span v-else class="material-icons">{{ iconName }}</span>
     <slot />
   </button>
 </template>
