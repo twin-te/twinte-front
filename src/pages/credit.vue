@@ -50,6 +50,12 @@
             :credit="course.credit"
             :tags="course.tags"
           ></CreditCourseListContent>
+          <div
+            v-if="displayCreditCourseWithStateList.length === 0"
+            class="main__no-course"
+          >
+            {{ noCourseMessage }}
+          </div>
         </div>
       </div>
     </section>
@@ -309,6 +315,12 @@ export default defineComponent({
       updateView();
     };
 
+    const noCourseMessage = computed(() =>
+      creditCourseWithStateList.length == 0
+        ? "登録済みの授業がありません。"
+        : "該当する授業がありません。"
+    );
+
     /** delete tag modal */
     const deletedTag = ref<CreditTag | undefined>(undefined);
     // TODO: 表示している年度以外の授業も考慮する
@@ -348,6 +360,7 @@ export default defineComponent({
       displayCreditCourseWithStateList,
       onCreditCourseListContentCreateTag,
       onCreditCourseListContentClickTag,
+      noCourseMessage,
       deletedTag,
       numberOfCourseAssignedDeletedTag,
       onClickDeleteModal,
@@ -388,6 +401,12 @@ export default defineComponent({
     padding: $spacing-2;
     box-shadow: $shadow-base;
     border-radius: $radius-2;
+  }
+
+  &__no-course {
+    color: getColor(--color-text-sub);
+    font-size: $font-small;
+    line-height: $single-line;
   }
 }
 
