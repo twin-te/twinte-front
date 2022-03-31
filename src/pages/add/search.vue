@@ -18,7 +18,7 @@
             <TextFieldSingleLine
               v-model.trim="searchWord"
               @enterTextField="search(0)"
-              placeholder="科目名または科目番号"
+              placeholder="授業名や科目番号  (例 :「情報 倫理」,「GA」など)"
             ></TextFieldSingleLine>
           </div>
           <div class="top__search-button">
