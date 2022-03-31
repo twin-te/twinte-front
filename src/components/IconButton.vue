@@ -1,14 +1,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import Loader from "./Loader.vue";
 
 type Props = {
   size: string;
   color: string;
   iconName: string;
+  loading: boolean;
 };
 
 export default defineComponent({
   name: "IconButton",
+  components: { Loader },
   props: {
     onKeyup: {
       type: Function,
@@ -32,6 +35,10 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["click"],
   setup: (_props: Props, { emit }) => {
@@ -54,7 +61,8 @@ export default defineComponent({
       [`icon-button--${color}`]: true,
     }"
   >
-    <span class="material-icons">{{ iconName }}</span>
+    <span v-if="!loading" class="material-icons">{{ iconName }}</span>
+    <Loader v-if="loading" size="100%" />
     <slot />
   </button>
 </template>
