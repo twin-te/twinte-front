@@ -18,8 +18,8 @@ export const locationToString = (_schedules: CourseSchedule[]) => {
   return [...rooms].join(", ");
 };
 
-export const getSyllbusUrl = (code: string) => {
-  return `https://kdb.tsukuba.ac.jp/syllabi/2021/${code}/jpn/`;
+export const getSyllbusUrl = (code: string, year: number) => {
+  return `https://kdb.tsukuba.ac.jp/syllabi/${year}/${code}/jpn/`;
 };
 
 export const courseToCard = (
@@ -31,7 +31,7 @@ export const courseToCard = (
     name: course.name,
     period: periodToString(course.schedules),
     location: locationToString(course.schedules),
-    url: getSyllbusUrl(course.code),
+    url: getSyllbusUrl(course.code, course.year),
     isSelected: isSelect,
   };
   return courseCard;

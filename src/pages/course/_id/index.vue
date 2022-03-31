@@ -273,7 +273,8 @@ export default defineComponent({
         gtmMarker: "course-edit",
       },
       {
-        onClick: () => openUrl(getSyllbusUrl(displayCourse.code)),
+        onClick: () =>
+          openUrl(getSyllbusUrl(displayCourse.code, baseCourse.year)),
         link: true,
         value: "シラバス",
         color: "normal",
