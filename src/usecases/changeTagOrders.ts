@@ -1,5 +1,5 @@
 import { Ports } from "~/adapter";
-import { Tag, TagPositionOnly } from "~/api/@types";
+import { TagPositionOnly } from "~/api/@types";
 import { isValidStatus } from "./api";
 import { NetworkAccessError, NetworkError } from "./error";
 

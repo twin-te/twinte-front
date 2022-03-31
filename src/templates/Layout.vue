@@ -5,7 +5,6 @@ import Sidebar from "./Sidebar.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
 import Button from "~/components/Button.vue";
-import { getCourseListByYear } from "~/usecases/getCourseListByYear";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useStore } from "~/store";
 import { usePorts } from "~/usecases";
@@ -14,7 +13,6 @@ import { authCheck } from "~/usecases/authCheck";
 import { Toast as ToastContent } from "~/entities/toast";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 import { useDark } from "@vueuse/core";
-import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
@@ -42,7 +40,6 @@ export default defineComponent({
 
     // HACK: vuex を初期化する目的で呼び出している
     useDisplayedYear(ports);
-    await getCourseListByYear(ports)(await getYear(ports));
 
     return {
       isLogin,

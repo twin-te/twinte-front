@@ -10,7 +10,7 @@ import { ModuleJa } from "~/entities/module";
 export type GlobalState = {
   user: User | null;
   sidebar: boolean;
-  courses: Record<number, RegisteredCourse[]>;
+  courses: Record<number, RegisteredCourse[]>; // number は年度を表す
   label: Select;
   bachelorMode: boolean;
   tableTimeMode: boolean;

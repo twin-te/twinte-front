@@ -43,14 +43,14 @@ export const mutations: MutationTree<GlobalState> = {
     state.module = module;
   },
   deleteCourse(state, id: string) {
-    const years = getKeysFromObj<Record<number, RegisteredCourse[]>>(
-      state.courses
-    );
-    years.forEach(
-      (year) =>
-        (state.courses[year] = state.courses[year].filter(
-          (course) => course.id !== id
-        ))
+    state.courses = Object.entries(state.courses).reduce<
+      Record<number, RegisteredCourse[]>
+    >(
+      (courseMap, [year, courses]) => ({
+        ...courseMap,
+        [year]: courses.filter((course) => course.id !== id),
+      }),
+      {}
     );
   },
   deleteTag(state, id: string) {

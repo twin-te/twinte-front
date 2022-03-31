@@ -157,7 +157,7 @@ export const updateCreditCourseWithStateList = (
     const compTags = compReactiveCreditCourseWithStateList.find(
       (course) => course.id === id
     )?.tags;
-    if (compTags == undefined) return;
+    if (compTags === undefined) return;
     updateReactiveTags(reactiveTags, compTags);
   });
 
