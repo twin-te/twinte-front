@@ -2,35 +2,35 @@
 
 // text
 @mixin text-main {
-  color: getColor(--color-text-main);
+  color: variable.getColor(--color-text-main);
   font-size: variable.$font-medium;
   line-height: variable.$single-line;
   font-weight: 500;
 }
 @mixin text-description {
-  color: getColor(--color-text-main);
+  color: variable.getColor(--color-text-main);
   font-size: variable.$font-medium;
   line-height: variable.$multi-line;
   font-weight: 400;
 }
 @mixin text-description-sub {
-  color: getColor(--color-text-sub);
+  color: variable.getColor(--color-text-sub);
   font-size: variable.$font-small;
   line-height: variable.$multi-line;
   font-weight: 400;
 }
 @mixin text-button {
-  color: getColor(--color-button-gray);
+  color: variable.getColor(--color-button-gray);
   font-weight: 500;
   line-height: variable.$fit;
 }
 @mixin text-discription {
-  color: getColor(--color-text-main);
+  color: variable.getColor(--color-text-main);
   font-size: variable.$font-medium;
   line-height: variable.$multi-line;
 }
 @mixin text-sub-discription {
-  color: getColor(--color-text-sub);
+  color: variable.getColor(--color-text-sub);
   font-size: variable.$font-small;
   line-height: variable.$multi-line;
 }
@@ -38,10 +38,10 @@
   font-size: 2rem;
   font-weight: 500;
   line-height: variable.$multi-line;
-  color: getColor(--color-text-main);
+  color: variable.getColor(--color-text-main);
 }
 @mixin text-course-tile-id {
-  color: getColor(--color-text-sub);
+  color: variable.getColor(--color-text-sub);
   font-size: 0.9rem;
   font-weight: 400;
   line-height: variable.$single-line;
@@ -79,7 +79,7 @@
     variable.$shadow-primary-concave;
 }
 @mixin button-active-danger($negative-shadow-convex: 0 0 0 #00000000) {
-  background: getColor(--color-danger);
+  background: variable.getColor(--color-danger);
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,
     variable.$shadow-danger-concave;
 }

@@ -27,6 +27,7 @@
               @keyup.enter="search(0)"
               iconName="search"
               size="medium"
+              :loading="fetching"
             ></IconButton>
           </div>
         </section>
@@ -252,7 +253,9 @@ export default defineComponent({
     let limit = 50;
     const isNoResultShow = ref(false);
     const searchWord = ref("");
+    const fetching = ref(false);
     const search = async (_offset = offset) => {
+      fetching.value = true;
       if (_offset === 0) {
         searchResult.value.splice(-searchResult.value.length);
         offset = 0;
@@ -274,10 +277,12 @@ export default defineComponent({
           onlyBlank.value
         );
       } catch (error) {
+        fetching.value = false;
         console.error(error);
         displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
+      fetching.value = false;
       offset += limit;
       searchResult.value.splice(
         searchResult.value.length,
@@ -332,6 +337,7 @@ export default defineComponent({
       courseToCard,
       duplicatedCourses,
       duplicationModal,
+      fetching,
       isAccordionOpen,
       isNoResultShow,
       limit,
