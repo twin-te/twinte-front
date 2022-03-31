@@ -7,17 +7,22 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 import Button from "~/components/Button.vue";
 
 export default defineComponent({
   components: {
     Button,
   },
+  setup: () => {
+    const router = useRouter();
+    return { router };
+  },
 });
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .container {
   display: flex;
