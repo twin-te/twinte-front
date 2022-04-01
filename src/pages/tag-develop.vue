@@ -10,24 +10,21 @@
     <TagListContent
       name="すべて"
       credit="20.0"
-      mode="filtering"
-      :selected="false"
+      mode="default"
       :textfield="false"
       drag-handle="show"
+    >
+      <template #btns>
+        <IconButton
+          size="small"
+          color="normal"
+          icon-name="chevron_right"
+        ></IconButton> </template
     ></TagListContent>
     <TagListContent
       name="すべて"
-      credit="1.0"
-      mode="filtering"
-      :selected="true"
-      :textfield="false"
-      drag-handle="show"
-    ></TagListContent>
-    <TagListContent
-      name="すべて"
-      credit="1.0"
+      credit="1.5"
       mode="edit"
-      :selected="false"
       :textfield="false"
       drag-handle="show"
     >
@@ -38,9 +35,8 @@
     </TagListContent>
     <TagListContent
       name="必修"
-      credit="1.0"
+      credit="2.0"
       mode="edit"
-      :selected="false"
       :textfield="true"
       drag-handle="show"
     >
@@ -57,9 +53,8 @@
     </TagListContent>
     <TagListContent
       name="必修"
-      credit="1.0"
+      credit="2.5"
       mode="edit"
-      :selected="false"
       :textfield="true"
       drag-handle="disabled"
     >
@@ -76,9 +71,8 @@
     </TagListContent>
     <TagListContent
       name=""
-      credit="1.0"
+      credit="3.0"
       mode="edit"
-      :selected="false"
       :textfield="true"
       drag-handle="hide"
     >

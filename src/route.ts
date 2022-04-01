@@ -12,7 +12,8 @@ import Twins from "./pages/add/twins.vue";
 import ViewSettings from "./pages/view-settings.vue";
 import Feedback from "./pages/feedback.vue";
 import News from "./pages/news.vue";
-import Credit from "./pages/credit.vue";
+import Credit from "./pages/credit/index.vue";
+import Courses from "./pages/credit/courses.vue";
 import TagDevelop from "./pages/tag-develop.vue";
 
 const history = createWebHistory();
@@ -38,6 +39,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/Feedback", component: Feedback },
   { path: "/news", component: News },
   { path: "/credit", component: Credit },
+  { path: "/credit/courses", component: Courses },
   { path: "/tag-develop", component: TagDevelop },
 ];
 
