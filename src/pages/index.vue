@@ -243,14 +243,13 @@ import { computed, defineComponent, ref } from "vue";
 import { courseListToTable } from "~/usecases/courseListToTable";
 import { CourseState } from "~/entities/table";
 import { getCurrentModule } from "~/usecases/getCurrentModule";
-import { ModuleJa, moduleJaList } from "~/entities/module";
+import { ModuleJa, moduleJaList, jaToBaseModule } from "~/entities/module";
 import { RegisteredCourse, Information } from "~/api/@types";
-import { dayToSpecialDayJa } from "~/entities/day";
+import { dayToSpecialDayJa, WeekDayJa, weekdayJaList } from "~/entities/day";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useSwitch } from "~/hooks/useSwitch";
-import { WeekDayJa, weekdayJaList } from "~/entities/day";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -260,7 +259,6 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
-import { jaToBaseModule } from "~/entities/module";
 import { useLabel } from "~/usecases/useLabel";
 import {
   courseListToSpecialTable,

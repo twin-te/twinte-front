@@ -2,7 +2,7 @@ import {
   searchModuleMap,
   searchWeekMap,
   searchPeriodMap,
-} from "~/entities/schedule";
+ Schedule } from "~/entities/schedule";
 import {
   CourseModule,
   CourseDay,
@@ -18,7 +18,6 @@ import { isSchedulesDuplicated } from "./getDuplicatedCourses";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
-import { Schedule } from "~/entities/schedule";
 
 type ParsedSchedule = {
   modules: string[];
