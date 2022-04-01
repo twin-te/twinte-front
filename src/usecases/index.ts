@@ -6,6 +6,7 @@ import { useStore } from "~/store";
 import { useAsyncState } from "@vueuse/core";
 import dayjs, { ConfigType, Dayjs } from "dayjs";
 import qs from "qs";
+import "dayjs/locale/ja";
 
 const baseURL =
   import.meta.env.VITE_API_URL === undefined
@@ -30,7 +31,7 @@ export const useUsecase = <T>(
   return useAsyncState(fn(ports), initState);
 };
 
-export const usePorts = () => ({
+export const usePorts = (): Ports => ({
   api: instance(
     axiosClient(axios, {
       baseURL,
