@@ -1,5 +1,5 @@
 <template>
-  <div class="error" v-if="hasError">
+  <div v-if="hasError" class="error">
     <Error :errorMessage="errorMessage"></Error>
   </div>
   <Suspense v-else>

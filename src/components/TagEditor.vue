@@ -73,28 +73,28 @@ export default defineComponent({
       >
         <template #textfiled>
           <TextFieldSingleLine
-            @enter-text-field="handleCheck"
             v-model.trim="tagName"
             placeholder="タグ名"
+            @enter-text-field="handleCheck"
           ></TextFieldSingleLine>
         </template>
         <template #btns>
           <IconButton
-            @click="handleCheck"
             size="small"
             color="normal"
             icon-name="check"
             :state="disabled ? 'disabled' : 'default'"
+            @click="handleCheck"
           ></IconButton>
           <IconButton
-            @click="handleClear"
             size="small"
             color="danger"
             icon-name="clear"
+            @click="handleClear"
           ></IconButton>
         </template>
       </TagListContent>
-      <div v-show="!add" @click="handleClick" class="tag-editor__button button">
+      <div v-show="!add" class="tag-editor__button button" @click="handleClick">
         <div class="button__icon material-icons">add</div>
         <div class="button__value">
           <slot name="btn" />

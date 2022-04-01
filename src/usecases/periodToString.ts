@@ -75,7 +75,7 @@ export const periodToString = (schedules: CourseSchedule[]): string => {
             idx = self.indexOf(periodFlg, idx + 1);
           }
           // periodをみる
-          let period: string = "";
+          let period = "";
           for (let i = 0; i < 8; i++) {
             if ((periodFlg & (1 << i)) === 0) continue;
             const start = i;

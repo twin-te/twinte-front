@@ -42,8 +42,8 @@ export default defineComponent({
     <div class="card-course">
       <div class="card-course__checkbox">
         <Checkbox
-          @clickCheckbox="emitCheckboxEvent"
           :isChecked="isChecked"
+          @clickCheckbox="emitCheckboxEvent"
         ></Checkbox>
       </div>
       <div class="card-course__courseId">{{ course.id }}</div>
@@ -60,11 +60,11 @@ export default defineComponent({
       </div>
       <div class="card-course__syllabus-link">
         <Button
-          @click="openSyllabus"
           size="small"
           layout="flexible"
           :icon="true"
           color="base"
+          @click="openSyllabus"
           >シラバス</Button
         >
       </div>

@@ -3,11 +3,11 @@
     <PageHeader :calendar="calendar" atHome>
       <template #left-button-icon>
         <IconButton
-          @click="toggleSidebar"
           size="large"
           color="normal"
           iconName="menu"
           class="header__left-button-icon"
+          @click="toggleSidebar"
         ></IconButton
       ></template>
     </PageHeader>
@@ -19,9 +19,9 @@
         :onClickToggleButton="onClickLabel"
       />
       <div
-        class="main__module"
-        v-click-away="closePopup"
         v-if="whichSelected === 'left'"
+        v-click-away="closePopup"
+        class="main__module"
       >
         <div class="main__module-text">
           {{ module }}
@@ -29,19 +29,19 @@
         <div class="main__module-selector">
           <IconButton
             class="main__module-btn"
-            @click="togglePopup"
             size="small"
             color="normal"
             icon-name="expand_more"
             data-gtm-marker="selection-module-button"
             :is-active="false"
+            @click="togglePopup"
           />
-          <Popup class="main__module-popup" v-show="popup">
+          <Popup v-show="popup" class="main__module-popup">
             <PopupContent
               v-for="data in popupData"
               :key="data"
-              @click="onClickModule(data)"
               :value="data"
+              @click="onClickModule(data)"
             >
             </PopupContent>
           </Popup>
@@ -51,13 +51,14 @@
         v-if="whichSelected === 'left'"
         :state="isCurrentModule ? 'active' : 'default'"
         class="main__btn"
-        @click="setCurrentModule"
         size="small"
+        @click="setCurrentModule"
       >
         現在の学期
       </Button>
 
       <div
+        v-if="whichSelected === 'left'"
         :class="{
           main__table: true,
           table: true,
@@ -69,7 +70,6 @@
             saturdayCourseMode ? 6 : 5
           }, 1fr)`,
         }"
-        v-if="whichSelected === 'left'"
       >
         <div
           v-for="period in bachelorMode ? 8 : 6"
@@ -95,15 +95,15 @@
             v-for="(courses, id) in y"
             :key="id"
             class="table__course"
-            @click="onClickCourseTile(courses, weeks[d], id + 1)"
             :state="courses.length === 0 ? 'none' : 'default'"
             :name="courses[0]?.name ?? ''"
             :room="courses[0]?.room ?? ''"
             :caution="courses.length > 1 ? `他${courses.length - 1}件` : ''"
+            @click="onClickCourseTile(courses, weeks[d], id + 1)"
           />
         </template>
       </div>
-      <section class="special gtm-marker-special" v-else>
+      <section v-else class="special gtm-marker-special">
         <template
           v-for="(courses, specialDay) in specialTable"
           :key="specialDay"
@@ -116,19 +116,19 @@
           </div>
           <div class="special-container">
             <div
-              class="special-contents"
               v-for="course in courses"
               :key="course.id"
+              class="special-contents"
             >
               <div class="special-contents__module">
                 <span v-for="m in course.module" :key="m">{{ m }}</span>
               </div>
               <CourseTile
                 class="special-contents__course"
-                @click="$router.push(`/course/${course.id}`)"
                 state="default"
                 :name="course.name"
                 :room="course.room"
+                @click="$router.push(`/course/${course.id}`)"
               />
             </div>
             <div v-if="courses.length === 0" class="special-contents">
@@ -149,19 +149,19 @@
           </div>
           <div class="special-container">
             <div
-              class="special-contents"
               v-for="course in undisplayedCourses"
               :key="course.id"
+              class="special-contents"
             >
               <div class="special-contents__module">
                 <span v-for="m in course.module" :key="m">{{ m }}</span>
               </div>
               <CourseTile
                 class="special-contents__course"
-                @click="$router.push(`/course/${course.id}`)"
                 state="default"
                 :name="course.name"
                 :room="course.room"
+                @click="$router.push(`/course/${course.id}`)"
               />
             </div>
           </div>
@@ -172,8 +172,8 @@
   <Modal
     v-if="duplicationState.courses.length > 0"
     class="duplication-modal"
-    @click="clearDuplicationState()"
     size="large"
+    @click="clearDuplicationState()"
   >
     <template #title>授業が重複しています</template>
     <template #contents>
@@ -201,23 +201,23 @@
     </template>
     <template #button>
       <Button
-        @click="clearDuplicationState()"
         size="medium"
         layout="fill"
         color="base"
+        @click="clearDuplicationState()"
       >
         閉じる
       </Button>
     </template>
   </Modal>
-  <Modal v-if="isShow" @click="isShow = false" size="large">
+  <Modal v-if="isShow" size="large" @click="isShow = false">
     <template #title>Twin:teからの新着お知らせ</template>
     <template #contents>
       <div class="news-modal__tips">
         過去のお知らせは <span class="material-icons">campaign</span>お知らせ
         で確認できます。
       </div>
-      <div class="news-modal__row" v-for="_news in news" :key="_news.id">
+      <div v-for="_news in news" :key="_news.id" class="news-modal__row">
         <NewsBox
           :title="_news.title"
           :content="_news.content"
@@ -227,10 +227,10 @@
     </template>
     <template #button>
       <Button
-        @click="isShow = false"
         size="medium"
         layout="fill"
         color="primary"
+        @click="isShow = false"
       >
         OK
       </Button>

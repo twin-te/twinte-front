@@ -53,9 +53,9 @@ export default defineComponent({
     >
       <slot />
       <input
+        :id="name"
         type="file"
         :name="name"
-        :id="name"
         :accept="accept"
         :value="path"
         @click="resetFileSelect"

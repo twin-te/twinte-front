@@ -25,12 +25,12 @@ export default defineComponent({
 
 <template>
   <div
-    @click="handleChange"
     :class="{
       'toggle-switch': true,
       '--checked': isChecked,
       '--unchecked': !isChecked,
     }"
+    @click="handleChange"
   >
     <div
       :class="{

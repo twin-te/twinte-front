@@ -39,36 +39,36 @@ export default defineComponent({
 <template>
   <div class="schedule-editer">
     <section
-      class="schedule-editer__row"
       v-for="(schedule, index) in schedules"
       :key="index"
+      class="schedule-editer__row"
     >
       <div class="schedule-editer__container">
         <Dropdown
-          :options="semesterOptions"
           v-model:selectedOption="schedule.module"
+          :options="semesterOptions"
           :label="index > 0 ? '' : '学期'"
         ></Dropdown>
         <Dropdown
-          :options="dateOptions"
           v-model:selectedOption="schedule.day"
+          :options="dateOptions"
           :label="index > 0 ? '' : '曜日'"
         ></Dropdown>
         <Dropdown
-          :options="periodOptions"
           v-model:selectedOption="schedule.period"
+          :options="periodOptions"
           :label="index > 0 ? '' : '時限'"
         ></Dropdown>
       </div>
       <div
         v-if="index > 0"
-        @click="emitRemoveEvent(index, $event)"
         class="schedule-editer__row__remove"
+        @click="emitRemoveEvent(index, $event)"
       >
         <span class="material-icons">close</span>
       </div>
     </section>
-    <div @click="emitAddEvent" class="schedule-editer__add">
+    <div class="schedule-editer__add" @click="emitAddEvent">
       <span class="material-icons">add</span>追加する
     </div>
   </div>

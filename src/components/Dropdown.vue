@@ -88,13 +88,13 @@ export default defineComponent({
   <div :class="{ dropdown: true, '--disabled': state === 'disabled' }">
     <div v-if="hasLabel" class="dropdown__label">{{ label }}</div>
     <div
+      v-click-away="closeOptions"
+      class="dropdown__box"
       @click="
         () => {
           if (state === 'default') toggleShown();
         }
       "
-      v-click-away="closeOptions"
-      class="dropdown__box"
     >
       <div v-if="isDefault" class="dropdown__box__text--unselected">
         {{ placeholder }}

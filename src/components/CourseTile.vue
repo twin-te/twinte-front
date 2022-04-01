@@ -49,12 +49,12 @@ export default defineComponent({
 
 <template>
   <div
-    @click="handleClick"
     :class="{
       tile: true,
       [`--${state}`]: true,
       [`--under-filter`]: hasCaution,
     }"
+    @click="handleClick"
   >
     <div class="tile__course-name">{{ name }}</div>
     <div class="tile__course-room">{{ room }}</div>

@@ -69,14 +69,14 @@ export default defineComponent({
     </div>
     <input
       type="text"
-      @input="handleInput"
-      @keydown.enter="handleEnter"
       :value="modelValue"
       :class="{
         'text-field': true,
         'text-field__input': true,
       }"
       :placeholder="placeholder"
+      @input="handleInput"
+      @keydown.enter="handleEnter"
     />
   </div>
 </template>

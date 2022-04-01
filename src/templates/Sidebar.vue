@@ -161,21 +161,21 @@ export default defineComponent({
     <section class="sidebar__head">
       <Button
         v-if="isLogin"
-        @click="logout"
         size="small"
         layout="fill"
         color="base"
         :pauseActiveStyle="false"
+        @click="logout"
       >
         ログアウト
       </Button>
       <Button
         v-else
-        @click="$router.push('/login')"
         size="small"
         layout="fill"
         color="primary"
         :pauseActiveStyle="false"
+        @click="$router.push('/login')"
       >
         ログイン
       </Button>
@@ -185,33 +185,33 @@ export default defineComponent({
       <ul class="sidebar__listgroup">
         <SidebarContent
           v-for="value in menu"
-          @click="navigateHandler(value.link)"
+          :key="value.item"
           :iconName="value.iconName"
           :item="value.item"
-          :key="value.item"
           :selected="isSelected(value.link)"
+          @click="navigateHandler(value.link)"
         ></SidebarContent>
       </ul>
 
       <ul class="sidebar__listgroup">
         <SidebarContent
           v-for="value in settings"
-          @click="navigateHandler(value.link)"
+          :key="value.item"
           :iconName="value.iconName"
           :item="value.item"
-          :key="value.item"
           :selected="isSelected(value.link)"
+          @click="navigateHandler(value.link)"
         ></SidebarContent>
       </ul>
 
       <ul class="sidebar__listgroup">
         <SidebarContent
           v-for="value in links"
-          @click="navigateHandler(value.link)"
+          :key="value.item"
           :iconName="value.iconName"
           :item="value.item"
-          :key="value.item"
           :selected="isSelected(value.link)"
+          @click="navigateHandler(value.link)"
         ></SidebarContent>
       </ul>
     </section>

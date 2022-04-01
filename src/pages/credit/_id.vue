@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="router.push('/credit')"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="router.push('/credit')"
         ></IconButton>
       </template>
       <template #title>単位数</template>
@@ -22,17 +22,17 @@
           <CreditCourseListContent
             v-for="(course, i) in creditCourseWithStateList"
             :key="course.id"
+            :state="course.state"
+            :code="course.code"
+            :name="course.name"
+            :credit="course.credit"
+            :tags="course.tags"
             @click="
               course.state =
                 course.state === 'selected' ? 'default' : 'selected'
             "
             @create-tag="(tagName) => onCreateTag(course, tagName)"
             @click-tag="(tag) => onClickTag(course, tag, i)"
-            :state="course.state"
-            :code="course.code"
-            :name="course.name"
-            :credit="course.credit"
-            :tags="course.tags"
           ></CreditCourseListContent>
           <div
             v-if="creditCourseWithStateList.length === 0"

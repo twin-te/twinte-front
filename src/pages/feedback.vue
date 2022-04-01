@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>フィードバック</template>
@@ -17,8 +17,8 @@
           <Label value="フィードバックのカテゴリー" :mandatory="true"></Label>
           <div class="feedback__note"></div>
           <Dropdown
-            :options="['バグの報告', '新機能の要望', 'お問い合わせ', 'その他']"
             v-model:selectedOption="feedbackType"
+            :options="['バグの報告', '新機能の要望', 'お問い合わせ', 'その他']"
           ></Dropdown>
         </section>
         <section class="feedback__row">
@@ -28,8 +28,8 @@
           </div>
           <InputButtonFile
             name="csv-file"
-            @change-file="screenShot = $event"
             accept="image/*"
+            @change-file="screenShot = $event"
           >
             画像をアップロードする
           </InputButtonFile>
@@ -44,8 +44,8 @@
           ></TextFieldMultilines>
         </section>
         <section
-          class="feedback__row"
           v-if="['バグの報告', 'お問い合わせ'].includes(feedbackType)"
+          class="feedback__row"
         >
           <Label
             value="連絡先メールアドレス or Twitterアカウント"
@@ -60,12 +60,12 @@
       </div>
       <section class="main__footer">
         <Button
-          @click="sendFeedback()"
           size="large"
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
           :state="btnStatus"
+          @click="sendFeedback()"
           >フィードバックを送信</Button
         >
       </section>

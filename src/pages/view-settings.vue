@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>表示設定</template>
@@ -17,40 +17,40 @@
           ダークテーマ
           <ToggleSwitch
             class="switch"
-            @click-toggle-switch="toggleDark"
             :isChecked="isDark"
+            @click-toggle-switch="toggleDark"
           />
         </div>
         <div class="main__content">
           土曜授業を表示する
           <ToggleSwitch
             class="switch"
-            @click-toggle-switch="toggleSaturdayCourseMode"
             :isChecked="saturdayCourseMode"
+            @click-toggle-switch="toggleSaturdayCourseMode"
           />
         </div>
         <div class="main__content">
           8限まで表示する(大学院生用)
           <ToggleSwitch
             class="switch"
-            @click-toggle-switch="toggleBachelorMode"
             :isChecked="bachelorMode"
+            @click-toggle-switch="toggleBachelorMode"
           />
         </div>
         <div class="main__content">
           各時限の開始・終了時刻を表示する
           <ToggleSwitch
             class="switch"
-            @click-toggle-switch="toggleTableTimeMode"
             :isChecked="tableTimeMode"
+            @click-toggle-switch="toggleTableTimeMode"
           />
         </div>
         <div class="main__content--dropdown">
           <p>時間割に表示する年度</p>
           <Dropdown
-            @update:selectedOption="updateYear"
-            :options="displayedYearOptions"
             v-model:selectedOption="selectedYear"
+            :options="displayedYearOptions"
+            @update:selectedOption="updateYear"
           ></Dropdown>
         </div>
       </div>

@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>手動で授業を作成</template>
@@ -69,12 +69,12 @@
       </div>
       <section class="main__button">
         <Button
-          @click="addCourse()"
           size="large"
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
           :state="btnState"
+          @click="addCourse()"
           >変更を保存</Button
         >
       </section>
@@ -91,9 +91,9 @@
         </p>
         <div class="modal__courses">
           <div
-            class="duplicated-course"
             v-for="duplicatedCourse in duplicatedCourses"
             :key="duplicatedCourse.name"
+            class="duplicated-course"
           >
             <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
             <CourseDetailMini
@@ -106,17 +106,17 @@
       </template>
       <template #button>
         <Button
-          @click="closeDuplicationModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeDuplicationModal"
           >キャンセル</Button
         >
         <Button
-          @click="addCourse(false)"
           size="medium"
           layout="fill"
           color="primary"
+          @click="addCourse(false)"
           >そのまま追加</Button
         >
       </template>

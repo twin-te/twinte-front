@@ -27,10 +27,10 @@ export default defineComponent({
   <PageHeader>
     <template #left-button-icon>
       <IconButton
-        @click="reload"
         size="large"
         color="normal"
         icon-name="arrow_back"
+        @click="reload"
       ></IconButton>
     </template>
     <template #title></template>

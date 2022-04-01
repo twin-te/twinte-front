@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.push('/')"
           size="large"
           color="normal"
           iconName="arrow_back"
+          @click="$router.push('/')"
         ></IconButton>
       </template>
       <template #title>授業詳細</template>
@@ -15,21 +15,21 @@
           <ToggleIconButton
             ref="btnRef"
             class="header__right-button-icon"
-            @click="toggleShowPopup"
             size="large"
             color="normal"
             iconName="more_vert"
             :isActive="showPopup"
+            @click="toggleShowPopup"
           ></ToggleIconButton>
           <Popup v-show="showPopup">
             <PopupContent
               v-for="data in popupData"
               :key="data.value"
-              @click="data.onClick"
               :link="data.link"
               :value="data.value"
               :color="data.color"
               :gtm-marker="data.gtmMarker"
+              @click="data.onClick"
             ></PopupContent>
           </Popup>
         </div>
@@ -56,13 +56,13 @@
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
-        <TagEditor @create-tag="onCreateTag" v-model:add="add" heading="タグ">
+        <TagEditor v-model:add="add" heading="タグ" @create-tag="onCreateTag">
           <template #tags>
             <Tag
               v-for="tag in displayTags"
               :key="tag.id"
-              @click="() => onClickTag(tag)"
               :assign="tag.assign"
+              @click="() => onClickTag(tag)"
               >{{ tag.name }}
             </Tag>
             <template v-if="displayTags.length === 0">
@@ -73,72 +73,72 @@
           <template #btn>タグを新たに作成する</template>
         </TagEditor>
         <TextFieldMultilines
-          class="main__memo"
           v-model="displayCourse.memo"
-          @update:modelValue="update"
+          class="main__memo"
           placeholder="メモを入力"
           height="10.3rem"
           style="width: 100%"
+          @update:modelValue="update"
         ></TextFieldMultilines>
         <section class="main__attendance attendance">
           <div class="attendance__item">
             <p class="attendance__state">出席</p>
             <IconButton
               class="attendance__minus-btn"
-              @click="updateCounter('attendance', -1)"
               size="small"
               color="primary"
               iconName="remove"
               data-gtm-marker="attendance-record-button"
+              @click="updateCounter('attendance', -1)"
             ></IconButton>
             <p class="attendance__count">{{ displayCourse.attendance }}</p>
             <IconButton
               class="attendance__plus-btn"
-              @click="updateCounter('attendance', 1)"
               size="small"
               color="primary"
               iconName="add"
               data-gtm-marker="attendance-record-button"
+              @click="updateCounter('attendance', 1)"
             ></IconButton>
           </div>
           <div class="attendance__item">
             <p class="attendance__state">欠席</p>
             <IconButton
               class="attendance__minus-btn"
-              @click="updateCounter('absence', -1)"
               size="small"
               color="primary"
               iconName="remove"
               data-gtm-marker="attendance-record-button"
+              @click="updateCounter('absence', -1)"
             ></IconButton>
             <p class="attendance__count">{{ displayCourse.absence }}</p>
             <IconButton
               class="attendance__plus-btn"
-              @click="updateCounter('absence', 1)"
               size="small"
               color="primary"
               iconName="add"
               data-gtm-marker="attendance-record-button"
+              @click="updateCounter('absence', 1)"
             ></IconButton>
           </div>
           <div class="attendance__item">
             <p class="attendance__state">遅刻</p>
             <IconButton
               class="attendance__minus-btn"
-              @click="updateCounter('late', -1)"
               size="small"
               color="primary"
               iconName="remove"
               data-gtm-marker="attendance-record-button"
+              @click="updateCounter('late', -1)"
             ></IconButton>
             <p class="attendance__count">{{ displayCourse.late }}</p>
             <IconButton
               class="attendance__plus-btn"
-              @click="updateCounter('late', 1)"
               size="small"
               color="primary"
               iconName="add"
               data-gtm-marker="attendance-record-button"
+              @click="updateCounter('late', 1)"
             ></IconButton>
           </div>
         </section>
@@ -147,8 +147,8 @@
     <Modal
       v-if="deleteCourseModal"
       class="delete-course-modal"
-      @click="closeDeleteCourseModal"
       size="small"
+      @click="closeDeleteCourseModal"
     >
       <template #title>授業の削除</template>
       <template #contents>
@@ -160,18 +160,18 @@
       </template>
       <template #button>
         <Button
-          @click="closeDeleteCourseModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeDeleteCourseModal"
         >
           キャンセル
         </Button>
         <Button
-          @click="deleteCourse"
           size="medium"
           layout="fill"
           color="danger"
+          @click="deleteCourse"
         >
           削除
         </Button>

@@ -2,10 +2,10 @@
   <PageHeader>
     <template #left-button-icon>
       <IconButton
-        @click="$router.back()"
         size="large"
         color="normal"
         icon-name="arrow_back"
+        @click="$router.back()"
       ></IconButton>
     </template>
     <template #title>CSVファイルから追加</template>
@@ -15,8 +15,8 @@
       <p class="csv__header">CSVファイル</p>
       <InputButtonFile
         name="csv-file"
-        @change-file="loadCourses"
         accept="text/csv"
+        @change-file="loadCourses"
       >
         アップロードする
       </InputButtonFile>
@@ -26,21 +26,21 @@
         <CardCourse
           v-for="course in loadedCourses"
           :key="courseToCard(course.course).id"
-          @click-checkbox="course.isSelected = !course.isSelected"
           :isChecked="course.isSelected"
           :course="courseToCard(course.course)"
+          @click-checkbox="course.isSelected = !course.isSelected"
         >
         </CardCourse>
       </div>
     </div>
     <div class="main__button">
       <Button
-        @click="addCourse()"
         size="large"
         layout="fill"
         color="primary"
         :pauseActiveStyle="false"
         :state="btnState"
+        @click="addCourse()"
         >選択した授業を追加</Button
       >
     </div>
@@ -57,9 +57,9 @@
       </p>
       <div class="modal__courses">
         <div
-          class="duplicated-course"
           v-for="duplicatedCourse in duplicatedCourses"
           :key="duplicatedCourse.name"
+          class="duplicated-course"
         >
           <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
           <CourseDetailMini
@@ -72,17 +72,17 @@
     </template>
     <template #button>
       <Button
-        @click="closeDuplicationModal"
         size="medium"
         layout="fill"
         color="base"
+        @click="closeDuplicationModal"
         >キャンセル</Button
       >
       <Button
-        @click="addCourse(false)"
         size="medium"
         layout="fill"
         color="primary"
+        @click="addCourse(false)"
         >そのまま追加</Button
       >
     </template>

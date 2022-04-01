@@ -3,24 +3,24 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>お知らせ</template>
     </PageHeader>
     <div class="main">
       <div class="main__news">
-        <div class="news__row" v-for="_news in news" :key="_news.id">
+        <div v-for="_news in news" :key="_news.id" class="news__row">
           <NewsBox
             :title="_news.title"
             :content="_news.content"
             :publicationDate="formatDatetime(_news.publishedAt)"
           ></NewsBox>
         </div>
-        <div class="news__not-news" v-if="news.length === 0">
+        <div v-if="news.length === 0" class="news__not-news">
           表示できるお知らせはありません。
         </div>
       </div>

@@ -28,7 +28,7 @@ export default defineComponent({
         [`modal--${size}`]: true,
       }"
     >
-      <span @click="$emit('click')" class="material-icons modal__close-btn"
+      <span class="material-icons modal__close-btn" @click="$emit('click')"
         >close</span
       >
       <h1 class="modal__title">

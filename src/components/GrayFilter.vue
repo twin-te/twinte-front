@@ -8,7 +8,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div @click="$emit('click')" class="grayfilter"></div>
+  <div class="grayfilter" @click="$emit('click')"></div>
 </template>
 
 <style scoped lang="scss">

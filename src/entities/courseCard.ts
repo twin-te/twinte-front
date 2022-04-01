@@ -24,7 +24,7 @@ export const getSyllbusUrl = (code: string, year: number) => {
 
 export const courseToCard = (
   course: Course,
-  isSelect: boolean = false
+  isSelect = false
 ): CourseCard => {
   const courseCard: CourseCard = {
     id: course.code,

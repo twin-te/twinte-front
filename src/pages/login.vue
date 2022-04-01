@@ -39,24 +39,24 @@
         ※Twin:teにログインしたことがない場合は、選択したログイン方法と紐づいたアカウントが自動で作成されます。
       </div>
       <img
-        class="main__prev-button"
         v-if="isDark"
-        @click="$router.back()"
+        class="main__prev-button"
         src="../assets/login-page/button-prev_dark.png"
         alt="元のページへ戻る"
+        @click="$router.back()"
       />
       <img
-        class="main__prev-button"
         v-else
-        @click="$router.back()"
+        class="main__prev-button"
         src="../assets/login-page/button-prev.svg"
         alt="元のページへ戻る"
+        @click="$router.back()"
       />
     </div>
   </div>
   <GrayFilter
-    class="layout__grayfilter"
     v-show="clicked"
+    class="layout__grayfilter"
     @click="() => {}"
   ></GrayFilter>
 </template>
