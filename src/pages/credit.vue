@@ -17,7 +17,7 @@
         @update-tag-name="onCreditFilterUpdateTagName"
         @delete-tag="
           (tag) => {
-            deleteTag = tag;
+            deletedTag = tag;
           }
         "
         @change-tag-order="onCreditFilterChangeTagOrder"
@@ -50,18 +50,24 @@
             :credit="course.credit"
             :tags="course.tags"
           ></CreditCourseListContent>
+          <div
+            v-if="displayCreditCourseWithStateList.length === 0"
+            class="main__no-course"
+          >
+            {{ noCourseMessage }}
+          </div>
         </div>
       </div>
     </section>
     <Modal
-      v-if="deleteTag != undefined"
+      v-if="deletedTag != undefined"
       class="delete-tag-modal"
-      @click="deleteTag = undefined"
+      @click="deletedTag = undefined"
       size="small"
     >
       <template #title>タグを削除しますか？</template>
       <template #contents>
-        タグ「{{ deleteTag.name }}」を削除しますか？<br />
+        タグ「{{ deletedTag.name }}」を削除しますか？<br />
         現在このタグを{{
           numberOfCourseAssignedDeletedTag
         }}件の授業に割り当てています。<br />
@@ -69,7 +75,7 @@
       </template>
       <template #button>
         <Button
-          @click="deleteTag = undefined"
+          @click="deletedTag = undefined"
           size="medium"
           layout="fill"
           color="base"
@@ -77,7 +83,7 @@
           キャンセル
         </Button>
         <Button
-          @click="() => onClickDeleteModal(deleteTag?.id ?? '')"
+          @click="() => onClickDeleteModal(deletedTag?.id ?? '')"
           size="medium"
           layout="fill"
           color="danger"
@@ -90,8 +96,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from "vue";
+import { computed, defineComponent, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { RegisteredCourse, TagIdOnly, TagPositionOnly } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
 import CreditFilter, { CreditFilterMode } from "~/components/CreditFilter.vue";
@@ -100,19 +107,23 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { CreditCourseWithState } from "~/entities/course";
 import { CreditTag, DisplayTag } from "~/entities/tag";
+import { usePorts } from "~/usecases";
+import { changeTagOrders } from "~/usecases/changeTagOrders";
+import { createTag } from "~/usecases/createTag";
 import {
   apiToCreditCourseWithStateList,
   apiToCreditTags,
   getTotalCredit,
-  updateCreditCourseWithStateList,
-  updateReactiveTags,
-} from "~/usecases/creditPageFunctions";
-import {
-  ApiCourseForCredit,
   ApiTag,
-  CourseRepositoryInMemory,
-  TagRepositoryInMemory,
-} from "~/usecases/dummyRepo";
+  ApiCourseForCredit,
+  updateReactiveTags,
+  updateCreditCourseWithStateList,
+} from "~/usecases/creditPageFunctions";
+import { deleteTag } from "~/usecases/deleteTag";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getTags } from "~/usecases/getTags";
+import { updateCourseTags } from "~/usecases/updateCourseTags";
+import { updateTagName } from "~/usecases/updateTagName";
 
 export default defineComponent({
   name: "Credit",
@@ -124,14 +135,10 @@ export default defineComponent({
     Modal,
     PageHeader,
   },
-  setup() {
+  async setup() {
+    const ports = usePorts();
     // TODO: 消したい
     const router = useRouter();
-
-    // api とか usecase の代わりです。
-    // 後で消します
-    const courseRepo: CourseRepositoryInMemory = new CourseRepositoryInMemory();
-    const tagRepo: TagRepositoryInMemory = new TagRepositoryInMemory();
 
     const sortApiTagsInPlace = (apiTags: ApiTag[]): ApiTag[] => {
       return apiTags.sort((a, b) => a.order - b.order);
@@ -152,22 +159,56 @@ export default defineComponent({
     const apiCourses = ref<ApiCourseForCredit[]>([]);
     const apiTags = ref<ApiTag[]>([]);
 
-    const updateApiCourses = () => {
-      console.log("update api courses");
+    const yearOptions: string[] = [
+      "すべての年度",
+      "2022年度",
+      "2021年度",
+      "2020年度",
+      "2019年度",
+    ];
+    const selectedYear = ref(yearOptions[0]);
+    watch(selectedYear, async () => {
+      await updateApiCourses();
+      updateView();
+    });
+    const years = [2019, 2020, 2021, 2022];
 
-      // TODO: api につなぐ
-      apiCourses.value = courseRepo.getCourses();
+    const updateApiCourses = async () => {
+      const registerdCourses: RegisteredCourse[] = [];
+      if (selectedYear.value === "すべての年度") {
+        for (const year of years)
+          registerdCourses.push(...(await getCourseListByYear(ports)(year)));
+      } else {
+        registerdCourses.push(
+          ...(await getCourseListByYear(ports)(
+            Number(selectedYear.value.slice(0, 4))
+          ))
+        );
+      }
+
+      apiCourses.value = registerdCourses.map((course) => ({
+        id: course.id,
+        name: course.name ?? course.course?.name ?? "-",
+        code: course.course?.code ?? "-",
+        credit: course.credit ?? course.course?.credit ?? 0,
+        tags: course.tags.map(({ id }) => id),
+      }));
     };
-    const updateApiTags = () => {
+    const updateApiTags = async () => {
       console.log("update api tags");
 
-      // TODO: api につなぐ
-      apiTags.value = sortApiTagsInPlace(tagRepo.getTags());
+      apiTags.value = sortApiTagsInPlace(
+        (await getTags(ports)).map((tag) => ({
+          id: tag.id,
+          name: tag.name,
+          order: tag.position ?? 0,
+        }))
+      );
     };
 
     // initialize
-    updateApiCourses();
-    updateApiTags();
+    await updateApiCourses();
+    await updateApiTags();
 
     /**
      * - view を更新する。
@@ -180,11 +221,14 @@ export default defineComponent({
       const newCreditTags = apiToCreditTags(apiCourses.value, apiTags.value);
       updateReactiveTags(creditTags, newCreditTags);
 
-      // update creditCourseWithStateList
-      updateCreditCourseWithStateList(
-        creditCourseWithStateList,
+      // // update creditCourseWithStateList
+      const newCreditCourseWithStateList = apiToCreditCourseWithStateList(
         apiCourses.value,
         apiTags.value
+      );
+      updateCreditCourseWithStateList(
+        creditCourseWithStateList,
+        newCreditCourseWithStateList
       );
 
       console.log("creditTags", creditTags);
@@ -193,39 +237,28 @@ export default defineComponent({
 
     /** credit-filter */
     const mode = ref<CreditFilterMode>("filtering");
-    const yearOptions: string[] = [
-      "すべての年度",
-      "2022年度",
-      "2021年度",
-      "2020年度",
-      "2019年度",
-    ];
-    const selectedYear = ref(yearOptions[0]);
-    const totalCredit = ref(getTotalCredit(apiCourses.value));
+    const totalCredit = computed(() => getTotalCredit(apiCourses.value));
     const selectedTagId = ref<string | undefined>(undefined);
-    const creditTags = reactive<CreditTag[]>(
+    const creditTags: CreditTag[] = reactive(
       apiToCreditTags(apiCourses.value, apiTags.value)
     );
+    const onCreditFilterCreateTag = async (name: string) => {
+      await createTag(ports)(name);
 
-    const onCreditFilterCreateTag = (name: string) => {
-      // TODO: api につなぐ
-      tagRepo.createTag({ name, order: creditTags.length });
-
-      updateApiTags();
+      await updateApiTags();
       updateView();
     };
-    const onCreditFilterUpdateTagName = (id: string, name: string) => {
-      // TODO: api につなぐ
-      tagRepo.updateTag(id, { name });
+    const onCreditFilterUpdateTagName = async (id: string, name: string) => {
+      await updateTagName(ports)({ id, name });
 
-      updateApiTags();
+      await updateApiTags();
       updateView();
     };
-    const onCreditFilterChangeTagOrder = (ids: string[]) => {
-      const tags = ids.map((id, i) => ({ id, order: i }));
-      tagRepo.changeOrders(tags);
+    const onCreditFilterChangeTagOrder = async (ids: string[]) => {
+      const tags: TagPositionOnly[] = ids.map((id, i) => ({ id, position: i }));
+      await changeTagOrders(ports)(tags);
 
-      updateApiTags();
+      await updateApiTags();
       updateView();
     };
 
@@ -244,76 +277,72 @@ export default defineComponent({
           });
     });
 
-    const onCreditCourseListContentCreateTag = (
+    const onCreditCourseListContentCreateTag = async (
       course: CreditCourseWithState,
       tagName: string
     ) => {
-      // TODO: api につなぐ
-      const newTag = tagRepo.createTag({
-        name: tagName,
-        order: creditTags.length,
+      const newTag = await createTag(ports)(tagName);
+
+      const assignedTagIds: TagIdOnly[] = course.tags
+        .filter((tag) => tag.assign)
+        .map(({ id }) => ({ id }));
+      assignedTagIds.push({ id: newTag.id });
+
+      await updateCourseTags(ports)({
+        courseId: course.id,
+        assignedTags: assignedTagIds,
       });
 
-      const assignedTagIds = course.tags
-        .filter((tag) => tag.assign)
-        .map(({ id }) => id);
-      assignedTagIds.push(newTag.id);
-
-      // TODO: api につなぐ
-      courseRepo.updateTags(course.id, assignedTagIds);
-
-      updateApiCourses();
-      updateApiTags();
+      await updateApiCourses();
+      await updateApiTags();
       updateView();
     };
 
-    const onCreditCourseListContentClickTag = (
+    const onCreditCourseListContentClickTag = async (
       course: CreditCourseWithState,
       clickedTag: DisplayTag
     ) => {
       if (mode.value === "edit") return;
-      const assignedTagIds = course.tags
+      const assignedTags: TagIdOnly[] = course.tags
         .filter((tag) => tag.id !== clickedTag.id && tag.assign)
-        .map(({ id }) => id);
-      if (!clickedTag.assign) assignedTagIds.push(clickedTag.id);
+        .map(({ id }) => ({ id }));
 
-      // TODO: api につなぐ
-      courseRepo.updateTags(course.id, assignedTagIds);
+      if (!clickedTag.assign) assignedTags.push({ id: clickedTag.id });
 
-      updateApiCourses();
+      await updateCourseTags(ports)({ courseId: course.id, assignedTags });
+
+      await updateApiCourses();
       updateView();
     };
 
+    const noCourseMessage = computed(() =>
+      creditCourseWithStateList.length == 0
+        ? "登録済みの授業がありません。"
+        : "該当する授業がありません。"
+    );
+
     /** delete tag modal */
-    const deleteTag = ref<CreditTag | undefined>(undefined);
+    const deletedTag = ref<CreditTag | undefined>(undefined);
     // TODO: 表示している年度以外の授業も考慮する
     const numberOfCourseAssignedDeletedTag = computed(
       () =>
         creditCourseWithStateList.filter(({ tags }) =>
           tags.some(
-            (tag) => tag.id === (deleteTag.value?.id ?? "") && tag.assign
+            (tag) => tag.id === (deletedTag.value?.id ?? "") && tag.assign
           )
         ).length
     );
-    const onClickDeleteModal = (id: string) => {
-      // TODO: api につなぐ
-      tagRepo.deleteTag(id);
-      courseRepo.deleteTag(id);
-
-      const tags = creditTags
-        .filter((tag) => tag.id !== id)
-        .map((tag, i) => ({ id: tag.id, order: i }));
-
-      // TODO: api につなぐ
-      tagRepo.changeOrders(tags);
+    const onClickDeleteModal = async (id: string) => {
+      await deleteTag(ports)(id);
 
       // 選択されているタグが削除された場合
-      if (selectedTagId.value == deleteTag.value?.id)
+      if (selectedTagId.value == deletedTag.value?.id)
         selectedTagId.value = undefined;
 
-      deleteTag.value = undefined;
+      deletedTag.value = undefined;
 
-      updateApiTags();
+      await updateApiTags();
+      await updateApiCourses();
       updateView();
     };
 
@@ -331,7 +360,8 @@ export default defineComponent({
       displayCreditCourseWithStateList,
       onCreditCourseListContentCreateTag,
       onCreditCourseListContentClickTag,
-      deleteTag,
+      noCourseMessage,
+      deletedTag,
       numberOfCourseAssignedDeletedTag,
       onClickDeleteModal,
     };
@@ -371,6 +401,12 @@ export default defineComponent({
     padding: $spacing-2;
     box-shadow: $shadow-base;
     border-radius: $radius-2;
+  }
+
+  &__no-course {
+    color: getColor(--color-text-sub);
+    font-size: $font-small;
+    line-height: $single-line;
   }
 }
 

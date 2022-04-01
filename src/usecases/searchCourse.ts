@@ -83,7 +83,7 @@ const schedulesToTimetable = (
   for (const module of fullModules) {
     timetable[module] = {} as SearchCourseTimetableQueryDays;
     for (const day of fullDays) {
-      timetable[module][day] = {} as SearchCourseTimetableQueryPeriods;
+      timetable[module]![day] = {} as SearchCourseTimetableQueryPeriods;
       for (const period of periods) {
         // とりあえず空白検索とドロップダウン検索は or で実装
         // HACK: backend の要望により timetable が全て true の場合 undedined を返す。
@@ -92,7 +92,7 @@ const schedulesToTimetable = (
               { module, day, period: parseInt(period), room: "" },
             ])
           : isWishinSchedules(schedules, module, day, parseInt(period));
-        timetable[module][day][period] = ret;
+        timetable[module]![day]![period] = ret;
         if (ret === false) allTrue = false;
       }
     }

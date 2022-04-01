@@ -5,7 +5,16 @@ import {
   isCreditTag,
   isDisplayTag,
 } from "~/entities/tag";
-import { ApiCourseForCredit, ApiTag } from "./dummyRepo";
+
+export type ApiCourseForCredit = {
+  id: string;
+  name: string;
+  code: string;
+  credit: number;
+  tags: string[];
+};
+export type TagWithoutId = { name: string; order: number };
+export type ApiTag = { id: string } & TagWithoutId;
 
 /**
  * `CreditTag[]` を作成する。
@@ -119,7 +128,7 @@ export const updateReactiveTags = <T extends CreditTag | DisplayTag>(
 
   // add tags
   const newTags = compTags.filter((tag) => newTagIds.includes(tag.id));
-  newTags.forEach((tag) => reactiveTags.push(tag));
+  reactiveTags.push(...newTags);
 };
 
 /**
@@ -127,20 +136,37 @@ export const updateReactiveTags = <T extends CreditTag | DisplayTag>(
  * タグの追加、削除、タグ名と `assign` の変更を行う。
  *
  * @param reactiveCreditCourseWithStateList リアクティブな配列
- * @param apiCourses
- * @param apiTags
+ * @param compReactiveCreditCourseWithStateList 比較対象
  */
 export const updateCreditCourseWithStateList = (
   reactiveCreditCourseWithStateList: CreditCourseWithState[],
-  apiCourses: ApiCourseForCredit[],
-  apiTags: ApiTag[]
+  compReactiveCreditCourseWithStateList: CreditCourseWithState[]
 ) => {
+  // delete courses
+  const compIds = compReactiveCreditCourseWithStateList.map(({ id }) => id);
+  const deletedIndices: number[] = [];
+  reactiveCreditCourseWithStateList.forEach(({ id }, idx) => {
+    if (!compIds.includes(id)) deletedIndices.push(idx);
+  });
+  deletedIndices
+    .reverse()
+    .forEach((idx) => reactiveCreditCourseWithStateList.splice(idx, 1));
+
+  // update display tags
   reactiveCreditCourseWithStateList.forEach(({ id, tags: reactiveTags }) => {
-    const apiCourse = apiCourses.find((course) => course.id === id);
-    if (apiCourse == undefined) return;
-    const compTags = apiToDisplayTags(apiCourse.tags, apiTags);
+    const compTags = compReactiveCreditCourseWithStateList.find(
+      (course) => course.id === id
+    )?.tags;
+    if (compTags === undefined) return;
     updateReactiveTags(reactiveTags, compTags);
   });
+
+  // add courses
+  const existingIds = reactiveCreditCourseWithStateList.map(({ id }) => id);
+  const addedCourses = compReactiveCreditCourseWithStateList.filter(
+    ({ id }) => !existingIds.includes(id)
+  );
+  reactiveCreditCourseWithStateList.push(...addedCourses);
 };
 
 /**

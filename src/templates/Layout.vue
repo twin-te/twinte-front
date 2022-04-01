@@ -5,7 +5,6 @@ import Sidebar from "./Sidebar.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
 import Button from "~/components/Button.vue";
-import { getCourseList } from "~/usecases/getCourseList";
 import { useSidebar } from "~/usecases/useSidebar";
 import { useStore } from "~/store";
 import { usePorts } from "~/usecases";
@@ -41,7 +40,6 @@ export default defineComponent({
 
     // HACK: vuex を初期化する目的で呼び出している
     useDisplayedYear(ports);
-    await getCourseList(ports);
 
     return {
       isLogin,

@@ -1,6 +1,6 @@
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as useStoreAny } from "vuex";
-import { User, RegisteredCourse } from "~/api/@types";
+import { User, RegisteredCourse, Tag } from "~/api/@types";
 import { Select } from "~/components/ToggleButton.vue";
 import { mutations } from "./mutations";
 import { getters } from "./getter";
@@ -10,7 +10,7 @@ import { ModuleJa } from "~/entities/module";
 export type GlobalState = {
   user: User | null;
   sidebar: boolean;
-  courses: RegisteredCourse[];
+  courses: Record<number, RegisteredCourse[]>; // number は年度を表す
   label: Select;
   bachelorMode: boolean;
   tableTimeMode: boolean;
@@ -18,6 +18,7 @@ export type GlobalState = {
   toasts: Toast[];
   displayedYear: number | null;
   module: ModuleJa | null;
+  tags: Tag[] | null;
 };
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
@@ -25,7 +26,7 @@ export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
 const initState: GlobalState = {
   user: null,
   sidebar: false,
-  courses: [],
+  courses: {},
   label: "left",
   bachelorMode: false,
   tableTimeMode: true,
@@ -33,6 +34,7 @@ const initState: GlobalState = {
   toasts: [],
   displayedYear: null,
   module: null,
+  tags: null,
 };
 
 export const store = createStore<GlobalState>({
