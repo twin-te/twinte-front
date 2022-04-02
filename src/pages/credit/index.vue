@@ -444,7 +444,7 @@ export default defineComponent({
   }
 
   &__mask {
-    flex: 0 1 auto;
+    flex: 1 1 0px;
 
     overflow-y: auto;
     @include scroll-mask;
