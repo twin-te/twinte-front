@@ -110,7 +110,7 @@
           </draggable>
           <div v-if="tags.length === 0" class="tags__no-tag">
             作成済みのタグがありません。<br />
-            タグを作成すると授業を分類できます。
+            タグを作成すると授業を分類することができます。
           </div>
         </div>
       </div>
@@ -462,7 +462,7 @@ export default defineComponent({
     padding: $spacing-2 $spacing-0 $spacing-0 $spacing-2;
 
     font-size: $font-small;
-    color: getColor(--color-text-sub);
+    color: getColor(--color-disabled);
     line-height: $multi-line;
   }
 }

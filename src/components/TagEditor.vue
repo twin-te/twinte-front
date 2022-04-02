@@ -16,6 +16,11 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    heading: {
+      // タグ表示欄のタイトル
+      type: String,
+      required: true,
+    },
   },
   emits: ["update:add", "create-tag"],
   setup(props, { emit }) {
@@ -53,47 +58,49 @@ export default defineComponent({
 
 <template>
   <div class="tag-editor">
-    <p class="tag-editor__heading">タグの編集</p>
-    <div class="tag-editor__tags">
-      <slot name="tags" />
-    </div>
-    <TagListContent
-      v-show="add"
-      class="tag-editor__tag-list-content"
-      mode="edit"
-      :selected="false"
-      :textfield="true"
-      drag-handle="hide"
-    >
-      <template #textfiled>
-        <TextFieldSingleLine
-          @enter-text-field="handleCheck"
-          v-model.trim="tagName"
-          placeholder="タグ名"
-        ></TextFieldSingleLine>
-      </template>
-      <template #btns>
-        <IconButton
-          @click="handleCheck"
-          size="small"
-          color="normal"
-          icon-name="check"
-          :state="disabled ? 'disabled' : 'default'"
-        ></IconButton>
-        <IconButton
-          @click="handleClear"
-          size="small"
-          color="danger"
-          icon-name="clear"
-        ></IconButton>
-      </template>
-    </TagListContent>
-    <div v-show="!add" @click="handleClick" class="tag-editor__button button">
-      <div class="button__icon material-icons">add</div>
-      <div class="button__value">
-        <slot name="btn" />
+    <p class="tag-editor__heading">{{ heading }}</p>
+    <section class="tag-editor__contents">
+      <div class="tag-editor__tags">
+        <slot name="tags" />
       </div>
-    </div>
+      <TagListContent
+        v-show="add"
+        class="tag-editor__tag-list-content"
+        mode="edit"
+        :selected="false"
+        :textfield="true"
+        drag-handle="hide"
+      >
+        <template #textfiled>
+          <TextFieldSingleLine
+            @enter-text-field="handleCheck"
+            v-model.trim="tagName"
+            placeholder="タグ名"
+          ></TextFieldSingleLine>
+        </template>
+        <template #btns>
+          <IconButton
+            @click="handleCheck"
+            size="small"
+            color="normal"
+            icon-name="check"
+            :state="disabled ? 'disabled' : 'default'"
+          ></IconButton>
+          <IconButton
+            @click="handleClear"
+            size="small"
+            color="danger"
+            icon-name="clear"
+          ></IconButton>
+        </template>
+      </TagListContent>
+      <div v-show="!add" @click="handleClick" class="tag-editor__button button">
+        <div class="button__icon material-icons">add</div>
+        <div class="button__value">
+          <slot name="btn" />
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -103,7 +110,7 @@ export default defineComponent({
 .tag-editor {
   width: 100%;
   display: grid;
-  row-gap: $spacing-2;
+  row-gap: $spacing-3;
 
   padding: $spacing-2;
 
@@ -111,7 +118,11 @@ export default defineComponent({
     font-size: $font-small;
     color: getColor(--color-text-sub);
   }
-
+  &__contents {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+  }
   &__tags {
     width: 100%;
 
@@ -120,7 +131,9 @@ export default defineComponent({
     justify-content: left;
     gap: $spacing-3 $spacing-2;
 
-    color: getColor(--color-text-sub);
+    color: getColor(--color-disabled);
+    font-size: $font-small;
+    line-height: $multi-line;
   }
 }
 

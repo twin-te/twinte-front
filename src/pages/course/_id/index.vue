@@ -56,7 +56,7 @@
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
-        <TagEditor @create-tag="onCreateTag" v-model:add="add">
+        <TagEditor @create-tag="onCreateTag" v-model:add="add" heading="タグ">
           <template #tags>
             <Tag
               v-for="tag in displayTags"
@@ -66,7 +66,8 @@
               >{{ tag.name }}
             </Tag>
             <template v-if="displayTags.length === 0">
-              作成されたタグがありません
+              作成済みのタグがありません。<br />
+              タグを作成すると授業を分類することができます。
             </template>
           </template>
           <template #btn>タグを新たに作成する</template>
