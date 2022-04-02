@@ -40,7 +40,11 @@
             />
           </div>
           <div class="option__accordion-toggle" @click="toggleOpen">
-            条件を指定する
+            条件
+            <span
+              :class="`accordion-toggle__conditions --${conditions.style}`"
+              >{{ conditions.label }}</span
+            >
             <span
               :class="{ 'material-icons': true, '--turned': isAccordionOpen }"
               >expand_more</span
@@ -239,6 +243,27 @@ export default defineComponent({
       schedules.value.splice(index, 1);
     };
 
+    /** condition */
+    const conditions = computed<{ style: "outline" | "filled"; label: string }>(
+      () => {
+        if (onlyBlank.value) return { style: "filled", label: "空きコマのみ" };
+        else if (
+          Object.values(schedules.value[0]).every((x) => x === "指定なし")
+        )
+          return { style: "outline", label: "未指定" };
+        else
+          return {
+            style: "filled",
+            label: schedules.value
+              .map(
+                (schedule) =>
+                  `${schedule.module}${schedule.day}${schedule.period}`
+              )
+              .join(","),
+          };
+      }
+    );
+
     /** result */
     const searchResult = ref<
       { course: Course; isSelected: boolean; isExpanded: boolean }[]
@@ -360,6 +385,7 @@ export default defineComponent({
       addSchedule,
       btnState,
       closeDuplicationModal,
+      conditions,
       courseToCard,
       duplicatedCourses,
       duplicationModal,
@@ -419,6 +445,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: $spacing-7;
   }
   &__result {
     height: calc(#{$vh} - 26.6rem);
@@ -439,12 +466,32 @@ export default defineComponent({
   &__accordion-toggle {
     @include text-button;
     @include button-cursor;
+    display: flex;
+    align-items: center;
     .material-icons {
       margin-left: $spacing-1;
       transition: $transition-transform;
       &.--turned {
         transform: rotate(-180deg);
       }
+    }
+  }
+}
+
+.accordion-toggle {
+  &__conditions {
+    margin-left: $spacing-1;
+    padding: $spacing-1;
+    border: 0.1rem solid getColor(--color-primary-dull);
+    border-radius: $radius-1;
+    &.--outline {
+      color: getColor(--color-primary-dull);
+    }
+    &.--filled {
+      @include ellipsis;
+      max-width: 12rem;
+      background-color: getColor(--color-primary-dull);
+      color: getColor(--color-white);
     }
   }
 }
