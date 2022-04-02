@@ -1,15 +1,18 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import Loader from "./Loader.vue";
 
 type Props = {
   size: string;
   color: string;
   iconName: string;
   state: "default" | "disabled";
+  loading: boolean;
 };
 
 export default defineComponent({
   name: "IconButton",
+  components: { Loader },
   props: {
     onKeyup: {
       type: Function,
@@ -37,6 +40,10 @@ export default defineComponent({
       type: String as PropType<"default" | "disabled">,
       default: "default",
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["click"],
   setup: (props: Props, { emit }) => {
@@ -61,13 +68,14 @@ export default defineComponent({
       '--disabled': state === 'disabled',
     }"
   >
-    <span class="material-icons">{{ iconName }}</span>
+    <Loader v-if="loading" size="100%" />
+    <span v-else class="material-icons">{{ iconName }}</span>
     <slot />
   </button>
 </template>
 
 <style scoped lang="scss">
-@import "../scss/main.scss";
+@import "~/styles";
 
 .icon-button {
   display: flex;

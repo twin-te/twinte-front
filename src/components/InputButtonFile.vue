@@ -66,7 +66,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .input-button-file {
   display: flex;

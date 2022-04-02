@@ -14,6 +14,7 @@ import Feedback from "./pages/feedback.vue";
 import News from "./pages/news.vue";
 import Credit from "./pages/credit/index.vue";
 import Courses from "./pages/credit/_id.vue";
+import Error404 from "./pages/404.vue";
 
 const history = createWebHistory();
 
@@ -39,6 +40,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/news", component: News },
   { path: "/credit", component: Credit },
   { path: "/credit/:id", component: Courses },
+  { path: "/:pathMatch(.*)*", component: Error404 },
 ];
 
 // 3. Create the router instance and pass the `routes` option

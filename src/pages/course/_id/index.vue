@@ -392,7 +392,10 @@ export default defineComponent({
         gtmMarker: "course-edit",
       },
       {
-        onClick: () => openUrl(getSyllbusUrl(displayCourse.value.code)),
+        onClick: () =>
+          openUrl(
+            getSyllbusUrl(displayCourse.value.code, baseCourse.value.year)
+          ),
         link: true,
         value: "シラバス",
         color: "normal",
@@ -449,7 +452,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .course-detail {
   @include max-width;

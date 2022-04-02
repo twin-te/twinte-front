@@ -18,7 +18,7 @@
             <TextFieldSingleLine
               v-model.trim="searchWord"
               @enterTextField="search(0)"
-              placeholder="科目名または科目番号"
+              placeholder="授業名や科目番号  (例 :「情報 倫理」,「GA」など)"
             ></TextFieldSingleLine>
           </div>
           <div class="top__search-button">
@@ -27,6 +27,7 @@
               @keyup.enter="search(0)"
               iconName="search"
               size="medium"
+              :loading="fetching"
             ></IconButton>
           </div>
         </section>
@@ -83,7 +84,7 @@
             </div>
             <!-- </template> -->
             <div class="result__not-found" v-if="isNoResultShow">
-              一致する授業がありません。
+              {{ searchWord }}に一致する授業がありません。
             </div>
           </section>
         </transition>
@@ -252,7 +253,9 @@ export default defineComponent({
     let limit = 50;
     const isNoResultShow = ref(false);
     const searchWord = ref("");
+    const fetching = ref(false);
     const search = async (_offset = offset) => {
+      fetching.value = true;
       if (_offset === 0) {
         searchResult.value.splice(-searchResult.value.length);
         offset = 0;
@@ -260,7 +263,7 @@ export default defineComponent({
           event: "search-courses",
           term: searchWord.value,
           use_only_blank: onlyBlank.value,
-          schedules: schedules.value,
+          schedules: JSON.stringify(schedules.value),
         });
       }
       isAccordionOpen.value = false;
@@ -274,10 +277,12 @@ export default defineComponent({
           onlyBlank.value
         );
       } catch (error) {
+        fetching.value = false;
         console.error(error);
         displayToast(ports)(extractMessageOrDefault(error));
         return;
       }
+      fetching.value = false;
       offset += limit;
       searchResult.value.splice(
         searchResult.value.length,
@@ -332,6 +337,7 @@ export default defineComponent({
       courseToCard,
       duplicatedCourses,
       duplicationModal,
+      fetching,
       isAccordionOpen,
       isNoResultShow,
       limit,
@@ -353,7 +359,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 .search {
   @include max-width;
 }

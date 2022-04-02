@@ -1,48 +1,50 @@
+@use "variable";
+
 // text
 @mixin text-main {
-  color: getColor(--color-text-main);
-  font-size: $font-medium;
-  line-height: $single-line;
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+  line-height: variable.$single-line;
   font-weight: 500;
 }
 @mixin text-description {
-  color: getColor(--color-text-main);
-  font-size: $font-medium;
-  line-height: $multi-line;
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+  line-height: variable.$multi-line;
   font-weight: 400;
 }
 @mixin text-description-sub {
-  color: getColor(--color-text-sub);
-  font-size: $font-small;
-  line-height: $multi-line;
+  color: variable.getColor(--color-text-sub);
+  font-size: variable.$font-small;
+  line-height: variable.$multi-line;
   font-weight: 400;
 }
 @mixin text-button {
-  color: getColor(--color-button-gray);
+  color: variable.getColor(--color-button-gray);
   font-weight: 500;
-  line-height: $fit;
+  line-height: variable.$fit;
 }
 @mixin text-discription {
-  color: getColor(--color-text-main);
-  font-size: $font-medium;
-  line-height: $multi-line;
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+  line-height: variable.$multi-line;
 }
 @mixin text-sub-discription {
-  color: getColor(--color-text-sub);
-  font-size: $font-small;
-  line-height: $multi-line;
+  color: variable.getColor(--color-text-sub);
+  font-size: variable.$font-small;
+  line-height: variable.$multi-line;
 }
 @mixin modal-title {
   font-size: 2rem;
   font-weight: 500;
-  line-height: $multi-line;
-  color: getColor(--color-text-main);
+  line-height: variable.$multi-line;
+  color: variable.getColor(--color-text-main);
 }
 @mixin text-course-tile-id {
-  color: getColor(--color-text-sub);
+  color: variable.getColor(--color-text-sub);
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: $single-line;
+  line-height: variable.$single-line;
 }
 @mixin text-liner {
   color: #6bcedc; // baakground-clip に対応していない場合の色
@@ -74,18 +76,18 @@
 @mixin button-active($negative-shadow-convex: 0 0 0 #00000000) {
   background: var(--primary-liner);
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,
-    $shadow-primary-concave;
+    variable.$shadow-primary-concave;
 }
 @mixin button-active-danger($negative-shadow-convex: 0 0 0 #00000000) {
-  background: getColor(--color-danger);
+  background: variable.getColor(--color-danger);
   box-shadow: $negative-shadow-convex, $negative-shadow-convex,
-    $shadow-danger-concave;
+    variable.$shadow-danger-concave;
 }
 @mixin button-inactive($negative-shadow-concave: inset 0 0 0 #00000000) {
-  box-shadow: $shadow-convex, $negative-shadow-concave;
+  box-shadow: variable.$shadow-convex, $negative-shadow-concave;
 }
 @mixin button-hover {
-  box-shadow: $shadow-convex-hover;
+  box-shadow: variable.$shadow-convex-hover;
 }
 
 // icon
@@ -143,7 +145,7 @@
 
 // Home以外のページで使う。
 @mixin max-width {
-  max-width: $max-pc-item-width;
+  max-width: variable.$max-pc-item-width;
 }
 
 @mixin flexible() {
@@ -154,13 +156,13 @@
 }
 @mixin center-fixed {
   position: fixed;
-  top: calc(50% + #{$safe-area-top});
+  top: calc(50% + #{variable.$safe-area-top});
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 }
 @mixin center-asolute {
   position: absolute;
-  top: calc(50% + #{$safe-area-top});
+  top: calc(50% + #{variable.$safe-area-top});
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 }
@@ -172,15 +174,15 @@
 }
 
 @mixin sensor-housing {
-  @supports (padding-top: $safe-area-top) {
+  @supports (padding-top: variable.$safe-area-top) {
     // iphone上部の切り欠き部分を避ける
-    padding-top: calc(#{$safe-area-top} + 2rem);
+    padding-top: calc(#{variable.$safe-area-top} + 2rem);
   }
 }
 
 // Media Queries
 @mixin tab-and-pc {
-  @media only screen and (min-height: $pc-and-tab-height) and(min-width: $pc-and-tab-width) {
+  @media only screen and (min-height: variable.$pc-and-tab-height) and(min-width: variable.$pc-and-tab-width) {
     // 画面の高さと幅が一定以上ある場合(このブレイクポイントでrootのremの大きさを切り替える)
     @content;
   }
@@ -201,7 +203,7 @@
 }
 
 @mixin large-screen {
-  @media only screen and (min-height: $pc-and-tab-height),
+  @media only screen and (min-height: variable.$pc-and-tab-height),
     (orientation: landscape) {
     // 画面の高さが一定以上or画面が横向きの場合
     @content;

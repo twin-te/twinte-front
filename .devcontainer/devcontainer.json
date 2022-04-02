@@ -10,7 +10,7 @@
   },
   "settings": {},
   "extensions": ["dbaeumer.vscode-eslint", "johnsoncodehk.volar"],
-  "forwardPorts": [3000],
+  "forwardPorts": [3000, 6006],
   "postCreateCommand": "yarn install",
   "remoteUser": "node"
 }

@@ -220,7 +220,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .header {
   max-width: 900px;

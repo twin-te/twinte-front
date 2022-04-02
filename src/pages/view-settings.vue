@@ -140,7 +140,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 .view-settings {
   @include max-width;
 }
