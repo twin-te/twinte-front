@@ -329,11 +329,7 @@ export default defineComponent({
         console.log("open delete modal");
         numberOfCourseAssignedDeletedTag.value = (
           await getAllRegisteredCourses()
-        )
-          .filter(({ tags }) =>
-            tags.some(({ id }) => id === deletedTag.value?.id)
-          )
-          .length.toFixed(1);
+        ).filter(({ tags }) => tags.some(({ id }) => id === tag.id)).length;
         deletedTag.value = tag;
       }
     };
@@ -371,7 +367,7 @@ export default defineComponent({
 
     /** delete tag modal */
     const deletedTag = ref<CreditTag | undefined>(undefined);
-    const numberOfCourseAssignedDeletedTag = ref("0.0");
+    const numberOfCourseAssignedDeletedTag = ref(0);
     const onClickDeleteModal = async (id: string) => {
       console.log("delete tag");
       const idx = tags.value.findIndex((tag) => tag.id === id);
@@ -448,7 +444,7 @@ export default defineComponent({
   }
 
   &__mask {
-    flex: 1 1 0px;
+    flex: 0 1 auto;
 
     overflow-y: auto;
     @include scroll-mask;
