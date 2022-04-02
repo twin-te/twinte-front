@@ -104,6 +104,10 @@
               </TagListContent>
             </template>
           </draggable>
+          <div v-if="tags.length === 0" class="tags__no-tag">
+            作成済みのタグがありません。<br />
+            タグを作成すると授業を分類できます。
+          </div>
         </div>
       </div>
       <div
@@ -447,6 +451,14 @@ export default defineComponent({
 
   &__contents {
     padding: $spacing-3 $spacing-2 $spacing-3 $spacing-0; // padding of scrollable element
+  }
+
+  &__no-tag {
+    padding: $spacing-2 $spacing-0 $spacing-0 $spacing-2;
+
+    font-size: $font-small;
+    color: getColor(--color-text-sub);
+    line-height: $multi-line;
   }
 }
 
