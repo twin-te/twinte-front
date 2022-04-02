@@ -31,12 +31,22 @@
             ></IconButton>
           </div>
         </section>
-        <div class="search__accordion-toggle" @click="toggleOpen">
-          条件を指定する
-          <span :class="{ 'material-icons': true, '--turned': isAccordionOpen }"
-            >expand_more</span
-          >
-        </div>
+        <section class="search__option">
+          <div class="option__display-toggle">
+            <ToggleButton
+              @click-toggle-button="toggleDetailed"
+              :labels="{ left: '詳細', right: '簡易' }"
+              :which-selected="isDetailed ? 'left' : 'right'"
+            />
+          </div>
+          <div class="option__accordion-toggle" @click="toggleOpen">
+            条件を指定する
+            <span
+              :class="{ 'material-icons': true, '--turned': isAccordionOpen }"
+              >expand_more</span
+            >
+          </div>
+        </section>
         <transition name="spread-down" mode="out-in">
           <section
             class="search__accordion"
@@ -65,24 +75,27 @@
             ref="searchBoxRef"
             key="result"
           >
-            <!-- <template v-if="searchResult.length > 0"> -->
-            <div
-              class="result__row"
-              v-for="(course, index) in searchResult"
-              :key="course.course.id"
-              :ref="
-                (el) => {
-                  setSearchResultRef(el, index);
-                }
-              "
-            >
-              <CardCourse
-                @click-checkbox="course.isSelected = !course.isSelected"
-                :course="courseToCard(course.course)"
-                :isChecked="course.isSelected"
-              ></CardCourse>
-            </div>
-            <!-- </template> -->
+            <Card v-show="searchResult.length > 0">
+              <div
+                class="result__row"
+                v-for="(course, index) in searchResult"
+                :key="course.course.id"
+                :ref="
+                  (el) => {
+                    setSearchResultRef(el, index);
+                  }
+                "
+              >
+                <CardCourse
+                  @click-card="course.isExpanded = !course.isExpanded"
+                  @click-checkbox="course.isSelected = !course.isSelected"
+                  :course="courseToCard(course.course)"
+                  :isChecked="course.isSelected"
+                  :isDetailed="isDetailed"
+                  :isExpanded="course.isExpanded"
+                ></CardCourse>
+              </div>
+            </Card>
             <div class="result__not-found" v-if="isNoResultShow">
               {{ searchWord }}に一致する授業がありません。
             </div>
@@ -171,6 +184,8 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import ToggleButton from "~/components/ToggleButton.vue";
+import Card from "~/components/Card.vue";
 
 export default defineComponent({
   components: {
@@ -183,12 +198,17 @@ export default defineComponent({
     PageHeader,
     ScheduleEditer,
     TextFieldSingleLine,
+    ToggleButton,
+    Card,
   },
   setup() {
     const route = useRoute();
     const router = useRouter();
     const ports = usePorts();
     const gtm = useGtm();
+
+    /** display toogle */
+    const [isDetailed, toggleDetailed] = useToggle(true);
 
     /** accordion */
     const [isAccordionOpen, toggleOpen] = useToggle(
@@ -220,7 +240,9 @@ export default defineComponent({
     };
 
     /** result */
-    const searchResult = ref<{ course: Course; isSelected: boolean }[]>([]);
+    const searchResult = ref<
+      { course: Course; isSelected: boolean; isExpanded: boolean }[]
+    >([]);
     // 検索結果を動的に読み込む処理
     const searchBoxRef = ref<Element>();
     const options = {
@@ -287,7 +309,11 @@ export default defineComponent({
       searchResult.value.splice(
         searchResult.value.length,
         courses.length,
-        ...courses?.map((course: Course) => ({ course, isSelected: false }))
+        ...courses?.map((course: Course) => ({
+          course,
+          isSelected: false,
+          isExpanded: false,
+        }))
       );
       isNoResultShow.value = _offset === 0 && courses.length === 0;
     };
@@ -339,6 +365,7 @@ export default defineComponent({
       duplicationModal,
       fetching,
       isAccordionOpen,
+      isDetailed,
       isNoResultShow,
       limit,
       onlyBlank,
@@ -351,6 +378,7 @@ export default defineComponent({
       searchResult,
       searchWord,
       setSearchResultRef,
+      toggleDetailed,
       toggleOnlyBlank,
       toggleOpen,
     };
@@ -387,18 +415,10 @@ export default defineComponent({
     display: flex;
     margin-bottom: $spacing-5;
   }
-  &__accordion-toggle {
-    @include text-button;
-    @include button-cursor;
-    display: table;
-    margin: $spacing-0 $spacing-0 $spacing-6 auto;
-    .material-icons {
-      margin-left: $spacing-1;
-      transition: $transition-transform;
-      &.--turned {
-        transform: rotate(-180deg);
-      }
-    }
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   &__result {
     height: calc(#{$vh} - 26.6rem);
@@ -412,6 +432,20 @@ export default defineComponent({
   &__course-name {
     width: 100%;
     margin-right: $spacing-2;
+  }
+}
+
+.option {
+  &__accordion-toggle {
+    @include text-button;
+    @include button-cursor;
+    .material-icons {
+      margin-left: $spacing-1;
+      transition: $transition-transform;
+      &.--turned {
+        transform: rotate(-180deg);
+      }
+    }
   }
 }
 
