@@ -110,7 +110,7 @@
           </draggable>
           <div v-if="tags.length === 0" class="tags__no-tag">
             作成済みのタグがありません。<br />
-            タグを作成すると授業を分類できます。
+            タグを作成すると授業を分類することができます。
           </div>
         </div>
       </div>
@@ -329,11 +329,7 @@ export default defineComponent({
         console.log("open delete modal");
         numberOfCourseAssignedDeletedTag.value = (
           await getAllRegisteredCourses()
-        )
-          .filter(({ tags }) =>
-            tags.some(({ id }) => id === deletedTag.value?.id)
-          )
-          .length.toFixed(1);
+        ).filter(({ tags }) => tags.some(({ id }) => id === tag.id)).length;
         deletedTag.value = tag;
       }
     };
@@ -371,7 +367,7 @@ export default defineComponent({
 
     /** delete tag modal */
     const deletedTag = ref<CreditTag | undefined>(undefined);
-    const numberOfCourseAssignedDeletedTag = ref("0.0");
+    const numberOfCourseAssignedDeletedTag = ref(0);
     const onClickDeleteModal = async (id: string) => {
       console.log("delete tag");
       const idx = tags.value.findIndex((tag) => tag.id === id);
@@ -448,7 +444,7 @@ export default defineComponent({
   }
 
   &__mask {
-    flex: 1 1 0px;
+    flex: 0 1 auto;
 
     overflow-y: auto;
     @include scroll-mask;
@@ -462,7 +458,7 @@ export default defineComponent({
     padding: $spacing-2 $spacing-0 $spacing-0 $spacing-2;
 
     font-size: $font-small;
-    color: getColor(--color-text-sub);
+    color: getColor(--color-disabled);
     line-height: $multi-line;
   }
 }

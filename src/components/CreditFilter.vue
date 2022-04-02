@@ -179,7 +179,8 @@ export default defineComponent({
             v-if="mode === 'filtering' && tags.length === 0"
             class="filter-tag__no-tag"
           >
-            作成されたタグがありません
+            作成済みのタグがありません。<br />
+            タグを作成すると授業を分類することができます。
           </div>
           <div
             v-if="mode === 'edit' || tags.length > 0"
@@ -359,8 +360,10 @@ export default defineComponent({
 
   &__no-tag {
     padding: $spacing-2 $spacing-0;
-    color: getColor(--color-text-sub);
+    color: getColor(--color-disabled);
     user-select: none;
+    line-height: $multi-line;
+    font-size: $font-small;
   }
 }
 

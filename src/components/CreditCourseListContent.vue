@@ -92,6 +92,7 @@ export default defineComponent({
       v-show="state === 'selected'"
       @create-tag="(tagName) => $emit('create-tag', tagName)"
       v-model:add="add"
+      heading="タグの編集"
     >
       <template #tags>
         <Tag
@@ -102,7 +103,8 @@ export default defineComponent({
           >{{ tag.name }}
         </Tag>
         <template v-if="tags.length === 0">
-          作成されたタグがありません
+          作成済みのタグがありません。<br />
+          タグを作成すると授業を分類することができます。
         </template>
       </template>
       <template #btn>タグを新たに作成する</template>
