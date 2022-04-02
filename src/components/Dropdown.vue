@@ -135,12 +135,14 @@ export default defineComponent({
   }
   &__label {
     @include text-main;
+    line-height: 2rem; // 140% だと height が小数になるので
     margin-bottom: $spacing-2;
     user-select: none;
   }
   &__box {
     @include button-cursor;
     @include text-main;
+    line-height: 2rem; // 140% だと height が小数になるので
     display: flex;
     justify-content: space-between;
     border-radius: $radius-1;

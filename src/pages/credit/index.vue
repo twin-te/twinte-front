@@ -420,7 +420,6 @@ export default defineComponent({
 
 .credit {
   @include max-width;
-  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -430,13 +429,15 @@ export default defineComponent({
 }
 
 .tags {
-  flex-grow: 1;
+  height: calc(100vh - 19.6rem); // 100vh から tags 以外の height を引いた分
 
   display: flex;
   flex-direction: column;
   gap: $spacing-2;
 
   &__header {
+    flex: none;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -447,7 +448,7 @@ export default defineComponent({
   }
 
   &__mask {
-    flex: 1 1 0px;
+    flex: initial;
 
     overflow-y: auto;
     @include scroll-mask;
@@ -463,6 +464,10 @@ export default defineComponent({
     font-size: $font-small;
     color: getColor(--color-disabled);
     line-height: $multi-line;
+  }
+
+  &__add-btn {
+    flex: none;
   }
 }
 
