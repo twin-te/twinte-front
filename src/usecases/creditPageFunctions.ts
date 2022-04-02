@@ -172,7 +172,6 @@ export const updateCreditCourseWithStateList = (
   const idToOrder = compCreditCourseWithStateList.reduce<
     Record<string, number>
   >((map, { id }, idx) => ({ ...map, [id]: idx }), {});
-  console.log(idToOrder);
   reactiveCreditCourseWithStateList.sort(
     (a, b) => idToOrder[a.id] - idToOrder[b.id]
   );

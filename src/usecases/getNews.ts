@@ -9,7 +9,7 @@ import { Ports } from "~/adapter";
 const makeNewsRead = (ports: Ports) => async (ids: Information["id"][]) => {
   const { api } = ports;
   ids.forEach(async (id) => {
-    console.log(id);
+    // console.log(id);
     const { body, status, originalResponse } = await api.information
       ._id(id)
       .put({

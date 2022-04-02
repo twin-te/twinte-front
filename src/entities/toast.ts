@@ -19,7 +19,7 @@ export const displayToast = ({ store }: Ports) => (
 ) => {
   // WARN: index で id を決めると transition-group がバグる
   const id = Math.round(Math.random() * 100);
-  console.log({ id, text, type });
+  // console.log({ id, text, type });
   store.commit("addToast", { id, text, type });
   if (displayPeriod > 0) {
     setTimeout(() => {

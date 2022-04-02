@@ -283,7 +283,7 @@ export default defineComponent({
         }))
         .sort((a, b) => a.order - b.order);
 
-      console.log("update api tags", apiTags.value);
+      // console.log("update api tags", apiTags.value);
     };
     const displayTags = ref<DisplayTag[]>([]);
     const updateDisplayTags = () => {
@@ -298,7 +298,7 @@ export default defineComponent({
 
     const add = ref(false);
     const onCreateTag = async (name: string) => {
-      console.log("create tag");
+      // console.log("create tag");
 
       const assignedTagIds = displayTags.value.map(({ id }) => ({ id }));
       // api を叩く前に View を変更する
