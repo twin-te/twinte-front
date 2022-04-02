@@ -56,6 +56,22 @@
             <DecoratedIcon iconName="category"></DecoratedIcon>
           </CourseDetail>
         </section>
+        <TagEditor @create-tag="onCreateTag" v-model:add="add" heading="タグ">
+          <template #tags>
+            <Tag
+              v-for="tag in displayTags"
+              :key="tag.id"
+              @click="() => onClickTag(tag)"
+              :assign="tag.assign"
+              >{{ tag.name }}
+            </Tag>
+            <template v-if="displayTags.length === 0">
+              作成済みのタグがありません。<br />
+              タグを作成すると授業を分類することができます。
+            </template>
+          </template>
+          <template #btn>タグを新たに作成する</template>
+        </TagEditor>
         <TextFieldMultilines
           class="main__memo"
           v-model="displayCourse.memo"
@@ -165,7 +181,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
@@ -177,6 +193,8 @@ import Popup from "~/components/Popup.vue";
 import PopupContent, {
   Color as popupContentColor,
 } from "~/components/PopupContent.vue";
+import Tag from "~/components/Tag.vue";
+import TagEditor from "~/components/TagEditor.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
 import { displayToast } from "~/entities/toast";
@@ -192,6 +210,13 @@ import {
   apiToDisplayCourse,
   displayCourseToApi,
 } from "~/usecases/useDisplayCourse";
+import { RegisteredCourse, TagIdOnly } from "~/api/@types";
+import { DisplayCourse } from "~/entities/course";
+import { DisplayTag, NEW_TAG_ID } from "~/entities/tag";
+import { getTags } from "~/usecases/getTags";
+import { ApiTag, apiToDisplayTags } from "~/usecases/creditPageFunctions";
+import { createTag } from "~/usecases/createTag";
+import { updateCourseTags } from "~/usecases/updateCourseTags";
 
 export default defineComponent({
   name: "Details",
@@ -204,6 +229,8 @@ export default defineComponent({
     PageHeader,
     Popup,
     PopupContent,
+    Tag,
+    TagEditor,
     TextFieldMultilines,
     ToggleIconButton,
   },
@@ -213,27 +240,119 @@ export default defineComponent({
     const router = useRouter();
     const { id } = route.params as { id: string };
 
-    const baseCourse = await getCourseById(ports)(id);
-    const displayCourse = reactive(apiToDisplayCourse(baseCourse, "-"));
+    const baseCourse = ref<RegisteredCourse>(await getCourseById(ports)(id));
+    const updateBaseCourse = async () => {
+      baseCourse.value = await getCourseById(ports)(id);
+    };
+    const displayCourse = ref<DisplayCourse>(
+      reactive(apiToDisplayCourse(baseCourse.value, "-"))
+    );
+    const updateDisplayCourse = () => {
+      displayCourse.value = reactive(apiToDisplayCourse(baseCourse.value, "-"));
+    };
 
     const updateCounter = (
       key: "attendance" | "late" | "absence",
       value: number
     ) => {
-      if (displayCourse[key] + value < 0) return;
-      displayCourse[key] += value;
+      if (displayCourse.value[key] + value < 0) return;
+      displayCourse.value[key] += value;
       update();
     };
 
     const update = async () => {
-      const course = displayCourseToApi(displayCourse, baseCourse);
+      const course = displayCourseToApi(displayCourse.value, baseCourse.value);
       try {
         await updateCourse(ports)(id, course);
       } catch (error) {
         console.error(error);
         displayToast(ports)(extractMessageOrDefault(error));
+        updateDisplayCourse();
         return;
       }
+    };
+
+    /** tag */
+    const apiTags = ref<ApiTag[]>([]);
+    const updateApiTags = async () => {
+      apiTags.value = (await getTags(ports))
+        .map(({ id, name, position }) => ({
+          id,
+          name,
+          order: position ?? 0,
+        }))
+        .sort((a, b) => a.order - b.order);
+
+      console.log("update api tags", apiTags.value);
+    };
+    const displayTags = ref<DisplayTag[]>([]);
+    const updateDisplayTags = () => {
+      const assingedTagIds = baseCourse.value.tags.map(({ id }) => id);
+      displayTags.value = reactive(
+        apiToDisplayTags(assingedTagIds, apiTags.value)
+      );
+    };
+    // initialization
+    await updateApiTags();
+    updateDisplayTags();
+
+    const add = ref(false);
+    const onCreateTag = async (name: string) => {
+      console.log("create tag");
+
+      const assignedTagIds = displayTags.value.map(({ id }) => ({ id }));
+      // api を叩く前に View を変更する
+      displayTags.value.push({ id: NEW_TAG_ID, name, assign: true });
+
+      let newTagId: string | undefined = undefined;
+      try {
+        newTagId = (await createTag(ports)(name)).id;
+      } catch (error) {
+        displayToast(ports)(extractMessageOrDefault(error));
+        updateDisplayTags();
+        return;
+      }
+      if (newTagId === undefined) return;
+      await updateApiTags();
+
+      assignedTagIds.push({ id: newTagId });
+
+      try {
+        await updateCourseTags(ports)({
+          courseId: baseCourse.value.id,
+          assignedTags: assignedTagIds,
+        });
+      } catch (error) {
+        displayToast(ports)(extractMessageOrDefault(error));
+        updateDisplayTags();
+        return;
+      }
+
+      await updateBaseCourse();
+      updateDisplayTags();
+    };
+    const onClickTag = async (clickedTag: DisplayTag) => {
+      const assignedTags: TagIdOnly[] = displayTags.value
+        .filter(({ id, assign }) => clickedTag.id !== id && assign)
+        .map(({ id }) => ({ id }));
+      if (!clickedTag.assign) assignedTags.push({ id: clickedTag.id });
+
+      // api を叩く前に View を変更する
+      clickedTag.assign = !clickedTag.assign;
+
+      try {
+        await updateCourseTags(ports)({
+          courseId: baseCourse.value.id,
+          assignedTags,
+        });
+      } catch (error) {
+        displayToast(ports)(extractMessageOrDefault(error));
+        updateDisplayTags();
+        return;
+      }
+
+      await updateBaseCourse();
+      updateDisplayTags();
     };
 
     /** delete-course-modal */
@@ -274,7 +393,9 @@ export default defineComponent({
       },
       {
         onClick: () =>
-          openUrl(getSyllbusUrl(displayCourse.code, baseCourse.year)),
+          openUrl(
+            getSyllbusUrl(displayCourse.value.code, baseCourse.value.year)
+          ),
         link: true,
         value: "シラバス",
         color: "normal",
@@ -290,7 +411,7 @@ export default defineComponent({
       {
         onClick: () =>
           openUrl(
-            `https://www.google.com/maps/search/筑波大学+${displayCourse.room}`
+            `https://www.google.com/maps/search/筑波大学+${displayCourse.value.room}`
           ),
         link: true,
         value: "地図",
@@ -307,7 +428,7 @@ export default defineComponent({
     ];
 
     // 手動で追加した授業はシラバスへ遷移できない
-    if (baseCourse.course == undefined) popupData.splice(1, 1);
+    if (baseCourse.value.course == undefined) popupData.splice(1, 1);
 
     return {
       displayCourse,
@@ -321,6 +442,10 @@ export default defineComponent({
       closeDeleteCourseModal,
       update,
       deleteCourse,
+      displayTags,
+      add,
+      onCreateTag,
+      onClickTag,
     };
   },
 });
@@ -349,7 +474,7 @@ export default defineComponent({
   @include scroll-mask;
   &__contents {
     padding-top: $spacing-3;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   &__code {
     font-size: $font-small;
@@ -366,7 +491,7 @@ export default defineComponent({
   &__details {
     display: grid;
     gap: $spacing-4;
-    margin-top: $spacing-5;
+    margin: $spacing-5 $spacing-0 $spacing-8;
   }
   &__memo {
     margin: $spacing-8 $spacing-0;

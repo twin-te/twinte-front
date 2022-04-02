@@ -45,6 +45,7 @@ export default defineComponent({
     const isActive = ref(false);
 
     const handleClick = (e: any) => {
+      if (props.state === "disabled") return;
       isActive.value = props.pauseActiveStyle && !isActive.value;
       emit("click", e.target.value);
     };
@@ -151,14 +152,16 @@ export default defineComponent({
   }
   &.--active,
   &:active {
-    color: getColor(--color-white);
-    @include button-active;
-    &.button--danger {
-      @include button-active-danger;
-    }
-    &::after {
-      color: white;
-      @include void-text-liner;
+    &:not(.--disabled) {
+      color: getColor(--color-white);
+      @include button-active;
+      &.button--danger {
+        @include button-active-danger;
+      }
+      &::after {
+        color: white;
+        @include void-text-liner;
+      }
     }
   }
   &.--disabled {

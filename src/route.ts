@@ -12,6 +12,8 @@ import Twins from "./pages/add/twins.vue";
 import ViewSettings from "./pages/view-settings.vue";
 import Feedback from "./pages/feedback.vue";
 import News from "./pages/news.vue";
+import Credit from "./pages/credit/index.vue";
+import Courses from "./pages/credit/_id.vue";
 import Error404 from "./pages/404.vue";
 
 const history = createWebHistory();
@@ -36,6 +38,8 @@ const routes: RouteRecordRaw[] = [
   { path: "/course/:id", component: Details },
   { path: "/Feedback", component: Feedback },
   { path: "/news", component: News },
+  { path: "/credit", component: Credit },
+  { path: "/credit/:id", component: Courses },
   { path: "/:pathMatch(.*)*", component: Error404 },
 ];
 

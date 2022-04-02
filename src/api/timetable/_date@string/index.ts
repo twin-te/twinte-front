@@ -8,7 +8,7 @@ export type Methods = {
     /** 成功 */
     resBody: {
       date: string
-      module?: Types.SchoolCalendarModule
+      module?: Types.SchoolCalendarModule | undefined
       events: Types.SchoolCalendarEvent[]
       courses: Types.RegisteredCourse[]
     }

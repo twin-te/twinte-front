@@ -1,4 +1,6 @@
 import { GetterTree } from "vuex";
+import { RegisteredCourse } from "~/api/@types";
+import { getKeysFromObj } from "~/util";
 import { GlobalState } from ".";
 
 export const getters: GetterTree<GlobalState, GlobalState> = {
@@ -9,7 +11,13 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
     return state.sidebar;
   },
   courses: (state) => {
-    return state.courses;
+    const years = getKeysFromObj<Record<number, RegisteredCourse[]>>(
+      state.courses
+    );
+    return years.reduce<RegisteredCourse[]>(
+      (courses, year) => [...courses, ...state.courses[year]],
+      []
+    );
   },
   label: (state) => {
     return state.label;
@@ -31,5 +39,8 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
   },
   module: (state) => {
     return state.module;
+  },
+  tags: (state) => {
+    return state.tags;
   },
 };

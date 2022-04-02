@@ -2,19 +2,15 @@ import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import { RegisteredCourse } from "~/api/@types";
-import { getYear } from "./getYear";
 
 /**
- * 登録されている講義を取得し同時に Vuex に保存する
+ * 年度を指定して授業を取得する。
  */
-export const getCourseList = async ({
-  api,
-  store,
-  dayjs,
-}: Ports): Promise<RegisteredCourse[]> => {
-  const courses: RegisteredCourse[] = store.getters.courses;
-  const year = await getYear({ api, store, dayjs });
-  if (courses.length > 0 && courses[0].year === year) return courses;
+export const getCourseListByYear = ({ api, store }: Ports) => async (
+  year: number
+): Promise<RegisteredCourse[]> => {
+  const courses: RegisteredCourse[] = store.state.courses[year];
+  if (courses != undefined && courses.length > 0) return courses;
   const { body, status, originalResponse } = await api.registered_courses
     .get({
       query: { year },
@@ -24,7 +20,7 @@ export const getCourseList = async ({
       throw new NetworkError();
     });
   if (isValidStatus(status)) {
-    store.commit("setCourses", body);
+    store.commit("setCourses", { year, courses: body });
     return body;
   } else if ((status as number) === 401) {
     return [];

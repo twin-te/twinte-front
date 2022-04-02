@@ -1,11 +1,12 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import Loader from "./Loader.vue";
 
 type Props = {
   size: string;
   color: string;
   iconName: string;
+  state: "default" | "disabled";
   loading: boolean;
 };
 
@@ -35,14 +36,19 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    state: {
+      type: String as PropType<"default" | "disabled">,
+      default: "default",
+    },
     loading: {
       type: Boolean,
       default: false,
     },
   },
   emits: ["click"],
-  setup: (_props: Props, { emit }) => {
+  setup: (props: Props, { emit }) => {
     const handleClick = (e: MouseEvent) => {
+      if (props.state === "disabled") return;
       emit("click", e);
     };
 
@@ -59,6 +65,7 @@ export default defineComponent({
       'icon-button': true,
       [`icon-button--${size}`]: true,
       [`icon-button--${color}`]: true,
+      '--disabled': state === 'disabled',
     }"
   >
     <Loader v-if="loading" size="100%" />
@@ -77,6 +84,10 @@ export default defineComponent({
 
   border-radius: $circle;
   background: var(--base-liner);
+
+  &.--disabled {
+    opacity: 0.3;
+  }
 
   @include button-cursor;
   @include button-inactive;
@@ -105,7 +116,7 @@ export default defineComponent({
   &--normal {
     color: getColor(--color-button-gray);
     transition: $transition-box-shadow;
-    &:active {
+    &:active:not(.--disabled) {
       color: getColor(--color-white);
       @include button-active;
     }
@@ -113,7 +124,7 @@ export default defineComponent({
   &--danger {
     color: getColor(--color-danger);
     transition: $transition-box-shadow;
-    &:active {
+    &:active:not(.--disabled) {
       color: getColor(--color-white);
       @include button-active-danger;
     }
@@ -123,7 +134,7 @@ export default defineComponent({
       @include text-liner;
       transition: $transition-box-shadow;
     }
-    &:active {
+    &:active:not(.--disabled) {
       @include button-active;
       color: getColor(--color-white);
       span {

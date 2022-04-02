@@ -69,9 +69,10 @@ import { useDark, useToggle } from "@vueuse/core";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { usePorts } from "~/usecases";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
-import { getCourseList } from "~/usecases/getCourseList";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
 import { useTableTimeMode } from "~/usecases/useTableTime";
 import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
+import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   components: {
@@ -111,14 +112,14 @@ export default defineComponent({
         ? "自動(現在の年度)"
         : displayedYear.value + "年度"
     );
-    const updateYear = (year: string) => {
+    const updateYear = async (year: string) => {
       selectedYear.value = year;
       setDisplayedYear(
         selectedYear.value === "自動(現在の年度)"
           ? null
           : Number(selectedYear.value.slice(0, 4))
       );
-      getCourseList(ports);
+      getCourseListByYear(ports)(await getYear(ports));
     };
 
     return {
