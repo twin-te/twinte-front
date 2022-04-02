@@ -125,7 +125,7 @@ export default defineComponent({
         tags: course.tags.map(({ id }) => id),
       }));
 
-      console.log("update api courses", apiCourses.value);
+      // console.log("update api courses", apiCourses.value);
     };
 
     const apiTags = ref<ApiTag[]>([]);
@@ -138,7 +138,7 @@ export default defineComponent({
         }))
         .sort((a, b) => a.order - b.order);
 
-      console.log("update api tags", apiTags.value);
+      // console.log("update api tags", apiTags.value);
     };
 
     // initialize
@@ -159,7 +159,7 @@ export default defineComponent({
         newCreditCourseWithStateList
       );
 
-      console.log("creditCourseWithStateList", creditCourseWithStateList);
+      // console.log("creditCourseWithStateList", creditCourseWithStateList);
     };
 
     const onCreateTag = async (

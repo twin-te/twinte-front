@@ -264,7 +264,7 @@ export default defineComponent({
         }))
         .sort((a, b) => a.order - b.order);
 
-      console.log("update api tags", apiTags.value);
+      // console.log("update api tags", apiTags.value);
     };
 
     /** tags */
@@ -300,7 +300,7 @@ export default defineComponent({
 
         editingTagId.value = undefined;
         if (tag.id === NEW_TAG_ID) {
-          console.log("create new tag");
+          // console.log("create new tag");
           try {
             await createTag(ports)(tag.name);
             await updateApiTags();
@@ -309,7 +309,7 @@ export default defineComponent({
           }
           updateApiTags();
         } else {
-          console.log("update tag name");
+          // console.log("update tag name");
           try {
             await updateTagName(ports)({ id: tag.id, name: tag.name });
             await updateApiTags();
@@ -325,11 +325,11 @@ export default defineComponent({
     };
     const onClickDangerBtn = async (tag: CreditTag) => {
       if (tag.id === NEW_TAG_ID) {
-        console.log("clear new tag");
+        // console.log("clear new tag");
         updateTags();
         editingTagId.value = undefined;
       } else {
-        console.log("open delete modal");
+        // console.log("open delete modal");
         numberOfCourseAssignedDeletedTag.value = (
           await getAllRegisteredCourses()
         ).filter(({ tags }) => tags.some(({ id }) => id === tag.id)).length;
@@ -352,7 +352,7 @@ export default defineComponent({
       editingTagId.value = NEW_TAG_ID;
     };
     const onChangeOrder = async (newTags: CreditTag[]) => {
-      console.log("change tag order");
+      // console.log("change tag order");
       tags.value = reactive(newTags);
       const tagPositionOnly: TagPositionOnly[] = newTags.map(({ id }, i) => ({
         id,
@@ -372,7 +372,7 @@ export default defineComponent({
     const deletedTag = ref<CreditTag | undefined>(undefined);
     const numberOfCourseAssignedDeletedTag = ref(0);
     const onClickDeleteModal = async (id: string) => {
-      console.log("delete tag");
+      // console.log("delete tag");
       const idx = tags.value.findIndex((tag) => tag.id === id);
       if (idx === -1) return;
       tags.value.splice(idx, 1);
@@ -420,7 +420,6 @@ export default defineComponent({
 
 .credit {
   @include max-width;
-  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -430,13 +429,15 @@ export default defineComponent({
 }
 
 .tags {
-  flex-grow: 1;
+  height: calc(100vh - 19.6rem); // 100vh から tags 以外の height を引いた分
 
   display: flex;
   flex-direction: column;
   gap: $spacing-2;
 
   &__header {
+    flex: none;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -447,7 +448,7 @@ export default defineComponent({
   }
 
   &__mask {
-    flex: 1 1 0px;
+    flex: initial;
 
     overflow-y: auto;
     @include scroll-mask;
@@ -463,6 +464,10 @@ export default defineComponent({
     font-size: $font-small;
     color: getColor(--color-disabled);
     line-height: $multi-line;
+  }
+
+  &__add-btn {
+    flex: none;
   }
 }
 

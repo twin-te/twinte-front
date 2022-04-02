@@ -34,7 +34,7 @@ export default defineComponent({
     });
 
     const closeToast = (id: number) => {
-      console.log(id);
+      // console.log(id);
       store.commit("deleteToast", id);
     };
 
