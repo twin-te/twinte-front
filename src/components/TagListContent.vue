@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-export type TagListContentMode = "filtering" | "edit";
+export type TagListContentMode = "default" | "edit";
 export type TagListContentDragHandle = "show" | "hide" | "disabled";
 
 export default defineComponent({
@@ -17,45 +17,30 @@ export default defineComponent({
     },
     mode: {
       type: String as PropType<TagListContentMode>,
-      required: true,
-    },
-    selected: {
-      type: Boolean,
-      required: true,
+      default: "default",
     },
     textfield: {
       type: Boolean,
-      required: true,
+      default: false,
     },
     dragHandle: {
       type: String as PropType<TagListContentDragHandle>,
       default: "show",
     },
   },
-  emits: ["click"],
-  setup(props, { emit }) {
-    const handleClick = () => {
-      if (props.mode !== "filtering") return;
-      emit("click");
-    };
-
-    return {
-      handleClick,
-    };
-  },
+  setup() {},
 });
 </script>
 <template>
-  <div @click="handleClick" class="tag-list-content">
+  <div class="tag-list-content">
     <div
       :class="{
         'tag-list-content__container': true,
-        '--selected': mode == 'filtering' && selected,
-        '--filtering': mode == 'filtering',
+        '--textfield': mode === 'edit' && textfield,
       }"
     >
       <div
-        v-show="mode == 'edit' && dragHandle !== 'hide'"
+        v-show="mode === 'edit' && dragHandle !== 'hide'"
         :class="{
           'tag-list-content__drag-icon': true,
           'material-icons': true,
@@ -64,24 +49,24 @@ export default defineComponent({
       >
         drag_handle
       </div>
-      <div v-show="!textfield" class="tag-list-content__name">
+      <div
+        v-if="mode === 'default' || !textfield"
+        class="tag-list-content__name"
+      >
         {{ name }}
       </div>
-      <div v-show="textfield" class="tag-list-content__textfield">
+      <div v-else class="tag-list-content__textfield">
         <slot name="textfiled" />
       </div>
-
-      <div v-show="mode == 'filtering'" class="tag-list-content__credit">
+      <div v-show="mode === 'default'" class="tag-list-content__credit">
         {{ credit }}
       </div>
-      <div v-show="mode == 'edit'" class="tag-list-content__btns">
+
+      <div class="tag-list-content__btns">
         <slot name="btns" />
       </div>
     </div>
-    <div
-      v-show="mode == 'edit' || !selected"
-      class="tag-list-content__border"
-    />
+    <div class="tag-list-content__border" />
   </div>
 </template>
 
@@ -94,25 +79,22 @@ export default defineComponent({
     display: flex;
     align-items: center;
 
-    padding: $spacing-1 $spacing-2;
-    border-radius: $radius-1;
+    padding: $spacing-0 $spacing-2;
 
-    &.--selected {
-      color: getColor(--color-white);
-      background: var(--primary-liner);
-      box-shadow: $shadow-primary-concave;
-    }
-
-    &.--filtering {
-      height: 3rem;
-      justify-content: space-between;
-      @include button-cursor;
+    height: 4.4rem;
+    &.--textfield {
+      height: 4.8rem;
     }
   }
 
   &__name {
     flex-grow: 1;
     font-size: $font-small;
+    user-select: none;
+  }
+
+  &__credit {
+    font-weight: 500;
     user-select: none;
   }
 
