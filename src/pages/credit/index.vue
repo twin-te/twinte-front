@@ -97,8 +97,12 @@
                     v-show="mode === 'edit'"
                     size="small"
                     color="danger"
-                    :icon-name="element.id === 'new-tag' ? ' clear' : 'delete'"
-                    :state="editingTagId ? 'disabled' : 'default'"
+                    :icon-name="element.id === NEW_TAG_ID ? ' clear' : 'delete'"
+                    :state="
+                      editingTagId && element.id !== NEW_TAG_ID
+                        ? 'disabled'
+                        : 'default'
+                    "
                   ></IconButton>
                 </template>
               </TagListContent>
@@ -396,6 +400,7 @@ export default defineComponent({
       mode,
       editingTagId,
       dragging,
+      NEW_TAG_ID,
       tags,
       allCourseTag,
       onClickTransitionBtn,
