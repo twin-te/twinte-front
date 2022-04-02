@@ -117,7 +117,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .credit-course-list-content {
   width: 100%;

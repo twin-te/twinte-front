@@ -305,7 +305,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-@import "~/scss/main.scss";
+@import "~/styles";
 
 .credit-filter {
   width: 100%;
