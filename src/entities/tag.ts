@@ -11,3 +11,6 @@ export const isDisplayTag = (
 ): tag is DisplayTag => {
   return "assign" in tag;
 };
+
+export const NEW_TAG_ID = "new-tag";
+export const ALL_COURSES_ID = "all-courses";

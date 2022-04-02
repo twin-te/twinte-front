@@ -177,14 +177,12 @@ import { getTags } from "~/usecases/getTags";
 import { getCourseListByYear } from "~/usecases/getCourseListByYear";
 import { RegisteredCourse, TagPositionOnly } from "~/api/@types";
 import { createTag } from "~/usecases/createTag";
+import { ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
 import { displayToast } from "~/entities/toast";
 import { extractMessageOrDefault } from "~/usecases/error";
 import { updateTagName } from "~/usecases/updateTagName";
 import { deleteTag } from "~/usecases/deleteTag";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
-
-export const NEW_TAG_ID = "new-tag";
-export const ALL_COURSES_ID = "all-courses";
 
 export default defineComponent({
   name: "Credit",

@@ -54,7 +54,7 @@ import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
 import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import { CreditCourseWithState } from "~/entities/course";
-import { DisplayTag } from "~/entities/tag";
+import { DisplayTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
 import { displayToast } from "~/entities/toast";
 import { usePorts } from "~/usecases";
 import { createTag } from "~/usecases/createTag";
@@ -69,7 +69,6 @@ import { getCourseListByYear } from "~/usecases/getCourseListByYear";
 import { getTagById } from "~/usecases/getTagById";
 import { getTags } from "~/usecases/getTags";
 import { updateCourseTags } from "~/usecases/updateCourseTags";
-import { ALL_COURSES_ID } from "./index.vue";
 
 export default defineComponent({
   name: "Courses",
@@ -163,8 +162,6 @@ export default defineComponent({
       console.log("creditCourseWithStateList", creditCourseWithStateList);
     };
 
-    const NEW_TAG = "new-tag";
-
     const onCreateTag = async (
       course: CreditCourseWithState,
       tagName: string
@@ -176,7 +173,7 @@ export default defineComponent({
 
       // api を叩く前に View を変更する
       creditCourseWithStateList.forEach(({ id, tags }) => {
-        tags.push({ id: NEW_TAG, name: tagName, assign: id === course.id });
+        tags.push({ id: NEW_TAG_ID, name: tagName, assign: id === course.id });
       });
 
       try {
