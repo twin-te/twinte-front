@@ -53,6 +53,7 @@ export default defineComponent({
 
 <template>
   <div class="tag-editor">
+    <p class="tag-editor__heading">タグの編集</p>
     <div class="tag-editor__tags">
       <slot name="tags" />
     </div>
@@ -105,6 +106,11 @@ export default defineComponent({
   row-gap: $spacing-2;
 
   padding: $spacing-2;
+
+  &__heading {
+    font-size: $font-small;
+    color: getColor(--color-text-sub);
+  }
 
   &__tags {
     width: 100%;
