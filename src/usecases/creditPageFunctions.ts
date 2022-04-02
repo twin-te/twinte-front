@@ -136,14 +136,14 @@ export const updateReactiveTags = <T extends CreditTag | DisplayTag>(
  * タグの追加、削除、タグ名と `assign` の変更を行う。
  *
  * @param reactiveCreditCourseWithStateList リアクティブな配列
- * @param compReactiveCreditCourseWithStateList 比較対象
+ * @param compCreditCourseWithStateList 比較対象
  */
 export const updateCreditCourseWithStateList = (
   reactiveCreditCourseWithStateList: CreditCourseWithState[],
-  compReactiveCreditCourseWithStateList: CreditCourseWithState[]
+  compCreditCourseWithStateList: CreditCourseWithState[]
 ) => {
   // delete courses
-  const compIds = compReactiveCreditCourseWithStateList.map(({ id }) => id);
+  const compIds = compCreditCourseWithStateList.map(({ id }) => id);
   const deletedIndices: number[] = [];
   reactiveCreditCourseWithStateList.forEach(({ id }, idx) => {
     if (!compIds.includes(id)) deletedIndices.push(idx);
@@ -154,7 +154,7 @@ export const updateCreditCourseWithStateList = (
 
   // update display tags
   reactiveCreditCourseWithStateList.forEach(({ id, tags: reactiveTags }) => {
-    const compTags = compReactiveCreditCourseWithStateList.find(
+    const compTags = compCreditCourseWithStateList.find(
       (course) => course.id === id
     )?.tags;
     if (compTags === undefined) return;
@@ -163,10 +163,19 @@ export const updateCreditCourseWithStateList = (
 
   // add courses
   const existingIds = reactiveCreditCourseWithStateList.map(({ id }) => id);
-  const addedCourses = compReactiveCreditCourseWithStateList.filter(
+  const addedCourses = compCreditCourseWithStateList.filter(
     ({ id }) => !existingIds.includes(id)
   );
   reactiveCreditCourseWithStateList.push(...addedCourses);
+
+  // sort courses
+  const idToOrder = compCreditCourseWithStateList.reduce<
+    Record<string, number>
+  >((map, { id }, idx) => ({ ...map, [id]: idx }), {});
+  console.log(idToOrder);
+  reactiveCreditCourseWithStateList.sort(
+    (a, b) => idToOrder[a.id] - idToOrder[b.id]
+  );
 };
 
 /**

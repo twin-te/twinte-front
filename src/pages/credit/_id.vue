@@ -20,14 +20,14 @@
       <div class="main__mask">
         <div class="main__courses">
           <CreditCourseListContent
-            v-for="course in creditCourseWithStateList"
+            v-for="(course, i) in creditCourseWithStateList"
             :key="course.id"
             @click="
               course.state =
                 course.state === 'selected' ? 'default' : 'selected'
             "
             @create-tag="(tagName) => onCreateTag(course, tagName)"
-            @click-tag="(tag) => onClickTag(course, tag)"
+            @click-tag="(tag) => onClickTag(course, tag, i)"
             :state="course.state"
             :code="course.code"
             :name="course.name"
@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { RegisteredCourse, Tag, TagIdOnly } from "~/api/@types";
 import CreditCourseListContent from "~/components/CreditCourseListContent.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -66,8 +66,10 @@ import {
 } from "~/usecases/creditPageFunctions";
 import { extractMessageOrDefault } from "~/usecases/error";
 import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getTagById } from "~/usecases/getTagById";
 import { getTags } from "~/usecases/getTags";
 import { updateCourseTags } from "~/usecases/updateCourseTags";
+import { ALL_COURSES_ID } from "./index.vue";
 
 export default defineComponent({
   name: "Courses",
@@ -78,16 +80,19 @@ export default defineComponent({
   },
   async setup() {
     const ports = usePorts();
+    const route = useRoute();
     const router = useRouter();
 
     /**
      * year === 0 の場合は すべての年度
      * tag === 'all' の場合は すべての授業
      */
-    const year = 0;
-    const tag = "all";
-
-    if (year == undefined || tag == undefined) router.push("/credit");
+    const year = Number(route.query.year ?? 0);
+    const tagId = route.params.id as string;
+    const selectedTag: Tag | undefined =
+      tagId === ALL_COURSES_ID ? undefined : await getTagById(ports)(tagId);
+    if (tagId !== ALL_COURSES_ID && selectedTag === undefined)
+      await router.push("/credit");
 
     const getRegisteredCourses = async (): Promise<RegisteredCourse[]> => {
       const years = year === 0 ? [2019, 2020, 2021, 2022] : [year];
@@ -95,7 +100,20 @@ export default defineComponent({
       for (const y of years) {
         registeredCourses.push(...(await getCourseListByYear(ports)(y)));
       }
-      return registeredCourses;
+      registeredCourses.sort((a, b) =>
+        a.year === b.year
+          ? a.course?.code && b.course?.code
+            ? a.course.code.localeCompare(b.course.code)
+            : (a.name ?? a.course?.name ?? "").localeCompare(
+                b.name ?? b.course?.name ?? ""
+              )
+          : a.year - b.year
+      );
+      return tagId === ALL_COURSES_ID
+        ? registeredCourses
+        : registeredCourses.filter(({ tags }) =>
+            tags.some(({ id }) => id === tagId)
+          );
     };
 
     const apiCourses = ref<ApiCourseForCredit[]>([]);
@@ -192,7 +210,8 @@ export default defineComponent({
 
     const onClickTag = async (
       course: CreditCourseWithState,
-      clickedTag: DisplayTag
+      clickedTag: DisplayTag,
+      idx: number
     ) => {
       const assignedTags: TagIdOnly[] = course.tags
         .filter((tag) => tag.id !== clickedTag.id && tag.assign)
@@ -202,13 +221,13 @@ export default defineComponent({
 
       // api を叩く前に View を変更する
       clickedTag.assign = !clickedTag.assign;
+      if (clickedTag.id === tagId && !clickedTag.assign)
+        creditCourseWithStateList.splice(idx, 1);
 
       try {
         await updateCourseTags(ports)({ courseId: course.id, assignedTags });
       } catch (error) {
         displayToast(ports)(extractMessageOrDefault(error));
-        updateView();
-        return;
       }
 
       await updateApiCourses();
@@ -228,8 +247,11 @@ export default defineComponent({
         .toFixed(1)
     );
     const info = computed(() => ({
-      year: year === 0 ? "すべての年度" : year,
-      tag: tag === "all" ? "すべての授業 " : `タグ「${tag}」`,
+      year: year === 0 ? "すべての年度" : `${year}年度`,
+      tag:
+        tagId === ALL_COURSES_ID
+          ? "すべての授業 "
+          : `タグ「${selectedTag?.name}」`,
       credit: `${totalCredit.value}単位`,
     }));
 

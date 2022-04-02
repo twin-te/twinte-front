@@ -38,7 +38,7 @@
           >
             <template #btns>
               <IconButton
-                @click="(allCourseTag) => onClickTransitionBtn(allCourseTag)"
+                @click="() => onClickTransitionBtn(allCourseTag)"
                 v-show="mode === 'default'"
                 size="small"
                 color="normal"
@@ -73,7 +73,7 @@
                 </template>
                 <template #btns>
                   <IconButton
-                    @click="(element) => onClickTransitionBtn(element)"
+                    @click="() => onClickTransitionBtn(element)"
                     v-show="mode === 'default'"
                     size="small"
                     color="normal"
@@ -183,6 +183,9 @@ import { updateTagName } from "~/usecases/updateTagName";
 import { deleteTag } from "~/usecases/deleteTag";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
 
+export const NEW_TAG_ID = "new-tag";
+export const ALL_COURSES_ID = "all-courses";
+
 export default defineComponent({
   name: "Credit",
   components: {
@@ -263,9 +266,6 @@ export default defineComponent({
     const editingTagId = ref<string | undefined>(undefined);
     const dragging = ref(false);
 
-    const NEW_TAG = "new-tag";
-    const ALL_COURSES = "all-courses";
-
     /**
      * - View は主に `tags` に依存しています。
      * - `updateTags` は `apiCourses` と `apiTags` をもとに実行されます。
@@ -282,7 +282,7 @@ export default defineComponent({
     };
 
     const allCourseTag = computed<CreditTag>(() => ({
-      id: ALL_COURSES,
+      id: ALL_COURSES_ID,
       name: "すべての授業",
       credit: totalCredit.value,
     }));
@@ -290,7 +290,7 @@ export default defineComponent({
     const onClickNormalBtn = async (tag: CreditTag) => {
       if (editingTagId.value === tag.id) {
         editingTagId.value = undefined;
-        if (tag.id === NEW_TAG) {
+        if (tag.id === NEW_TAG_ID) {
           console.log("create new tag");
           try {
             await createTag(ports)(tag.name);
@@ -315,7 +315,7 @@ export default defineComponent({
       }
     };
     const onClickDangerBtn = async (tag: CreditTag) => {
-      if (tag.id === NEW_TAG) {
+      if (tag.id === NEW_TAG_ID) {
         console.log("clear new tag");
         updateTags();
         editingTagId.value = undefined;
@@ -332,12 +332,19 @@ export default defineComponent({
       }
     };
     const onClickTransitionBtn = (tag: CreditTag) => {
-      console.log(tag);
-      router.push("/credit/courses");
+      router.push({
+        path: `/credit/${tag.id}`,
+        query: {
+          year:
+            selectedYear.value === "すべての年度"
+              ? 0
+              : Number(selectedYear.value.slice(0, 4)),
+        },
+      });
     };
     const onClickAddBtn = () => {
-      tags.value.push({ id: NEW_TAG, name: "", credit: "0.0" });
-      editingTagId.value = NEW_TAG;
+      tags.value.push({ id: NEW_TAG_ID, name: "", credit: "0.0" });
+      editingTagId.value = NEW_TAG_ID;
     };
     const onChangeOrder = async (newTags: CreditTag[]) => {
       console.log("change tag order");
@@ -389,8 +396,6 @@ export default defineComponent({
       dragging,
       tags,
       allCourseTag,
-      NEW_TAG,
-      ALL_COURSES,
       onClickTransitionBtn,
       onClickNormalBtn,
       onClickDangerBtn,
