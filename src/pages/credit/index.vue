@@ -295,6 +295,9 @@ export default defineComponent({
 
     const onClickNormalBtn = async (tag: CreditTag) => {
       if (editingTagId.value === tag.id) {
+        // タグ名が "" のとき
+        if (tag.name === "") return;
+
         editingTagId.value = undefined;
         if (tag.id === NEW_TAG_ID) {
           console.log("create new tag");
