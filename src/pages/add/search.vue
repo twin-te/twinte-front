@@ -92,9 +92,9 @@
               >
                 <CardCourse
                   @click-card="course.isExpanded = !course.isExpanded"
-                  @click-checkbox="course.isSelected = !course.isSelected"
+                  @click-checkbox="flipSet(selectedCourses, course.course)"
                   :course="courseToCard(course.course)"
-                  :isChecked="course.isSelected"
+                  :isChecked="selectedCourses.has(course.course)"
                   :isDetailed="isDetailed"
                   :isExpanded="course.isExpanded"
                 ></CardCourse>
@@ -105,8 +105,46 @@
             </div>
           </section>
         </transition>
+        <div class="search__selected">
+          <div
+            @click="toggleSelectedOpen"
+            :class="{
+              selected__count: true,
+              '--active': selectedCourses.size > 0,
+              '--opened': isSelectedOpen,
+            }"
+          >
+            選択中の授業:
+            {{ selectedCourses.size }}件
+            <span v-show="selectedCourses.size > 0" class="material-icons"
+              >expand_less</span
+            >
+          </div>
+          <div v-show="isSelectedOpen" class="selected__course-list">
+            <div
+              v-for="course in selectedCourses.values()"
+              :key="course.id"
+              class="course-list__row"
+            >
+              <div class="course-list__name">
+                {{ course.name }}
+              </div>
+              <CourseDetailMini
+                icon-name="schedule"
+                :text="periodToString(course.schedules)"
+              />
+              <div
+                @click="targetCourseToDelete(course)"
+                class="course-list__clear-button"
+              >
+                <span class="material-icons">clear</span>
+                解除
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <section class="main__button">
+      <section class="main__bottom">
         <Button
           @click="addCourse()"
           size="large"
@@ -160,6 +198,29 @@
         >
       </template>
     </Modal>
+    <Modal v-if="courseTargetedToDelete" @click="closeDeleteModal">
+      <template #title>選択を解除しますか？</template>
+      <template #contents>
+        「{{ courseTargetedToDelete.name }}」の選択を解除しますか？ <br />
+        解除すると「選択中の授業」一覧から削除されます。
+      </template>
+      <template #button>
+        <Button
+          @click="closeDeleteModal"
+          size="medium"
+          layout="fill"
+          color="base"
+          >キャンセル</Button
+        >
+        <Button
+          @click="deleteTargetCourse(courseTargetedToDelete)"
+          size="medium"
+          layout="fill"
+          color="danger"
+          >解除</Button
+        >
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -190,10 +251,12 @@ import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import ToggleButton from "~/components/ToggleButton.vue";
 import Card from "~/components/Card.vue";
+import { flipSet } from "~/util";
 
 export default defineComponent({
   components: {
     Button,
+    Card,
     CardCourse,
     Checkbox,
     CourseDetailMini,
@@ -203,7 +266,6 @@ export default defineComponent({
     ScheduleEditer,
     TextFieldSingleLine,
     ToggleButton,
-    Card,
   },
   setup() {
     const route = useRoute();
@@ -264,10 +326,11 @@ export default defineComponent({
       }
     );
 
+    const selectedCourses = ref(new Set<Course>());
+
     /** result */
-    const searchResult = ref<
-      { course: Course; isSelected: boolean; isExpanded: boolean }[]
-    >([]);
+    const searchResult = ref<{ course: Course; isExpanded: boolean }[]>([]);
+    const [isSelectedOpen, toggleSelectedOpen] = useToggle(false);
     // 検索結果を動的に読み込む処理
     const searchBoxRef = ref<Element>();
     const options = {
@@ -345,7 +408,7 @@ export default defineComponent({
 
     /** button */
     const btnState = computed(() => {
-      if (searchResult.value.some((v) => v.isSelected)) return "default";
+      if (selectedCourses.value.size > 0) return "default";
       else return "disabled";
     });
 
@@ -360,7 +423,7 @@ export default defineComponent({
     const addCourse = async (showWarning = true) => {
       if (btnState.value == "disabled") return;
       duplicatedCourses.value = getDuplicatedCourses(ports)(
-        searchResult.value.filter((v) => v.isSelected).map((v) => v.course)
+        Array.from(selectedCourses.value.values())
       );
       if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();
@@ -368,9 +431,9 @@ export default defineComponent({
       }
       try {
         await bulkAddCourseById(ports)(
-          searchResult.value
-            .filter((v) => v.isSelected)
-            .map((v) => v.course.code)
+          Array.from(selectedCourses.value.values()).map(
+            (course) => course.code
+          )
         );
       } catch (error) {
         console.error(error);
@@ -380,19 +443,37 @@ export default defineComponent({
       router.push("/");
     };
 
+    /** delete selected course modal */
+    const courseTargetedToDelete = ref<Course>();
+    const targetCourseToDelete = (course: Course) =>
+      (courseTargetedToDelete.value = course);
+    const closeDeleteModal = () => {
+      courseTargetedToDelete.value = undefined;
+    };
+    const deleteTargetCourse = (course: Course | undefined) => {
+      if (!course) return;
+      selectedCourses.value.delete(course);
+      courseTargetedToDelete.value = undefined;
+    };
+
     return {
       addCourse,
       addSchedule,
       btnState,
+      closeDeleteModal,
       closeDuplicationModal,
       conditions,
+      courseTargetedToDelete,
       courseToCard,
+      deleteTargetCourse,
       duplicatedCourses,
       duplicationModal,
       fetching,
+      flipSet,
       isAccordionOpen,
       isDetailed,
       isNoResultShow,
+      isSelectedOpen,
       limit,
       onlyBlank,
       openDuplicationModal,
@@ -403,10 +484,13 @@ export default defineComponent({
       searchBoxRef,
       searchResult,
       searchWord,
+      selectedCourses,
       setSearchResultRef,
+      targetCourseToDelete,
       toggleDetailed,
       toggleOnlyBlank,
       toggleOpen,
+      toggleSelectedOpen,
     };
   },
 });
@@ -424,7 +508,7 @@ export default defineComponent({
     height: calc(#{$vh} - 16.2rem);
     padding: $spacing-3 $spacing-0 $spacing-0;
   }
-  &__button {
+  &__bottom {
     text-align: center;
     margin: $spacing-3 $spacing-0 $spacing-6;
     @include landscape {
@@ -448,10 +532,15 @@ export default defineComponent({
     margin-bottom: $spacing-7;
   }
   &__result {
-    height: calc(#{$vh} - 26.6rem);
+    height: calc(
+      #{$vh} - 26.6rem - 5rem - v-bind("`${isSelectedOpen ? selectedCourses.size * 2.7 : 0}rem`")
+    );
     @include scroll-mask;
     overflow-y: auto;
     padding: $spacing-2;
+  }
+  &__selected {
+    padding: $spacing-2 0 0 $spacing-2;
   }
 }
 
@@ -521,6 +610,42 @@ export default defineComponent({
   }
   &__not-found {
     color: getColor(--color-disabled);
+  }
+}
+
+.selected {
+  &__count {
+    @include button-cursor;
+    &.--active {
+      color: getColor(--color-primary);
+      font-weight: bold;
+    }
+    .material-icons {
+      transition: $transition-all;
+    }
+    &.--opened {
+      .material-icons {
+        transform: rotateZ(180deg);
+      }
+    }
+  }
+}
+
+.course-list {
+  &__row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: $spacing-2 0;
+  }
+  &__name {
+    margin-right: $spacing-2;
+  }
+  &__clear-button {
+    @include button-cursor;
+    display: flex;
+    align-items: center;
+    margin-left: $spacing-3;
   }
 }
 
