@@ -12,7 +12,7 @@
     "lint": "eslint --ext .ts,.tsx,.vue ./src",
     "lint:fix": "yarn lint --fix",
     "test": "jest",
-    "apigen": "rm -rf src/infrastructure/api && npx openapi2aspida",
+    "apigen": "rm -rf src/infrastructure/api/aspida && npx openapi2aspida",
     "prepare": "husky install && rimraf ./node_modules/@types/react",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "yarn typecheck && build-storybook"
