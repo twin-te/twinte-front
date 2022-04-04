@@ -16,7 +16,7 @@ export type SchoolCalendarEvent = {
   date: string
   eventType: 'PublicHoliday' | 'Holiday' | 'Exam' | 'SubstituteDay' | 'Other'
   description: string
-  changeTo?: CourseDay | undefined
+  changeTo?: CourseDay
 }
 
 export type SchoolCalendarModule = {
@@ -46,54 +46,54 @@ export type Course = {
 export type RegisteredCourse = {
   id: string
   userId: string
-  course?: Course | undefined
+  course?: Course
 } & RegisteredCourseWithoutID
 
 export type SearchCourseTimetableQuery = {
-  SpringA?: SearchCourseTimetableQueryDays | undefined
-  SpringB?: SearchCourseTimetableQueryDays | undefined
-  SpringC?: SearchCourseTimetableQueryDays | undefined
-  FallA?: SearchCourseTimetableQueryDays | undefined
-  FallB?: SearchCourseTimetableQueryDays | undefined
-  FallC?: SearchCourseTimetableQueryDays | undefined
-  SummerVacation?: SearchCourseTimetableQueryDays | undefined
-  SpringVacation?: SearchCourseTimetableQueryDays | undefined
+  SpringA: SearchCourseTimetableQueryDays
+  SpringB: SearchCourseTimetableQueryDays
+  SpringC: SearchCourseTimetableQueryDays
+  FallA: SearchCourseTimetableQueryDays
+  FallB: SearchCourseTimetableQueryDays
+  FallC: SearchCourseTimetableQueryDays
+  SummerVacation: SearchCourseTimetableQueryDays
+  SpringVacation: SearchCourseTimetableQueryDays
 }
 
 export type SearchCourseTimetableQueryDays = {
-  Sun?: SearchCourseTimetableQueryPeriods | undefined
-  Mon?: SearchCourseTimetableQueryPeriods | undefined
-  Tue?: SearchCourseTimetableQueryPeriods | undefined
-  Wed?: SearchCourseTimetableQueryPeriods | undefined
-  Thu?: SearchCourseTimetableQueryPeriods | undefined
-  Fri?: SearchCourseTimetableQueryPeriods | undefined
-  Sat?: SearchCourseTimetableQueryPeriods | undefined
-  Intensive?: SearchCourseTimetableQueryPeriods | undefined
-  Appointment?: SearchCourseTimetableQueryPeriods | undefined
-  AnyTime?: SearchCourseTimetableQueryPeriods | undefined
+  Sun: SearchCourseTimetableQueryPeriods
+  Mon: SearchCourseTimetableQueryPeriods
+  Tue: SearchCourseTimetableQueryPeriods
+  Wed: SearchCourseTimetableQueryPeriods
+  Thu: SearchCourseTimetableQueryPeriods
+  Fri: SearchCourseTimetableQueryPeriods
+  Sat: SearchCourseTimetableQueryPeriods
+  Intensive: SearchCourseTimetableQueryPeriods
+  Appointment: SearchCourseTimetableQueryPeriods
+  AnyTime: SearchCourseTimetableQueryPeriods
 }
 
 /** 指定しなかった場合はfalseとみなされます */
 export type SearchCourseTimetableQueryPeriods = {
   /** 時限が不明な授業は0になっているためそれらも検索したい場合はtrueに（集中授業に多い） */
-  '0'?: boolean | undefined
-  '1'?: boolean | undefined
-  '2'?: boolean | undefined
-  '3'?: boolean | undefined
-  '4'?: boolean | undefined
-  '5'?: boolean | undefined
-  '6'?: boolean | undefined
-  '7'?: boolean | undefined
-  '8'?: boolean | undefined
+  '0': boolean
+  '1': boolean
+  '2': boolean
+  '3': boolean
+  '4': boolean
+  '5': boolean
+  '6': boolean
+  '7': boolean
+  '8': boolean
 }
 
 export type RegisteredCourseWithoutID = {
   year: number
-  name?: string | undefined
-  instructor?: string | undefined
-  credit?: number | undefined
-  methods?: CourseMethod[] | undefined
-  schedules?: CourseSchedule[] | undefined
+  name?: string
+  instructor?: string
+  credit?: number
+  methods?: CourseMethod[]
+  schedules?: CourseSchedule[]
   memo: string
   attendance: number
   absence: number
@@ -105,7 +105,7 @@ export type Tag = {
   id: string
   userId: string
   name: string
-  position?: number | undefined
+  position?: number
 }
 
 export type TagPositionOnly = {
@@ -144,8 +144,8 @@ export type Subscription = {
 export type PaymentUser = {
   paymentUserId: string
   twinteUserId: string
-  displayName?: string | undefined
-  link?: string | undefined
+  displayName?: string
+  link?: string
 }
 
 export type Information = {
@@ -153,7 +153,7 @@ export type Information = {
   title: string
   content: string
   publishedAt: string
-  read?: boolean | undefined
+  read?: boolean
 }
 
 export type Error = {

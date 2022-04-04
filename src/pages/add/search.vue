@@ -19,7 +19,7 @@
               <TextFieldSingleLine
                 v-model.trim="searchCode"
                 @enter-text-field="search(0)"
-                placeholder="例）GA"
+                placeholder="例）GA -0"
                 :height="3.4"
               >
               </TextFieldSingleLine>
