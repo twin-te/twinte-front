@@ -2,7 +2,20 @@ import { BaseError } from "./error";
 
 const union = <T>(arr: T[]) => [...new Set(arr)];
 
-export const getCoursesIdByFile = (file: File): Promise<string[]> => {
+type Risyu = {
+  type: "risyu";
+  data: string[];
+};
+type Seiseki = {
+  type: "seiseki";
+  data: {
+    code: string;
+    year: number;
+  }[];
+};
+type CSV = Risyu | Seiseki;
+
+export const getCoursesIdByFile = (file: File): Promise<CSV> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsText(file);
@@ -15,16 +28,25 @@ export const getCoursesIdByFile = (file: File): Promise<string[]> => {
 
       // 履修フォーマット
       if (line[0].length === 7) {
-        resolve(line);
+        resolve({
+          type: "risyu",
+          data: line,
+        });
       }
 
       // 成績フォーマット
-      if (line[0].split(",").length === 11) {
+      else if (line[0].split(",").length === 11) {
         line.splice(0, 1); // delete header
-        resolve(union(line.map((v) => v.split(",")[2])));
-      }
-
-      throw new BaseError("このフォーマット形式に対応していません");
+        resolve({
+          type: "seiseki",
+          data: union(
+            line.map((v) => ({
+              code: v.split(",")[2],
+              year: Number(v.split(",")[9]),
+            }))
+          ),
+        });
+      } else throw new BaseError("このフォーマット形式に対応していません");
     };
     reader.onerror = (error) => reject(error);
   });
