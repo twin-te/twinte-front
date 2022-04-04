@@ -12,12 +12,17 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    style: {
+      type: String,
+      default: "normal",
+      validator: (value: string) => ["normal", "slim"].includes(value),
+    },
   },
 });
 </script>
 
 <template>
-  <div class="label">
+  <div :class="`label --${style}`">
     {{ value }}
     <span v-if="mandatory" class="label__mandatory">必須</span>
   </div>
@@ -34,6 +39,11 @@ export default defineComponent({
   font-weight: 500;
   line-height: $single-line;
   color: getColor(--color-text-main);
+  &.--slim {
+    font-size: $font-minimum;
+    font-weight: 500;
+    color: getColor(--color-text-sub);
+  }
   &__mandatory {
     font-size: $font-minimum;
     font-weight: 400;

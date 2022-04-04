@@ -16,6 +16,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    style: {
+      type: String,
+      default: "normal",
+      validator: (value: string) => ["normal", "slim"].includes(value),
+    },
   },
 });
 </script>
@@ -27,8 +32,8 @@ export default defineComponent({
       '--mandatory': mandatory,
     }"
   >
-    <div class="labeled-text-field__label">
-      <Label :value="label" :mandatory="mandatory"></Label>
+    <div :class="`labeled-text-field__label --${style}`">
+      <Label :value="label" :mandatory="mandatory" :style="style"></Label>
     </div>
     <div class="labeled-text-field__text-field">
       <slot />
@@ -43,6 +48,9 @@ export default defineComponent({
   height: 6.8rem;
   &__label {
     margin-bottom: $spacing-2;
+    &.--slim {
+      margin-bottom: $spacing-1;
+    }
   }
 }
 </style>
