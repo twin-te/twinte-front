@@ -103,6 +103,7 @@ const schedulesToTimetable = (
 export const searchCourse = (ports: Ports) => async (
   schedules: Schedule[],
   searchWords: string[],
+  searchCodes: string[],
   offset: number,
   limit: number,
   onlyBlank: boolean
@@ -115,6 +116,7 @@ export const searchCourse = (ports: Ports) => async (
         year,
         searchMode: onlyBlank ? "Contain" : "Cover", // TODO: ユーザが選択できるようにする
         keywords: searchWords,
+        codes: searchCodes,
         timetable: schedulesToTimetable(
           schedules.map(parseSchedules),
           onlyBlank,

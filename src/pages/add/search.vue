@@ -14,12 +14,26 @@
     <div class="main">
       <div class="main__search">
         <section class="search__top">
+          <div class="top__course-code">
+            <LabeledTextField label="科目番号" style="slim">
+              <TextFieldSingleLine
+                v-model.trim="searchCode"
+                @enter-text-field="search(0)"
+                placeholder="例）GA"
+                :height="3.4"
+              >
+              </TextFieldSingleLine>
+            </LabeledTextField>
+          </div>
           <div class="top__course-name">
-            <TextFieldSingleLine
-              v-model.trim="searchWord"
-              @enterTextField="search(0)"
-              placeholder="授業名や科目番号  (例 :「情報 倫理」,「GA」など)"
-            ></TextFieldSingleLine>
+            <LabeledTextField label="キーワード" style="slim">
+              <TextFieldSingleLine
+                v-model.trim="searchWord"
+                @enterTextField="search(0)"
+                placeholder="例）情報 倫理"
+                :height="3.4"
+              ></TextFieldSingleLine>
+            </LabeledTextField>
           </div>
           <div class="top__search-button">
             <IconButton
@@ -252,6 +266,7 @@ import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import ToggleButton from "~/components/ToggleButton.vue";
 import Card from "~/components/Card.vue";
 import { flipSet } from "~/util";
+import LabeledTextField from "~/components/LabeledTextField.vue";
 
 export default defineComponent({
   components: {
@@ -266,6 +281,7 @@ export default defineComponent({
     ScheduleEditer,
     TextFieldSingleLine,
     ToggleButton,
+    LabeledTextField,
   },
   setup() {
     const route = useRoute();
@@ -363,6 +379,7 @@ export default defineComponent({
     let limit = 50;
     const isNoResultShow = ref(false);
     const searchWord = ref("");
+    const searchCode = ref("");
     const fetching = ref(false);
     const search = async (_offset = offset) => {
       fetching.value = true;
@@ -372,6 +389,7 @@ export default defineComponent({
         gtm?.trackEvent({
           event: "search-courses",
           term: searchWord.value,
+          code: searchCode.value,
           use_only_blank: onlyBlank.value,
           schedules: JSON.stringify(schedules.value),
         });
@@ -382,6 +400,7 @@ export default defineComponent({
         courses = await searchCourse(ports)(
           schedules.value,
           searchWord.value.split(/\s/),
+          searchCode.value.split(/\s/),
           _offset,
           limit,
           onlyBlank.value
@@ -482,6 +501,7 @@ export default defineComponent({
       schedules,
       search,
       searchBoxRef,
+      searchCode,
       searchResult,
       searchWord,
       selectedCourses,
@@ -503,9 +523,9 @@ export default defineComponent({
 }
 
 .main {
-  margin-top: $spacing-5;
+  margin-top: $spacing-3;
   &__search {
-    height: calc(#{$vh} - 16.2rem);
+    height: calc(#{$vh} - 15.4rem);
     padding: $spacing-3 $spacing-0 $spacing-0;
   }
   &__bottom {
@@ -523,13 +543,13 @@ export default defineComponent({
 .search {
   &__top {
     display: flex;
-    margin-bottom: $spacing-5;
+    margin-bottom: $spacing-3;
   }
   &__option {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: $spacing-7;
+    margin-bottom: $spacing-4;
   }
   &__result {
     height: calc(
@@ -545,9 +565,16 @@ export default defineComponent({
 }
 
 .top {
+  &__course-code {
+    flex: 1 0 10.2rem;
+    margin-right: $spacing-1;
+  }
   &__course-name {
-    width: 100%;
+    flex: 3 1 auto;
     margin-right: $spacing-2;
+  }
+  &__search-button {
+    margin-top: 2.8rem;
   }
 }
 
