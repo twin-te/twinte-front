@@ -191,6 +191,7 @@ import { extractMessageOrDefault } from "~/usecases/error";
 import { updateTagName } from "~/usecases/updateTagName";
 import { deleteTag } from "~/usecases/deleteTag";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
+import { useHead } from "@vueuse/head";
 
 export default defineComponent({
   name: "Credit",
@@ -205,6 +206,10 @@ export default defineComponent({
     TextFieldSingleLine,
   },
   async setup() {
+    useHead({
+      title: "Twin:te | 単位数",
+    });
+
     const ports = usePorts();
     const router = useRouter();
 
