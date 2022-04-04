@@ -114,6 +114,15 @@
                 ></CardCourse>
               </div>
             </Card>
+            <div
+              v-show="searchResult.length === 0 && !isNoResultShow"
+              class="result__description"
+            >
+              <p>
+                ※授業データは筑波大学の教育課程編成支援システム(KdB)より取得しています。
+              </p>
+              <p>※毎朝5:00に更新されます。</p>
+            </div>
             <div class="result__not-found" v-if="isNoResultShow">
               {{ searchWord }}に一致する授業がありません。
             </div>
@@ -632,6 +641,13 @@ export default defineComponent({
 }
 
 .result {
+  &__description {
+    line-height: $multi-line;
+    color: getColor(--color-text-sub);
+    p {
+      margin-bottom: $spacing-1;
+    }
+  }
   &__row {
     margin-bottom: $spacing-3;
   }
