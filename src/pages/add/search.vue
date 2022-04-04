@@ -154,6 +154,7 @@ import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
 import { displayToast } from "~/entities/toast";
 import { extractMessageOrDefault } from "~/usecases/error";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
 import { periodToString } from "~/usecases/periodToString";
 import { Schedule } from "~/entities/schedule";
 import { searchCourse } from "~/usecases/searchCourse";
@@ -308,8 +309,10 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value == "disabled") return;
+      const year = await getYear(ports);
       duplicatedCourses.value = getDuplicatedCourses(ports)(
-        searchResult.value.filter((v) => v.isSelected).map((v) => v.course)
+        searchResult.value.filter((v) => v.isSelected).map((v) => v.course),
+        year
       );
       if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();

@@ -235,7 +235,8 @@ export default defineComponent({
       ]) as Required<RegisteredCourseWithoutID>;
 
       // 開講時限が重複しているかどうか？
-      if (showWarning && isCourseDuplicated(ports)(course)) {
+      const year = await getYear(ports);
+      if (showWarning && isCourseDuplicated(ports)(course, year)) {
         duplicatedCourses.value[0] = course;
         openDuplicationModal();
         return;
