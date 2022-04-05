@@ -564,6 +564,10 @@ export default defineComponent({
     @include scroll-mask;
     overflow-y: auto;
     padding: $spacing-2;
+    .card {
+      padding: $spacing-4 $spacing-2;
+      background-color: getColor(--color-base);
+    }
   }
   &__result,
   &__accordion {
