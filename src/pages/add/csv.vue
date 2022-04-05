@@ -99,6 +99,7 @@ import { extractMessageOrDefault } from "~/usecases/error";
 import { getCoursesByCode } from "~/usecases/getCourseByCode";
 import { getCoursesIdByFile } from "~/usecases/readCSV";
 import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
 import { periodToString } from "~/usecases/periodToString";
 import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
@@ -144,8 +145,10 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value === "disabled") return;
+      const year = await getYear(ports);
       duplicatedCourses.value = getDuplicatedCourses(ports)(
-        loadedCourses.value.filter((v) => v.isSelected).map((v) => v.course)
+        loadedCourses.value.filter((v) => v.isSelected).map((v) => v.course),
+        year
       );
       if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();

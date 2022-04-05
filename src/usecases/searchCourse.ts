@@ -76,7 +76,8 @@ const periods: (keyof SearchCourseTimetableQueryPeriods)[] = [
 const schedulesToTimetable = (
   schedules: ParsedSchedule[],
   onlyBlank: boolean,
-  ports: Ports
+  ports: Ports,
+  year: number
 ): SearchCourseTimetableQuery | undefined => {
   let allTrue = true;
   const timetable = {} as SearchCourseTimetableQuery;
@@ -88,9 +89,10 @@ const schedulesToTimetable = (
         // とりあえず空白検索とドロップダウン検索は or で実装
         // HACK: backend の要望により timetable が全て true の場合 undedined を返す。
         const ret = onlyBlank
-          ? !isSchedulesDuplicated(ports)([
-              { module, day, period: parseInt(period), room: "" },
-            ])
+          ? !isSchedulesDuplicated(ports)(
+              [{ module, day, period: parseInt(period), room: "" }],
+              year
+            )
           : isWishinSchedules(schedules, module, day, parseInt(period));
         timetable[module]![day]![period] = ret;
         if (ret === false) allTrue = false;
@@ -118,7 +120,8 @@ export const searchCourse = (ports: Ports) => async (
         timetable: schedulesToTimetable(
           schedules.map(parseSchedules),
           onlyBlank,
-          ports
+          ports,
+          year
         ),
         offset,
         limit,

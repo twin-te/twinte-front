@@ -19,6 +19,11 @@ export const getters: GetterTree<GlobalState, GlobalState> = {
       []
     );
   },
+  coursesByYear: (state) => {
+    return (year: number) => {
+      return state.courses?.[year] ?? [];
+    };
+  },
   label: (state) => {
     return state.label;
   },
