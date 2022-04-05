@@ -561,12 +561,15 @@ export default defineComponent({
     margin-bottom: $spacing-4;
   }
   &__result {
-    height: calc(
-      #{$vh} - 26.6rem - 5rem - v-bind("`${isSelectedOpen ? selectedCourses.size * 2.7 : 0}rem`")
-    );
     @include scroll-mask;
     overflow-y: auto;
     padding: $spacing-2;
+  }
+  &__result,
+  &__accordion {
+    height: calc(
+      #{$vh} - 26.6rem - 5rem - v-bind("`${isSelectedOpen ? selectedCourses.size * 2.7 : 0}rem`")
+    );
   }
   &__selected {
     padding: $spacing-2 0 0 $spacing-2;
