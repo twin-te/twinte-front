@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import Label from "~/components/Label.vue";
 
 export default defineComponent({
@@ -17,9 +17,8 @@ export default defineComponent({
       default: false,
     },
     style: {
-      type: String,
+      type: String as PropType<"normal" | "slim">,
       default: "normal",
-      validator: (value: string) => ["normal", "slim"].includes(value),
     },
   },
 });
