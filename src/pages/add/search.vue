@@ -686,19 +686,27 @@ export default defineComponent({
   &__row {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    overflow: hidden;
     margin: $spacing-2 0;
+    // 100 % だと ellipsis が中途半端な位置で反映される
+    width: calc(100vw - #{$spacing-6} * 2);
+    @include landscape {
+      width: 100%;
+    }
   }
   &__name {
     @include ellipsis;
-    flex: 1;
+    // HACK: 極限まで大きい値にしないと他の要素の flex-shink: 0 が効かない
+    flex-shrink: 10000000000;
     margin-right: $spacing-2;
+  }
+  .course-detail-mini {
+    flex-shrink: 0;
   }
   &__clear-button {
     @include button-cursor;
     @include text-button;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     margin-left: $spacing-3;
     font-size: 0.9rem;
