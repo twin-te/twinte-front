@@ -16,7 +16,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    style: {
+    size: {
       type: String as PropType<"normal" | "slim">,
       default: "normal",
     },
@@ -31,8 +31,8 @@ export default defineComponent({
       '--mandatory': mandatory,
     }"
   >
-    <div :class="`labeled-text-field__label --${style}`">
-      <Label :value="label" :mandatory="mandatory" :style="style"></Label>
+    <div :class="`labeled-text-field__label --${size}`">
+      <Label :value="label" :mandatory="mandatory" :size="size"></Label>
     </div>
     <div class="labeled-text-field__text-field">
       <slot />

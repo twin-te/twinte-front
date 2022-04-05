@@ -15,7 +15,7 @@
       <div class="main__search">
         <section class="search__top">
           <div class="top__course-code">
-            <LabeledTextField label="科目番号" style="slim">
+            <LabeledTextField label="科目番号" size="slim">
               <TextFieldSingleLine
                 v-model.trim="searchCode"
                 @enter-text-field="search(0)"
@@ -26,7 +26,7 @@
             </LabeledTextField>
           </div>
           <div class="top__course-name">
-            <LabeledTextField label="キーワード" style="slim">
+            <LabeledTextField label="キーワード" size="slim">
               <TextFieldSingleLine
                 v-model.trim="searchWord"
                 @enterTextField="search(0)"
@@ -586,7 +586,7 @@ export default defineComponent({
     margin-right: $spacing-2;
   }
   &__search-button {
-    margin-top: 2.8rem;
+    margin-top: 2.3rem;
   }
 }
 

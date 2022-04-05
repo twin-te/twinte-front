@@ -12,7 +12,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    style: {
+    size: {
       type: String as PropType<"normal" | "slim">,
       default: "normal",
     },
@@ -21,7 +21,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div :class="`label --${style}`">
+  <div :class="`label --${size}`">
     {{ value }}
     <span v-if="mandatory" class="label__mandatory">必須</span>
   </div>
