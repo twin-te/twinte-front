@@ -434,7 +434,9 @@ export default defineComponent({
 }
 
 .tags {
-  height: calc(100vh - 19.6rem); // 100vh から tags 以外の height を引いた分
+  height: calc(
+    100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 19.6rem
+  ); // tags 以外の height を引いた分
 
   display: flex;
   flex-direction: column;
