@@ -669,7 +669,6 @@ export default defineComponent({
     @include text-button;
     &.--active {
       color: getColor(--color-primary);
-      font-weight: bold;
     }
     .material-icons {
       transition: $transition-all;
