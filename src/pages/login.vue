@@ -10,27 +10,29 @@
         <img v-else src="../assets/twintelogo-color-b.svg" />
       </div>
       <div class="main__head">ログイン方法を選択</div>
-      <a :href="getLoginUrl('apple')">
-        <img
-          class="main__login-button"
-          src="../assets/login-page/login-apple.png"
-          alt="appleでログイン"
-        />
-      </a>
-      <a :href="getLoginUrl('twitter')">
-        <img
-          class="main__login-button"
-          src="../assets/login-page/login-twitter.svg"
-          alt="twitterでログイン"
-        />
-      </a>
-      <a :href="getLoginUrl('google')">
-        <img
-          class="main__login-button"
-          src="../assets/login-page/login-google.svg"
-          alt="googleでログイン"
-        />
-      </a>
+      <div class="main__provider">
+        <button @click="goto(getLoginUrl('apple'))">
+          <img
+            class="main__login-button"
+            src="../assets/login-page/login-apple.png"
+            alt="appleでログイン"
+          />
+        </button>
+        <button @click="goto(getLoginUrl('twitter'))">
+          <img
+            class="main__login-button"
+            src="../assets/login-page/login-twitter.svg"
+            alt="twitterでログイン"
+          />
+        </button>
+        <button @click="goto(getLoginUrl('google'))">
+          <img
+            class="main__login-button"
+            src="../assets/login-page/login-google.svg"
+            alt="googleでログイン"
+          />
+        </button>
+      </div>
       <div class="main__note">
         ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a
         >に同意したものとします。<br />
@@ -52,19 +54,33 @@
       />
     </div>
   </div>
+  <GrayFilter
+    class="layout__grayfilter"
+    v-show="clicked"
+    @click="() => {}"
+  ></GrayFilter>
 </template>
 
 <script lang="ts">
 import { useDark } from "@vueuse/core";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
+import GrayFilter from "~/components/GrayFilter.vue";
 import { getLoginUrl } from "~/usecases/getLoginUrl";
 
 export default defineComponent({
+  components: { GrayFilter },
   setup: () => {
+    const router = useRouter();
     const isDark = useDark({
       selector: "body",
     });
-    return { isDark, getLoginUrl };
+    const clicked = ref(false);
+    const goto = (url: string) => {
+      clicked.value = true;
+      location.href = url;
+    };
+    return { router, isDark, clicked, goto, getLoginUrl };
   },
 });
 </script>
@@ -115,15 +131,17 @@ export default defineComponent({
     text-align: center;
     font-size: $font-maximum;
   }
+  &__provider {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-5;
+    margin-bottom: $spacing-6;
+  }
   &__login-button {
     @include button-cursor;
     width: 100%;
-    margin-bottom: $spacing-5;
     box-shadow: $shadow-convex;
     border-radius: $radius-button;
-    &:last-child {
-      margin-bottom: $spacing-6;
-    }
   }
   &__note {
     @include text-sub-discription;
