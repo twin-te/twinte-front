@@ -572,7 +572,7 @@ export default defineComponent({
     );
   }
   &__selected {
-    padding: $spacing-2 0 0 $spacing-2;
+    padding: $spacing-2 $spacing-2 0;
   }
 }
 
@@ -662,6 +662,7 @@ export default defineComponent({
 .selected {
   &__count {
     @include button-cursor;
+    @include text-button;
     &.--active {
       color: getColor(--color-primary);
       font-weight: bold;
@@ -682,16 +683,24 @@ export default defineComponent({
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    overflow: hidden;
     margin: $spacing-2 0;
   }
   &__name {
+    @include ellipsis;
+    flex: 1;
     margin-right: $spacing-2;
   }
   &__clear-button {
     @include button-cursor;
+    @include text-button;
     display: flex;
     align-items: center;
     margin-left: $spacing-3;
+    font-size: 0.9rem;
+    .material-icons {
+      font-size: 1.4rem;
+    }
   }
 }
 
