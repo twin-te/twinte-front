@@ -19,12 +19,13 @@ export const bulkAddCourseById = (ports: Ports) => async (codes: string[]) => {
     .catch(() => {
       throw new NetworkError();
     });
-  if (Array.isArray(body)) {
-    body.map((course) => store.commit("addCourse", course));
-  } else {
-    store.commit("addCourse", body);
-  }
+
   if (isValidStatus(status)) {
+    if (Array.isArray(body)) {
+      body.map((course) => store.commit("addCourse", course));
+    } else {
+      store.commit("addCourse", body);
+    }
     return body;
   } else {
     console.error(body);

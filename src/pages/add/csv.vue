@@ -111,6 +111,7 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
+import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   name: "CSV",
@@ -171,7 +172,22 @@ export default defineComponent({
       loadedCourses.value = [];
       let courseCodes: string[] = [];
       try {
-        courseCodes = await getCoursesIdByFile(file);
+        const csv = await getCoursesIdByFile(file);
+        switch (csv.type) {
+          case "risyu":
+            courseCodes = csv.data;
+            break;
+          case "seiseki": {
+            const year = await getYear(ports);
+            displayToast(ports)(`${year}年度の授業を読み込んでいます。`, {
+              type: "primary",
+            });
+            courseCodes = csv.data
+              .filter((v) => v.year === year)
+              .map((v) => v.code);
+            break;
+          }
+        }
       } catch (error) {
         console.error(error);
         displayToast(ports)("ファイルの読み込みに失敗しました。");
@@ -180,6 +196,12 @@ export default defineComponent({
 
       let fetchedCourses: Course[] = [];
       let missingCourseCodes: string[] = [];
+
+      if (courseCodes.length === 0) {
+        displayToast(ports)(`読み込むコースがありません。`);
+        return;
+      }
+
       try {
         const res = await getCoursesByCode(ports)(courseCodes);
         fetchedCourses = res.courses;
