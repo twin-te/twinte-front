@@ -30,7 +30,7 @@
         </Button>
       </div>
       <div class="tags__mask">
-        <div class="tags__contents">
+        <div ref="tagsContentsRef" class="tags__contents">
           <TagListContent
             v-show="mode === 'default'"
             :name="allCourseTag.name"
@@ -66,6 +66,7 @@
               >
                 <template #textfiled>
                   <TextFieldSingleLine
+                    :id="`text-field-single-line--${element.id}`"
                     @enter-text-field="() => onClickNormalBtn(element)"
                     v-model.trim="element.name"
                     placeholder="タグ名"
@@ -164,7 +165,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from "vue";
+import { computed, defineComponent, nextTick, reactive, ref, watch } from "vue";
 import draggable from "vuedraggable";
 import { useRouter } from "vue-router";
 import Button from "~/components/Button.vue";
@@ -209,6 +210,9 @@ export default defineComponent({
     useHead({
       title: "Twin:te | 単位数",
     });
+
+    /** フォーカス用 */
+    const tagsContentsRef = ref<HTMLDivElement | undefined>(undefined);
 
     const ports = usePorts();
     const router = useRouter();
@@ -326,6 +330,12 @@ export default defineComponent({
       } else {
         // textfield を表示する
         editingTagId.value = tag.id;
+        nextTick(() => {
+          tagsContentsRef.value
+            ?.querySelector(`#text-field-single-line--${tag.id}`)
+            ?.querySelector("input")
+            ?.focus();
+        });
       }
     };
     const onClickDangerBtn = async (tag: CreditTag) => {
@@ -355,6 +365,12 @@ export default defineComponent({
     const onClickAddBtn = () => {
       tags.value.push({ id: NEW_TAG_ID, name: "", credit: "0.0" });
       editingTagId.value = NEW_TAG_ID;
+      nextTick(() => {
+        tagsContentsRef.value
+          ?.querySelector(`#text-field-single-line--${NEW_TAG_ID}`)
+          ?.querySelector("input")
+          ?.focus();
+      });
     };
     const onChangeOrder = async (newTags: CreditTag[]) => {
       // console.log("change tag order");
@@ -415,6 +431,7 @@ export default defineComponent({
       deletedTag,
       numberOfCourseAssignedDeletedTag,
       onClickDeleteModal,
+      tagsContentsRef,
     };
   },
 });

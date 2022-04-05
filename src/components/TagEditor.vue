@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, watch, nextTick } from "vue";
 import IconButton from "./IconButton.vue";
 import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 import TagListContent from "./TagListContent.vue";
@@ -45,19 +45,32 @@ export default defineComponent({
       emit("update:add", false);
     };
 
+    const tagEditorRef = ref<HTMLDivElement | undefined>(undefined);
+
+    watch(
+      () => props.add,
+      (add) => {
+        if (!add) return;
+        nextTick(() => {
+          tagEditorRef.value?.querySelector("input")?.focus();
+        });
+      }
+    );
+
     return {
       tagName,
       disabled,
       handleClick,
       handleCheck,
       handleClear,
+      tagEditorRef,
     };
   },
 });
 </script>
 
 <template>
-  <div class="tag-editor">
+  <div class="tag-editor" ref="tagEditorRef">
     <p class="tag-editor__heading">{{ heading }}</p>
     <section class="tag-editor__contents">
       <div class="tag-editor__tags">
