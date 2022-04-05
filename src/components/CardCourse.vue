@@ -143,8 +143,6 @@ export default defineComponent({
       "checkbox ... ...        ...        ... expand ..." $spacing-1
       "checkbox ... detail     detail     ... expand ..." 1fr
       "checkbox ... overview   overview   ... expand ..." auto
-      "checkbox ... ...        ...        ... ...    ..." $spacing-2
-      "checkbox ... ...        link       ... ...    ..." auto
       / auto $spacing-5 1fr auto 0 auto $spacing-1 auto $spacing-1;
   }
   &.--expanded {
@@ -172,10 +170,12 @@ export default defineComponent({
   &__checkbox {
     @include center-flex;
     grid-area: checkbox;
+    padding-left: $spacing-2;
   }
   &__courseId {
     @include text-sub-discription;
     grid-area: courseId;
+    line-height: $single-line;
   }
   &__courseName {
     @include text-main;
@@ -208,6 +208,7 @@ export default defineComponent({
     transition: $transition-all;
     max-height: 2.2rem;
     &.--detailed {
+      @include text-description-sub;
       display: block;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -255,5 +256,6 @@ export default defineComponent({
   margin-top: $spacing-3;
   background-color: getColor(--color-base);
   box-shadow: $shadow-input-concave;
+  border-radius: $radius-1;
 }
 </style>
