@@ -1,18 +1,18 @@
 <script lang="ts">
+import { useDark } from "@vueuse/core";
 import { computed, defineComponent, ref } from "vue";
-import Toast from "~/components/Toast.vue";
-import Sidebar from "./Sidebar.vue";
+import Button from "~/components/Button.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
-import Button from "~/components/Button.vue";
-import { useSidebar } from "~/usecases/useSidebar";
+import Toast from "~/components/Toast.vue";
+import { Toast as ToastContent } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
 import { useStore } from "~/store";
 import { usePorts } from "~/usecases";
-import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
-import { Toast as ToastContent } from "~/entities/toast";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
-import { useDark } from "@vueuse/core";
+import { useSidebar } from "~/usecases/useSidebar";
+import Sidebar from "./Sidebar.vue";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },

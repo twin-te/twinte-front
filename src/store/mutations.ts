@@ -1,9 +1,9 @@
 import { MutationTree } from "vuex";
 import { User, RegisteredCourse, Tag } from "~/api/@types";
 import { Select } from "~/components/ToggleButton.vue";
-import { GlobalState } from ".";
 import { Toast } from "~/entities/toast";
 import { getKeysFromObj } from "~/util";
+import { GlobalState } from ".";
 
 export const mutations: MutationTree<GlobalState> = {
   setUser(state, user: User) {

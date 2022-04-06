@@ -239,17 +239,10 @@
 </template>
 
 <script lang="ts">
+import { useHead } from "@vueuse/head";
 import { computed, defineComponent, ref } from "vue";
-import { courseListToTable } from "~/usecases/courseListToTable";
-import { CourseState } from "~/entities/table";
-import { getCurrentModule } from "~/usecases/getCurrentModule";
-import { ModuleJa, moduleJaList, jaToBaseModule } from "~/entities/module";
-import { RegisteredCourse, Information } from "~/api/@types";
-import { dayToSpecialDayJa, WeekDayJa, weekdayJaList } from "~/entities/day";
-import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
-import { useSidebar } from "~/usecases/useSidebar";
-import { useSwitch } from "~/hooks/useSwitch";
+import { RegisteredCourse, Information } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseTile from "~/components/CourseTile.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -259,21 +252,28 @@ import PageHeader from "~/components/PageHeader.vue";
 import Popup from "~/components/Popup.vue";
 import PopupContent from "~/components/PopupContent.vue";
 import ToggleButton, { Labels } from "~/components/ToggleButton.vue";
-import { useLabel } from "~/usecases/useLabel";
+import { dayToSpecialDayJa, WeekDayJa, weekdayJaList } from "~/entities/day";
+import { ModuleJa, moduleJaList, jaToBaseModule } from "~/entities/module";
+import { formatDatetime } from "~/entities/news";
+import { CourseState } from "~/entities/table";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
 import {
   courseListToSpecialTable,
   getUndisplayedCourses,
 } from "~/usecases/courseListToSpecialTable";
+import { courseListToTable } from "~/usecases/courseListToTable";
 import { getCalendar } from "~/usecases/getCalendar";
-import { useHead } from "@vueuse/head";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getCurrentModule } from "~/usecases/getCurrentModule";
+import { getNews } from "~/usecases/getNews";
+import { getYear } from "~/usecases/getYear";
 import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { useDisplayedModule } from "~/usecases/useDisplayedModule";
-import { useTableTimeMode } from "~/usecases/useTableTime";
-import { getNews } from "~/usecases/getNews";
-import { formatDatetime } from "~/entities/news";
+import { useLabel } from "~/usecases/useLabel";
 import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
-import { getCourseListByYear } from "~/usecases/getCourseListByYear";
-import { getYear } from "~/usecases/getYear";
+import { useSidebar } from "~/usecases/useSidebar";
+import { useTableTimeMode } from "~/usecases/useTableTime";
 
 export default defineComponent({
   name: "Table",

@@ -125,19 +125,9 @@
 </template>
 
 <script lang="ts">
-import { addCourseByManual } from "~/usecases/addCourseByManual";
-import { RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getYear } from "~/usecases/getYear";
-import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
-import { methodJaList } from "~/entities/method";
-import { periodToString } from "~/usecases/periodToString";
-import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
-import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
+import { RegisteredCourseWithoutID } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
@@ -149,6 +139,16 @@ import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { isValidCredit } from "~/entities/credit";
+import { methodJaList } from "~/entities/method";
+import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { addCourseByManual } from "~/usecases/addCourseByManual";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { usePorts } from "~/usecases/index";
+import { periodToString } from "~/usecases/periodToString";
 import {
   apiToDisplayCourse,
   displayCourseToApi,

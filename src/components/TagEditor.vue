@@ -1,8 +1,8 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import IconButton from "./IconButton.vue";
-import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 import TagListContent from "./TagListContent.vue";
+import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 
 export default defineComponent({
   name: "TagEditor",

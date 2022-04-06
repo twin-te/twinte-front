@@ -1,7 +1,7 @@
-import { isValidStatus } from "~/usecases/api";
-import { NetworkError, NetworkAccessError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import { RegisteredCourseWithoutID } from "~/api/@types";
+import { isValidStatus } from "~/usecases/api";
+import { NetworkError, NetworkAccessError } from "~/usecases/error";
 
 /**
  * 手動で作成した授業を登録する。

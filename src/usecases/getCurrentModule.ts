@@ -1,7 +1,7 @@
-import { ModuleJa, moduleToJa } from "~/entities/module";
-import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
+import { ModuleJa, moduleToJa } from "~/entities/module";
 import { isValidStatus } from "~/usecases/api";
+import { NetworkAccessError, NetworkError } from "~/usecases/error";
 
 /**
  * 現在の学期を取得する

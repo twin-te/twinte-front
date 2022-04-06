@@ -74,14 +74,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { displayToast } from "~/entities/toast";
-import { postScreenshot } from "~/usecases/sendFeedback";
 import { useHead } from "@vueuse/head";
-import { usePorts } from "~/usecases";
-import { useRouter } from "vue-router";
-import { useStore } from "~/store";
 import axios, { AxiosError } from "axios";
+import { computed, defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 import Button from "~/components/Button.vue";
 import Dropdown from "~/components/Dropdown.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -90,6 +86,10 @@ import Label from "~/components/Label.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { displayToast } from "~/entities/toast";
+import { useStore } from "~/store";
+import { usePorts } from "~/usecases";
+import { postScreenshot } from "~/usecases/sendFeedback";
 
 export default defineComponent({
   components: {

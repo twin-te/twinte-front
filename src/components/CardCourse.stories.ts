@@ -1,6 +1,6 @@
+import { Story } from "@storybook/vue3";
 import CardCourse from "~/components/CardCourse.vue";
 import { CourseCard } from "~/entities/courseCard";
-import { Story } from "@storybook/vue3";
 
 export default {
   component: CardCourse,

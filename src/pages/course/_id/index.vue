@@ -183,6 +183,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { RegisteredCourse, TagIdOnly } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CourseDetail from "~/components/CourseDetail.vue";
 import DecoratedIcon from "~/components/DecoratedIcon.vue";
@@ -197,26 +198,25 @@ import Tag from "~/components/Tag.vue";
 import TagEditor from "~/components/TagEditor.vue";
 import TextFieldMultilines from "~/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/components/ToggleIconButton.vue";
-import { displayToast } from "~/entities/toast";
+import { DisplayCourse } from "~/entities/course";
 import { getSyllbusUrl } from "~/entities/courseCard";
+import { DisplayTag, NEW_TAG_ID } from "~/entities/tag";
+import { displayToast } from "~/entities/toast";
 import { useSwitch } from "~/hooks/useSwitch";
 import { usePorts } from "~/usecases";
+import { createTag } from "~/usecases/createTag";
+import { ApiTag, apiToDisplayTags } from "~/usecases/creditPageFunctions";
 import { deleteCourse as apiDeleteCourse } from "~/usecases/deleteCourse";
+import { extractMessageOrDefault } from "~/usecases/error";
 import { getCourseById } from "~/usecases/getCourseById";
+import { getTags } from "~/usecases/getTags";
 import { openUrl } from "~/usecases/openUrl";
 import { updateCourse } from "~/usecases/updateCourse";
-import { extractMessageOrDefault } from "~/usecases/error";
+import { updateCourseTags } from "~/usecases/updateCourseTags";
 import {
   apiToDisplayCourse,
   displayCourseToApi,
 } from "~/usecases/useDisplayCourse";
-import { RegisteredCourse, TagIdOnly } from "~/api/@types";
-import { DisplayCourse } from "~/entities/course";
-import { DisplayTag, NEW_TAG_ID } from "~/entities/tag";
-import { getTags } from "~/usecases/getTags";
-import { ApiTag, apiToDisplayTags } from "~/usecases/creditPageFunctions";
-import { createTag } from "~/usecases/createTag";
-import { updateCourseTags } from "~/usecases/updateCourseTags";
 
 export default defineComponent({
   name: "Details",

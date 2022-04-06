@@ -29,16 +29,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { displayToast } from "~/entities/toast";
-import { formatDatetime } from "~/entities/news";
-import { getNews } from "~/usecases/getNews";
 import { useHead } from "@vueuse/head";
-import { usePorts } from "~/usecases";
+import { defineComponent } from "vue";
+import { Information } from "~/api/@types";
 import IconButton from "~/components/IconButton.vue";
 import NewsBox from "~/components/NewsBox.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { Information } from "~/api/@types";
+import { formatDatetime } from "~/entities/news";
+import { displayToast } from "~/entities/toast";
+import { usePorts } from "~/usecases";
+import { getNews } from "~/usecases/getNews";
 
 export default defineComponent({
   components: {

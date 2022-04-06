@@ -1,7 +1,7 @@
 <script lang="ts">
+import { useDark } from "@vueuse/core";
 import { defineComponent, PropType } from "vue";
 import { Calendar } from "~/entities/calendar";
-import { useDark } from "@vueuse/core";
 
 export default defineComponent({
   name: "PageHeader",

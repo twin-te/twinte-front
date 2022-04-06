@@ -147,22 +147,11 @@
 </template>
 
 <script lang="ts">
-import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
-import { Course } from "~/api/@types";
-import { courseToCard } from "~/entities/courseCard";
-import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
-import { getYear } from "~/usecases/getYear";
-import { periodToString } from "~/usecases/periodToString";
-import { Schedule } from "~/entities/schedule";
-import { searchCourse } from "~/usecases/searchCourse";
 import { useGtm } from "@gtm-support/vue-gtm";
-import { usePorts } from "~/usecases";
-import { useRoute, useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle, useIntersectionObserver } from "@vueuse/core";
+import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { Course } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import Checkbox from "~/components/Checkbox.vue";
@@ -172,6 +161,17 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { courseToCard } from "~/entities/courseCard";
+import { Schedule } from "~/entities/schedule";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { periodToString } from "~/usecases/periodToString";
+import { searchCourse } from "~/usecases/searchCourse";
 
 export default defineComponent({
   components: {

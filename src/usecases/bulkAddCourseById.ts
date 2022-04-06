@@ -1,6 +1,6 @@
+import { Ports } from "~/adapter";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
-import { Ports } from "~/adapter";
 import { getYear } from "./getYear";
 
 /**

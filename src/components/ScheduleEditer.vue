@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
+import { scheduleDayJaList } from "~/entities/day";
+import { scheduleModuleJaList } from "~/entities/module";
+import { schedulePeriods } from "~/entities/period";
 import { Schedule } from "~/entities/schedule";
 import Dropdown, { Options as DropdownOptions } from "./Dropdown.vue";
-import { scheduleModuleJaList } from "~/entities/module";
-import { scheduleDayJaList } from "~/entities/day";
-import { schedulePeriods } from "~/entities/period";
 
 export default defineComponent({
   components: { Dropdown },

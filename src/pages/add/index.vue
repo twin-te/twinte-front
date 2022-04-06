@@ -51,12 +51,12 @@
 </template>
 
 <script lang="ts">
+import { useHead } from "@vueuse/head";
+import { defineComponent, ref } from "vue";
 import CardAdd from "~/components/CardAdd.vue";
 import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { defineComponent, ref } from "vue";
 import { useStore } from "~/store";
-import { useHead } from "@vueuse/head";
 import { isMobile as isMobileFn } from "~/usecases/ua";
 
 export default defineComponent({

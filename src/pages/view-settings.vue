@@ -59,20 +59,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { useDark, useToggle } from "@vueuse/core";
 import { useHead } from "@vueuse/head";
+import { defineComponent, ref } from "vue";
 import Dropdown from "~/components/Dropdown.vue";
 import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ToggleSwitch from "~/components/ToggleSwitch.vue";
-import { useDark, useToggle } from "@vueuse/core";
-import { useBachelorMode } from "~/usecases/useBachelorMode";
 import { usePorts } from "~/usecases";
-import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 import { getCourseListByYear } from "~/usecases/getCourseListByYear";
-import { useTableTimeMode } from "~/usecases/useTableTime";
-import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
 import { getYear } from "~/usecases/getYear";
+import { useBachelorMode } from "~/usecases/useBachelorMode";
+import { useDisplayedYear } from "~/usecases/useDisplayedYear";
+import { useSaturdayCourseMode } from "~/usecases/useSaturdayCourseMode";
+import { useTableTimeMode } from "~/usecases/useTableTime";
 
 export default defineComponent({
   components: {

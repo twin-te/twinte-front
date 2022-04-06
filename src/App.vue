@@ -16,9 +16,9 @@
 
 <script lang="ts">
 import { defineComponent, onErrorCaptured, onMounted, ref } from "vue";
-import { isErrorObj } from "~/usecases/error";
 import Error from "~/components/errro.vue";
 import Layout from "~/templates/Layout.vue";
+import { isErrorObj } from "~/usecases/error";
 
 export default defineComponent({
   name: "App",

@@ -1,5 +1,5 @@
-import { MethodJa } from "./method";
 import { Schedule } from "~/entities/schedule";
+import { MethodJa } from "./method";
 import { DisplayTag } from "./tag";
 
 export type DisplayCourse = {

@@ -16,6 +16,22 @@ module.exports = {
   ignorePatterns: "**/*.js",
   rules: {
     "vue/attribute-hyphenation": 0,
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "index",
+          "sibling",
+          "unknown",
+          "type",
+        ],
+        alphabetize: { order: "asc" },
+      },
+    ],
     "import/no-restricted-paths": [
       "warn", //TODO: errorにする
       {

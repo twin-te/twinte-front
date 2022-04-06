@@ -164,9 +164,11 @@
 </template>
 
 <script lang="ts">
+import { useHead } from "@vueuse/head";
 import { computed, defineComponent, reactive, ref, watch } from "vue";
-import draggable from "vuedraggable";
 import { useRouter } from "vue-router";
+import draggable from "vuedraggable";
+import { RegisteredCourse, TagPositionOnly } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import Dropdown from "~/components/Dropdown.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -175,22 +177,20 @@ import PageHeader from "~/components/PageHeader.vue";
 import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { CreditTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
+import { displayToast } from "~/entities/toast";
 import { usePorts } from "~/usecases";
+import { changeTagOrders } from "~/usecases/changeTagOrders";
+import { createTag } from "~/usecases/createTag";
 import {
   ApiCourseForCredit,
   ApiTag,
   apiToCreditTags,
 } from "~/usecases/creditPageFunctions";
-import { getTags } from "~/usecases/getTags";
-import { getCourseListByYear } from "~/usecases/getCourseListByYear";
-import { RegisteredCourse, TagPositionOnly } from "~/api/@types";
-import { createTag } from "~/usecases/createTag";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { updateTagName } from "~/usecases/updateTagName";
 import { deleteTag } from "~/usecases/deleteTag";
-import { changeTagOrders } from "~/usecases/changeTagOrders";
-import { useHead } from "@vueuse/head";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getTags } from "~/usecases/getTags";
+import { updateTagName } from "~/usecases/updateTagName";
 
 export default defineComponent({
   name: "Credit",

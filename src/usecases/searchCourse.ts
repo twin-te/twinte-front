@@ -1,9 +1,4 @@
-import {
-  searchModuleMap,
-  searchWeekMap,
-  searchPeriodMap,
-  Schedule,
-} from "~/entities/schedule";
+import { Ports } from "~/adapter";
 import {
   CourseModule,
   CourseDay,
@@ -13,12 +8,17 @@ import {
 } from "~/api/@types";
 import { fullDays } from "~/entities/day";
 import { fullModules } from "~/entities/module";
-import { getKeysFromObj } from "~/util";
-import { getYear } from "./getYear";
-import { isSchedulesDuplicated } from "./getDuplicatedCourses";
+import {
+  searchModuleMap,
+  searchWeekMap,
+  searchPeriodMap,
+  Schedule,
+} from "~/entities/schedule";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkAccessError, NetworkError } from "~/usecases/error";
-import { Ports } from "~/adapter";
+import { getKeysFromObj } from "~/util";
+import { isSchedulesDuplicated } from "./getDuplicatedCourses";
+import { getYear } from "./getYear";
 
 type ParsedSchedule = {
   modules: string[];

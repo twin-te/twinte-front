@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import SidebarContent from "~/components/SidebarContent.vue";
-import Button from "~/components/Button.vue";
 import { useRoute, useRouter } from "vue-router";
-import { useSidebar } from "~/usecases/useSidebar";
-import { isiOS, isMobile } from "~/usecases/ua";
+import Button from "~/components/Button.vue";
+import SidebarContent from "~/components/SidebarContent.vue";
 import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
-import { openUrl } from "~/usecases/openUrl";
 import { getLogoutUrl } from "~/usecases/getLoginUrl";
+import { openUrl } from "~/usecases/openUrl";
+import { isiOS, isMobile } from "~/usecases/ua";
+import { useSidebar } from "~/usecases/useSidebar";
 
 declare global {
   // eslint-disable-next-line no-unused-vars

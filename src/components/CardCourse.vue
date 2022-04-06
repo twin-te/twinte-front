@@ -1,11 +1,11 @@
 <script lang="ts">
-import { CourseCard } from "~/entities/courseCard";
 import { defineComponent, PropType } from "vue";
+import { CourseCard } from "~/entities/courseCard";
+import { openUrl } from "~/usecases/openUrl";
 import Button from "./Button.vue";
 import Card from "./Card.vue";
 import Checkbox from "./Checkbox.vue";
 import CourseDetailMini from "./CourseDetailMini.vue";
-import { openUrl } from "~/usecases/openUrl";
 
 export default defineComponent({
   components: { Card, Button, CourseDetailMini, Checkbox },

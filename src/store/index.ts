@@ -2,10 +2,10 @@ import { InjectionKey } from "vue";
 import { createStore, Store, useStore as useStoreAny } from "vuex";
 import { User, RegisteredCourse, Tag } from "~/api/@types";
 import { Select } from "~/components/ToggleButton.vue";
-import { mutations } from "./mutations";
-import { getters } from "./getter";
-import { Toast } from "~/entities/toast";
 import { ModuleJa } from "~/entities/module";
+import { Toast } from "~/entities/toast";
+import { getters } from "./getter";
+import { mutations } from "./mutations";
 
 export type GlobalState = {
   user: User | null;

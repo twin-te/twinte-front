@@ -90,20 +90,9 @@
 </template>
 
 <script lang="ts">
-import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
-import { Course } from "~/api/@types";
-import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getCoursesByCode } from "~/usecases/getCourseByCode";
-import { getCoursesIdByFile } from "~/usecases/readCSV";
-import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
-import { getYear } from "~/usecases/getYear";
-import { periodToString } from "~/usecases/periodToString";
-import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
+import { Course } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
@@ -111,6 +100,17 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
+import { courseToCard } from "~/entities/courseCard";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getCoursesByCode } from "~/usecases/getCourseByCode";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { periodToString } from "~/usecases/periodToString";
+import { getCoursesIdByFile } from "~/usecases/readCSV";
 
 export default defineComponent({
   name: "CSV",

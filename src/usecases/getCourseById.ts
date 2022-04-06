@@ -1,7 +1,7 @@
+import { Ports } from "~/adapter";
 import { RegisteredCourse } from "~/api/@types";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
-import { Ports } from "~/adapter";
 import { getCourseListByYear } from "./getCourseListByYear";
 
 /**
