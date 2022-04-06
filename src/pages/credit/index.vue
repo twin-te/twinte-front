@@ -174,7 +174,7 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { CreditTag , ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
+import { CreditTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
 import { usePorts } from "~/usecases";
 import {
   ApiCourseForCredit,

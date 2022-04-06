@@ -2,7 +2,8 @@ import {
   searchModuleMap,
   searchWeekMap,
   searchPeriodMap,
- Schedule } from "~/entities/schedule";
+  Schedule,
+} from "~/entities/schedule";
 import {
   CourseModule,
   CourseDay,
