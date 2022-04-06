@@ -3,6 +3,7 @@ import { computed, defineComponent, ref, watch, nextTick } from "vue";
 import IconButton from "./IconButton.vue";
 import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 import TagListContent from "./TagListContent.vue";
+import { useFocus } from "~/hooks/useFocus";
 
 export default defineComponent({
   name: "TagEditor",
@@ -45,15 +46,14 @@ export default defineComponent({
       emit("update:add", false);
     };
 
-    const tagEditorRef = ref<HTMLDivElement | undefined>(undefined);
+    /** フォーカス用 */
+    const { targetRef: tagEditorRef, focus } = useFocus();
 
     watch(
       () => props.add,
       (add) => {
         if (!add) return;
-        nextTick(() => {
-          tagEditorRef.value?.querySelector("input")?.focus();
-        });
+        nextTick(() => focus(["input"]));
       }
     );
 

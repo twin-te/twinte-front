@@ -193,6 +193,7 @@ import { updateTagName } from "~/usecases/updateTagName";
 import { deleteTag } from "~/usecases/deleteTag";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
 import { useHead } from "@vueuse/head";
+import { useFocus } from "~/hooks/useFocus";
 
 export default defineComponent({
   name: "Credit",
@@ -212,7 +213,7 @@ export default defineComponent({
     });
 
     /** フォーカス用 */
-    const tagsContentsRef = ref<HTMLDivElement | undefined>(undefined);
+    const { targetRef: tagsContentsRef, focus } = useFocus();
 
     const ports = usePorts();
     const router = useRouter();
@@ -330,12 +331,7 @@ export default defineComponent({
       } else {
         // textfield を表示する
         editingTagId.value = tag.id;
-        nextTick(() => {
-          tagsContentsRef.value
-            ?.querySelector(`#text-field-single-line--${tag.id}`)
-            ?.querySelector("input")
-            ?.focus();
-        });
+        nextTick(() => focus([`#text-field-single-line--${tag.id}`, "input"]));
       }
     };
     const onClickDangerBtn = async (tag: CreditTag) => {
@@ -365,12 +361,9 @@ export default defineComponent({
     const onClickAddBtn = () => {
       tags.value.push({ id: NEW_TAG_ID, name: "", credit: "0.0" });
       editingTagId.value = NEW_TAG_ID;
-      nextTick(() => {
-        tagsContentsRef.value
-          ?.querySelector(`#text-field-single-line--${NEW_TAG_ID}`)
-          ?.querySelector("input")
-          ?.focus();
-      });
+      nextTick(() =>
+        focus([`#text-field-single-line--${NEW_TAG_ID}`, "input"])
+      );
     };
     const onChangeOrder = async (newTags: CreditTag[]) => {
       // console.log("change tag order");
