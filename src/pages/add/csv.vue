@@ -111,7 +111,6 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { getYear } from "~/usecases/getYear";
 
 export default defineComponent({
   name: "CSV",
