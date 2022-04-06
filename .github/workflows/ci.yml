@@ -3,9 +3,14 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      storybook-url: ${{ steps.chromatic-publish.outputs.storybookUrl}}
+      buildUrl: ${{ steps.chromatic-publish.outputs.buildUrl}}
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
@@ -42,3 +47,32 @@ jobs:
         run: yarn build
         env:
           CI: true
+
+      - name: Publish to Chromatic
+        id: chromatic-publish
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true
+          autoAcceptChanges: true
+
+  storybook-pr-comment:
+    needs: build
+    if: github.event_name == 'pull_request' && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - env:
+          STORYBOOK_URL_WITH_IFRAME: ${{ needs.build.storybook-url }}
+          CHROMATIC_URL: ${{ needs.build.buildUrl }}
+        run: |
+          echo "STORYBOOK_URL=${STORYBOOK_URL_WITH_IFRAME/\/iframe\.html/}" >> $GITHUB_ENV
+          echo "SHA=$(git rev-parse $(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha))" >> $GITHUB_ENV
+      - uses: eqworks/sticky-pull-request-comment@v2
+        with:
+          message: |
+            ### 📚 **[Storybook preview](${{ env.STORYBOOK_URL }})** _(updated to ${{ env.SHA }})_
+            ### 📚 **[Chromatic](${{ env.CHROMATIC_URL }})** _(updated to ${{ env.SHA }})_
