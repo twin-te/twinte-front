@@ -1,4 +1,4 @@
-import Dayjs from "./datetime";
+import { Dayjs } from "dayjs";
 
 export type Module =
   | "SpringA"
