@@ -528,7 +528,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/styles";
 .search {
-  @include max-width;
+  /* @include max-width; */
 }
 
 .main {
@@ -566,7 +566,7 @@ export default defineComponent({
     padding: $spacing-2;
     .card {
       padding: $spacing-4 $spacing-2;
-      background-color: getColor(--color-base);
+      background: getColor(--color-base);
     }
   }
   &__result,
