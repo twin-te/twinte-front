@@ -30,7 +30,7 @@
         </Button>
       </div>
       <div class="tags__mask">
-        <div class="tags__contents">
+        <div ref="tagsContentsRef" class="tags__contents">
           <TagListContent
             v-show="mode === 'default'"
             :name="allCourseTag.name"
@@ -66,6 +66,7 @@
               >
                 <template #textfiled>
                   <TextFieldSingleLine
+                    :id="`text-field-single-line--${element.id}`"
                     v-model.trim="element.name"
                     placeholder="タグ名"
                     @enter-text-field="() => onClickNormalBtn(element)"
@@ -178,6 +179,7 @@ import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { CreditTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
 import { displayToast } from "~/entities/toast";
+import { useFocus } from "~/hooks/useFocus";
 import { usePorts } from "~/usecases";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
 import { createTag } from "~/usecases/createTag";
@@ -208,6 +210,9 @@ export default defineComponent({
     useHead({
       title: "Twin:te | 単位数",
     });
+
+    /** フォーカス用 */
+    const { targetRef: tagsContentsRef, focus } = useFocus();
 
     const ports = usePorts();
     const router = useRouter();
@@ -325,6 +330,7 @@ export default defineComponent({
       } else {
         // textfield を表示する
         editingTagId.value = tag.id;
+        focus([`#text-field-single-line--${tag.id}`, "input"]);
       }
     };
     const onClickDangerBtn = async (tag: CreditTag) => {
@@ -354,6 +360,7 @@ export default defineComponent({
     const onClickAddBtn = () => {
       tags.value.push({ id: NEW_TAG_ID, name: "", credit: "0.0" });
       editingTagId.value = NEW_TAG_ID;
+      focus([`#text-field-single-line--${NEW_TAG_ID}`, "input"]);
     };
     const onChangeOrder = async (newTags: CreditTag[]) => {
       // console.log("change tag order");
@@ -414,6 +421,7 @@ export default defineComponent({
       deletedTag,
       numberOfCourseAssignedDeletedTag,
       onClickDeleteModal,
+      tagsContentsRef,
     };
   },
 });
@@ -433,7 +441,9 @@ export default defineComponent({
 }
 
 .tags {
-  height: calc(100vh - 19.6rem); // 100vh から tags 以外の height を引いた分
+  height: calc(
+    100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 19.6rem
+  ); // tags 以外の height を引いた分
 
   display: flex;
   flex-direction: column;

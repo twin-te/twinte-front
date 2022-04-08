@@ -99,15 +99,18 @@ export default defineComponent({
       for (const y of years) {
         registeredCourses.push(...(await getCourseListByYear(ports)(y)));
       }
+
+      // 科目番号でソートされた授業、名前でソートされた授業の順で並び替えられる
       registeredCourses.sort((a, b) =>
-        a.year === b.year
-          ? a.course?.code && b.course?.code
-            ? a.course.code.localeCompare(b.course.code)
-            : (a.name ?? a.course?.name ?? "").localeCompare(
-                b.name ?? b.course?.name ?? ""
-              )
-          : a.year - b.year
+        a.course == undefined && b.course == undefined
+          ? (a.name ?? "").localeCompare(b.name ?? "")
+          : a.course == undefined
+          ? 1
+          : b.course == undefined
+          ? -1
+          : a.course.code.localeCompare(b.course.code)
       );
+
       return tagId === ALL_COURSES_ID
         ? registeredCourses
         : registeredCourses.filter(({ tags }) =>

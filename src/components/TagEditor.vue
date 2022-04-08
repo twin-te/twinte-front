@@ -1,5 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
+import { useFocus } from "~/hooks/useFocus";
 import IconButton from "./IconButton.vue";
 import TagListContent from "./TagListContent.vue";
 import TextFieldSingleLine from "./TextFieldSingleLine.vue";
@@ -23,7 +24,10 @@ export default defineComponent({
     },
   },
   emits: ["update:add", "create-tag"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
+    /** フォーカス用 */
+    const { targetRef: tagEditorRef, focus } = useFocus();
+
     const tagName = ref("");
 
     const disabled = computed(() => {
@@ -32,7 +36,8 @@ export default defineComponent({
 
     const handleClick = () => {
       tagName.value = "";
-      emit("update:add", !props.add);
+      emit("update:add", true);
+      focus(["input"]);
     };
 
     const handleCheck = () => {
@@ -51,13 +56,14 @@ export default defineComponent({
       handleClick,
       handleCheck,
       handleClear,
+      tagEditorRef,
     };
   },
 });
 </script>
 
 <template>
-  <div class="tag-editor">
+  <div ref="tagEditorRef" class="tag-editor">
     <p class="tag-editor__heading">{{ heading }}</p>
     <section class="tag-editor__contents">
       <div class="tag-editor__tags">
