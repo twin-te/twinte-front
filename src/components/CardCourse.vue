@@ -133,6 +133,13 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/styles";
 
+$grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto
+  "checkbox ... ...        ... detail ... link" 0.2rem
+  "checkbox ... courseName ... detail ... link" auto
+  "checkbox ... ...        ... detail ... link" $spacing-1
+  "checkbox ... overview   ... detail ... link" 1fr / auto $spacing-5 1fr
+  $spacing-7 20rem $spacing-7 auto;
+
 .card-course {
   display: grid;
   grid-template:
@@ -140,6 +147,10 @@ export default defineComponent({
     "checkbox ... ...        ...        ... ...    ..." $spacing-1
     "checkbox ... courseName courseName ... expand ..." auto
     / auto $spacing-5 1fr auto 0 auto $spacing-1 auto $spacing-1;
+  text-align: left;
+  @include pc {
+    grid-template: $grid-template-pc;
+  }
   &.--detailed {
     grid-template:
       "checkbox ... courseId   courseId   ... ...    ..." auto
@@ -149,6 +160,9 @@ export default defineComponent({
       "checkbox ... detail     detail     ... expand ..." 1fr
       "checkbox ... overview   overview   ... expand ..." auto
       / auto $spacing-5 1fr auto 0 auto $spacing-1 auto $spacing-1;
+    @include pc {
+      grid-template: $grid-template-pc;
+    }
   }
   &.--expanded {
     grid-template:
@@ -161,16 +175,9 @@ export default defineComponent({
       "checkbox ... ...        ...         ...   " $spacing-2
       "checkbox ... ...        link        ...   " auto
       / auto $spacing-5 1fr auto 0 auto;
-  }
-  text-align: left;
-  @include pc {
-    grid-template:
-      "checkbox ... courseId   ... ...    ... link" auto
-      "checkbox ... ...        ... detail ... link" $spacing-1
-      "checkbox ... courseName ... detail ... link" 1fr
-      "checkbox ... ...        ... detail ... link" $spacing-1
-      "checkbox ... overview   ... detail ... link" auto
-      / auto $spacing-5 1fr $spacing-7 20rem $spacing-7 auto;
+    @include pc {
+      grid-template: $grid-template-pc;
+    }
   }
   &__checkbox {
     @include center-flex;
@@ -219,6 +226,8 @@ export default defineComponent({
       text-overflow: ellipsis;
       white-space: nowrap;
       @include pc {
+        max-height: none;
+        overflow: visible;
         white-space: normal;
       }
     }
