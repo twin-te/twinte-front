@@ -73,22 +73,27 @@ export default defineComponent({
         <CourseDetailMini
           iconName="schedule"
           :text="course.period"
+          :ellipsis="true"
         ></CourseDetailMini>
         <CourseDetailMini
           iconName="payments"
           :text="`${course.credit.toFixed(1)}`"
+          :ellipsis="true"
         ></CourseDetailMini>
         <CourseDetailMini
           iconName="person"
           :text="course.instructor"
+          :ellipsis="true"
         ></CourseDetailMini>
         <CourseDetailMini
           iconName="room"
           :text="course.location"
+          :ellipsis="true"
         ></CourseDetailMini>
         <CourseDetailMini
           iconName="category"
           :text="course.methods"
+          :ellipsis="true"
         ></CourseDetailMini>
       </div>
       <div
