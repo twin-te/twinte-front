@@ -144,7 +144,7 @@ $grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto
   display: grid;
   grid-template:
     "checkbox ... courseId   courseId   ... ...    ..." auto
-    "checkbox ... ...        ...        ... ...    ..." $spacing-1
+    "checkbox ... ...        ...        ... ...    ..." 0.2rem
     "checkbox ... courseName courseName ... expand ..." auto
     / auto $spacing-5 1fr auto 0 auto $spacing-1 auto $spacing-1;
   text-align: left;
@@ -154,7 +154,7 @@ $grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto
   &.--detailed {
     grid-template:
       "checkbox ... courseId   courseId   ... ...    ..." auto
-      "checkbox ... ...        ...        ... ...    ..." $spacing-1
+      "checkbox ... ...        ...        ... ...    ..." 0.2rem
       "checkbox ... courseName courseName ... expand ..." auto
       "checkbox ... ...        ...        ... expand ..." $spacing-1
       "checkbox ... detail     detail     ... expand ..." 1fr
@@ -167,7 +167,7 @@ $grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto
   &.--expanded {
     grid-template:
       "checkbox ... courseId   courseId    ...   " auto
-      "checkbox ... ...        ...         ...   " $spacing-1
+      "checkbox ... ...        ...         ...   " 0.2rem
       "checkbox ... courseName courseName  expand" auto
       "checkbox ... ...        ...         expand" $spacing-1
       "checkbox ... detail     detail      expand" 1fr
