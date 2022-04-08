@@ -214,13 +214,13 @@ $grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto
     }
   }
   &__overview {
+    @include text-description-sub;
     grid-area: overview;
     display: none;
     line-height: $multi-line;
     transition: $transition-all;
     max-height: 2.2rem;
     &.--detailed {
-      @include text-description-sub;
       display: block;
       overflow: hidden;
       text-overflow: ellipsis;
