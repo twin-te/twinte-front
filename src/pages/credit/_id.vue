@@ -56,6 +56,7 @@ import PageHeader from "~/components/PageHeader.vue";
 import { CreditCourseWithState } from "~/entities/course";
 import { DisplayTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
 import { displayToast } from "~/entities/toast";
+import { useCreditYear } from "~/hooks/useCreditYear";
 import { usePorts } from "~/usecases";
 import { createTag } from "~/usecases/createTag";
 import {
@@ -82,11 +83,11 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
+    const { creditYear } = useCreditYear();
+
     /**
-     * year === 0 の場合は すべての年度
      * tag === 'all' の場合は すべての授業
      */
-    const year = Number(route.query.year ?? 0);
     const tagId = route.params.id as string;
     const selectedTag: Tag | undefined =
       tagId === ALL_COURSES_ID ? undefined : await getTagById(ports)(tagId);
@@ -94,7 +95,10 @@ export default defineComponent({
       await router.push("/credit");
 
     const getRegisteredCourses = async (): Promise<RegisteredCourse[]> => {
-      const years = year === 0 ? [2019, 2020, 2021, 2022] : [year];
+      const years =
+        creditYear.value == undefined
+          ? [2019, 2020, 2021, 2022]
+          : [creditYear.value];
       const registeredCourses: RegisteredCourse[] = [];
       for (const y of years) {
         registeredCourses.push(...(await getCourseListByYear(ports)(y)));
@@ -244,7 +248,10 @@ export default defineComponent({
         .toFixed(1)
     );
     const info = computed(() => ({
-      year: year === 0 ? "すべての年度" : `${year}年度`,
+      year:
+        creditYear.value == undefined
+          ? "すべての年度"
+          : `${creditYear.value}年度`,
       tag:
         tagId === ALL_COURSES_ID
           ? "すべての授業 "
