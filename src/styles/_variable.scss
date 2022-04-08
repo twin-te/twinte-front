@@ -45,7 +45,7 @@ $dark-theme-colors: (
   base: #1c222d,
   primary: #19c6c6,
   primary-light: #424c5a69,
-  primaryull: #4e7b8e,
+  primary-dull: #4e7b8e,
   text-main: #d4dae3,
   text-sub: #adb8bd,
   text-sub-light: #9ca6ad,
@@ -186,3 +186,5 @@ $vh: calc(100vh - #{$safe-area-top});
 // Media Queries
 $pc-and-tab-height: 860px;
 $pc-and-tab-width: 429px;
+$pc-height: 700px;
+$pc-width: 1025px;

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import Label from "~/components/Label.vue";
 
 export default defineComponent({
@@ -16,6 +16,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String as PropType<"normal" | "slim">,
+      default: "normal",
+    },
   },
 });
 </script>
@@ -27,8 +31,8 @@ export default defineComponent({
       '--mandatory': mandatory,
     }"
   >
-    <div class="labeled-text-field__label">
-      <Label :value="label" :mandatory="mandatory"></Label>
+    <div :class="`labeled-text-field__label --${size}`">
+      <Label :value="label" :mandatory="mandatory" :size="size"></Label>
     </div>
     <div class="labeled-text-field__text-field">
       <slot />
@@ -43,6 +47,9 @@ export default defineComponent({
   height: 6.8rem;
   &__label {
     margin-bottom: $spacing-2;
+    &.--slim {
+      margin-bottom: $spacing-1;
+    }
   }
 }
 </style>

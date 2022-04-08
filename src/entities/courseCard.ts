@@ -1,4 +1,5 @@
 import { Course, CourseSchedule } from "~/api/@types";
+import { methodToJa } from "~/entities/method";
 import { periodToString } from "~/usecases/periodToString";
 
 export type CourseCard = {
@@ -6,6 +7,10 @@ export type CourseCard = {
   name: string;
   period: string;
   location: string;
+  credit: number;
+  instructor: string;
+  overview: string;
+  methods: string;
   url: string;
   isSelected: boolean;
 };
@@ -28,6 +33,10 @@ export const courseToCard = (course: Course, isSelect = false): CourseCard => {
     name: course.name,
     period: periodToString(course.schedules),
     location: locationToString(course.schedules),
+    credit: course.credit,
+    instructor: course.instructor,
+    overview: course.overview,
+    methods: course.methods.map(methodToJa).join(", "),
     url: getSyllbusUrl(course.code, course.year),
     isSelected: isSelect,
   };
