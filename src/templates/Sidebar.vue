@@ -3,8 +3,10 @@ import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Button from "~/components/Button.vue";
 import SidebarContent from "~/components/SidebarContent.vue";
+import { useUsecase } from "~/usecases";
 import { asyncSetTimeout } from "~/usecases/asyncSetTimeout";
 import { getLogoutUrl } from "~/usecases/getLoginUrl";
+import { getYear } from "~/usecases/getYear";
 import { openUrl } from "~/usecases/openUrl";
 import { isiOS, isMobile } from "~/usecases/ua";
 import { useSidebar } from "~/usecases/useSidebar";
@@ -57,6 +59,8 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const { closeSidebar } = useSidebar();
+
+    const { state: year } = useUsecase(getYear, 0);
 
     // ページ移動するとサイドバーを閉じる
     router.afterEach(closeSidebar);
@@ -151,7 +155,7 @@ export default defineComponent({
       }
     };
 
-    return { menu, settings, links, isSelected, logout, navigateHandler };
+    return { year, menu, settings, links, isSelected, logout, navigateHandler };
   },
 });
 </script>
@@ -179,6 +183,11 @@ export default defineComponent({
       >
         ログイン
       </Button>
+    </section>
+
+    <section class="sidebar__year" @click="$router.push('/view-settings')">
+      設定中の年度 {{ year }}年度
+      <span class="sidebar__icon material-icons">swap_vert</span>
     </section>
 
     <section class="sidebar__contents">
@@ -242,6 +251,25 @@ export default defineComponent({
     margin: 0 0 $spacing-10;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+  &__year {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $spacing-1 $spacing-5 $spacing-1;
+    transition: $transition-box-shadow;
+    color: getColor(--color-unselected);
+    user-select: none;
+    font-size: $font-minimum;
+    margin-bottom: $spacing-4;
+
+    &:active {
+      box-shadow: $shadow-concave;
+    }
+  }
+  &__icon {
+    font-size: $font-medium;
+    color: getColor(--color-primary);
   }
   &__listgroup {
     padding-bottom: $spacing-6;
