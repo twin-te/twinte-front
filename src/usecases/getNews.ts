@@ -37,7 +37,7 @@ export const getNews = (ports: Ports) => async ({
   offset = 0,
   limit = 1000,
 } = {}): Promise<Information[]> => {
-  const { api } = ports;
+  const { api, dayjs } = ports;
   const { body, status, originalResponse } = await api.information
     .get({
       query: {
@@ -49,13 +49,17 @@ export const getNews = (ports: Ports) => async ({
       throw new NetworkError();
     });
   if (isValidStatus(status)) {
-    await makeNewsRead(ports)(
-      body.filter((news) => !news.read).map((news) => news.id)
+    const info = body.sort((a, b) =>
+      dayjs(a.publishedAt).isBefore(dayjs(b.publishedAt)) ? 1 : -1
     );
+
+    const unreadInfo = info.filter((news) => !news.read).map((news) => news.id);
+
+    await makeNewsRead(ports)(unreadInfo);
     if (ignoreReadNews) {
-      return body.filter((news) => !news.read);
+      return info.filter((news) => !news.read);
     } else {
-      return body;
+      return info;
     }
   } else {
     console.error(body);
