@@ -254,13 +254,12 @@ export default defineComponent({
   }
   &__year {
     display: flex;
-    align-items: center;
     gap: $spacing-1;
-    padding: $spacing-1 $spacing-5 $spacing-1;
+    padding: $spacing-1 $spacing-5;
     transition: $transition-box-shadow;
     color: getColor(--color-unselected);
     user-select: none;
-    font-size: $font-minimum;
+    font-size: $font-small;
     margin-bottom: $spacing-4;
 
     &:active {
