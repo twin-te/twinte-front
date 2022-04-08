@@ -32,11 +32,11 @@ export default defineComponent({
 </script>
 <template>
   <button
-    @click="handleClick"
     :class="{
       sidebar__content: true,
       [`sidebar__content--selected`]: selected,
     }"
+    @click="handleClick"
   >
     <span class="sidebar__icon material-icons">{{ iconName }}</span>
     <p

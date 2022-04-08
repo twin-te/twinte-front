@@ -22,10 +22,7 @@ export const getSyllbusUrl = (code: string, year: number) => {
   return `https://kdb.tsukuba.ac.jp/syllabi/${year}/${code}/jpn/`;
 };
 
-export const courseToCard = (
-  course: Course,
-  isSelect: boolean = false
-): CourseCard => {
+export const courseToCard = (course: Course, isSelect = false): CourseCard => {
   const courseCard: CourseCard = {
     id: course.code,
     name: course.name,

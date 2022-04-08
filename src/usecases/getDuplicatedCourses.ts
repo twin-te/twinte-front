@@ -5,8 +5,8 @@ import {
   RegisteredCourse,
   RegisteredCourseWithoutID,
 } from "~/api/@types";
-import { BaseModule, modules } from "~/entities/module";
 import { Day, week } from "~/entities/day";
+import { BaseModule, modules } from "~/entities/module";
 
 /**
  * 引き数に与えられた schedules が既に登録してあるコース

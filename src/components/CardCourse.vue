@@ -1,11 +1,11 @@
 <script lang="ts">
-import { CourseCard } from "~/entities/courseCard";
 import { defineComponent, PropType } from "vue";
+import { CourseCard } from "~/entities/courseCard";
+import { openUrl } from "~/usecases/openUrl";
 import Button from "./Button.vue";
 import Card from "./Card.vue";
 import Checkbox from "./Checkbox.vue";
 import CourseDetailMini from "./CourseDetailMini.vue";
-import { openUrl } from "~/usecases/openUrl";
 
 export default defineComponent({
   components: { Card, Button, CourseDetailMini, Checkbox },
@@ -42,8 +42,8 @@ export default defineComponent({
     <div class="card-course">
       <div class="card-course__checkbox">
         <Checkbox
-          @clickCheckbox="emitCheckboxEvent"
           :isChecked="isChecked"
+          @clickCheckbox="emitCheckboxEvent"
         ></Checkbox>
       </div>
       <div class="card-course__courseId">{{ course.id }}</div>
@@ -60,11 +60,11 @@ export default defineComponent({
       </div>
       <div class="card-course__syllabus-link">
         <Button
-          @click="openSyllabus"
           size="small"
           layout="flexible"
           :icon="true"
           color="base"
+          @click="openSyllabus"
           >シラバス</Button
         >
       </div>

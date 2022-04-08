@@ -38,7 +38,6 @@ export default defineComponent({
   <div class="text-field-multilines">
     <div class="text-field-multilines__scaling">
       <textarea
-        @input="handleInput"
         :value="modelValue"
         :style="{
           width,
@@ -46,6 +45,7 @@ export default defineComponent({
         }"
         :placeholder="placeholder"
         class="text-field-multilines__input"
+        @input="handleInput"
       >
       </textarea>
     </div>

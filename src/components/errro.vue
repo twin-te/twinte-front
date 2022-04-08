@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import PageHeader from "./PageHeader.vue";
 import IconButton from "./IconButton.vue";
+import PageHeader from "./PageHeader.vue";
 
 export default defineComponent({
   components: {
@@ -27,10 +27,10 @@ export default defineComponent({
   <PageHeader>
     <template #left-button-icon>
       <IconButton
-        @click="reload"
         size="large"
         color="normal"
         icon-name="arrow_back"
+        @click="reload"
       ></IconButton>
     </template>
     <template #title></template>

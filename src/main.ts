@@ -1,10 +1,9 @@
-import { createApp } from "vue";
-import VueClickAway from "vue3-click-away";
-import { createHead } from "@vueuse/head";
+import { createGtm } from "@gtm-support/vue-gtm";
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";
-import { createGtm } from "@gtm-support/vue-gtm";
-
+import { createHead } from "@vueuse/head";
+import { createApp } from "vue";
+import VueClickAway from "vue3-click-away";
 import App from "./App.vue";
 import { router } from "./route";
 import { store, StateKey } from "./store";

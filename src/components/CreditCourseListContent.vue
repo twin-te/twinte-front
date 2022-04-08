@@ -65,8 +65,8 @@ export default defineComponent({
     }"
   >
     <div
-      @click="onClick"
       class="credit-course-list-content__course-info course-info"
+      @click="onClick"
     >
       <div class="course-info__container">
         <div class="course-info__code">{{ code }}</div>
@@ -90,16 +90,16 @@ export default defineComponent({
     </div>
     <TagEditor
       v-show="state === 'selected'"
-      @create-tag="(tagName) => $emit('create-tag', tagName)"
       v-model:add="add"
       heading="タグの編集"
+      @create-tag="(tagName) => $emit('create-tag', tagName)"
     >
       <template #tags>
         <Tag
           v-for="tag in tags"
           :key="tag.id"
-          @click="$emit('click-tag', tag)"
           :assign="tag.assign"
+          @click="$emit('click-tag', tag)"
           >{{ tag.name }}
         </Tag>
         <template v-if="tags.length === 0">

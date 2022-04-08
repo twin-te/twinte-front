@@ -1,7 +1,7 @@
 <script lang="ts">
+import { useDark } from "@vueuse/core";
 import { defineComponent, PropType } from "vue";
 import { Calendar } from "~/entities/calendar";
-import { useDark } from "@vueuse/core";
 
 export default defineComponent({
   name: "PageHeader",
@@ -51,16 +51,16 @@ export default defineComponent({
           src="../assets/twintelogo-color.svg"
         />
       </div>
-      <h1 class="header__title" v-else>
+      <h1 v-else class="header__title">
         <slot name="title"></slot>
       </h1>
-      <div class="header__calendar" v-if="atHome && calendar">
+      <div v-if="atHome && calendar" class="header__calendar">
         <p class="header__date">
           {{ calendar.month }}/{{ calendar.day }} ({{ calendar.week }})
         </p>
         <p class="header__schedule">{{ calendar.schedule }}</p>
       </div>
-      <div class="header__right-button" v-else>
+      <div v-else class="header__right-button">
         <slot name="right-button-icon"></slot>
       </div>
     </div>

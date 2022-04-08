@@ -3,17 +3,17 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="router.push('/')"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="router.push('/')"
         ></IconButton>
       </template>
       <template #title>単位数</template>
     </PageHeader>
     <Dropdown
-      :options="yearOptions"
       v-model:selectedOption="selectedYear"
+      :options="yearOptions"
       label="対象年度"
       :state="mode === 'default' ? 'default' : 'disabled'"
     ></Dropdown>
@@ -21,9 +21,9 @@
       <div class="tags__header">
         <div class="tags__label">分類</div>
         <Button
-          @click="mode = mode === 'default' ? 'edit' : 'default'"
           size="small"
           :state="editingTagId || dragging ? 'disabled' : 'default'"
+          @click="mode = mode === 'default' ? 'edit' : 'default'"
           >{{
             mode === "default" ? "タグの作成・編集" : "タグの作成・編集を終わる"
           }}
@@ -38,21 +38,21 @@
           >
             <template #btns>
               <IconButton
-                @click="() => onClickTransitionBtn(allCourseTag)"
                 v-show="mode === 'default'"
                 size="small"
                 color="normal"
                 icon-name="chevron_right"
+                @click="() => onClickTransitionBtn(allCourseTag)"
               ></IconButton>
             </template>
           </TagListContent>
           <draggable
-            @update:model-value="onChangeOrder"
             :model-value="tags"
             item-key="id"
             :animation="250"
             handle=".tag-list-content__drag-icon"
             :disabled="editingTagId"
+            @update:model-value="onChangeOrder"
             @start="dragging = true"
             @end="dragging = false"
           >
@@ -66,21 +66,20 @@
               >
                 <template #textfiled>
                   <TextFieldSingleLine
-                    @enter-text-field="() => onClickNormalBtn(element)"
                     v-model.trim="element.name"
                     placeholder="タグ名"
+                    @enter-text-field="() => onClickNormalBtn(element)"
                   ></TextFieldSingleLine>
                 </template>
                 <template #btns>
                   <IconButton
-                    @click="() => onClickTransitionBtn(element)"
                     v-show="mode === 'default'"
                     size="small"
                     color="normal"
                     icon-name="chevron_right"
+                    @click="() => onClickTransitionBtn(element)"
                   ></IconButton>
                   <IconButton
-                    @click="() => onClickNormalBtn(element)"
                     v-show="mode === 'edit'"
                     size="small"
                     color="normal"
@@ -91,9 +90,9 @@
                         ? 'default'
                         : 'disabled'
                     "
+                    @click="() => onClickNormalBtn(element)"
                   ></IconButton>
                   <IconButton
-                    @click="() => onClickDangerBtn(element)"
                     v-show="mode === 'edit'"
                     size="small"
                     color="danger"
@@ -103,6 +102,7 @@
                         ? 'disabled'
                         : 'default'
                     "
+                    @click="() => onClickDangerBtn(element)"
                   ></IconButton>
                 </template>
               </TagListContent>
@@ -116,12 +116,12 @@
       </div>
       <div
         v-show="mode === 'edit'"
-        @click="onClickAddBtn"
         :class="{
           'tags__add-btn': true,
           'add-btn': true,
           '--disabled': editingTagId || dragging,
         }"
+        @click="onClickAddBtn"
       >
         <div class="add-btn__icon material-icons">add</div>
         <div class="add-btn__value">タグを新たに作成する</div>
@@ -130,8 +130,8 @@
     <Modal
       v-if="deletedTag"
       class="delete-tag-modal"
-      @click="deletedTag = undefined"
       size="small"
+      @click="deletedTag = undefined"
     >
       <template #title>タグを削除しますか？</template>
       <template #contents>
@@ -143,18 +143,18 @@
       </template>
       <template #button>
         <Button
-          @click="deletedTag = undefined"
           size="medium"
           layout="fill"
           color="base"
+          @click="deletedTag = undefined"
         >
           キャンセル
         </Button>
         <Button
-          @click="() => onClickDeleteModal(deletedTag?.id ?? '')"
           size="medium"
           layout="fill"
           color="danger"
+          @click="() => onClickDeleteModal(deletedTag?.id ?? '')"
         >
           削除
         </Button>
@@ -164,9 +164,11 @@
 </template>
 
 <script lang="ts">
+import { useHead } from "@vueuse/head";
 import { computed, defineComponent, reactive, ref, watch } from "vue";
-import draggable from "vuedraggable";
 import { useRouter } from "vue-router";
+import draggable from "vuedraggable";
+import { RegisteredCourse, TagPositionOnly } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import Dropdown from "~/components/Dropdown.vue";
 import IconButton from "~/components/IconButton.vue";
@@ -174,24 +176,21 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
-import { CreditTag } from "~/entities/tag";
+import { CreditTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
+import { displayToast } from "~/entities/toast";
 import { usePorts } from "~/usecases";
+import { changeTagOrders } from "~/usecases/changeTagOrders";
+import { createTag } from "~/usecases/createTag";
 import {
   ApiCourseForCredit,
   ApiTag,
   apiToCreditTags,
 } from "~/usecases/creditPageFunctions";
-import { getTags } from "~/usecases/getTags";
-import { getCourseListByYear } from "~/usecases/getCourseListByYear";
-import { RegisteredCourse, TagPositionOnly } from "~/api/@types";
-import { createTag } from "~/usecases/createTag";
-import { ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { updateTagName } from "~/usecases/updateTagName";
 import { deleteTag } from "~/usecases/deleteTag";
-import { changeTagOrders } from "~/usecases/changeTagOrders";
-import { useHead } from "@vueuse/head";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getCourseListByYear } from "~/usecases/getCourseListByYear";
+import { getTags } from "~/usecases/getTags";
+import { updateTagName } from "~/usecases/updateTagName";
 
 export default defineComponent({
   name: "Credit",

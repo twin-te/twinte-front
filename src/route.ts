@@ -1,20 +1,20 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import Error404 from "./pages/404.vue";
+import CSV from "./pages/add/csv.vue";
+import Add from "./pages/add/index.vue";
 
+import Manual from "./pages/add/manual.vue";
+import Search from "./pages/add/search.vue";
+import Twins from "./pages/add/twins.vue";
+import Edit from "./pages/course/_id/edit.vue";
+import Details from "./pages/course/_id/index.vue";
+import Courses from "./pages/credit/_id.vue";
+import Credit from "./pages/credit/index.vue";
+import Feedback from "./pages/feedback.vue";
 import App from "./pages/index.vue";
 import Login from "./pages/login.vue";
-import Add from "./pages/add/index.vue";
-import Search from "./pages/add/search.vue";
-import CSV from "./pages/add/csv.vue";
-import Manual from "./pages/add/manual.vue";
-import Details from "./pages/course/_id/index.vue";
-import Edit from "./pages/course/_id/edit.vue";
-import Twins from "./pages/add/twins.vue";
-import ViewSettings from "./pages/view-settings.vue";
-import Feedback from "./pages/feedback.vue";
 import News from "./pages/news.vue";
-import Credit from "./pages/credit/index.vue";
-import Courses from "./pages/credit/_id.vue";
-import Error404 from "./pages/404.vue";
+import ViewSettings from "./pages/view-settings.vue";
 
 const history = createWebHistory();
 

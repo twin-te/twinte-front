@@ -34,7 +34,7 @@ export default defineComponent({
     <div :class="{ toast__text: true, [`toast__text--${type}`]: true }">
       {{ text }}
     </div>
-    <div @click="close()" class="toast__close-button">
+    <div class="toast__close-button" @click="close()">
       <div class="material-icons">close</div>
     </div>
   </div>

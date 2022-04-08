@@ -47,13 +47,13 @@ export default defineComponent({
 
 <template>
   <button
-    @click="handleClick"
     :class="{
       'icon-button': true,
       '--active': isActive,
       [`icon-button--${size}`]: true,
       [`icon-button--${color}`]: true,
     }"
+    @click="handleClick"
   >
     <span class="material-icons">{{ iconName }}</span>
     <slot />

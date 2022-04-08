@@ -1,35 +1,35 @@
-import { User } from "~/api/@types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { authCheck } from "../authCheck";
 
 describe(authCheck.name, () => {
   it("when user has not logined, should return false", async () => {
-    const mockPort = {
+    const mockPort: any = {
       api: {
         users: { me: { get: async () => ({ status: 401, body: null }) } },
-      } as any,
-      store: { commit: () => {} } as any,
+      },
+      store: { commit: () => void 0 },
     };
 
-    const data = await authCheck(mockPort as any);
+    const data = await authCheck(mockPort);
     expect(data).not.toBeTruthy();
   });
 
   it("when user has logined, should return true", async () => {
-    const mockPort = {
+    const mockPort: any = {
       api: {
         users: {
           me: {
             get: async () => ({
               status: 200,
-              body: { id: "gb11514", name: "SampleUser" } as User,
+              body: { id: "gb11514", name: "SampleUser" },
             }),
           },
         },
       },
-      store: { commit: () => {} },
+      store: { commit: () => void 0 },
     };
 
-    const data = await authCheck(mockPort as any);
+    const data = await authCheck(mockPort);
     expect(data).toBeTruthy();
   });
 });
