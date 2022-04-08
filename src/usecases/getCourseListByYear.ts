@@ -1,7 +1,7 @@
-import { isValidStatus } from "~/usecases/api";
-import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import { RegisteredCourse } from "~/api/@types";
+import { isValidStatus } from "~/usecases/api";
+import { NetworkAccessError, NetworkError } from "~/usecases/error";
 
 /**
  * 年度を指定して授業を取得する。

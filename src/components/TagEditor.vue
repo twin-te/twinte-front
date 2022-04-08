@@ -1,9 +1,9 @@
 <script lang="ts">
-import { computed, defineComponent, ref, watch, nextTick } from "vue";
-import IconButton from "./IconButton.vue";
-import TextFieldSingleLine from "./TextFieldSingleLine.vue";
-import TagListContent from "./TagListContent.vue";
+import { computed, defineComponent, ref } from "vue";
 import { useFocus } from "~/hooks/useFocus";
+import IconButton from "./IconButton.vue";
+import TagListContent from "./TagListContent.vue";
+import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 
 export default defineComponent({
   name: "TagEditor",
@@ -24,7 +24,10 @@ export default defineComponent({
     },
   },
   emits: ["update:add", "create-tag"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
+    /** フォーカス用 */
+    const { targetRef: tagEditorRef, focus } = useFocus();
+
     const tagName = ref("");
 
     const disabled = computed(() => {
@@ -33,7 +36,8 @@ export default defineComponent({
 
     const handleClick = () => {
       tagName.value = "";
-      emit("update:add", !props.add);
+      emit("update:add", true);
+      focus(["input"]);
     };
 
     const handleCheck = () => {
@@ -45,17 +49,6 @@ export default defineComponent({
     const handleClear = () => {
       emit("update:add", false);
     };
-
-    /** フォーカス用 */
-    const { targetRef: tagEditorRef, focus } = useFocus();
-
-    watch(
-      () => props.add,
-      (add) => {
-        if (!add) return;
-        nextTick(() => focus(["input"]));
-      }
-    );
 
     return {
       tagName,
@@ -70,7 +63,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="tag-editor" ref="tagEditorRef">
+  <div ref="tagEditorRef" class="tag-editor">
     <p class="tag-editor__heading">{{ heading }}</p>
     <section class="tag-editor__contents">
       <div class="tag-editor__tags">
@@ -86,28 +79,28 @@ export default defineComponent({
       >
         <template #textfiled>
           <TextFieldSingleLine
-            @enter-text-field="handleCheck"
             v-model.trim="tagName"
             placeholder="タグ名"
+            @enter-text-field="handleCheck"
           ></TextFieldSingleLine>
         </template>
         <template #btns>
           <IconButton
-            @click="handleCheck"
             size="small"
             color="normal"
             icon-name="check"
             :state="disabled ? 'disabled' : 'default'"
+            @click="handleCheck"
           ></IconButton>
           <IconButton
-            @click="handleClear"
             size="small"
             color="danger"
             icon-name="clear"
+            @click="handleClear"
           ></IconButton>
         </template>
       </TagListContent>
-      <div v-show="!add" @click="handleClick" class="tag-editor__button button">
+      <div v-show="!add" class="tag-editor__button button" @click="handleClick">
         <div class="button__icon material-icons">add</div>
         <div class="button__value">
           <slot name="btn" />

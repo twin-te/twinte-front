@@ -31,12 +31,12 @@ export default defineComponent({
 
 <template>
   <div
-    @click="handleClick"
     :class="{
       checkbox: true,
       '--checked': isChecked,
       '--unchecked': !isChecked,
     }"
+    @click="handleClick"
   >
     <div class="material-icons">done</div>
   </div>

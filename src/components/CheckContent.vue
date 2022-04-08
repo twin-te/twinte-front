@@ -25,8 +25,8 @@ export default defineComponent({
   <div class="check-content">
     <Checkbox
       :isChecked="checked"
-      @click-checkbox="$emit('update:checked', !checked)"
       :isDisable="disabled"
+      @click-checkbox="$emit('update:checked', !checked)"
     ></Checkbox>
     <div class="check-content__value"><slot /></div>
   </div>

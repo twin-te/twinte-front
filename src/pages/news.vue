@@ -3,24 +3,24 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>お知らせ</template>
     </PageHeader>
     <div class="main">
       <div class="main__news">
-        <div class="news__row" v-for="_news in news" :key="_news.id">
+        <div v-for="_news in news" :key="_news.id" class="news__row">
           <NewsBox
             :title="_news.title"
             :content="_news.content"
             :publicationDate="formatDatetime(_news.publishedAt)"
           ></NewsBox>
         </div>
-        <div class="news__not-news" v-if="news.length === 0">
+        <div v-if="news.length === 0" class="news__not-news">
           表示できるお知らせはありません。
         </div>
       </div>
@@ -29,16 +29,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { displayToast } from "~/entities/toast";
-import { formatDatetime } from "~/entities/news";
-import { getNews } from "~/usecases/getNews";
 import { useHead } from "@vueuse/head";
-import { usePorts } from "~/usecases";
+import { defineComponent } from "vue";
+import { Information } from "~/api/@types";
 import IconButton from "~/components/IconButton.vue";
 import NewsBox from "~/components/NewsBox.vue";
 import PageHeader from "~/components/PageHeader.vue";
-import { Information } from "~/api/@types";
+import { formatDatetime } from "~/entities/news";
+import { displayToast } from "~/entities/toast";
+import { usePorts } from "~/usecases";
+import { getNews } from "~/usecases/getNews";
 
 export default defineComponent({
   components: {

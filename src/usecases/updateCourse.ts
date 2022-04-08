@@ -1,11 +1,11 @@
-import { isValidStatus } from "~/usecases/api";
-import { NetworkAccessError, NetworkError } from "~/usecases/error";
 import { Ports } from "~/adapter";
 import {
   Course,
   RegisteredCourse,
   RegisteredCourseWithoutID,
 } from "~/api/@types";
+import { isValidStatus } from "~/usecases/api";
+import { NetworkAccessError, NetworkError } from "~/usecases/error";
 
 /**
  * 講義情報を更新する

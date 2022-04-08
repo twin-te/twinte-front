@@ -48,10 +48,10 @@ export default defineComponent({
       'toggle-button': true,
     }"
   >
-    <div @click="handleChange('left', $event)" class="toggle-button__label">
+    <div class="toggle-button__label" @click="handleChange('left', $event)">
       {{ labels.left }}
     </div>
-    <div @click="handleChange('right', $event)" class="toggle-button__label">
+    <div class="toggle-button__label" @click="handleChange('right', $event)">
       {{ labels.right }}
     </div>
     <div

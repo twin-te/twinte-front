@@ -1,6 +1,6 @@
+import { Ports } from "~/adapter";
 import { isValidStatus } from "~/usecases/api";
 import { NetworkError, NetworkAccessError } from "~/usecases/error";
-import { Ports } from "~/adapter";
 import { getYear } from "./getYear";
 
 /**
@@ -19,12 +19,13 @@ export const bulkAddCourseById = (ports: Ports) => async (codes: string[]) => {
     .catch(() => {
       throw new NetworkError();
     });
-  if (Array.isArray(body)) {
-    body.map((course) => store.commit("addCourse", course));
-  } else {
-    store.commit("addCourse", body);
-  }
+
   if (isValidStatus(status)) {
+    if (Array.isArray(body)) {
+      body.map((course) => store.commit("addCourse", course));
+    } else {
+      store.commit("addCourse", body);
+    }
     return body;
   } else {
     console.error(body);

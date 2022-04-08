@@ -144,9 +144,6 @@ export default defineComponent({
     <transition name="spread-down" mode="out-in">
       <div v-if="opened" class="credit-filter__filters">
         <Dropdown
-          @update:selected-option="
-            (year) => $emit('update:selected-year', year)
-          "
           :options="yearOptions"
           :selectedOption="selectedYear"
           :label="mode === 'filtering' ? '対象年度' : '年度'"
@@ -155,6 +152,9 @@ export default defineComponent({
             'credit-filter__filter-year': true,
             '--edit': mode === 'edit',
           }"
+          @update:selected-option="
+            (year) => $emit('update:selected-year', year)
+          "
         ></Dropdown>
         <div
           v-show="mode === 'filtering'"
@@ -162,13 +162,13 @@ export default defineComponent({
         >
           <div class="filter-all__label">時間割に登録済みの単位数</div>
           <TagListContent
-            @click="$emit('update:selected-tag-id', undefined)"
             name="合計"
             :credit="totalCredit"
             :selected="selectedTagId == undefined"
             :textfield="false"
             drag-handle="hide"
             class="filter-all__tag-list-content"
+            @click="$emit('update:selected-tag-id', undefined)"
           ></TagListContent>
         </div>
         <div class="credit-filter__filter-tag filter-tag">
@@ -187,34 +187,33 @@ export default defineComponent({
             class="filter-tag__mask"
           >
             <draggable
-              @update:model-value="onChangeOrder"
               :model-value="innerTags"
               item-key="id"
               :animation="250"
               handle=".tag-list-content__drag-icon"
               :disabled="edittingTagId !== ''"
+              @update:model-value="onChangeOrder"
               @start="dragging = true"
               @end="dragging = false"
             >
               <template #item="{ element }">
                 <TagListContent
-                  @click="$emit('update:selected-tag-id', element.id)"
                   :name="element.name"
                   :credit="element.credit"
                   :selected="selectedTagId === element.id"
                   :textfield="edittingTagId === element.id"
                   :drag-handle="edittingTagId === '' ? 'show' : 'disabled'"
+                  @click="$emit('update:selected-tag-id', element.id)"
                 >
                   <template #textfiled>
                     <TextFieldSingleLine
-                      @enter-text-field="() => onClickNormalBtn(element)"
                       v-model.trim="textfieldValue"
                       placeholder="タグ名"
+                      @enter-text-field="() => onClickNormalBtn(element)"
                     ></TextFieldSingleLine>
                   </template>
                   <template #btns>
                     <IconButton
-                      @click="() => onClickNormalBtn(element)"
                       size="small"
                       color="normal"
                       :icon-name="
@@ -226,9 +225,9 @@ export default defineComponent({
                           ? 'default'
                           : 'disabled'
                       "
+                      @click="() => onClickNormalBtn(element)"
                     ></IconButton>
                     <IconButton
-                      @click="() => onClickDangerBtn(element)"
                       size="small"
                       color="danger"
                       :icon-name="
@@ -239,6 +238,7 @@ export default defineComponent({
                           ? 'default'
                           : 'disabled'
                       "
+                      @click="() => onClickDangerBtn(element)"
                     ></IconButton>
                   </template>
                 </TagListContent>
@@ -246,12 +246,12 @@ export default defineComponent({
             </draggable>
             <div
               v-show="mode === 'edit'"
-              @click="addNewCreditTag"
               :class="{
                 'filter-tag__add-btn': true,
                 'add-btn': true,
                 '--disabled': dragging || edittingTagId !== '',
               }"
+              @click="addNewCreditTag"
             >
               <div class="add-btn__icon material-icons">add</div>
               <div class="add-btn__value">タグを新たに作成する</div>
@@ -259,12 +259,12 @@ export default defineComponent({
           </div>
         </div>
         <Button
-          @click="
-            $emit('update:mode', mode === 'filtering' ? 'edit' : 'filtering')
-          "
           size="small"
           :state="edittingTagId !== '' || dragging ? 'disabled' : 'default'"
           class="credit-filter__edit-btn"
+          @click="
+            $emit('update:mode', mode === 'filtering' ? 'edit' : 'filtering')
+          "
           >{{
             mode === "filtering"
               ? "タグの作成・編集"
@@ -283,12 +283,12 @@ export default defineComponent({
     </transition>
     <div
       v-show="mode === 'filtering'"
-      @click="opened = !opened"
       :class="{
         'credit-filter__open-btn': true,
         'open-btn': true,
         '--closed': !opened,
       }"
+      @click="opened = !opened"
     >
       <div class="open-btn__value">{{ opened ? "閉じる" : "開く" }}</div>
       <div

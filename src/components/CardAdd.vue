@@ -45,10 +45,10 @@ export default defineComponent({
       <div class="card-add__text">{{ text }}</div>
       <div class="card-add__button">
         <IconButton
-          @click="emitClickEvent"
           size="medium"
           color="normal"
           iconName="arrow_forward"
+          @click="emitClickEvent"
         ></IconButton>
       </div>
     </div>

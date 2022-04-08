@@ -32,12 +32,12 @@ export default defineComponent({
 
 <template>
   <li
-    @click="$emit('click', value)"
     :class="{
       'popup-content': true,
       [`popup-content--${color}`]: true,
     }"
     :data-gtm-marker="gtmMarker"
+    @click="$emit('click', value)"
   >
     {{ value }}
     <span v-if="link" class="material-icons popup-content__link">launch</span>

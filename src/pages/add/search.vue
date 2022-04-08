@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>授業の検索</template>
@@ -17,17 +17,17 @@
           <div class="top__course-name">
             <TextFieldSingleLine
               v-model.trim="searchWord"
-              @enterTextField="search(0)"
               placeholder="授業名や科目番号  (例 :「情報 倫理」,「GA」など)"
+              @enterTextField="search(0)"
             ></TextFieldSingleLine>
           </div>
           <div class="top__search-button">
             <IconButton
-              @click="search(0)"
-              @keyup.enter="search(0)"
               iconName="search"
               size="medium"
               :loading="fetching"
+              @click="search(0)"
+              @keyup.enter="search(0)"
             ></IconButton>
           </div>
         </section>
@@ -39,9 +39,9 @@
         </div>
         <transition name="spread-down" mode="out-in">
           <section
-            class="search__accordion"
             v-if="isAccordionOpen"
             key="accordion"
+            class="search__accordion"
           >
             <div class="accordion__top-border"></div>
             <div class="accordion__only-blank" @click="toggleOnlyBlank">
@@ -60,14 +60,13 @@
             </div>
           </section>
           <section
-            class="search__result"
             v-else
             ref="searchBoxRef"
             key="result"
+            class="search__result"
           >
             <!-- <template v-if="searchResult.length > 0"> -->
             <div
-              class="result__row"
               v-for="(course, index) in searchResult"
               :key="course.course.id"
               :ref="
@@ -75,15 +74,16 @@
                   setSearchResultRef(el, index);
                 }
               "
+              class="result__row"
             >
               <CardCourse
-                @click-checkbox="course.isSelected = !course.isSelected"
                 :course="courseToCard(course.course)"
                 :isChecked="course.isSelected"
+                @click-checkbox="course.isSelected = !course.isSelected"
               ></CardCourse>
             </div>
             <!-- </template> -->
-            <div class="result__not-found" v-if="isNoResultShow">
+            <div v-if="isNoResultShow" class="result__not-found">
               {{ searchWord }}に一致する授業がありません。
             </div>
           </section>
@@ -91,12 +91,12 @@
       </div>
       <section class="main__button">
         <Button
-          @click="addCourse()"
           size="large"
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
           :state="btnState"
+          @click="addCourse()"
           >選択した授業を追加</Button
         >
       </section>
@@ -113,9 +113,9 @@
         </p>
         <div class="modal__courses">
           <div
-            class="duplicated-course"
             v-for="duplicatedCourse in duplicatedCourses"
             :key="duplicatedCourse.name"
+            class="duplicated-course"
           >
             <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
             <CourseDetailMini
@@ -128,17 +128,17 @@
       </template>
       <template #button>
         <Button
-          @click="closeDuplicationModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeDuplicationModal"
           >キャンセル</Button
         >
         <Button
-          @click="addCourse(false)"
           size="medium"
           layout="fill"
           color="primary"
+          @click="addCourse(false)"
           >そのまま追加</Button
         >
       </template>
@@ -147,21 +147,11 @@
 </template>
 
 <script lang="ts">
-import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
-import { Course } from "~/api/@types";
-import { courseToCard } from "~/entities/courseCard";
-import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
-import { periodToString } from "~/usecases/periodToString";
-import { Schedule } from "~/entities/schedule";
-import { searchCourse } from "~/usecases/searchCourse";
 import { useGtm } from "@gtm-support/vue-gtm";
-import { usePorts } from "~/usecases";
-import { useRoute, useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle, useIntersectionObserver } from "@vueuse/core";
+import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { Course } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import Checkbox from "~/components/Checkbox.vue";
@@ -171,6 +161,17 @@ import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
+import { courseToCard } from "~/entities/courseCard";
+import { Schedule } from "~/entities/schedule";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { periodToString } from "~/usecases/periodToString";
+import { searchCourse } from "~/usecases/searchCourse";
 
 export default defineComponent({
   components: {
@@ -308,8 +309,10 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value == "disabled") return;
+      const year = await getYear(ports);
       duplicatedCourses.value = getDuplicatedCourses(ports)(
-        searchResult.value.filter((v) => v.isSelected).map((v) => v.course)
+        searchResult.value.filter((v) => v.isSelected).map((v) => v.course),
+        year
       );
       if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();

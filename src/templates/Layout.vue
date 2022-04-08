@@ -1,18 +1,18 @@
 <script lang="ts">
+import { useDark } from "@vueuse/core";
 import { computed, defineComponent, ref } from "vue";
-import Toast from "~/components/Toast.vue";
-import Sidebar from "./Sidebar.vue";
+import Button from "~/components/Button.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
-import Button from "~/components/Button.vue";
-import { useSidebar } from "~/usecases/useSidebar";
+import Toast from "~/components/Toast.vue";
+import { Toast as ToastContent } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
 import { useStore } from "~/store";
 import { usePorts } from "~/usecases";
-import { useSwitch } from "~/hooks/useSwitch";
 import { authCheck } from "~/usecases/authCheck";
-import { Toast as ToastContent } from "~/entities/toast";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
-import { useDark } from "@vueuse/core";
+import { useSidebar } from "~/usecases/useSidebar";
+import Sidebar from "./Sidebar.vue";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
@@ -63,15 +63,15 @@ export default defineComponent({
       :class="{ 'sidebar--close': isClose }"
     ></Sidebar>
     <GrayFilter
-      class="layout__grayfilter"
       v-show="isOpen"
+      class="layout__grayfilter"
       @click="closeSidebar"
     ></GrayFilter>
     <Modal
       v-if="$route.meta.hasWelcomeModal ?? welcomeModal"
       class="welcome-modal"
-      @click="closeWelcomeModal"
       size="large"
+      @click="closeWelcomeModal"
     >
       <template #title>Twin:teへようこそ！</template>
       <template #contents>
@@ -87,18 +87,18 @@ export default defineComponent({
       </template>
       <template #button>
         <Button
-          @click="closeWelcomeModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeWelcomeModal"
         >
           あとで
         </Button>
         <Button
-          @click="$router.push('/login')"
           size="medium"
           layout="fill"
           color="primary"
+          @click="$router.push('/login')"
         >
           ログインする
         </Button>
@@ -109,11 +109,11 @@ export default defineComponent({
     </article>
     <div class="layout__toast">
       <transition-group name="toast">
-        <div class="toast__row" v-for="toast in toasts" :key="toast.id">
+        <div v-for="toast in toasts" :key="toast.id" class="toast__row">
           <Toast
-            @click-close-button="closeToast(toast.id)"
             :text="toast.text"
             :type="toast.type"
+            @click-close-button="closeToast(toast.id)"
           ></Toast>
         </div>
       </transition-group>

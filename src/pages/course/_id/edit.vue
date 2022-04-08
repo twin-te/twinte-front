@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="modal = true"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="modal = true"
         ></IconButton>
       </template>
       <template #title>授業情報の編集</template>
@@ -61,20 +61,20 @@
       </div>
       <section class="main__footer">
         <Button
-          @click="save"
           size="large"
           layout="fill"
           color="primary"
           :state="btnState"
+          @click="save"
           >変更を保存</Button
         >
       </section>
     </div>
     <Modal
-      class="leave-page-modal"
       v-if="modal"
-      @click="modal = false"
+      class="leave-page-modal"
       size="small"
+      @click="modal = false"
     >
       <template #title>ページから移動しますか？</template>
       <template #contents>
@@ -84,14 +84,14 @@
         </p>
       </template>
       <template #button>
-        <Button @click="modal = false" size="medium" layout="fill" color="base"
+        <Button size="medium" layout="fill" color="base" @click="modal = false"
           >キャンセル</Button
         >
         <Button
-          @click="$router.back()"
           size="medium"
           layout="fill"
           color="primary"
+          @click="$router.back()"
           >移動する</Button
         >
       </template>

@@ -1,5 +1,5 @@
-import IconButton from "~/components/IconButton.vue";
 import { Story } from "@storybook/vue3";
+import IconButton from "~/components/IconButton.vue";
 
 export default {
   component: IconButton,
