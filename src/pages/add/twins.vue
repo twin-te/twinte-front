@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>TWINSからインポート</template>
@@ -46,11 +46,11 @@
       </div>
       <section class="main__button">
         <Button
-          @click="openTwins"
           size="large"
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
+          @click="openTwins"
           >TWINSに移動</Button
         >
       </section>

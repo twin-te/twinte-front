@@ -57,7 +57,6 @@ export default defineComponent({
 
 <template>
   <button
-    @click="handleClick"
     :class="{
       button: true,
       '--active': isActive || state === 'active',
@@ -67,6 +66,7 @@ export default defineComponent({
       [`button--${layout}`]: true,
       ['button--withicon']: icon,
     }"
+    @click="handleClick"
   >
     <slot />
   </button>

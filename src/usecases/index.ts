@@ -1,11 +1,11 @@
 import axiosClient from "@aspida/axios";
+import { useAsyncState } from "@vueuse/core";
 import axios from "axios";
+import dayjs, { ConfigType, Dayjs } from "dayjs";
+import { stringify } from "qs";
 import { Ports } from "~/adapter";
 import instance, { ApiInstance } from "~/api/$api";
 import { useStore } from "~/store";
-import { useAsyncState } from "@vueuse/core";
-import dayjs, { ConfigType, Dayjs } from "dayjs";
-import qs from "qs";
 import "dayjs/locale/ja";
 
 const baseURL =
@@ -35,7 +35,7 @@ export const usePorts = (): Ports => ({
   api: instance(
     axiosClient(axios, {
       baseURL,
-      paramsSerializer: (r) => qs.stringify(r),
+      paramsSerializer: stringify,
       validateStatus: () => true,
       withCredentials: true,
     })

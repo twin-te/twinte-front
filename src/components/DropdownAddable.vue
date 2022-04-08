@@ -41,26 +41,26 @@ export default defineComponent({
   <div class="dropdown-addable">
     <div class="dropdown-addable__dropdown-row">
       <div
-        class="dropdown-addable__dropdown"
         v-for="(data, i) in methods"
         :key="data.value"
+        class="dropdown-addable__dropdown"
       >
         <DropDown
-          :options="createOption(methods)"
           v-model:selectedOption="data.value"
+          :options="createOption(methods)"
           :label="i === 0 ? '学期' : ''"
         >
         </DropDown>
         <div
           v-if="i"
-          @click="$emit('click-remove-button', i)"
           class="dropdown-addable__remove-btn material-icons"
+          @click="$emit('click-remove-button', i)"
         >
           close
         </div>
       </div>
     </div>
-    <div @click="add" class="dropdown-addable__add-btn">
+    <div class="dropdown-addable__add-btn" @click="add">
       <span class="material-icons dropdown-addable__add-btn--icon">add</span>
       追加する
     </div>

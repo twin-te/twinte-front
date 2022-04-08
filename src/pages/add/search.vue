@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>授業の検索</template>
@@ -18,9 +18,9 @@
             <LabeledTextField label="科目番号" size="slim">
               <TextFieldSingleLine
                 v-model.trim="searchCode"
-                @enter-text-field="search(0)"
                 placeholder="例）GA -0"
                 :height="3.4"
+                @enter-text-field="search(0)"
               >
               </TextFieldSingleLine>
             </LabeledTextField>
@@ -29,28 +29,28 @@
             <LabeledTextField label="キーワード" size="slim">
               <TextFieldSingleLine
                 v-model.trim="searchWord"
-                @enterTextField="search(0)"
                 placeholder="例）情報 倫理"
                 :height="3.4"
+                @enterTextField="search(0)"
               ></TextFieldSingleLine>
             </LabeledTextField>
           </div>
           <div class="top__search-button">
             <IconButton
-              @click="search(0)"
-              @keyup.enter="search(0)"
               iconName="search"
               size="medium"
               :loading="fetching"
+              @click="search(0)"
+              @keyup.enter="search(0)"
             ></IconButton>
           </div>
         </section>
         <section class="search__option">
           <div class="option__display-toggle">
             <ToggleButton
-              @click-toggle-button="toggleDetailed"
               :labels="{ left: '詳細', right: '簡易' }"
               :which-selected="isDetailed ? 'left' : 'right'"
+              @click-toggle-button="toggleDetailed"
             />
           </div>
           <div class="option__accordion-toggle" @click="toggleOpen">
@@ -67,9 +67,9 @@
         </section>
         <transition name="spread-down" mode="out-in">
           <section
-            class="search__accordion"
             v-if="isAccordionOpen"
             key="accordion"
+            class="search__accordion"
           >
             <div class="accordion__top-border"></div>
             <div class="accordion__only-blank" @click="toggleOnlyBlank">
@@ -88,14 +88,13 @@
             </div>
           </section>
           <section
-            class="search__result"
             v-else
             ref="searchBoxRef"
             key="result"
+            class="search__result"
           >
             <Card v-show="searchResult.length > 0">
               <div
-                class="result__row"
                 v-for="(course, index) in searchResult"
                 :key="course.course.id"
                 :ref="
@@ -103,14 +102,15 @@
                     setSearchResultRef(el, index);
                   }
                 "
+                class="result__row"
               >
                 <CardCourse
-                  @click-card="course.isExpanded = !course.isExpanded"
-                  @click-checkbox="flipSet(selectedCourses, course.course)"
                   :course="courseToCard(course.course)"
                   :isChecked="selectedCourses.has(course.course)"
                   :isDetailed="isDetailed"
                   :isExpanded="course.isExpanded"
+                  @click-checkbox="flipSet(selectedCourses, course.course)"
+                  @click-card="course.isExpanded = !course.isExpanded"
                 ></CardCourse>
               </div>
             </Card>
@@ -123,19 +123,19 @@
               </p>
               <p>※毎朝5:00に更新されます。</p>
             </div>
-            <div class="result__not-found" v-if="isNoResultShow">
+            <div v-if="isNoResultShow" class="result__not-found">
               {{ searchWord }}に一致する授業がありません。
             </div>
           </section>
         </transition>
         <div class="search__selected">
           <div
-            @click="toggleSelectedOpen"
             :class="{
               selected__count: true,
               '--active': selectedCourses.size > 0,
               '--opened': isSelectedOpen,
             }"
+            @click="toggleSelectedOpen"
           >
             選択中の授業:
             {{ selectedCourses.size }}件
@@ -157,8 +157,8 @@
                 :text="periodToString(course.schedules)"
               />
               <div
-                @click="targetCourseToDelete(course)"
                 class="course-list__clear-button"
+                @click="targetCourseToDelete(course)"
               >
                 <span class="material-icons">clear</span>
                 解除
@@ -169,12 +169,12 @@
       </div>
       <section class="main__bottom">
         <Button
-          @click="addCourse()"
           size="large"
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
           :state="btnState"
+          @click="addCourse()"
           >選択した授業を追加</Button
         >
       </section>
@@ -191,9 +191,9 @@
         </p>
         <div class="modal__courses">
           <div
-            class="duplicated-course"
             v-for="duplicatedCourse in duplicatedCourses"
             :key="duplicatedCourse.name"
+            class="duplicated-course"
           >
             <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
             <CourseDetailMini
@@ -206,17 +206,17 @@
       </template>
       <template #button>
         <Button
-          @click="closeDuplicationModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeDuplicationModal"
           >キャンセル</Button
         >
         <Button
-          @click="addCourse(false)"
           size="medium"
           layout="fill"
           color="primary"
+          @click="addCourse(false)"
           >そのまま追加</Button
         >
       </template>
@@ -229,17 +229,17 @@
       </template>
       <template #button>
         <Button
-          @click="closeDeleteModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeDeleteModal"
           >キャンセル</Button
         >
         <Button
-          @click="deleteTargetCourse(courseTargetedToDelete)"
           size="medium"
           layout="fill"
           color="danger"
+          @click="deleteTargetCourse(courseTargetedToDelete)"
           >解除</Button
         >
       </template>
@@ -248,34 +248,35 @@
 </template>
 
 <script lang="ts">
-import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
-import { Course } from "~/api/@types";
-import { courseToCard } from "~/entities/courseCard";
-import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
-import { periodToString } from "~/usecases/periodToString";
-import { Schedule } from "~/entities/schedule";
-import { searchCourse } from "~/usecases/searchCourse";
 import { useGtm } from "@gtm-support/vue-gtm";
-import { usePorts } from "~/usecases";
-import { useRoute, useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
 import { useToggle, useIntersectionObserver } from "@vueuse/core";
+import { defineComponent, ref, computed, ComponentPublicInstance } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { Course } from "~/api/@types";
 import Button from "~/components/Button.vue";
+import Card from "~/components/Card.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import Checkbox from "~/components/Checkbox.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
 import IconButton from "~/components/IconButton.vue";
+import LabeledTextField from "~/components/LabeledTextField.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import ToggleButton from "~/components/ToggleButton.vue";
-import Card from "~/components/Card.vue";
+import { courseToCard } from "~/entities/courseCard";
+import { Schedule } from "~/entities/schedule";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { periodToString } from "~/usecases/periodToString";
+import { searchCourse } from "~/usecases/searchCourse";
 import { flipSet } from "~/util";
-import LabeledTextField from "~/components/LabeledTextField.vue";
 
 export default defineComponent({
   components: {
@@ -450,8 +451,10 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value == "disabled") return;
+      const year = await getYear(ports);
       duplicatedCourses.value = getDuplicatedCourses(ports)(
-        Array.from(selectedCourses.value.values())
+        Array.from(selectedCourses.value.values()),
+        year
       );
       if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();

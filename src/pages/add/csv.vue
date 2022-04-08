@@ -2,10 +2,10 @@
   <PageHeader>
     <template #left-button-icon>
       <IconButton
-        @click="$router.back()"
         size="large"
         color="normal"
         icon-name="arrow_back"
+        @click="$router.back()"
       ></IconButton>
     </template>
     <template #title>CSVファイルから追加</template>
@@ -15,8 +15,8 @@
       <p class="csv__header">CSVファイル</p>
       <InputButtonFile
         name="csv-file"
-        @change-file="loadCourses"
         accept="text/csv"
+        @change-file="loadCourses"
       >
         アップロードする
       </InputButtonFile>
@@ -26,21 +26,21 @@
         <CardCourse
           v-for="course in loadedCourses"
           :key="courseToCard(course.course).id"
-          @click-checkbox="course.isSelected = !course.isSelected"
           :isChecked="course.isSelected"
           :course="courseToCard(course.course)"
+          @click-checkbox="course.isSelected = !course.isSelected"
         >
         </CardCourse>
       </div>
     </div>
     <div class="main__button">
       <Button
-        @click="addCourse()"
         size="large"
         layout="fill"
         color="primary"
         :pauseActiveStyle="false"
         :state="btnState"
+        @click="addCourse()"
         >選択した授業を追加</Button
       >
     </div>
@@ -57,9 +57,9 @@
       </p>
       <div class="modal__courses">
         <div
-          class="duplicated-course"
           v-for="duplicatedCourse in duplicatedCourses"
           :key="duplicatedCourse.name"
+          class="duplicated-course"
         >
           <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
           <CourseDetailMini
@@ -72,17 +72,17 @@
     </template>
     <template #button>
       <Button
-        @click="closeDuplicationModal"
         size="medium"
         layout="fill"
         color="base"
+        @click="closeDuplicationModal"
         >キャンセル</Button
       >
       <Button
-        @click="addCourse(false)"
         size="medium"
         layout="fill"
         color="primary"
+        @click="addCourse(false)"
         >そのまま追加</Button
       >
     </template>
@@ -90,19 +90,9 @@
 </template>
 
 <script lang="ts">
-import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
-import { Course } from "~/api/@types";
-import { courseToCard } from "~/entities/courseCard";
 import { defineComponent, ref, computed } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getCoursesByCode } from "~/usecases/getCourseByCode";
-import { getCoursesIdByFile } from "~/usecases/readCSV";
-import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
-import { periodToString } from "~/usecases/periodToString";
-import { usePorts } from "~/usecases";
 import { useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
+import { Course } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CardCourse from "~/components/CardCourse.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
@@ -110,6 +100,17 @@ import IconButton from "~/components/IconButton.vue";
 import InputButtonFile from "~/components/InputButtonFile.vue";
 import Modal from "~/components/Modal.vue";
 import PageHeader from "~/components/PageHeader.vue";
+import { courseToCard } from "~/entities/courseCard";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { usePorts } from "~/usecases";
+import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { getCoursesByCode } from "~/usecases/getCourseByCode";
+import { getDuplicatedCourses } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { periodToString } from "~/usecases/periodToString";
+import { getCoursesIdByFile } from "~/usecases/readCSV";
 
 export default defineComponent({
   name: "CSV",
@@ -144,8 +145,10 @@ export default defineComponent({
 
     const addCourse = async (showWarning = true) => {
       if (btnState.value === "disabled") return;
+      const year = await getYear(ports);
       duplicatedCourses.value = getDuplicatedCourses(ports)(
-        loadedCourses.value.filter((v) => v.isSelected).map((v) => v.course)
+        loadedCourses.value.filter((v) => v.isSelected).map((v) => v.course),
+        year
       );
       if (showWarning && duplicatedCourses.value.length > 0) {
         openDuplicationModal();
@@ -168,7 +171,22 @@ export default defineComponent({
       loadedCourses.value = [];
       let courseCodes: string[] = [];
       try {
-        courseCodes = await getCoursesIdByFile(file);
+        const csv = await getCoursesIdByFile(file);
+        switch (csv.type) {
+          case "risyu":
+            courseCodes = csv.data;
+            break;
+          case "seiseki": {
+            const year = await getYear(ports);
+            displayToast(ports)(`${year}年度の授業を読み込んでいます。`, {
+              type: "primary",
+            });
+            courseCodes = csv.data
+              .filter((v) => v.year === year)
+              .map((v) => v.code);
+            break;
+          }
+        }
       } catch (error) {
         console.error(error);
         displayToast(ports)("ファイルの読み込みに失敗しました。");
@@ -177,6 +195,12 @@ export default defineComponent({
 
       let fetchedCourses: Course[] = [];
       let missingCourseCodes: string[] = [];
+
+      if (courseCodes.length === 0) {
+        displayToast(ports)(`読み込むコースがありません。`);
+        return;
+      }
+
       try {
         const res = await getCoursesByCode(ports)(courseCodes);
         fetchedCourses = res.courses;

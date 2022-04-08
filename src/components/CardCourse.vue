@@ -1,10 +1,10 @@
 <script lang="ts">
-import { CourseCard } from "~/entities/courseCard";
 import { defineComponent, PropType } from "vue";
+import { CourseCard } from "~/entities/courseCard";
+import { openUrl } from "~/usecases/openUrl";
 import Button from "./Button.vue";
 import Checkbox from "./Checkbox.vue";
 import CourseDetailMini from "./CourseDetailMini.vue";
-import { openUrl } from "~/usecases/openUrl";
 
 export default defineComponent({
   components: { Button, CourseDetailMini, Checkbox },
@@ -48,7 +48,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div @click="emitCardEvent" :style="{ width }">
+  <div :style="{ width }" @click="emitCardEvent">
     <div
       :class="{
         'card-course': true,
@@ -58,8 +58,8 @@ export default defineComponent({
     >
       <div :class="{ 'card-course__checkbox': true, '--expanded': isExpanded }">
         <Checkbox
-          @clickCheckbox.stop="emitCheckboxEvent"
           :isChecked="isChecked"
+          @clickCheckbox.stop="emitCheckboxEvent"
         ></Checkbox>
       </div>
       <div class="card-course__courseId">{{ course.id }}</div>
@@ -117,11 +117,11 @@ export default defineComponent({
         }"
       >
         <Button
-          @click="openSyllabus"
           size="small"
           layout="flexible"
           :icon="true"
           color="base"
+          @click="openSyllabus"
           >シラバス</Button
         >
       </div>

@@ -16,7 +16,7 @@ export default defineComponent({
   props: {
     onKeyup: {
       type: Function,
-      default: () => {},
+      default: () => void 0,
     },
     size: {
       type: String,
@@ -59,14 +59,14 @@ export default defineComponent({
 
 <template>
   <button
-    @click="handleClick"
-    @keyup.enter="$emit('click', $event)"
     :class="{
       'icon-button': true,
       [`icon-button--${size}`]: true,
       [`icon-button--${color}`]: true,
       '--disabled': state === 'disabled',
     }"
+    @click="handleClick"
+    @keyup.enter="$emit('click', $event)"
   >
     <Loader v-if="loading" size="100%" />
     <span v-else class="material-icons">{{ iconName }}</span>

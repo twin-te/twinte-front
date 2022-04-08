@@ -28,7 +28,6 @@ export default defineComponent({
       default: "show",
     },
   },
-  setup() {},
 });
 </script>
 <template>

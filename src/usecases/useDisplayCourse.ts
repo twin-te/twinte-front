@@ -5,10 +5,10 @@ import {
   RegisteredCourse,
   RegisteredCourseWithoutID,
 } from "~/api/@types";
+import { DisplayCourse } from "~/entities/course";
 import { jaToMethod, methodToJa } from "~/entities/method";
 import { apiToSchedule, scheduleToApi } from "~/entities/schedule";
 import { periodToString } from "~/usecases/periodToString";
-import { DisplayCourse } from "~/entities/course";
 
 export type ApiCourse = { course?: Course } & RegisteredCourseWithoutID;
 

@@ -5,8 +5,8 @@ import {
   RegisteredCourse,
   RegisteredCourseWithoutID,
 } from "~/api/@types";
-import { BaseModule, modules } from "~/entities/module";
 import { Day, week } from "~/entities/day";
+import { BaseModule, modules } from "~/entities/module";
 
 /**
  * 引き数に与えられた schedules が既に登録してあるコース
@@ -14,11 +14,12 @@ import { Day, week } from "~/entities/day";
  * ただし「コマ」で表現できない日程は必ず重複しない
  */
 export const isSchedulesDuplicated = ({ store }: Ports) => (
-  targetSchedules: CourseSchedule[]
+  targetSchedules: CourseSchedule[],
+  year: number
 ): boolean => {
   return (
     targetSchedules?.some((targetSchedule) => {
-      return store.getters.courses.some((c: RegisteredCourse) => {
+      return store.getters.coursesByYear(year).some((c: RegisteredCourse) => {
         const registeredSchedules = c.schedules ?? c.course?.schedules;
         return registeredSchedules?.some(
           (s: CourseSchedule) =>
@@ -42,12 +43,13 @@ export const isSchedulesDuplicated = ({ store }: Ports) => (
 export const isCourseDuplicated = ({ store }: Ports) => <
   T extends Course | RegisteredCourseWithoutID
 >(
-  target: T
+  target: T,
+  year: number
 ): boolean => {
   if (target.schedules == undefined) {
     return false;
   }
-  return isSchedulesDuplicated({ store } as Ports)(target.schedules);
+  return isSchedulesDuplicated({ store } as Ports)(target.schedules, year);
 };
 
 /**
@@ -56,5 +58,7 @@ export const isCourseDuplicated = ({ store }: Ports) => <
 export const getDuplicatedCourses = ({ store }: Ports) => <
   T extends Course | RegisteredCourseWithoutID
 >(
-  targets: T[]
-): T[] => targets.filter((v) => isCourseDuplicated({ store } as Ports)(v));
+  targets: T[],
+  year: number
+): T[] =>
+  targets.filter((v) => isCourseDuplicated({ store } as Ports)(v, year));

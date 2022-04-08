@@ -1,6 +1,6 @@
 import { Course, CourseSchedule } from "~/api/@types";
-import { periodToString } from "~/usecases/periodToString";
 import { methodToJa } from "~/entities/method";
+import { periodToString } from "~/usecases/periodToString";
 
 export type CourseCard = {
   id: string;
@@ -27,10 +27,7 @@ export const getSyllbusUrl = (code: string, year: number) => {
   return `https://kdb.tsukuba.ac.jp/syllabi/${year}/${code}/jpn/`;
 };
 
-export const courseToCard = (
-  course: Course,
-  isSelect: boolean = false
-): CourseCard => {
+export const courseToCard = (course: Course, isSelect = false): CourseCard => {
   const courseCard: CourseCard = {
     id: course.code,
     name: course.name,

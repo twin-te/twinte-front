@@ -1,6 +1,6 @@
-import { getYear } from "../getYear";
-import { Ports } from "~/adapter";
 import dayjs from "dayjs";
+import { Ports } from "~/adapter";
+import { getYear } from "../getYear";
 import "dayjs/locale/ja";
 
 describe(getYear.name, () => {

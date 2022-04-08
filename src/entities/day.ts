@@ -1,5 +1,5 @@
-import { isContainedIn } from "~/util";
 import { CourseDay } from "~/api/@types";
+import { isContainedIn } from "~/util";
 
 export type WeekDay = Extract<
   CourseDay,

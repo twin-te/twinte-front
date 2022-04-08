@@ -14,7 +14,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div @click="$emit('click')" :class="{ tag: true, '--assigned': assign }">
+  <div :class="{ tag: true, '--assigned': assign }" @click="$emit('click')">
     <slot />
   </div>
 </template>

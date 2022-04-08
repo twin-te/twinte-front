@@ -3,10 +3,10 @@
     <PageHeader>
       <template #left-button-icon>
         <IconButton
-          @click="$router.back()"
           size="large"
           color="normal"
           icon-name="arrow_back"
+          @click="$router.back()"
         ></IconButton>
       </template>
       <template #title>手動で授業を作成</template>
@@ -69,12 +69,12 @@
       </div>
       <section class="main__button">
         <Button
-          @click="addCourse()"
           size="large"
           layout="fill"
           color="primary"
           :pauseActiveStyle="false"
           :state="btnState"
+          @click="addCourse()"
           >変更を保存</Button
         >
       </section>
@@ -91,9 +91,9 @@
         </p>
         <div class="modal__courses">
           <div
-            class="duplicated-course"
             v-for="duplicatedCourse in duplicatedCourses"
             :key="duplicatedCourse.name"
+            class="duplicated-course"
           >
             <p class="duplicated-course__name">{{ duplicatedCourse.name }}</p>
             <CourseDetailMini
@@ -106,17 +106,17 @@
       </template>
       <template #button>
         <Button
-          @click="closeDuplicationModal"
           size="medium"
           layout="fill"
           color="base"
+          @click="closeDuplicationModal"
           >キャンセル</Button
         >
         <Button
-          @click="addCourse(false)"
           size="medium"
           layout="fill"
           color="primary"
+          @click="addCourse(false)"
           >そのまま追加</Button
         >
       </template>
@@ -125,19 +125,9 @@
 </template>
 
 <script lang="ts">
-import { addCourseByManual } from "~/usecases/addCourseByManual";
-import { RegisteredCourseWithoutID } from "~/api/@types";
 import { defineComponent, ref, computed, reactive } from "vue";
-import { displayToast } from "~/entities/toast";
-import { extractMessageOrDefault } from "~/usecases/error";
-import { getYear } from "~/usecases/getYear";
-import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
-import { methodJaList } from "~/entities/method";
-import { periodToString } from "~/usecases/periodToString";
-import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
-import { usePorts } from "~/usecases/index";
 import { useRouter } from "vue-router";
-import { useSwitch } from "~/hooks/useSwitch";
+import { RegisteredCourseWithoutID } from "~/api/@types";
 import Button from "~/components/Button.vue";
 import CheckContent from "~/components/CheckContent.vue";
 import CourseDetailMini from "~/components/CourseDetailMini.vue";
@@ -149,6 +139,16 @@ import PageHeader from "~/components/PageHeader.vue";
 import ScheduleEditer from "~/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { isValidCredit } from "~/entities/credit";
+import { methodJaList } from "~/entities/method";
+import { createBlankSchedule, isValidSchedules } from "~/entities/schedule";
+import { displayToast } from "~/entities/toast";
+import { useSwitch } from "~/hooks/useSwitch";
+import { addCourseByManual } from "~/usecases/addCourseByManual";
+import { extractMessageOrDefault } from "~/usecases/error";
+import { isCourseDuplicated } from "~/usecases/getDuplicatedCourses";
+import { getYear } from "~/usecases/getYear";
+import { usePorts } from "~/usecases/index";
+import { periodToString } from "~/usecases/periodToString";
 import {
   apiToDisplayCourse,
   displayCourseToApi,
@@ -235,7 +235,8 @@ export default defineComponent({
       ]) as Required<RegisteredCourseWithoutID>;
 
       // 開講時限が重複しているかどうか？
-      if (showWarning && isCourseDuplicated(ports)(course)) {
+      const year = await getYear(ports);
+      if (showWarning && isCourseDuplicated(ports)(course, year)) {
         duplicatedCourses.value[0] = course;
         openDuplicationModal();
         return;

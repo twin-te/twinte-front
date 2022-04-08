@@ -18,8 +18,8 @@ export default defineComponent({
 
 <template>
   <div
-    @click="$emit('click')"
     :class="{ option: true, '--selected': isSelected }"
+    @click="$emit('click')"
   >
     {{ value }}
   </div>
