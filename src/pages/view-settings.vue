@@ -46,7 +46,7 @@
           />
         </div>
         <div class="main__content--dropdown">
-          <p>時間割に表示する年度</p>
+          <p>時間割の表示、授業の検索に適用する年度</p>
           <Dropdown
             v-model:selectedOption="selectedYear"
             :options="displayedYearOptions"
@@ -62,6 +62,7 @@
 import { useDark, useToggle } from "@vueuse/core";
 import { useHead } from "@vueuse/head";
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 import Dropdown from "~/components/Dropdown.vue";
 import IconButton from "~/components/IconButton.vue";
 import PageHeader from "~/components/PageHeader.vue";
@@ -85,7 +86,7 @@ export default defineComponent({
     useHead({
       title: "Twin:te | 表示設定",
     });
-
+    const router = useRouter();
     const ports = usePorts();
 
     const {
@@ -123,6 +124,7 @@ export default defineComponent({
     };
 
     return {
+      router,
       isDark,
       toggleDark,
       saturdayCourseMode,
