@@ -9,10 +9,11 @@ import { getYear } from "./getYear";
  * 一部の code が不正だった場合エラーにならずにその code を除いた正常な講義データのみが返却される
  */
 export const getCoursesByCode = (ports: Ports) => async (
-  codes: string[]
+  codes: string[],
+  _year?: number
 ): Promise<{ courses: Course[]; missingCourseCodes: string[] }> => {
   const { api } = ports;
-  const year = await getYear(ports);
+  const year = _year ?? (await getYear(ports));
   const { body, status, originalResponse } = await api.courses
     .get({
       query: {

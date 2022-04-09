@@ -11,6 +11,7 @@ import Details from "./pages/course/_id/index.vue";
 import Courses from "./pages/credit/_id.vue";
 import Credit from "./pages/credit/index.vue";
 import Feedback from "./pages/feedback.vue";
+import Import from "./pages/import.vue";
 import App from "./pages/index.vue";
 import Login from "./pages/login.vue";
 import News from "./pages/news.vue";
@@ -37,6 +38,7 @@ const routes: RouteRecordRaw[] = [
   { path: "/course/:id/edit", component: Edit },
   { path: "/course/:id", component: Details },
   { path: "/Feedback", component: Feedback },
+  { path: "/import", component: Import },
   { path: "/news", component: News },
   { path: "/credit", component: Credit },
   { path: "/credit/:id", component: Courses },
