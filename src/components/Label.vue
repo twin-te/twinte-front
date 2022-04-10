@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "Label",
@@ -12,12 +12,16 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String as PropType<"normal" | "slim">,
+      default: "normal",
+    },
   },
 });
 </script>
 
 <template>
-  <div class="label">
+  <div :class="`label --${size}`">
     {{ value }}
     <span v-if="mandatory" class="label__mandatory">必須</span>
   </div>
@@ -34,6 +38,11 @@ export default defineComponent({
   font-weight: 500;
   line-height: $single-line;
   color: getColor(--color-text-main);
+  &.--slim {
+    font-size: $font-minimum;
+    font-weight: 500;
+    color: getColor(--color-text-sub);
+  }
   &__mandatory {
     font-size: $font-minimum;
     font-weight: 400;

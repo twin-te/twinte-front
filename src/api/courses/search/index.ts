@@ -11,11 +11,12 @@ export type Methods = {
     reqBody: {
       year: number
       /** 検索モード Cover 指定した時限と講義の開講日時が一部でも被っていれば対象とみなす Contain 指定した時限に収まっている講義のみ対象とみなす デフォルトはCover */
-      searchMode?: 'Cover' | 'Contain' | undefined
+      searchMode?: 'Cover' | 'Contain'
       keywords: string[]
-      limit?: number | undefined
-      offset?: number | undefined
-      timetable?: Types.SearchCourseTimetableQuery | undefined
+      codes?: string[]
+      limit?: number
+      offset?: number
+      timetable?: Types.SearchCourseTimetableQuery
     }
   }
 }

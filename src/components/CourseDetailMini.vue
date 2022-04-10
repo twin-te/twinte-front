@@ -11,6 +11,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    ellipsis: {
+      type: Boolean,
+      default: false,
+    },
   },
 });
 </script>
@@ -20,7 +24,14 @@ export default defineComponent({
     <div class="course-detail-mini__icon">
       <span class="material-icons">{{ iconName }}</span>
     </div>
-    <div class="course-detail-mini__value">{{ text }}</div>
+    <div
+      :class="{
+        'course-detail-mini__value': true,
+        '--ellipsis': ellipsis,
+      }"
+    >
+      {{ text }}
+    </div>
   </div>
 </template>
 
@@ -29,6 +40,7 @@ export default defineComponent({
 
 .course-detail-mini {
   @include center-flex;
+  overflow: hidden;
   &__icon {
     @include text-main;
     @include icon-cursor;
@@ -39,6 +51,9 @@ export default defineComponent({
   }
   &__value {
     @include text-sub-discription;
+    &.--ellipsis {
+      @include ellipsis;
+    }
   }
 }
 </style>
