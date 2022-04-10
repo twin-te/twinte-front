@@ -12,10 +12,11 @@
       <template #title>単位数</template>
     </PageHeader>
     <Dropdown
-      v-model:selectedOption="selectedYear"
+      :selectedOption="selectedYear"
       :options="yearOptions"
       label="対象年度"
       :state="mode === 'default' ? 'default' : 'disabled'"
+      @update:selected-option="updateSelectedYear"
     ></Dropdown>
     <section class="tags">
       <div class="tags__header">
@@ -179,6 +180,7 @@ import TagListContent from "~/components/TagListContent.vue";
 import TextFieldSingleLine from "~/components/TextFieldSingleLine.vue";
 import { CreditTag, ALL_COURSES_ID, NEW_TAG_ID } from "~/entities/tag";
 import { displayToast } from "~/entities/toast";
+import { useCreditYear } from "~/hooks/useCreditYear";
 import { useFocus } from "~/hooks/useFocus";
 import { usePorts } from "~/usecases";
 import { changeTagOrders } from "~/usecases/changeTagOrders";
@@ -211,6 +213,7 @@ export default defineComponent({
       title: "Twin:te | 単位数",
     });
 
+    const { creditYear, updateCreditYear } = useCreditYear();
     /** フォーカス用 */
     const { targetRef: tagsContentsRef, focus } = useFocus();
 
@@ -225,9 +228,16 @@ export default defineComponent({
       "2020年度",
       "2019年度",
     ];
-    const selectedYear = ref<string>(yearOptions[0]);
+    const selectedYear = computed(() =>
+      creditYear.value == undefined ? "すべての年度" : `${creditYear.value}年度`
+    );
+    const updateSelectedYear = (year: string) => {
+      updateCreditYear(
+        year === "すべての年度" ? undefined : Number(year.slice(0, 4))
+      );
+    };
 
-    watch(selectedYear, async () => {
+    watch(selectedYear, async (year) => {
       await updateApiCourses();
       updateTags();
     });
@@ -347,15 +357,7 @@ export default defineComponent({
       }
     };
     const onClickTransitionBtn = (tag: CreditTag) => {
-      router.push({
-        path: `/credit/${tag.id}`,
-        query: {
-          year:
-            selectedYear.value === "すべての年度"
-              ? 0
-              : Number(selectedYear.value.slice(0, 4)),
-        },
-      });
+      router.push(`/credit/${tag.id}`);
     };
     const onClickAddBtn = () => {
       tags.value.push({ id: NEW_TAG_ID, name: "", credit: "0.0" });
@@ -407,6 +409,7 @@ export default defineComponent({
       router,
       yearOptions,
       selectedYear,
+      updateSelectedYear,
       mode,
       editingTagId,
       dragging,
