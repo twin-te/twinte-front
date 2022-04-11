@@ -17,7 +17,7 @@
           TWINSに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。
           この機能は筑波大学非公式の機能であり、認可されたものではありません。
           動作の仕組みは<a
-            href="https://www.twinte.net/policy"
+            href="https://twinte.hatenablog.com/entry/2019/12/20/200652"
             target="_blank"
             rel="noopener noreferrer"
             >こちら</a
