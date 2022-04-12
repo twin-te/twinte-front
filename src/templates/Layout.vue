@@ -1,7 +1,6 @@
 <script lang="ts">
 import { useBrowserLocation, useDark } from "@vueuse/core";
-import { computed, defineComponent, ref } from "vue";
-import { useRoute } from "vue-router";
+import { computed, defineComponent, watch } from "vue";
 import Button from "~/components/Button.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
@@ -17,7 +16,7 @@ import Sidebar from "./Sidebar.vue";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
-  setup: async () => {
+  setup: () => {
     const { isClose, isOpen, closeSidebar } = useSidebar();
     const store = useStore();
     const location = useBrowserLocation();
