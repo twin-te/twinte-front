@@ -462,7 +462,7 @@ export default defineComponent({
       }
       try {
         await bulkAddCourseById(ports)(
-          Array.from(selectedCourses.value.values()).map(
+          Array.from(selectedCourses.value.values())?.map(
             (course) => course.code
           )
         );

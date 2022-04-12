@@ -1,6 +1,6 @@
 <script lang="ts">
-import { useDark } from "@vueuse/core";
-import { computed, defineComponent, ref } from "vue";
+import { useBrowserLocation, useDark } from "@vueuse/core";
+import { computed, defineComponent, watch } from "vue";
 import Button from "~/components/Button.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
 import Modal from "~/components/Modal.vue";
@@ -8,7 +8,7 @@ import Toast from "~/components/Toast.vue";
 import { Toast as ToastContent } from "~/entities/toast";
 import { useSwitch } from "~/hooks/useSwitch";
 import { useStore } from "~/store";
-import { usePorts } from "~/usecases";
+import { usePorts, useUsecase } from "~/usecases";
 import { authCheck } from "~/usecases/authCheck";
 import { useDisplayedYear } from "~/usecases/useDisplayedYear";
 import { useSidebar } from "~/usecases/useSidebar";
@@ -16,17 +16,22 @@ import Sidebar from "./Sidebar.vue";
 
 export default defineComponent({
   components: { Toast, Sidebar, GrayFilter, Modal, Button },
-  setup: async () => {
+  setup: () => {
     const { isClose, isOpen, closeSidebar } = useSidebar();
     const store = useStore();
+    const location = useBrowserLocation();
     const ports = usePorts();
+
     useDark({
       selector: "body",
     });
 
     // welcome modal
-    const isLogin = ref(await authCheck(ports));
-    const [welcomeModal, , closeWelcomeModal] = useSwitch(!isLogin.value);
+    const [welcomeModal, , closeWelcomeModal, , setWelcomeModal] = useSwitch(
+      false
+    );
+    const { state: isLogin } = useUsecase(authCheck, undefined);
+    watch(isLogin, (isLogin) => setWelcomeModal(!isLogin));
 
     // Toast
     const toasts = computed<ToastContent[]>(() => {
@@ -50,6 +55,7 @@ export default defineComponent({
       closeWelcomeModal,
       toasts,
       closeToast,
+      location,
     };
   },
 });
@@ -98,7 +104,7 @@ export default defineComponent({
           size="medium"
           layout="fill"
           color="primary"
-          @click="$router.push('/login')"
+          @click="$router.push(`/login?redirectUrl=${location.href}`)"
         >
           ログインする
         </Button>

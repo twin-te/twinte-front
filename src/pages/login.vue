@@ -11,21 +11,21 @@
       </div>
       <div class="main__head">ログイン方法を選択</div>
       <div class="main__provider">
-        <button @click="goto(getLoginUrl('apple'))">
+        <button @click="goto(getLoginUrl('apple', redirectUrl))">
           <img
             class="main__login-button"
             src="../assets/login-page/login-apple.png"
             alt="appleでログイン"
           />
         </button>
-        <button @click="goto(getLoginUrl('twitter'))">
+        <button @click="goto(getLoginUrl('twitter', redirectUrl))">
           <img
             class="main__login-button"
             src="../assets/login-page/login-twitter.svg"
             alt="twitterでログイン"
           />
         </button>
-        <button @click="goto(getLoginUrl('google'))">
+        <button @click="goto(getLoginUrl('google', redirectUrl))">
           <img
             class="main__login-button"
             src="../assets/login-page/login-google.svg"
@@ -64,7 +64,7 @@
 <script lang="ts">
 import { useDark } from "@vueuse/core";
 import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import GrayFilter from "~/components/GrayFilter.vue";
 import { getLoginUrl } from "~/usecases/getLoginUrl";
 
@@ -72,6 +72,9 @@ export default defineComponent({
   components: { GrayFilter },
   setup: () => {
     const router = useRouter();
+    const route = useRoute();
+    const redirectUrl = route.query.redirectUrl?.toString();
+
     const isDark = useDark({
       selector: "body",
     });
@@ -80,7 +83,7 @@ export default defineComponent({
       clicked.value = true;
       location.href = url;
     };
-    return { router, isDark, clicked, goto, getLoginUrl };
+    return { router, isDark, clicked, goto, redirectUrl, getLoginUrl };
   },
 });
 </script>
