@@ -2,12 +2,14 @@
   <div class="import">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton
-          size="large"
-          color="normal"
-          icon-name="arrow_back"
-          @click="$router.back()"
-        />
+        <div class="header__left-button-icon">
+          <IconButton
+            size="large"
+            color="normal"
+            iconName="menu"
+            @click="toggleSidebar"
+          ></IconButton>
+        </div>
       </template>
       <template #title>授業のインポート</template>
     </PageHeader>
@@ -100,6 +102,7 @@ import PageHeader from "~/components/PageHeader.vue";
 import { courseToCard } from "~/entities/courseCard";
 import { displayToast } from "~/entities/toast";
 import { useSwitch } from "~/hooks/useSwitch";
+import { useStore } from "~/store";
 import { usePorts } from "~/usecases";
 import { bulkAddCourseById } from "~/usecases/bulkAddCourseById";
 import { extractMessageOrDefault } from "~/usecases/error";
@@ -123,6 +126,11 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const ports = usePorts();
+    const store = useStore();
+
+    const toggleSidebar = () => {
+      store.commit("setSidebar", !store.state.sidebar);
+    };
 
     /** button */
     const btnState = computed(() => {
@@ -170,7 +178,19 @@ export default defineComponent({
       await router.push("/"); // Falthyはホームに戻す
       throw new Error("courses is undefined");
     }
-    const importedCourses = await getCoursesByCode(ports)(codes, year);
+    const importedCourses = await getCoursesByCode(ports)(codes, year).catch(
+      // 未ログイン時
+      (error) => {
+        console.error(error);
+        displayToast(ports)(
+          "授業が取得できませんでした。ログインしていない場合はログインしてください。"
+        );
+        return {
+          missingCourseCodes: [],
+          courses: [],
+        };
+      }
+    );
     if (importedCourses.missingCourseCodes.length > 0) {
       displayToast(ports)(
         `以下の科目番号は見つかりませんでした。 ${importedCourses.missingCourseCodes.join(
@@ -189,6 +209,7 @@ export default defineComponent({
     return {
       addCourse,
       btnState,
+      toggleSidebar,
       closeDuplicationModal,
       courseToCard,
       duplicatedCourses,
@@ -205,6 +226,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "~/styles";
+@include header-left-button-delete;
 
 .import {
   display: flex;
