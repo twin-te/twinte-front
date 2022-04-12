@@ -28,8 +28,11 @@ export default defineComponent({
     });
 
     // welcome modal
-    const isLogin = ref(await authCheck(ports));
-    const [welcomeModal, , closeWelcomeModal] = useSwitch(!isLogin.value);
+    const [welcomeModal, , closeWelcomeModal, , setWelcomeModal] = useSwitch(
+      false
+    );
+    const { state: isLogin } = useUsecase(authCheck, undefined);
+    watch(isLogin, (isLogin) => setWelcomeModal(!isLogin));
 
     // Toast
     const toasts = computed<ToastContent[]>(() => {

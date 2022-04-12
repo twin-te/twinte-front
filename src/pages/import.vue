@@ -172,13 +172,13 @@ export default defineComponent({
     };
 
     // result
-    const year = Number(route.query.year);
+    // const year = Number(route.query.year);
     const codes = route.query.codes?.toString().split(",");
-    if (!(codes && year)) {
+    if (!codes) {
       await router.push("/"); // Falthyはホームに戻す
       throw new Error("courses is undefined");
     }
-    const importedCourses = await getCoursesByCode(ports)(codes, year).catch(
+    const importedCourses = await getCoursesByCode(ports)(codes).catch(
       // 未ログイン時
       (error) => {
         console.error(error);

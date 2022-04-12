@@ -73,7 +73,7 @@ export default defineComponent({
   setup: () => {
     const router = useRouter();
     const route = useRoute();
-    const redirectUrl = "https://app.twinte.net" + route.query.redirectUrl;
+    const redirectUrl = route.query.redirectUrl?.toString();
 
     const isDark = useDark({
       selector: "body",
