@@ -15,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import { useDark } from "@vueuse/core";
 import { defineComponent, onErrorCaptured, onMounted, ref } from "vue";
 import Error from "~/components/errro.vue";
 import Layout from "~/templates/Layout.vue";
@@ -24,6 +25,10 @@ export default defineComponent({
   name: "App",
   components: { Error, Layout },
   setup: () => {
+    useDark({
+      selector: "body",
+    });
+
     // unregister service worker (v2)
     onMounted(() => {
       navigator.serviceWorker.getRegistrations().then(function (registrations) {

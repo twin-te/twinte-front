@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useBrowserLocation, useDark } from "@vueuse/core";
+import { useBrowserLocation } from "@vueuse/core";
 import { computed, defineComponent, watch } from "vue";
 import Button from "~/components/Button.vue";
 import GrayFilter from "~/components/GrayFilter.vue";
@@ -21,10 +21,6 @@ export default defineComponent({
     const store = useStore();
     const location = useBrowserLocation();
     const ports = usePorts();
-
-    useDark({
-      selector: "body",
-    });
 
     // welcome modal
     const [welcomeModal, , closeWelcomeModal, , setWelcomeModal] = useSwitch(
