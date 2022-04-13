@@ -1,21 +1,24 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Error404 from "./pages/404.vue";
-import CSV from "./pages/add/csv.vue";
-import Add from "./pages/add/index.vue";
 
-import Manual from "./pages/add/manual.vue";
-import Search from "./pages/add/search.vue";
-import Twins from "./pages/add/twins.vue";
-import Edit from "./pages/course/_id/edit.vue";
-import Details from "./pages/course/_id/index.vue";
-import Courses from "./pages/credit/_id.vue";
-import Credit from "./pages/credit/index.vue";
-import Feedback from "./pages/feedback.vue";
-import Import from "./pages/import.vue";
+// ページを追加するときはダイナミックインポートする
+// 必要に応じてvite.config.tsにも設定を追加する
+// ホームはダイナミックインポートしない
 import App from "./pages/index.vue";
-import Login from "./pages/login.vue";
-import News from "./pages/news.vue";
-import ViewSettings from "./pages/view-settings.vue";
+const Error404 = () => import("./pages/404.vue");
+const CSV = () => import("./pages/add/csv.vue");
+const Add = () => import("./pages/add/index.vue");
+const Manual = () => import("./pages/add/manual.vue");
+const Search = () => import("./pages/add/search.vue");
+const Twins = () => import("./pages/add/twins.vue");
+const Edit = () => import("./pages/course/_id/edit.vue");
+const Details = () => import("./pages/course/_id/index.vue");
+const Courses = () => import("./pages/credit/_id.vue");
+const Credit = () => import("./pages/credit/index.vue");
+const Feedback = () => import("./pages/feedback.vue");
+const Import = () => import("./pages/import.vue");
+const Login = () => import("./pages/login.vue");
+const News = () => import("./pages/news.vue");
+const ViewSettings = () => import("./pages/view-settings.vue");
 
 const history = createWebHistory();
 
