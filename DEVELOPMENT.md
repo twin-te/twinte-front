@@ -26,7 +26,7 @@
 
 #### 6. ViewModel
 
-UI 用の型です。`View`で使用されます。
+UI のための型です。`View`で使用されます。
 
 #### 7. View
 
@@ -55,3 +55,5 @@ UI 用の型です。`View`で使用されます。
 
 - [実装クリーンアーキテクチャ](https://qiita.com/nrslib/items/a5f902c4defc83bd46b8)
 - [Vue.js/State Management](https://vuejs.org/guide/scaling-up/state-management.html)
+- [Twin:te backend v2](https://github.com/twin-te/twinte-server)
+- [frontend-clean-architecture](https://github.com/bespoyasov/frontend-clean-architecture/tree/master/src)
