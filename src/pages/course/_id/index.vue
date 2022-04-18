@@ -300,7 +300,9 @@ export default defineComponent({
     const onCreateTag = async (name: string) => {
       // console.log("create tag");
 
-      const assignedTagIds = displayTags.value.map(({ id }) => ({ id }));
+      const assignedTagIds = displayTags.value
+        .filter(({ assign }) => assign)
+        .map(({ id }) => ({ id }));
       // api を叩く前に View を変更する
       displayTags.value.push({ id: NEW_TAG_ID, name, assign: true });
 
