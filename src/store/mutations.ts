@@ -71,6 +71,8 @@ export const mutations: MutationTree<GlobalState> = {
     state.toasts = state.toasts.filter((toast) => toast.id != id);
   },
   addCourse(state, course: RegisteredCourse) {
+    console.log(state, state.courses[course.year], state.courses);
+
     state.courses[course.year].push(course);
   },
   addTag(state, tag: Tag) {

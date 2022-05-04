@@ -17,7 +17,7 @@
       <section ref="importBoxRef" key="result" class="main__result">
         <Card v-show="courses.length > 0">
           <div
-            v-for="course in courses"
+            v-for="(course, i) in courses"
             :key="course.course.id"
             class="result__row"
           >
@@ -26,6 +26,7 @@
               :isChecked="selectedCourses.has(course.course)"
               :isDetailed="false"
               :isExpanded="course.isExpanded"
+              :withHr="i < courses.length - 1"
               @click-checkbox="flipSet(selectedCourses, course.course)"
               @click-card="course.isExpanded = !course.isExpanded"
             />

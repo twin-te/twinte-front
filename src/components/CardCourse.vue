@@ -29,6 +29,10 @@ export default defineComponent({
       type: String,
       default: "100%",
     },
+    withHr: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ["click-card", "click-checkbox"],
   setup(props, { emit }) {
@@ -126,7 +130,7 @@ export default defineComponent({
         >
       </div>
     </div>
-    <div class="hr" />
+    <div v-if="withHr" class="hr" />
   </div>
 </template>
 

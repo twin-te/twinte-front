@@ -28,7 +28,7 @@ export const getCourseById = (ports: Ports) => async (
     throw new NetworkAccessError(originalResponse);
   }
   // store.state.courses において year が同じ授業の初期化を行う
-  const courses = getCourseListByYear(ports)(body.year);
+  const courses = await getCourseListByYear(ports)(body.year);
   store.commit("setCourses", { year: body.year, courses });
 
   return body;
