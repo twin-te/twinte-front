@@ -10,7 +10,8 @@ jobs:
         with:
           node-version: "14"
 
-      - uses: actions/setup-node@v3
+      - name: Use yarn global cache
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'yarn'
