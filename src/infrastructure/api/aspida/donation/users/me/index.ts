@@ -1,21 +1,21 @@
 /* eslint-disable */
-import type * as Types from '../../../@types'
+import type * as Types from "../../../@types";
 
 export type Methods = {
   get: {
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.PaymentUser
-  }
+    resBody: Types.PaymentUser;
+  };
 
   patch: {
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.PaymentUser
+    resBody: Types.PaymentUser;
 
     reqBody: {
-      displayName: string
-      link: string
-    }
-  }
-}
+      displayName: string;
+      link: string;
+    };
+  };
+};

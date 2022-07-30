@@ -1,14 +1,14 @@
 /* eslint-disable */
-import type * as Types from '../../@types'
+import type * as Types from "../../@types";
 
 export type Methods = {
   get: {
     query: {
-      year: number
-    }
+      year: number;
+    };
 
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.SchoolCalendarModule[]
-  }
-}
+    resBody: Types.SchoolCalendarModule[];
+  };
+};

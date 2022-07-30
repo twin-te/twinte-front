@@ -1,37 +1,40 @@
 /* eslint-disable */
-import type * as Types from '../@types'
+import type * as Types from "../@types";
 
 export type Methods = {
   get: {
     query: {
-      year: number
-    }
+      year: number;
+    };
 
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.RegisteredCourse[]
-  }
+    resBody: Types.RegisteredCourse[];
+  };
 
   post: {
-    status: 200
+    status: 200;
 
     /** 成功 */
-    resBody: Types.RegisteredCourse | Types.RegisteredCourse[]
+    resBody: Types.RegisteredCourse | Types.RegisteredCourse[];
 
-    reqBody: {
-      year: number
-      code: string
-    } | {
-      year: number
-      code: string
-    }[] | {
-      year: number
-      name: string
-      instructor: string
-      credit: number
-      methods: Types.CourseMethod[]
-      schedules: Types.CourseSchedule[]
-      tags: Types.TagIdOnly[]
-    }
-  }
-}
+    reqBody:
+      | {
+          year: number;
+          code: string;
+        }
+      | {
+          year: number;
+          code: string;
+        }[]
+      | {
+          year: number;
+          name: string;
+          instructor: string;
+          credit: number;
+          methods: Types.CourseMethod[];
+          schedules: Types.CourseSchedule[];
+          tags: Types.TagIdOnly[];
+        };
+  };
+};

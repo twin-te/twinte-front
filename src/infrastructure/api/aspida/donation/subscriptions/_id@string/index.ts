@@ -1,6 +1,6 @@
 /* eslint-disable */
 export type Methods = {
   delete: {
-    status: 200
-  }
-}
+    status: 200;
+  };
+};

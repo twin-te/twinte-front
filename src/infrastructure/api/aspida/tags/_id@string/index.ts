@@ -1,18 +1,18 @@
 /* eslint-disable */
-import type * as Types from '../../@types'
+import type * as Types from "../../@types";
 
 export type Methods = {
   put: {
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.Tag
+    resBody: Types.Tag;
 
     reqBody: {
-      name: string
-    }
-  }
+      name: string;
+    };
+  };
 
   delete: {
-    status: 204
-  }
-}
+    status: 204;
+  };
+};

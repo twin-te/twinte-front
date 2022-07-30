@@ -1,26 +1,26 @@
 /* eslint-disable */
-import type * as Types from '../../@types'
+import type * as Types from "../../@types";
 
 export type Methods = {
   get: {
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.RegisteredCourse
-  }
+    resBody: Types.RegisteredCourse;
+  };
 
   put: {
-    status: 200
+    status: 200;
     /** 成功 */
-    resBody: Types.RegisteredCourse
+    resBody: Types.RegisteredCourse;
 
     reqBody: {
       course: {
-        id: string
-      }
-    } & Types.RegisteredCourseWithoutID
-  }
+        id: string;
+      };
+    } & Types.RegisteredCourseWithoutID;
+  };
 
   delete: {
-    status: 204
-  }
-}
+    status: 204;
+  };
+};
