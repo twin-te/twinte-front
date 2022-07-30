@@ -91,17 +91,20 @@ export type Setting = {
   displayYear: number; // ホーム画面で表示する授業の年度
 };
 
-export type SchoolCalendarModule = {
-  year: number;
-  module: Module;
-  start: Dayjs;
-  end: Dayjs;
+export type NormalEvent = {
+  date: Dayjs;
+  eventType: "PublicHoliday" | "Holiday" | "Exam" | "Other";
+  description: string;
 };
 
-export type SchoolCalendarEvent = {
+export type SubstituteEvent = {
   date: Dayjs;
-  name: string;
+  eventType: "SubstituteDay";
+  description: string;
+  changeTo: NormalDay;
 };
+
+export type Event = NormalEvent | SubstituteEvent;
 
 export type News = {
   id: string;
