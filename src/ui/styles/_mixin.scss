@@ -1,0 +1,211 @@
+@use "variable";
+
+// text
+@mixin text-main {
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+  line-height: variable.$single-line;
+  font-weight: 500;
+}
+@mixin text-description {
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+  line-height: variable.$multi-line;
+  font-weight: 400;
+}
+@mixin text-description-sub {
+  color: variable.getColor(--color-text-sub);
+  font-size: variable.$font-small;
+  line-height: variable.$multi-line;
+  font-weight: 400;
+}
+@mixin text-button {
+  color: variable.getColor(--color-button-gray);
+  font-weight: 500;
+  line-height: variable.$fit;
+}
+@mixin text-discription {
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+  line-height: variable.$multi-line;
+}
+@mixin text-sub-discription {
+  color: variable.getColor(--color-text-sub);
+  font-size: variable.$font-small;
+  line-height: variable.$multi-line;
+}
+@mixin modal-title {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: variable.$multi-line;
+  color: variable.getColor(--color-text-main);
+}
+@mixin text-course-tile-id {
+  color: variable.getColor(--color-text-sub);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: variable.$single-line;
+}
+@mixin text-liner {
+  color: #6bcedc; // baakground-clip に対応していない場合の色
+  background: var(--primary-liner);
+  background: -webkit-#{var(--primary-liner)};
+  background: -moz-#{var(--primary-liner)};
+  background-clip: text;
+  -moz-background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: rgba(255, 255, 255, 0);
+  -webkit-text-fill-color: rgba(255, 255, 255, 0);
+  -moz-text-fill-color: rgba(255, 255, 255, 0);
+}
+@mixin void-text-liner {
+  background-clip: none;
+  -webkit-text-fill-color: inherit;
+}
+@mixin ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// button
+@mixin button-cursor {
+  user-select: none;
+  cursor: pointer;
+}
+@mixin button-active($negative-shadow-convex: 0 0 0 #00000000) {
+  background: var(--primary-liner);
+  box-shadow: $negative-shadow-convex, $negative-shadow-convex,
+    variable.$shadow-primary-concave;
+}
+@mixin button-active-danger($negative-shadow-convex: 0 0 0 #00000000) {
+  background: variable.getColor(--color-danger);
+  box-shadow: $negative-shadow-convex, $negative-shadow-convex,
+    variable.$shadow-danger-concave;
+}
+@mixin button-inactive($negative-shadow-concave: inset 0 0 0 #00000000) {
+  box-shadow: variable.$shadow-convex, $negative-shadow-concave;
+}
+@mixin button-hover {
+  box-shadow: variable.$shadow-convex-hover;
+}
+
+// icon
+@mixin icon-cursor {
+  user-select: none;
+  cursor: default;
+}
+
+// スクロール用マスク
+// (↓スクロールさせたい要素をwrapする親要素に設定する。)
+@mixin scroll-mask {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 92.71%,
+    rgba(196, 196, 196, 0) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 92.71%,
+    rgba(196, 196, 196, 0) 100%
+  );
+}
+
+@mixin scroll-mask-large {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 96.5%,
+    rgba(196, 196, 196, 0) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(196, 196, 196, 0) 0%,
+    rgba(196, 196, 196, 10) 1.2rem,
+    rgba(196, 196, 196, 10) 96.5%,
+    rgba(196, 196, 196, 0) 100%
+  );
+}
+
+// layout
+
+//  Sidebar直下のページで使う。横向きレイアウトの時にヘッダーの左のボタンを表示しない。
+@mixin header-left-button-delete {
+  .header__left-button-icon {
+    @include landscape {
+      display: none;
+    }
+  }
+}
+
+// Home以外のページで使う。
+@mixin max-width {
+  max-width: variable.$max-pc-item-width;
+}
+
+@mixin flexible() {
+  display: inline-block;
+}
+@mixin fixed {
+  display: block;
+}
+@mixin center-fixed {
+  position: fixed;
+  top: calc(50% + #{variable.$safe-area-top});
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+@mixin center-asolute {
+  position: absolute;
+  top: calc(50% + #{variable.$safe-area-top});
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+@mixin center-flex($direction: row) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
+}
+
+@mixin sensor-housing {
+  @supports (padding-top: variable.$safe-area-top) {
+    // iphone上部の切り欠き部分を避ける
+    padding-top: calc(#{variable.$safe-area-top} + 2rem);
+  }
+}
+
+// Media Queries
+@mixin tab-and-pc {
+  @media only screen and (min-height: variable.$pc-and-tab-height) and(min-width: variable.$pc-and-tab-width) {
+    // 画面の高さと幅が一定以上ある場合(このブレイクポイントでrootのremの大きさを切り替える)
+    @content;
+  }
+}
+
+@mixin landscape {
+  @media screen and (min-width: 678px) and(orientation: landscape) {
+    // 画面が横向きの場合
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media screen and (orientation: portrait) {
+    // 画面が縦向きの場合
+    @content;
+  }
+}
+
+@mixin large-screen {
+  @media only screen and (min-height: variable.$pc-and-tab-height),
+    (orientation: landscape) {
+    // 画面の高さが一定以上or画面が横向きの場合
+    @content;
+  }
+}
