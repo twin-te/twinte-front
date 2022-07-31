@@ -1,5 +1,4 @@
-import type { AspidaClient, BasicHeaders } from "aspida";
-import { dataToURLString } from "aspida";
+import { AspidaClient, BasicHeaders, dataToURLString } from "aspida";
 import type { Methods as Methods0 } from "./courses";
 import type { Methods as Methods1 } from "./courses/_year@number/_code@string";
 import type { Methods as Methods2 } from "./courses/search";

@@ -1,7 +1,7 @@
 import axiosClient from "@aspida/axios";
 import axios from "axios";
-import instance, { ApiInstance } from "./aspida/$api";
 import qs from "qs";
+import instance, { ApiInstance } from "./aspida/$api";
 
 const baseURL =
   import.meta.env.VITE_API_URL === undefined
