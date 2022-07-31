@@ -42,12 +42,6 @@ export type Schedule = NormalSchedule | SpecialSchedule;
 
 export type Method = "FaceToFace" | "Synchronous" | "Asynchronous" | "Others";
 
-export type Tag = {
-  id: string;
-  name: string;
-  order: number; // 0-indices
-};
-
 export type Course = {
   id: string;
   year: number;
@@ -75,7 +69,13 @@ export type RegisteredCourse = {
   attendance: number;
   absence: number;
   late: number;
-  tags: Tag[];
+  tagIds: string[];
+};
+
+export type Tag = {
+  id: string;
+  name: string;
+  order: number; // 0-indices
 };
 
 export type User = {
@@ -106,6 +106,13 @@ export type SubstituteEvent = {
 };
 
 export type Event = NormalEvent | SubstituteEvent;
+
+export type ModuleInformation = {
+  year: number;
+  module: Module;
+  startDate: Dayjs;
+  endDate: Dayjs;
+};
 
 export type News = {
   id: string;
