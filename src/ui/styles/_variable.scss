@@ -1,0 +1,190 @@
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex), alpha($hex);
+}
+@function getColor($color_name) {
+  @return rgba(var(#{$color_name}));
+}
+@function getColorShadow($color_name) {
+  @return rgba(var(#{$color_name}));
+}
+
+$theme-colors: (
+  base: #eff1f6,
+  primary: #00c0c0,
+  primary-light: #c8efef99,
+  primary-dull: #66a0b9,
+  text-main: #626a76,
+  text-sub: #838e95,
+  text-sub-light: #8a98a0,
+  button-gray: #889396,
+  danger: #ed7f93,
+  disabled: #adadad,
+  unselected: #b8c1c7,
+  undefined: #dee6ec66,
+  filter-gray: #eff1f680,
+  filter-darken: #546e9533,
+  text-link: #5a93e8,
+  white: #ffffff,
+  // shadow color
+  shadow-light: #fffffff7,
+  shadow-shade: #9bb1bf73,
+  shadow-light-inset: #ffffff73,
+  shadow-shade-inset: #aebecd3e,
+  shadow-light-input-inset: #ffffff,
+  shadow-shade-input-inset: #b1bdc8a4,
+  shadow-shade-primary-inset: #48b6c4d6,
+  shadow-light-primary-light-inset: #aaf0df40,
+  shadow-shade-primary-light-inset: #86e1dc40,
+  shadow-shade-unselected-inset: #8e9da673,
+  shadow-light-icon: #ffffff33,
+  shadow-shade-icon: #43afb640,
+  shadow-shade-tile: #87bfbc80,
+);
+
+$dark-theme-colors: (
+  base: #1c222d,
+  primary: #19c6c6,
+  primary-light: #424c5a69,
+  primary-dull: #4e7b8e,
+  text-main: #d4dae3,
+  text-sub: #adb8bd,
+  text-sub-light: #9ca6ad,
+  button-gray: #9db1b7,
+  danger: #cf4861,
+  disabled: #475258,
+  undefined: #4c525528,
+  unselected: #58656c,
+  filter-gray: #292c3257,
+  filter-darken: #1a1a2a50,
+  text-link: #2f64b3,
+  white: #ffffff,
+  // shadow color
+  shadow-light: #5160735e,
+  shadow-shade: #0b0c0de8,
+  shadow-light-inset: #3d435a51,
+  shadow-shade-inset: #12141bd6,
+  shadow-light-input-inset: #8a92b249,
+  shadow-shade-input-inset: #0000009c,
+  shadow-shade-primary-inset: rgba(6, 78, 86, 0.699),
+  shadow-light-primary-light-inset: #608a8040,
+  shadow-shade-primary-light-inset: #0c201e8f,
+  shadow-shade-unselected-inset: #2933389a,
+  // shadow-light-icon: #ffffff33,
+  shadow-light-icon: rgba(41, 111, 116, 0),
+  shadow-shade-icon: rgba(41, 111, 116, 0.616),
+  shadow-shade-tile: #11171799,
+);
+
+:root {
+  --base-liner: linear-gradient(158.17deg, #f3f5fa -1.94%, #e5e7ed 102.24%);
+  --primary-liner: linear-gradient(91.58deg, #6bcedc -8.01%, #71e2dc 105.39%);
+  @each $key, $color in $theme-colors {
+    --color-#{""+$key}: #{hexToRGB($color)};
+  }
+  .dark {
+    --base-liner: linear-gradient(
+      158.17deg,
+      #0c101a -1.94%,
+      #202530 -1.93%,
+      #141821 102.24%
+    );
+    --primary-liner: linear-gradient(91.58deg, #3c919e -8.01%, #499893 105.39%);
+    @each $key, $color in $dark-theme-colors {
+      --color-#{""+$key}: #{hexToRGB($color)};
+    }
+  }
+}
+
+/* Effect styles */
+$shadow-base: 0.2rem 0.4rem 1rem getColorShadow(--color-shadow-shade),
+  -0.1rem -0.1rem 0.2rem getColorShadow(--color-shadow-light),
+  inset -0.6rem -0.8rem 1.2rem getColorShadow(--color-shadow-light-inset),
+  inset 0.2rem 0.3rem 0.4rem getColorShadow(--color-shadow-shade-inset);
+$shadow-convex: 0.2rem 0.3rem 0.8rem getColorShadow(--color-shadow-shade),
+  -0.2rem -0.3rem 1rem getColorShadow(--color-shadow-light);
+$shadow-convex-large: 0.3rem 0.5rem 1.2rem getColorShadow(--color-shadow-shade),
+  -0.5rem -0.5rem 1rem getColorShadow(--color-shadow-light);
+$shadow-convex-hover: 0.1rem 0.2rem 0.4rem getColorShadow(--color-shadow-shade),
+  -0.3rem -0.3rem 0.5rem getColorShadow(--color-shadow-light);
+$shadow-concave: inset 0.2rem 0.3rem 0.8rem
+    getColorShadow(--color-shadow-shade-inset),
+  inset -0.2rem -0.4rem 0.8rem getColorShadow(--color-shadow-light-inset);
+$shadow-input-concave: inset 0.1rem 0.1rem 0.4rem
+    getColorShadow(--color-shadow-shade-input-inset),
+  inset -0.2rem -0.2rem 0.3rem getColorShadow(--color-shadow-light-input-inset);
+$shadow-primary-concave: inset 0.3rem 0.3rem 0.6rem
+  getColorShadow(--color-shadow-shade-primary-inset);
+$shadow-p-light-concave: inset 0.1rem 0.2rem 0.2rem
+    getColorShadow(--color-shadow-shade-primary-light-inset),
+  inset -0.1rem -0.2rem 0.1rem
+    getColorShadow(--color-shadow-light-primary-light-inset);
+$shadow-danger-concave: inset 0.3rem 0.3rem 0.4rem #c0555b99;
+$shadow-unselected-concave: inset 0.2rem 0.3rem 0.4rem
+    getColorShadow(--color-shadow-shade-unselected-inset),
+  inset -0.2rem -0.2rem 0.3rem #ffffff59;
+$shadow-tile-concave: inset 0.2rem 0.2rem 0.3rem
+  getColorShadow(--color-shadow-shade-tile);
+$shadow-icon: 0.1rem 0.3rem 0.3rem getColorShadow(--color-shadow-shade-icon),
+  -0.1rem -0.1rem 0.2rem getColorShadow(--color-shadow-light-icon);
+$shadow-drop: 0.2rem 0.2rem 0.3rem getColorShadow(--color-shadow-shade);
+
+$blur: blur(1rem);
+
+$max-pc-item-width: 900px;
+
+// padding&margin
+$spacing-0: 0;
+$spacing-1: 0.4rem;
+$spacing-2: 0.8rem;
+$spacing-3: 1.2rem;
+$spacing-4: 1.6rem;
+$spacing-5: 2rem;
+$spacing-6: 2.4rem;
+$spacing-7: 2.8rem;
+$spacing-8: 3.2rem;
+$spacing-9: 3.6rem;
+$spacing-10: 4rem;
+$spacing-11: 4.4rem;
+$spacing-12: 4.8rem;
+$spacing-13: 5.2rem;
+$spacing-14: 5.6rem;
+$spacing-15: 6rem;
+$spacing-16: 6.4rem;
+
+// font-size(アイコンフォントには使わなくて良い)
+$font-minimum: 1rem;
+$font-small: 1.2rem;
+$font-medium: 1.4rem; //これがメイン
+$font-large: 1.6rem;
+$font-maximum: 1.8rem;
+
+// for border-radius
+$radius-0: 0;
+$radius-1: 0.4rem;
+$radius-2: 0.8rem;
+$radius-3: 1.2rem;
+$radius-4: 1.6rem;
+$radius-button: 5rem; //側面が完全に丸いボタンに使う
+$radius-input: 0.6rem; //formやinput要素に使う
+$circle: 50% 50%;
+
+// line-height
+$single-line: 140%;
+$multi-line: 160%;
+$fit: 100%;
+
+// transition
+$transition-all: all 0.25s ease-in-out;
+$transition-all-slow: all 0.25s ease-in-out;
+$transition-transform: transform 0.25s ease-in-out;
+$transition-box-shadow: box-shadow 0.18s ease;
+
+$safe-area-top: env(safe-area-inset-top);
+$safe-area-bottom: env(safe-area-inset-bottom);
+$vh: calc(100vh - #{$safe-area-top});
+
+// Media Queries
+$pc-and-tab-height: 860px;
+$pc-and-tab-width: 429px;
+$pc-height: 700px;
+$pc-width: 1025px;
