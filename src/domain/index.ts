@@ -81,6 +81,7 @@ export type RegisteredCourse = {
 export type User = {
   id: string;
   name: string;
+  setting: Setting;
 };
 
 export type Setting = {
@@ -113,3 +114,5 @@ export type News = {
   publishedAt: string;
   read: boolean;
 };
+
+export type Provider = "google" | "apple" | "twitter";
