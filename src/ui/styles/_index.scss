@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-@forward "tailwindcss/base";
+@forward "@unocss/reset/tailwind.css";
 
 @forward "variable";
 @forward "mixin";
@@ -13,12 +13,12 @@ html {
   font-size: 62.5%; //1rem=10px
   font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
-  color: variable.getColor(--color-text-main);
   @include mixin.tab-and-pc {
     font-size: 75%; //1rem=12px
   }
 }
 body {
+  color: variable.getColor(--color-text-main);
   font-size: variable.$font-medium;
 }
 .material-icons {
