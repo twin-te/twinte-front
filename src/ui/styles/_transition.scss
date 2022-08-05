@@ -1,0 +1,48 @@
+@use "variable";
+
+// 下に広がるアニメーション
+.spread-down {
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: variable.$transition-all;
+  }
+}
+
+// Toast
+.toast {
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    bottom: 2rem;
+  }
+
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: variable.$transition-all;
+  }
+
+  &-move {
+    transition: variable.$transition-all;
+  }
+}

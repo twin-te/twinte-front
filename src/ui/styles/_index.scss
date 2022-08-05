@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+@forward "@unocss/reset/tailwind.css";
+
+@forward "variable";
+@forward "mixin";
+@forward "reset";
+@forward "transition";
+@use "variable";
+@use "mixin";
+
+html {
+  font-size: 62.5%; //1rem=10px
+  font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  @include mixin.tab-and-pc {
+    font-size: 75%; //1rem=12px
+  }
+}
+body {
+  color: variable.getColor(--color-text-main);
+  font-size: variable.$font-medium;
+}
+.material-icons {
+  font-family: Material Icons;
+}
+.preview {
+  padding: variable.$spacing-10;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  flex-shrink: 1;
+  &__content {
+    margin: variable.$spacing-5;
+    &--flex {
+      margin: variable.$spacing-5;
+      display: flex;
+      flex-direction: row;
+    }
+  }
+  &__scheduleEditer {
+    padding-bottom: 40rem;
+  }
+}

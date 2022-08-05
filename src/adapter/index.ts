@@ -1,10 +1,6 @@
-import { ConfigType, Dayjs } from "dayjs";
-import { Store } from "vuex";
-import { ApiInstance } from "~/api/$api";
-import { GlobalState } from "~/store";
+import { Ports } from "~/application/ports";
+import { CourseRepository } from "~/repositories/CourseRepository";
 
-export interface Ports {
-  api: ApiInstance;
-  store: Store<GlobalState>;
-  dayjs: (date?: ConfigType) => Dayjs;
-}
+export const usePorts = (): Ports => ({
+  courseRepository: new CourseRepository(),
+});
