@@ -34,11 +34,17 @@ export type NormalSchedule = {
 export type SpecialSchedule = {
   module: Module;
   day: SpecialDay;
-  period?: Period; // 特殊授業は時限が指定されていない授業もある
+  period?: Period; // Some special courses have schedules with no period.
   rooms: string[];
 };
 
 export type Schedule = NormalSchedule | SpecialSchedule;
+
+/**
+ * "Cover" means that schedules of target courses must be fully contained in specified schedules.
+ * "Contain" means that schedules of target courses must be partially contained in specified schedules.
+ */
+export type ScheduleMode = "Cover" | "Contain";
 
 export type Method = "FaceToFace" | "Synchronous" | "Asynchronous" | "Others";
 
@@ -59,7 +65,7 @@ export type Course = {
 export type RegisteredCourse = {
   id: string;
   year: string;
-  code?: string; // 手動で追加した授業の場合は null
+  code?: string; // If the course is custome, set to null;
   name: string;
   instructors: string[];
   credit: number;
@@ -86,10 +92,10 @@ export type User = {
 
 export type Setting = {
   darkMode: boolean;
-  displaySaturdayCourseMode: boolean; // 時間割に土曜授業を表示するかどうか
-  displayNightPeriodMode: boolean; // 7,8限を表示するかどうか
-  displayTimeLabelMode: boolean; // 時間割に開始・終了時刻を表示するかどうか
-  displayYear: number; // ホーム画面で表示する授業の年度
+  displaySaturdayCourseMode: boolean; // Whether to show Saturday classes in the timetable.
+  displayNightPeriodMode: boolean; // Whether to show 7 and 8 periods.
+  displayTimeLabelMode: boolean; // Whether to show the start and end time in the timetable.
+  displayYear: number; // Year used for course display and search
 };
 
 export type NormalEvent = {
