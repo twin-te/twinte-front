@@ -129,3 +129,12 @@ export type News = {
 };
 
 export type Provider = "google" | "apple" | "twitter";
+
+export type FeedbackType = "Bug" | "NewFeature" | "Contact" | "Other";
+
+export type Feedback = {
+  type: FeedbackType;
+  screenShots: File[];
+  content: string;
+  email: string;
+};
