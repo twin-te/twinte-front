@@ -1,8 +1,8 @@
 import { Event, ModuleInformation } from "~/domain";
-import { Result } from "~/domain/result";
+import { PromiseResult } from "~/domain/result";
 
 export interface ICalendarRepository {
-  getEventsByYear(year: number): Promise<Result<Event[]>>;
+  getEventsByYear(year: number): PromiseResult<Event[]>;
 
-  getModuleInformation(year: number): Promise<Result<ModuleInformation[]>>;
+  getModuleInformation(year: number): PromiseResult<ModuleInformation[]>;
 }

@@ -1,6 +1,6 @@
 import { Feedback } from "~/domain";
-import { Result } from "~/domain/result";
+import { PromiseResult } from "~/domain/result";
 
 export interface IFeedbackRepository {
-  addFeedback(feedback: Feedback): Promise<Result<null>>;
+  addFeedback(feedback: Feedback): PromiseResult<null>;
 }

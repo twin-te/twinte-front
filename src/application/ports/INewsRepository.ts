@@ -1,6 +1,6 @@
 import { News } from "~/domain";
-import { Result } from "~/domain/result";
+import { PromiseResult } from "~/domain/result";
 
 export interface INewsRepository {
-  getNews(): Promise<Result<News[]>>;
+  getNews(): PromiseResult<News[]>;
 }

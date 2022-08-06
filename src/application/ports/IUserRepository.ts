@@ -1,11 +1,11 @@
 import { User } from "~/domain";
-import { Result } from "~/domain/result";
+import { PromiseResult } from "~/domain/result";
 
 export interface IUserRepository {
   /**
    * Returns true if the user is logged in. Returns false otherwise.
    */
-  checkAuthentication(): Promise<Result<boolean>>;
+  checkAuthentication(): PromiseResult<boolean>;
 
-  getUser(): Promise<Result<User>>;
+  getUser(): PromiseResult<User>;
 }

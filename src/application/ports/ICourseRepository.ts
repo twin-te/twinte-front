@@ -5,7 +5,7 @@ import {
   ScheduleMode,
   Tag,
 } from "~/domain";
-import { Result } from "~/domain/result";
+import { PromiseResult } from "~/domain/result";
 
 export interface ICourseRepository {
   searchCourse(
@@ -15,45 +15,45 @@ export interface ICourseRepository {
     scheduleMode: ScheduleMode,
     offset: number,
     limit: number
-  ): Promise<Result<Course[]>>;
+  ): PromiseResult<Course[]>;
 
   addCoursesByCodes(
     inputData: { year: number; code: string }[]
-  ): Promise<Result<RegisteredCourse[]>>;
+  ): PromiseResult<RegisteredCourse[]>;
 
   addCustomizedCourse(
     course: Omit<RegisteredCourse, "id" | "code">
-  ): Promise<Result<RegisteredCourse>>;
+  ): PromiseResult<RegisteredCourse>;
 
-  getRegisteredCoursesByYear(year: number): Promise<Result<RegisteredCourse[]>>;
+  getRegisteredCoursesByYear(year: number): PromiseResult<RegisteredCourse[]>;
 
-  getRegisteredCourseById(id: string): Promise<Result<RegisteredCourse>>;
+  getRegisteredCourseById(id: string): PromiseResult<RegisteredCourse>;
 
   updateRegisteredCourse(
     id: string,
     updatedData: Partial<Omit<RegisteredCourse, "id" | "year" | "code">>
-  ): Promise<Result<RegisteredCourse>>;
+  ): PromiseResult<RegisteredCourse>;
 
-  dropRegisteredCourse(id: string): Promise<Result<null>>;
+  dropRegisteredCourse(id: string): PromiseResult<null>;
 
-  getAllTags(): Promise<Result<Tag[]>>;
+  getAllTags(): PromiseResult<Tag[]>;
 
-  getTagById(id: string): Promise<Result<Tag>>;
+  getTagById(id: string): PromiseResult<Tag>;
 
   /**
    * Create the new tag of which order is set to last.
    * @param name - Tag name
    * @return Created tag
    */
-  createTag(name: string): Promise<Result<Tag>>;
+  createTag(name: string): PromiseResult<Tag>;
 
-  updateTagName(name: string): Promise<Result<Tag>>;
+  updateTagName(name: string): PromiseResult<Tag>;
 
   /**
    * Update tag orders. All tag ids that user have must be specified.
    * @param ids - List of tag ids. The index represent each tag order.
    */
-  updateTagOrders(ids: string[]): Promise<Result<Tag[]>>;
+  updateTagOrders(ids: string[]): PromiseResult<Tag[]>;
 
-  deleteTag(id: string): Promise<Result<null>>;
+  deleteTag(id: string): PromiseResult<null>;
 }
