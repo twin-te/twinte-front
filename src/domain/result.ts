@@ -31,10 +31,6 @@ export type ResultError =
   | NetworkError
   | InternalServerError;
 
-export type Result<T = unknown, E extends ResultError = ResultError> =
-  | Ok<T, E>
-  | Err<T, E>;
-
 export class Ok<T, E extends ResultError> {
   constructor(readonly value: T) {}
   isOk(): this is Ok<T, E> {
@@ -54,3 +50,11 @@ export class Err<T, E extends ResultError> {
     return true;
   }
 }
+
+export type Result<T = unknown, E extends ResultError = ResultError> =
+  | Ok<T, E>
+  | Err<T, E>;
+
+export type PromiseResult<T, E extends ResultError = ResultError> = Promise<
+  Result<T, E>
+>;
