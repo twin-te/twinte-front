@@ -1,81 +1,61 @@
-export class BaseError extends Error {
-  constructor(e?: string) {
-    super(e);
-    this.name = new.target.name;
-    /**
-     * @warn 出力ターゲットがES2015より古い場合以下が必要
-     */
-    // Object.setPrototypeOf(this, new.target.prototype);
-  }
+/**
+ * An argument has right type, but an inappropriate value.
+ */
+export class ValueError extends Error {
+  readonly name = "ValueError";
 }
 
 /**
- * レスポンスが返ってこないときなどに使用
+ * The resource is not found.
  */
-export class NetworkError extends BaseError {
-  constructor(e?: string) {
-    super(e);
-    this.message = "ネットワークエラー。通信状況をご確認下さい。";
-  }
+export class NotFoundError extends Error {
+  readonly name = "NotFoundError";
 }
-
-export type OriginalResponse = {
-  data: {
-    message: string;
-    errors: object[];
-  };
-  status: number;
-  statusText: string;
-  headers: any;
-};
 
 /**
- * 2xx以外のレスポンス時に使用
+ * When unauthorized user try to access resource that only authorized user can access, this error occurs.
  */
-export class NetworkAccessError extends BaseError {
-  status: number;
-  constructor(public originalResponse: OriginalResponse, e?: string) {
-    super(e);
-    this.status = originalResponse.status;
-    // 「6 ALREADY_EXISTS: xxxx」とサーバからエラーメッセージが返されるので
-    // 見せなくても良い箇所を削除する
-    this.message =
-      originalResponse.data.message.replace(/.*?:/g, "") ??
-      "サーバエラーが発生しました。";
-  }
+export class UnauthorizedError extends Error {
+  readonly name = "UnauthorizedError";
 }
 
-export const isErrorObj = (x: unknown): x is Error => {
-  if (x == null || typeof x !== "object") return false;
-  // x が null ではない object の場合は任意の文字列でプロパティアクセスしても
-  // ランタイムエラーは発生しないので Record<string, unknown> と見なせる
-  const record = x as Record<string, unknown>;
-  return typeof record.name === "string" && typeof record.message === "string";
-};
+export class NetworkError extends Error {
+  readonly name = "NetworkError";
+}
 
-export const extractMessageOrDefault = (error: unknown) =>
-  isErrorObj(error) ? error.message : "エラーが発生しました。";
+export class InternalServerError extends Error {
+  readonly name = "InternalServerError";
+}
 
-export type Result<T = unknown, E = Error> = Ok<T, E> | Err<T, E>;
+export type ResultError =
+  | ValueError
+  | NotFoundError
+  | UnauthorizedError
+  | NetworkError
+  | InternalServerError;
 
-export class Ok<T, E> {
+export class Ok<T = unknown> {
   constructor(readonly value: T) {}
-  type = "Ok" as const;
-  isOk(): this is Ok<T, E> {
+  type = "ok" as const;
+  isOk(): this is Ok<T> {
     return true;
   }
-  isErr(): this is Err<T, E> {
+  isErr(): this is Err {
     return false;
   }
 }
 
-export class Err<T, E> {
+export class Err<E = ResultError> {
   constructor(readonly value: E) {}
-  type = "Err" as const;
-  isOk(): this is Ok<T, E> {
+  type = "err" as const;
+  isOk(): this is Ok {
     return false;
   }
-  isErr(): this is Err<T, E> {
+  isErr(): this is Err<E> {
     return true;
   }
 }
+
+export type Result<T, E extends ResultError> = Ok<T> | Err<E>;
+
+export type PromiseResult<T, E extends ResultError> = Promise<Result<T, E>>;
