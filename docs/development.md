@@ -22,7 +22,7 @@
 
 #### 5. Presenter
 
-`ViewModel`の生成を担当します。これには、`Entity`から`ViewModel`へのデータの変換も含まれます。
+`ViewModel`と`Entity`の相互変換を行います。
 
 #### 6. ViewModel
 
@@ -57,3 +57,4 @@ UI のための型です。`View`で使用されます。
 - [Vue.js/State Management](https://vuejs.org/guide/scaling-up/state-management.html)
 - [Twin:te backend v2](https://github.com/twin-te/twinte-server)
 - [frontend-clean-architecture](https://github.com/bespoyasov/frontend-clean-architecture/tree/master/src)
+- [flux](https://facebook.github.io/flux/docs/in-depth-overview)
