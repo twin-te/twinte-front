@@ -22,23 +22,40 @@ export type SpecialDay = "Intensive" | "Appointment" | "AnyTime";
 
 export type Day = NormalDay | SpecialDay;
 
-export type Period = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type Period = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
 
 export type NormalSchedule = {
   module: Module;
   day: NormalDay;
   period: Period;
-  rooms: string[];
 };
 
 export type SpecialSchedule = {
   module: Module;
   day: SpecialDay;
-  period?: Period; // Some special courses have schedules with no period.
-  rooms: string[];
 };
 
 export type Schedule = NormalSchedule | SpecialSchedule;
+
+export type NormalTimetable<M extends Module, V> = Record<
+  M,
+  Record<NormalDay, Record<Period, V>>
+>;
+
+export type SpecialTimetable<M extends Module, V> = Record<
+  M,
+  Record<SpecialDay, V>
+>;
+
+export type Timetable<M extends Module, V> = {
+  normal: NormalTimetable<M, V>;
+  special: SpecialTimetable<M, V>;
+};
+
+export type Room = {
+  name: string;
+  schedules: Schedule[];
+};
 
 /**
  * "Cover" means that schedules of target courses must be fully contained in specified schedules.
@@ -60,6 +77,7 @@ export type Course = {
   recommendedGrades: number[];
   methods: Method[];
   schedules: Schedule[];
+  rooms: Room[];
 };
 
 export type RegisteredCourse = {
@@ -71,6 +89,7 @@ export type RegisteredCourse = {
   credit: number;
   methods: Method[];
   schedules: Schedule[];
+  rooms: Room[];
   memo: string;
   attendance: number;
   absence: number;
@@ -95,7 +114,7 @@ export type Setting = {
   displaySaturdayCourseMode: boolean; // Whether to show Saturday classes in the timetable.
   displayNightPeriodMode: boolean; // Whether to show 7 and 8 periods.
   displayTimeLabelMode: boolean; // Whether to show the start and end time in the timetable.
-  displayYear: number; // Year used for course display and search
+  displayYear: number; // Year used for course display and search. 0 means current year.
 };
 
 export type NormalEvent = {
