@@ -21,7 +21,7 @@ import { getApplicableYear } from "./user/getApplicableYear";
 import { getSetting } from "./user/getSetting";
 import { updateSetting } from "./user/updateSetting";
 
-module.exports = {
+export {
   // course
   addCoursesByCodes,
   addCustomizedCourse,
@@ -31,7 +31,6 @@ module.exports = {
   getRegisteredCoursesByYear,
   searchCourse,
   updateRegisteredCourse,
-
   // tag
   createTag,
   deleteTag,
@@ -39,13 +38,11 @@ module.exports = {
   getTagById,
   updateTagName,
   updateTagOrders,
-
   // user
   checkAuthentication,
   getApplicableYear,
   getSetting,
   updateSetting,
-
   // others
   getCurrentModule,
   getEventByDate,

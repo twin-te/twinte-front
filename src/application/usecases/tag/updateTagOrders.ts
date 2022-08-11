@@ -4,15 +4,14 @@ import {
   Err,
   InternalServerError,
   NetworkError,
-  NotFoundError,
   PromiseResult,
   UnauthorizedError,
   ValueError,
 } from "~/domain/result";
 
 /**
- * Update tag orders. All tag ids that user have must be specified.
- * @param ids - List of tag ids. The index represent each tag order.
+ * Update tag orders. All tag ids that the user has must be specified.
+ * @param ids - List of tag ids. The index represents each tag order.
  */
 export const updateTagOrders = ({ courseRepository }: Ports) => async (
   ids: string[]

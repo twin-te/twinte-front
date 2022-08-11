@@ -1,12 +1,11 @@
 import { Ports } from "~/application/ports";
-import { Setting, User } from "~/domain";
+import { Setting } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   Ok,
   PromiseResult,
 } from "~/domain/result";
-import { getKeysFromObj } from "~/utils";
 
 const settingInitialValue: Setting = {
   darkMode: false,
@@ -25,11 +24,7 @@ export const getSetting = ({
   const result = await userRepository.getSetting();
   if (result.isErr()) return result;
 
-  const setting = getKeysFromObj(settingInitialValue).reduce((setting, key) => {
-    //  @ts-ignore
-    setting[key] = result[key] ?? settingInitialValue[key];
-    return setting;
-  }, {} as Setting);
+  const setting: Setting = { ...settingInitialValue, ...result.value };
 
   return new Ok(setting);
 };

@@ -1,5 +1,4 @@
 import { Ports } from "~/application/ports";
-import { Tag } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
