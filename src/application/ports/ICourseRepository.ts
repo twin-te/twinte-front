@@ -1,9 +1,10 @@
 import {
   Course,
+  Module,
   RegisteredCourse,
-  Schedule,
   ScheduleMode,
   Tag,
+  Timetable,
 } from "~/domain";
 import {
   InternalServerError,
@@ -16,9 +17,10 @@ import {
 
 export interface ICourseRepository {
   searchCourse(
+    year: number,
     keywords: string[],
     codes: string[],
-    schedules: Schedule[],
+    timetable: Timetable<Module, boolean>,
     scheduleMode: ScheduleMode,
     offset: number,
     limit: number
@@ -99,12 +101,8 @@ export interface ICourseRepository {
     NotFoundError | UnauthorizedError | NetworkError | InternalServerError
   >;
 
-  /**
-   * Update tag orders. All tag ids that user have must be specified.
-   * @param ids - List of tag ids. The index represent each tag order.
-   */
   updateTagOrders(
-    ids: string[]
+    inputData: Pick<Tag, "id" | "order">[]
   ): PromiseResult<
     Tag[],
     ValueError | UnauthorizedError | NetworkError | InternalServerError

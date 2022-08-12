@@ -1,29 +1,62 @@
-/**
- * Check whether the credit is valid.
- * @param {string} credit - The credit that you want to check.
- * @return {boolean} If the credit is valid, return true. Otherwise, return false.
- */
-export const isValidCredit = (credit: string): boolean => {
-  // 小数点 "."
-  const dots = credit.match(/\./g);
+import { initializeObject } from "~/utils";
+import {
+  BaseModule,
+  Module,
+  NormalDay,
+  NormalTimetable,
+  Period,
+  SpecialDay,
+  SpecialTimetable,
+  VacationModule,
+} from ".";
 
-  // 空文字列はダメ
-  if (credit === "") return false;
+export const baseModules: BaseModule[] = [
+  "SpringA",
+  "SpringB",
+  "SpringC",
+  "FallA",
+  "FallB",
+  "FallC",
+];
 
-  // 0~9と"."以外が含まれていてはダメ
-  if (/[^0-9.]/.test(credit)) return false;
+export const vacationModules: VacationModule[] = [
+  "SummerVacation",
+  "SpringVacation",
+];
 
-  // 小数点が含まれないとダメ
-  if (dots == undefined) return false;
+export const modules: Module[] = [...baseModules, ...vacationModules];
 
-  // 小数点の数が2つ以上はダメ
-  if (dots.length > 1) return false;
+export const normalDays: NormalDay[] = [
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+  "Sun",
+];
 
-  // 文頭・文末に"."がきたらダメ
-  if (/^\./.test(credit) || /\.$/.test(credit)) return false;
+export const specialDays: SpecialDay[] = [
+  "Intensive",
+  "Appointment",
+  "AnyTime",
+];
 
-  // 小数点以下は第１位まで
-  if (dots && credit.split(".")[1].length > 1) return false;
+export const periods: Period[] = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-  return true;
+export const initializeNormalTimetable = <M extends Module, V>(
+  modules: M[],
+  initValue: V
+): NormalTimetable<M, V> => {
+  return initializeObject(
+    modules,
+    initializeObject(normalDays, initializeObject(periods, initValue))
+  );
+};
+
+export const initializeSpecialTimetable = <M extends Module, V>(
+  modules: M[],
+  initValue: V
+): SpecialTimetable<M, V> => {
+  return initializeObject(modules, initializeObject(specialDays, initValue));
 };

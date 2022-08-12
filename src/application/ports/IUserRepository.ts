@@ -1,4 +1,4 @@
-import { User } from "~/domain";
+import { Setting, User } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
@@ -15,8 +15,15 @@ export interface IUserRepository {
     NetworkError | InternalServerError
   >;
 
-  getUser(): PromiseResult<
-    User,
+  getSetting(): PromiseResult<
+    Partial<Setting>,
+    NetworkError | InternalServerError
+  >;
+
+  updateSetting(
+    inputData: Partial<Setting>
+  ): PromiseResult<
+    Setting,
     UnauthorizedError | NetworkError | InternalServerError
   >;
 }
