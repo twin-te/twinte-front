@@ -56,6 +56,15 @@ export class Err<E = ResultError> {
   }
 }
 
-export type Result<T, E extends ResultError> = Ok<T> | Err<E>;
+export type ResultErr<E> = E extends ResultError ? Err<E> : never;
+
+export type Result<T, E extends ResultError> = Ok<T> | ResultErr<E>;
 
 export type PromiseResult<T, E extends ResultError> = Promise<Result<T, E>>;
+
+export const identifyErr = <N extends ResultError["name"]>(
+  err: Err,
+  name: N
+): err is Err<{ [E in ResultError as E["name"]]: E }[N]> => {
+  return err.value.name === name;
+};
