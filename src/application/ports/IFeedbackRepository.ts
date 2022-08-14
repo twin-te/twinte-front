@@ -3,15 +3,11 @@ import {
   InternalServerError,
   NetworkError,
   PromiseResult,
-  UnauthorizedError,
-  ValueError,
 } from "~/domain/result";
 
 export interface IFeedbackRepository {
   addFeedback(
+    userId: string,
     feedback: Feedback
-  ): PromiseResult<
-    null,
-    ValueError | UnauthorizedError | NetworkError | InternalServerError
-  >;
+  ): PromiseResult<null, NetworkError | InternalServerError>;
 }

@@ -14,7 +14,7 @@ export interface ICalendarRepository {
     UnauthorizedError | NetworkError | InternalServerError
   >;
 
-  getModuleInformation(
+  getModuleInformationList(
     year: number
   ): PromiseResult<
     ModuleInformation[],

@@ -7,8 +7,13 @@ import {
 } from "~/domain/result";
 
 export interface INewsRepository {
-  getNews(): PromiseResult<
-    News[],
+  getNews(): PromiseResult<News[], NetworkError | InternalServerError>;
+
+  updateRead(
+    id: string,
+    read: boolean
+  ): PromiseResult<
+    null,
     UnauthorizedError | NetworkError | InternalServerError
   >;
 }

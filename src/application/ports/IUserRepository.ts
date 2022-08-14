@@ -7,23 +7,20 @@ import {
 } from "~/domain/result";
 
 export interface IUserRepository {
-  /**
-   * Returns true if the user is logged in. Returns false otherwise.
-   */
-  checkAuthentication(): PromiseResult<
-    boolean,
-    NetworkError | InternalServerError
+  getUser(): PromiseResult<
+    User,
+    UnauthorizedError | NetworkError | InternalServerError
   >;
 
   getSetting(): PromiseResult<
     Partial<Setting>,
-    NetworkError | InternalServerError
+    UnauthorizedError | NetworkError | InternalServerError
   >;
 
   updateSetting(
     inputData: Partial<Setting>
   ): PromiseResult<
-    Setting,
+    Partial<Setting>,
     UnauthorizedError | NetworkError | InternalServerError
   >;
 }
