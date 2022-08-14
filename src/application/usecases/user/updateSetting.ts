@@ -6,12 +6,16 @@ import {
   PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
+import { getSetting } from "./getSetting";
 
-export const updateSetting = ({ userRepository }: Ports) => (
+export const updateSetting = (ports: Ports) => async (
   inputData: Partial<Setting>
 ): PromiseResult<
   Setting,
   UnauthorizedError | NetworkError | InternalServerError
 > => {
-  return userRepository.updateSetting(inputData);
+  const result = await ports.userRepository.updateSetting(inputData);
+  if (result.isErr()) return result;
+
+  return getSetting(ports)();
 };

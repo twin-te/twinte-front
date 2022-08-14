@@ -4,12 +4,11 @@ import {
   InternalServerError,
   NetworkError,
   PromiseResult,
-  UnauthorizedError,
 } from "~/domain/result";
 
 export const getNews = ({ newsRepository }: Ports) => (): PromiseResult<
   News[],
-  UnauthorizedError | NetworkError | InternalServerError
+  NetworkError | InternalServerError
 > => {
   return newsRepository.getNews();
 };

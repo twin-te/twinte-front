@@ -6,28 +6,27 @@ import {
   Ok,
   PromiseResult,
 } from "~/domain/result";
+import { getAcademicYear } from "~/domain/utils";
 import { getSetting } from "./getSetting";
 
-export const getCurrentYear = (): number => {
-  const today = dayjs();
-  return today.month() < 3 ? today.year() - 1 : today.year();
+const getCurrentAcademicYear = (): number => {
+  return getAcademicYear(dayjs());
 };
 
-const isValidYear = (year: number): boolean => {
-  const currentYear = getCurrentYear();
-  return 2019 <= year && year <= currentYear;
+const isValidAcademicYear = (year: number): boolean => {
+  const currentAcademicYear = getCurrentAcademicYear();
+  return 2019 <= year && year <= currentAcademicYear;
 };
 
 export const getApplicableYear = async (
   ports: Ports
 ) => async (): PromiseResult<number, NetworkError | InternalServerError> => {
   const result = await getSetting(ports)();
-  if (result.isErr()) return result;
 
   const year =
-    result.isOk() && isValidYear(result.value.displayYear)
+    result.isOk() && isValidAcademicYear(result.value.displayYear)
       ? result.value.displayYear
-      : 0;
+      : getCurrentAcademicYear();
 
-  return new Ok(year === 0 ? getCurrentYear() : year);
+  return new Ok(year);
 };

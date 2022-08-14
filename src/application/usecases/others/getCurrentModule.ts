@@ -21,7 +21,7 @@ export const getCurrentModule = ({ calendarRepository }: Ports) => async (
   Module,
   UnauthorizedError | NetworkError | InternalServerError
 > => {
-  const result = await calendarRepository.getModuleInformation(year);
+  const result = await calendarRepository.getModuleInformationList(year);
   if (result.isErr()) return result;
 
   const today = dayjs();
