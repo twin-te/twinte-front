@@ -1,10 +1,9 @@
 import { Ports } from "~/application/ports";
 import {
-  identifyErr,
+  identifyError,
   InternalServerError,
+  isNotError,
   NetworkError,
-  Ok,
-  PromiseResult,
 } from "~/domain/result";
 
 /**
@@ -12,13 +11,12 @@ import {
  */
 export const checkAuthentication = ({
   userRepository,
-}: Ports) => async (): PromiseResult<
-  boolean,
-  NetworkError | InternalServerError
+}: Ports) => async (): Promise<
+  boolean | NetworkError | InternalServerError
 > => {
   const result = await userRepository.getUser();
 
-  if (result.isOk()) return new Ok(true);
-  if (identifyErr(result, "UnauthorizedError")) return new Ok(false);
+  if (isNotError(result)) return true;
+  if (identifyError(result, "UnauthorizedError")) return false;
   return result;
 };

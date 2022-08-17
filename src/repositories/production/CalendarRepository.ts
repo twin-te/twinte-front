@@ -3,8 +3,6 @@ import { Event, ModuleInformation } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
-  Ok,
-  PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
 import { getAcademicYear } from "~/domain/utils";
@@ -30,16 +28,13 @@ export class CalendarRepository implements ICalendarRepository {
 
   async getEventsByYear(
     year: number
-  ): PromiseResult<
-    Event[],
-    UnauthorizedError | NetworkError | InternalServerError
-  > {
+  ): Promise<Event[] | UnauthorizedError | NetworkError | InternalServerError> {
     if (this.#years.event.has(year)) {
       const events = this.#events.filter(
         (event) => getAcademicYear(event.date) === year
       );
 
-      return new Ok(events);
+      return events;
     }
 
     return this.#api.call<
@@ -57,7 +52,7 @@ export class CalendarRepository implements ICalendarRepository {
         this.#years.event.add(year);
         this.#events = [...this.#events, ...events];
 
-        return new Ok(events);
+        return events;
       },
       [200],
       [400, 401, 500]
@@ -66,16 +61,15 @@ export class CalendarRepository implements ICalendarRepository {
 
   async getModuleInformationList(
     year: number
-  ): PromiseResult<
-    ModuleInformation[],
-    UnauthorizedError | NetworkError | InternalServerError
+  ): Promise<
+    ModuleInformation[] | UnauthorizedError | NetworkError | InternalServerError
   > {
     if (this.#years.module.has(year)) {
       const moduleInformationList = this.#modules.filter(
         (module) => module.year === year
       );
 
-      return new Ok(moduleInformationList);
+      return moduleInformationList;
     }
 
     return this.#api.call<
@@ -91,7 +85,7 @@ export class CalendarRepository implements ICalendarRepository {
         this.#years.module.add(year);
         this.#modules = [...this.#modules, ...moduleInformationList];
 
-        return new Ok(moduleInformationList);
+        return moduleInformationList;
       },
       [200],
       [400, 401, 500]

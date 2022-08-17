@@ -1,5 +1,4 @@
 import {
-  Err,
   InternalServerError,
   NotFoundError,
   UnauthorizedError,
@@ -11,6 +10,13 @@ export type ApiFailedStatue = 400 | 401 | 404 | 500;
 
 export type ApiStatus = ApiSuccessStatus | ApiFailedStatue;
 
+export type ApiFailedStatueToError = {
+  400: InternalServerError;
+  401: UnauthorizedError;
+  404: NotFoundError;
+  500: InternalServerError;
+};
+
 export type ApiOriginalResponse<S> = {
   data: {
     message: string;
@@ -18,23 +24,12 @@ export type ApiOriginalResponse<S> = {
   };
   status: S;
   statusText: string;
-  headers: any;
+  headers: unknown;
 };
 
 export type ApiRespoinse<T, S extends ApiStatus> = {
   body: T;
-  headers: any;
+  headers: unknown;
   originalResponse: ApiOriginalResponse<S>;
   status: S;
-};
-
-export type ApiStatusToError = {
-  400: InternalServerError;
-  401: UnauthorizedError;
-  404: NotFoundError;
-  500: InternalServerError;
-};
-
-export type ApiStatusToErr = {
-  [S in keyof ApiStatusToError]: Err<ApiStatusToError[S]>;
 };

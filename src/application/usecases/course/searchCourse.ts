@@ -11,8 +11,8 @@ import {
 } from "~/domain";
 import {
   InternalServerError,
+  isError,
   NetworkError,
-  PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
 import {
@@ -31,15 +31,14 @@ export const searchCourse = ({ courseRepository }: Ports) => async (
   onlyBlank: boolean,
   offset: number,
   limit: number
-): PromiseResult<
-  Course[],
-  UnauthorizedError | NetworkError | InternalServerError
+): Promise<
+  Course[] | UnauthorizedError | NetworkError | InternalServerError
 > => {
   const initValue = onlyBlank ? true : false;
 
   const result = await courseRepository.getRegisteredCoursesByYear(year);
-  if (result.isErr()) return result;
-  const registeredNormalSchedules: NormalSchedule[] = result.value
+  if (isError(result)) return result;
+  const registeredNormalSchedules: NormalSchedule[] = result
     .map(({ schedules }) => schedules)
     .flat()
     .filter(isNormalSchedule);

@@ -1,16 +1,11 @@
-import dayjs from "dayjs";
 import { Ports } from "~/application/ports";
-import {
-  InternalServerError,
-  NetworkError,
-  Ok,
-  PromiseResult,
-} from "~/domain/result";
+import { InternalServerError, isNotError, NetworkError } from "~/domain/result";
 import { getAcademicYear } from "~/domain/utils";
+import { getToday } from "~/utils";
 import { getSetting } from "./getSetting";
 
 const getCurrentAcademicYear = (): number => {
-  return getAcademicYear(dayjs());
+  return getAcademicYear(getToday());
 };
 
 const isValidAcademicYear = (year: number): boolean => {
@@ -18,15 +13,15 @@ const isValidAcademicYear = (year: number): boolean => {
   return 2019 <= year && year <= currentAcademicYear;
 };
 
-export const getApplicableYear = async (
-  ports: Ports
-) => async (): PromiseResult<number, NetworkError | InternalServerError> => {
+export const getApplicableYear = async (ports: Ports) => async (): Promise<
+  number | NetworkError | InternalServerError
+> => {
   const result = await getSetting(ports)();
 
   const year =
-    result.isOk() && isValidAcademicYear(result.value.displayYear)
-      ? result.value.displayYear
+    isNotError(result) && isValidAcademicYear(result.displayYear)
+      ? result.displayYear
       : getCurrentAcademicYear();
 
-  return new Ok(year);
+  return year;
 };

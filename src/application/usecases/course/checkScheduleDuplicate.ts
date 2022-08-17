@@ -2,9 +2,8 @@ import { Ports } from "~/application/ports";
 import { Module, NormalSchedule, NormalTimetable, Schedule } from "~/domain";
 import {
   InternalServerError,
+  isError,
   NetworkError,
-  Ok,
-  PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
 import {
@@ -21,15 +20,14 @@ import { isNormalSchedule } from "~/domain/validations";
 export const checkScheduleDuplicate = ({ courseRepository }: Ports) => async (
   year: number,
   schedules: Schedule[]
-): PromiseResult<
-  boolean,
-  UnauthorizedError | NetworkError | InternalServerError
+): Promise<
+  boolean | UnauthorizedError | NetworkError | InternalServerError
 > => {
   const result = await courseRepository.getRegisteredCoursesByYear(year);
-  if (result.isErr()) return result;
+  if (isError(result)) return result;
 
   const normalSchedules: NormalSchedule[] = schedules.filter(isNormalSchedule);
-  const registeredNormalSchedules: NormalSchedule[] = result.value
+  const registeredNormalSchedules: NormalSchedule[] = result
     .map(({ schedules }) => schedules)
     .flat()
     .filter(isNormalSchedule);
@@ -57,14 +55,12 @@ export const checkScheduleDuplicate = ({ courseRepository }: Ports) => async (
     boolean
   > = schedulesToTimetable(registeredNormalSchedules);
 
-  return new Ok(
-    !modules.some((module) =>
-      normalDays.some((day) =>
-        periods.some(
-          (period) =>
-            timetable[module][day][period] &&
-            registeredTimetable[module][day][period]
-        )
+  return !modules.some((module) =>
+    normalDays.some((day) =>
+      periods.some(
+        (period) =>
+          timetable[module][day][period] &&
+          registeredTimetable[module][day][period]
       )
     )
   );

@@ -1,13 +1,7 @@
 import axios from "axios";
 import { IFeedbackRepository } from "~/application/ports/IFeedbackRepository";
 import { Feedback } from "~/domain";
-import {
-  Err,
-  InternalServerError,
-  NetworkError,
-  Ok,
-  PromiseResult,
-} from "~/domain/result";
+import { InternalServerError, isError, NetworkError } from "~/domain/result";
 import { Firebase } from "~/infrastructure/firebase";
 
 export class FeedbackRepository implements IFeedbackRepository {
@@ -20,14 +14,14 @@ export class FeedbackRepository implements IFeedbackRepository {
   async addFeedback(
     userId: string,
     feedback: Feedback
-  ): PromiseResult<null, NetworkError | InternalServerError> {
+  ): Promise<null | NetworkError | InternalServerError> {
     const result = await this.#firebase.saveScreenshots(
       feedback.screenShots,
       userId
     );
 
-    if (result.isErr()) return result;
-    const screenshotUrls = result.value;
+    if (isError(result)) return result;
+    const screenshotUrls = result;
 
     const formData = new FormData();
     formData.append("entry.1670691903", userId);
@@ -41,7 +35,7 @@ export class FeedbackRepository implements IFeedbackRepository {
         "https://docs.google.com/forms/u/0/d/e/1FAIpQLSecBhx7GHm870_BHEjm94NAKOoxJPzbTL-pxpvy6BqxQQh6ag/formResponse",
         formData
       )
-      .then(() => new Ok(null))
-      .catch(() => new Err(new InternalServerError("Faied to save feedback.")));
+      .then(() => null)
+      .catch(() => new InternalServerError("Faied to save feedback."));
   }
 }

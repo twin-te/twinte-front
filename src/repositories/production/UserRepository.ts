@@ -3,8 +3,6 @@ import { Setting, User } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
-  Ok,
-  PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
 import { settingProps } from "~/domain/utils";
@@ -26,17 +24,16 @@ export class UserRepository implements IUserRepository {
     this.#setting = undefined;
   }
 
-  async getUser(): PromiseResult<
-    User,
-    UnauthorizedError | NetworkError | InternalServerError
+  async getUser(): Promise<
+    User | UnauthorizedError | NetworkError | InternalServerError
   > {
-    if (this.#user) return new Ok(this.#user);
+    if (this.#user) return this.#user;
 
     return this.#api.call<ApiType.User, User, 200, 401 | 500>(
       (client) => client.users.me.get(),
       (body) => {
         this.#user = body;
-        return new Ok(this.#user);
+        return this.#user;
       },
       [200],
       [401, 500]
@@ -46,11 +43,10 @@ export class UserRepository implements IUserRepository {
   /**
    * Return setting whose value is not undefined.
    */
-  async getSetting(): PromiseResult<
-    Partial<Setting>,
-    UnauthorizedError | NetworkError | InternalServerError
+  async getSetting(): Promise<
+    Partial<Setting> | UnauthorizedError | NetworkError | InternalServerError
   > {
-    if (this.#setting) return new Ok(this.#setting);
+    if (this.#setting) return this.#setting;
 
     const setting = settingProps.reduce<Partial<Setting>>((map, prop) => {
       const value = this.#localStorage.get(prop);
@@ -59,14 +55,13 @@ export class UserRepository implements IUserRepository {
 
     this.#setting = setting;
 
-    return new Ok(setting);
+    return setting;
   }
 
   async updateSetting(
     inputData: Partial<Setting>
-  ): PromiseResult<
-    Partial<Setting>,
-    UnauthorizedError | NetworkError | InternalServerError
+  ): Promise<
+    Partial<Setting> | UnauthorizedError | NetworkError | InternalServerError
   > {
     getKeysFromObj(inputData).forEach((prop) => {
       this.#localStorage.set(prop, inputData[prop]);
@@ -74,6 +69,6 @@ export class UserRepository implements IUserRepository {
 
     this.#setting = { ...this.#setting, ...inputData };
 
-    return new Ok(this.#setting);
+    return this.#setting;
   }
 }

@@ -34,37 +34,17 @@ export type ResultError =
   | NetworkError
   | InternalServerError;
 
-export class Ok<T = unknown> {
-  constructor(readonly value: T) {}
-  type = "ok" as const;
-  isOk(): this is Ok<T> {
-    return true;
-  }
-  isErr(): this is Err {
-    return false;
-  }
-}
+export const isError = <T>(result: T): result is Extract<T, ResultError> => {
+  return result instanceof Error;
+};
 
-export class Err<E = ResultError> {
-  constructor(readonly value: E) {}
-  type = "err" as const;
-  isOk(): this is Ok {
-    return false;
-  }
-  isErr(): this is Err<E> {
-    return true;
-  }
-}
+export const isNotError = <T>(result: T): result is Exclude<T, ResultError> => {
+  return !(result instanceof Error);
+};
 
-export type ResultErr<E> = E extends ResultError ? Err<E> : never;
-
-export type Result<T, E extends ResultError> = Ok<T> | ResultErr<E>;
-
-export type PromiseResult<T, E extends ResultError> = Promise<Result<T, E>>;
-
-export const identifyErr = <N extends ResultError["name"]>(
-  err: Err,
+export const identifyError = <N extends ResultError["name"]>(
+  error: ResultError,
   name: N
-): err is Err<{ [E in ResultError as E["name"]]: E }[N]> => {
-  return err.value.name === name;
+): error is { [E in ResultError as E["name"]]: E }[N] => {
+  return error.name === name;
 };

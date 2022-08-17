@@ -1,11 +1,10 @@
 import { Ports } from "~/application/ports";
 import { Setting } from "~/domain";
 import {
-  identifyErr,
+  identifyError,
   InternalServerError,
+  isNotError,
   NetworkError,
-  Ok,
-  PromiseResult,
 } from "~/domain/result";
 
 const getSettingInitValue = (): Setting => ({
@@ -16,18 +15,15 @@ const getSettingInitValue = (): Setting => ({
   displayYear: 0,
 });
 
-export const getSetting = ({
-  userRepository,
-}: Ports) => async (): PromiseResult<
-  Setting,
-  NetworkError | InternalServerError
+export const getSetting = ({ userRepository }: Ports) => async (): Promise<
+  Setting | NetworkError | InternalServerError
 > => {
   const result = await userRepository.getSetting();
 
-  if (result.isOk()) {
-    const setting: Setting = { ...getSettingInitValue(), ...result.value };
-    return new Ok(setting);
-  } else if (identifyErr(result, "UnauthorizedError"))
-    return new Ok(getSettingInitValue());
+  if (isNotError(result)) {
+    const setting: Setting = { ...getSettingInitValue(), ...result };
+    return setting;
+  } else if (identifyError(result, "UnauthorizedError"))
+    return getSettingInitValue();
   else return result;
 };

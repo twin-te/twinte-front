@@ -2,11 +2,9 @@ import axiosClient from "@aspida/axios";
 import axios from "axios";
 import qs from "qs";
 import {
-  Err,
   InternalServerError,
   NetworkError,
   NotFoundError,
-  Ok,
   ResultError,
   UnauthorizedError,
 } from "~/domain/result";
@@ -15,7 +13,7 @@ import createApiInstance, { ApiInstance } from "./aspida/$api";
 import {
   ApiFailedStatue,
   ApiRespoinse,
-  ApiStatusToErr,
+  ApiFailedStatueToError,
   ApiSuccessStatus,
 } from "./types";
 
@@ -24,13 +22,13 @@ const baseURL =
     ? "https://app.dev.twinte.net/api/v3"
     : String(import.meta.env.VITE_API_URL);
 
-const apiStatusToErr: {
-  [S in keyof ApiStatusToErr]: (message?: string) => ApiStatusToErr[S];
+const apiFailedStatusToError: {
+  [S in ApiFailedStatue]: (message?: string) => ApiFailedStatueToError[S];
 } = {
-  400: (message) => new Err(new InternalServerError(message)),
-  401: (message) => new Err(new UnauthorizedError(message)),
-  404: (message) => new Err(new NotFoundError(message)),
-  500: (message) => new Err(new InternalServerError(message)),
+  400: (message) => new InternalServerError(message),
+  401: (message) => new UnauthorizedError(message),
+  404: (message) => new NotFoundError(message),
+  500: (message) => new InternalServerError(message),
 };
 
 export class Api {
@@ -59,14 +57,14 @@ export class Api {
   #handleApiFailedStatus<FS extends ApiFailedStatue>(
     status: FS,
     originalResponse: { data: { message: string } }
-  ): ApiStatusToErr[FS] {
+  ): ApiFailedStatueToError[FS] {
     const message =
       status === 400
         ? "Bad Request"
         : status === 500
         ? originalResponse.data.message
         : undefined;
-    return apiStatusToErr[status](message);
+    return apiFailedStatusToError[status](message);
   }
 
   async call<
@@ -74,18 +72,14 @@ export class Api {
     CR,
     SS extends ApiSuccessStatus,
     FS extends ApiFailedStatue,
-    CE = never
+    CE extends ResultError = never
   >(
     api: (client: ApiInstance) => Promise<ApiRespoinse<AR, SS | FS>>,
-    callback: (body: AR) => Ok<CR> | (CE extends ResultError ? Err<CE> : never),
+    callback: (body: AR) => CR | CE,
     successStatusList: SS[],
     failedStatusList: FS[]
   ): Promise<
-    | Ok<CR>
-    | ApiStatusToErr[FS]
-    | Err<InternalServerError>
-    | Err<NetworkError>
-    | (CE extends ResultError ? Err<CE> : never)
+    CR | ApiFailedStatueToError[FS] | InternalServerError | NetworkError | CE
   > {
     try {
       const {
@@ -93,13 +87,16 @@ export class Api {
         originalResponse,
         status,
       }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
-      if (isContain(status, successStatusList)) return callback(body);
-      else if (isContain(status, failedStatusList))
+
+      if (isContain(status, successStatusList)) {
+        return callback(body);
+      } else if (isContain(status, failedStatusList)) {
         return this.#handleApiFailedStatus(status, originalResponse);
-      else
-        return new Err(new InternalServerError(`Invalid Status : ${status}`));
+      } else {
+        return new InternalServerError(`Invalid Status : ${status}`);
+      }
     } catch {
-      return new Err(new NetworkError());
+      return new NetworkError();
     }
   }
 }
