@@ -58,8 +58,8 @@ export type Room = {
 };
 
 /**
- * "Cover" means that schedules of target courses must be fully contained in specified schedules.
- * "Contain" means that schedules of target courses must be partially contained in specified schedules.
+ * "Cover" means that schedules of target courses must be partially contained in specified schedules.
+ * "Contain" means that schedules of target courses must be fully contained in specified schedules.
  */
 export type ScheduleMode = "Cover" | "Contain";
 
@@ -82,7 +82,7 @@ export type Course = {
 
 export type RegisteredCourse = {
   id: string;
-  year: string;
+  year: number;
   code?: string; // If the course is custome, set to null;
   name: string;
   instructors: string[];
@@ -97,6 +97,8 @@ export type RegisteredCourse = {
   tagIds: string[];
 };
 
+export type UndefinedTagOrder = -1;
+
 export type Tag = {
   id: string;
   name: string;
@@ -106,26 +108,31 @@ export type Tag = {
 export type User = {
   id: string;
   name: string;
-  setting: Setting;
 };
 
 export type Setting = {
   darkMode: boolean;
-  displaySaturdayCourseMode: boolean; // Whether to show Saturday classes in the timetable.
-  displayNightPeriodMode: boolean; // Whether to show 7 and 8 periods.
-  displayTimeLabelMode: boolean; // Whether to show the start and end time in the timetable.
+  saturdayCourseMode: boolean; // Whether to show Saturday classes in the timetable.
+  nightPeriodMode: boolean; // Whether to show 7 and 8 periods.
+  timeLabelMode: boolean; // Whether to show the start and end time in the timetable.
   displayYear: number; // Year used for course display and search. 0 means current year.
 };
 
+export type NormalEventType = "PublicHoliday" | "Holiday" | "Exam" | "Other";
+
+export type SubstituteEventType = "SubstituteDay";
+
+export type EventType = NormalEventType | SubstituteEventType;
+
 export type NormalEvent = {
   date: Dayjs;
-  eventType: "PublicHoliday" | "Holiday" | "Exam" | "Other";
+  eventType: NormalEventType;
   description: string;
 };
 
 export type SubstituteEvent = {
   date: Dayjs;
-  eventType: "SubstituteDay";
+  eventType: SubstituteEventType;
   description: string;
   changeTo: NormalDay;
 };
@@ -143,7 +150,7 @@ export type News = {
   id: string;
   title: string;
   content: string;
-  publishedAt: string;
+  publishedAt: Dayjs;
   read: boolean;
 };
 

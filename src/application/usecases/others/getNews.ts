@@ -1,15 +1,9 @@
 import { Ports } from "~/application/ports";
 import { News } from "~/domain";
-import {
-  InternalServerError,
-  NetworkError,
-  PromiseResult,
-  UnauthorizedError,
-} from "~/domain/result";
+import { InternalServerError, NetworkError } from "~/domain/result";
 
-export const getNews = ({ newsRepository }: Ports) => (): PromiseResult<
-  News[],
-  UnauthorizedError | NetworkError | InternalServerError
+export const getNews = ({ newsRepository }: Ports) => (): Promise<
+  News[] | NetworkError | InternalServerError
 > => {
   return newsRepository.getNews();
 };

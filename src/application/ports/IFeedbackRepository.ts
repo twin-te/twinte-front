@@ -1,17 +1,9 @@
 import { Feedback } from "~/domain";
-import {
-  InternalServerError,
-  NetworkError,
-  PromiseResult,
-  UnauthorizedError,
-  ValueError,
-} from "~/domain/result";
+import { InternalServerError, NetworkError } from "~/domain/result";
 
 export interface IFeedbackRepository {
   addFeedback(
+    userId: string,
     feedback: Feedback
-  ): PromiseResult<
-    null,
-    ValueError | UnauthorizedError | NetworkError | InternalServerError
-  >;
+  ): Promise<null | NetworkError | InternalServerError>;
 }

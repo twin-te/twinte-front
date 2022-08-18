@@ -4,7 +4,6 @@ import {
   InternalServerError,
   NetworkError,
   NotFoundError,
-  PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
 
@@ -13,9 +12,12 @@ import {
  */
 export const getRegisteredCourseById = ({ courseRepository }: Ports) => (
   id: string
-): PromiseResult<
-  RegisteredCourse,
-  NotFoundError | UnauthorizedError | NetworkError | InternalServerError
+): Promise<
+  | RegisteredCourse
+  | NotFoundError
+  | UnauthorizedError
+  | NetworkError
+  | InternalServerError
 > => {
   return courseRepository.getRegisteredCourseById(id);
 };

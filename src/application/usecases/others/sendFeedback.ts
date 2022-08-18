@@ -2,17 +2,21 @@ import { Ports } from "~/application/ports";
 import { Feedback } from "~/domain";
 import {
   InternalServerError,
+  isError,
   NetworkError,
-  PromiseResult,
   UnauthorizedError,
-  ValueError,
 } from "~/domain/result";
 
-export const sendFeedback = ({ feedbackRepository }: Ports) => (
+export const sendFeedback = ({
+  feedbackRepository,
+  userRepository,
+}: Ports) => async (
   feedback: Feedback
-): PromiseResult<
-  null,
-  ValueError | UnauthorizedError | NetworkError | InternalServerError
-> => {
-  return feedbackRepository.addFeedback(feedback);
+): Promise<null | UnauthorizedError | NetworkError | InternalServerError> => {
+  const result = await userRepository.getUser();
+  if (isError(result)) return result;
+
+  const userId = result.id;
+
+  return feedbackRepository.addFeedback(userId, feedback);
 };

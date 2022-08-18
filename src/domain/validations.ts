@@ -1,12 +1,15 @@
 import {
   BaseModule,
   Day,
+  EventType,
   Module,
   NormalDay,
+  NormalEventType,
   NormalSchedule,
   Period,
   Schedule,
   SpecialSchedule,
+  SubstituteEventType,
 } from ".";
 import { baseModules, normalDays, periods } from "./utils";
 
@@ -32,4 +35,16 @@ export const isBaseModule = (module: Module): module is BaseModule => {
 
 export const isPeriod = (period: string): period is Period => {
   return periods.includes(period as Period);
+};
+
+export const isSubstituteEventType = (
+  eventType: EventType
+): eventType is SubstituteEventType => {
+  return eventType === "SubstituteDay";
+};
+
+export const isNormalEventType = (
+  eventType: EventType
+): eventType is NormalEventType => {
+  return !isSubstituteEventType(eventType);
 };

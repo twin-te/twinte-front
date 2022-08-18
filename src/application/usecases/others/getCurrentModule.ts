@@ -1,15 +1,12 @@
-import dayjs from "dayjs";
 import { Ports } from "~/application/ports";
 import { Module } from "~/domain";
 import {
-  Err,
   InternalServerError,
+  isError,
   NetworkError,
-  Ok,
-  PromiseResult,
   UnauthorizedError,
 } from "~/domain/result";
-import { isBetween } from "~/utils";
+import { getToday, isBetween } from "~/utils";
 
 /**
  * Return the current module.
@@ -17,34 +14,29 @@ import { isBetween } from "~/utils";
  */
 export const getCurrentModule = ({ calendarRepository }: Ports) => async (
   year: number
-): PromiseResult<
-  Module,
-  UnauthorizedError | NetworkError | InternalServerError
-> => {
-  const result = await calendarRepository.getModuleInformation(year);
-  if (result.isErr()) return result;
+): Promise<Module | UnauthorizedError | NetworkError | InternalServerError> => {
+  const result = await calendarRepository.getModuleInformationList(year);
+  if (isError(result)) return result;
 
-  const today = dayjs();
-  const moduleInfomation = result.value.find(({ startDate, endDate }) =>
+  const today = getToday();
+  const moduleInfomation = result.find(({ startDate, endDate }) =>
     isBetween(today, startDate, endDate, "day")
   );
 
-  if (moduleInfomation) return new Ok(moduleInfomation.module);
+  if (moduleInfomation) return moduleInfomation.module;
 
   switch (today.month()) {
     case 11: // December
-      return new Ok<Module>("FallB");
+      return "FallB";
     case 0: // January
-      return new Ok<Module>("FallC");
+      return "FallC";
     case 2: // March
-      return new Ok<Module>("SpringVacation");
+      return "SpringVacation";
     case 3: // April
-      return new Ok<Module>("SpringVacation");
+      return "SpringVacation";
     default:
-      return new Err(
-        new InternalServerError(
-          "The information about module is inappropriate."
-        )
+      return new InternalServerError(
+        "The information about module is inappropriate."
       );
   }
 };
