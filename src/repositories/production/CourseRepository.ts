@@ -1,31 +1,25 @@
 import { ICourseRepository } from "~/application/ports/ICourseRepository";
-import {
-  Course,
-  Module,
-  RegisteredCourse,
-  ScheduleMode,
-  Tag,
-  Timetable,
-} from "~/domain";
+import { Course, RegisteredCourse, SearchMode } from "~/domain/course";
 import {
   InternalServerError,
-  isError,
+  isResultError,
+  isNotResultError,
   NetworkError,
   NotFoundError,
   UnauthorizedError,
   ValueError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Module } from "~/domain/module";
+import { Tag } from "~/domain/tag";
+import { Timetable } from "~/domain/timetable";
 import { Api } from "~/infrastructure/api";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
 import { apiToCourse } from "~/infrastructure/api/converters/course";
-import {
-  apiToRegisteredCourse,
-  registeredCourseToApi,
-} from "~/infrastructure/api/converters/registeredCourse";
+import { apiToRegisteredCourse, registeredCourseToApi } from "~/infrastructure/api/converters/registeredCourse";
 import { schedulesToApi } from "~/infrastructure/api/converters/schedule";
 import { apiToTag } from "~/infrastructure/api/converters/tag";
 import { timetableToApi } from "~/infrastructure/api/converters/timetable";
-import { isEqualSet, manipulateArrayEl } from "~/utils";
+import { deleteElementInArray, getKeysFromObj, isEqualSet, updateElementInArray } from "~/utils";
 
 export class CourseRepository implements ICourseRepository {
   #api: Api;
@@ -45,15 +39,13 @@ export class CourseRepository implements ICourseRepository {
     keywords: string[],
     codes: string[],
     timetable: Timetable<Module, boolean>,
-    scheduleMode: ScheduleMode,
+    searchMode: SearchMode,
     offset: number,
     limit: number
-  ): Promise<
-    Course[] | UnauthorizedError | NetworkError | InternalServerError
-  > {
+  ): Promise<Course[] | UnauthorizedError | NetworkError | InternalServerError> {
     const reqBody = {
       year,
-      searchMode: scheduleMode,
+      searchMode,
       keywords,
       codes,
       timetable: timetableToApi(timetable),
@@ -72,15 +64,44 @@ export class CourseRepository implements ICourseRepository {
     );
   }
 
+  async getCourses(
+    inputData: {
+      year: number;
+      code: string;
+    }[]
+  ): Promise<Course[] | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+    const yearToCodes = inputData.reduce<Record<number, string[]>>((ret, { year, code }) => {
+      ret[year].push(code);
+      return ret;
+    }, {});
+
+    const results = await Promise.all(
+      getKeysFromObj(yearToCodes).map((year) =>
+        this.#api.call<ApiType.Course[], Course[], 200, 400 | 401 | 404 | 500>(
+          (client) =>
+            client.courses.get({
+              query: { year, codes: yearToCodes[year].join(",") },
+            }),
+          (body) => {
+            const courses: Course[] = body.map(apiToCourse);
+            return courses;
+          },
+          [200],
+          [400, 401, 404, 500]
+        )
+      )
+    );
+
+    const courses = results.filter(isNotResultError).flat();
+    const errors = results.filter(isResultError);
+
+    if (errors.length > 0) return errors[0];
+    return courses;
+  }
+
   async addCoursesByCodes(
     inputData: { year: number; code: string }[]
-  ): Promise<
-    | RegisteredCourse[]
-    | NotFoundError
-    | UnauthorizedError
-    | NetworkError
-    | InternalServerError
-  > {
+  ): Promise<RegisteredCourse[] | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<
       ApiType.RegisteredCourse[] | ApiType.RegisteredCourse,
       RegisteredCourse[],
@@ -102,9 +123,7 @@ export class CourseRepository implements ICourseRepository {
 
   async addCustomizedCourse(
     course: Omit<RegisteredCourse, "id" | "code">
-  ): Promise<
-    RegisteredCourse | UnauthorizedError | NetworkError | InternalServerError
-  > {
+  ): Promise<RegisteredCourse | UnauthorizedError | NetworkError | InternalServerError> {
     const reqBody = {
       year: course.year,
       name: course.name,
@@ -127,8 +146,7 @@ export class CourseRepository implements ICourseRepository {
           body: reqBody,
         }),
       (body) => {
-        if (Array.isArray(body))
-          return new InternalServerError("Incorrect Implementation");
+        if (Array.isArray(body)) return new InternalServerError("Incorrect Implementation");
         const course = apiToRegisteredCourse(body);
         this.#courses.push(course);
         return course;
@@ -140,22 +158,13 @@ export class CourseRepository implements ICourseRepository {
 
   async getRegisteredCoursesByYear(
     year: number
-  ): Promise<
-    RegisteredCourse[] | UnauthorizedError | NetworkError | InternalServerError
-  > {
+  ): Promise<RegisteredCourse[] | UnauthorizedError | NetworkError | InternalServerError> {
     if (this.#years.has(year)) {
-      const storedCourses = this.#courses.filter(
-        (course) => course.year === year
-      );
+      const storedCourses = this.#courses.filter((course) => course.year === year);
       return storedCourses;
     }
 
-    return this.#api.call<
-      ApiType.RegisteredCourse[],
-      RegisteredCourse[],
-      200,
-      400 | 401 | 500
-    >(
+    return this.#api.call<ApiType.RegisteredCourse[], RegisteredCourse[], 200, 400 | 401 | 500>(
       (client) => client.registered_courses.get({ query: { year } }),
       (body) => {
         const courses: RegisteredCourse[] = body.map(apiToRegisteredCourse);
@@ -170,22 +179,11 @@ export class CourseRepository implements ICourseRepository {
 
   async getRegisteredCourseById(
     id: string
-  ): Promise<
-    | RegisteredCourse
-    | NotFoundError
-    | UnauthorizedError
-    | NetworkError
-    | InternalServerError
-  > {
+  ): Promise<RegisteredCourse | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
     const storedCourse = this.#courses.find((course) => course.id === id);
     if (storedCourse) return storedCourse;
 
-    return this.#api.call<
-      ApiType.RegisteredCourse,
-      RegisteredCourse,
-      200,
-      400 | 401 | 404 | 500
-    >(
+    return this.#api.call<ApiType.RegisteredCourse, RegisteredCourse, 200, 400 | 401 | 404 | 500>(
       (client) => client.registered_courses._id(id).get(),
       (body) => {
         const course: RegisteredCourse = apiToRegisteredCourse(body);
@@ -200,42 +198,23 @@ export class CourseRepository implements ICourseRepository {
   async updateRegisteredCourse(
     id: string,
     updatedData: Partial<Omit<RegisteredCourse, "id" | "year" | "code">>
-  ): Promise<
-    | RegisteredCourse
-    | NotFoundError
-    | UnauthorizedError
-    | NetworkError
-    | InternalServerError
-  > {
-    const result = await this.#api.call<
-      ApiType.RegisteredCourse,
-      ApiType.RegisteredCourse,
-      200,
-      400 | 401 | 404 | 500
-    >(
+  ): Promise<RegisteredCourse | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+    const result = await this.#api.call<ApiType.RegisteredCourse, ApiType.RegisteredCourse, 200, 400 | 401 | 404 | 500>(
       (client) => client.registered_courses._id(id).get(),
       (body) => body,
       [200],
       [400, 401, 404, 500]
     );
-    if (isError(result)) return result;
+    if (isResultError(result)) return result;
 
     const storedApiCourse: ApiType.RegisteredCourse = result;
     const updatedCourse: RegisteredCourse = {
       ...apiToRegisteredCourse(storedApiCourse),
       ...updatedData,
     };
-    const updatedApiCourse: ApiType.RegisteredCourse = registeredCourseToApi(
-      updatedCourse,
-      storedApiCourse
-    );
+    const updatedApiCourse: ApiType.RegisteredCourse = registeredCourseToApi(updatedCourse, storedApiCourse);
 
-    return this.#api.call<
-      ApiType.RegisteredCourseWithoutID,
-      RegisteredCourse,
-      200,
-      400 | 401 | 404 | 500
-    >(
+    return this.#api.call<ApiType.RegisteredCourseWithoutID, RegisteredCourse, 200, 400 | 401 | 404 | 500>(
       (client) =>
         client.registered_courses._id(id).put({
           body: updatedApiCourse as {
@@ -248,7 +227,7 @@ export class CourseRepository implements ICourseRepository {
           ...body,
         };
         const newCourse = apiToRegisteredCourse(newApiCourse);
-        manipulateArrayEl(this.#courses, (c) => c.id === id, newCourse);
+        updateElementInArray(this.#courses, newCourse);
         return newCourse;
       },
       [200],
@@ -258,17 +237,11 @@ export class CourseRepository implements ICourseRepository {
 
   async dropRegisteredCourse(
     id: string
-  ): Promise<
-    | null
-    | NotFoundError
-    | UnauthorizedError
-    | NetworkError
-    | InternalServerError
-  > {
+  ): Promise<null | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<void, null, 204, 400 | 401 | 404 | 500>(
       (client) => client.registered_courses._id(id).delete(),
       () => {
-        manipulateArrayEl(this.#courses, (c) => c.id === id);
+        deleteElementInArray(this.#courses, id);
         return null;
       },
       [204],
@@ -276,9 +249,7 @@ export class CourseRepository implements ICourseRepository {
     );
   }
 
-  async getAllTags(): Promise<
-    Tag[] | UnauthorizedError | NetworkError | InternalServerError
-  > {
+  async getAllTags(): Promise<Tag[] | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<ApiType.Tag[], Tag[], 200, 401 | 500>(
       (client) => client.tags.get(),
       (body) => {
@@ -290,14 +261,10 @@ export class CourseRepository implements ICourseRepository {
     );
   }
 
-  async getTagById(
-    id: string
-  ): Promise<
-    Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError
-  > {
+  async getTagById(id: string): Promise<Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
     if (this.#tags.length === 0) {
       const result = await this.getAllTags();
-      if (isError(result)) return result;
+      if (isResultError(result)) return result;
     }
     const tag = this.#tags.find((tag) => tag.id === id);
     return tag ? tag : new NotFoundError();
@@ -308,9 +275,7 @@ export class CourseRepository implements ICourseRepository {
    * @param name - Tag name
    * @return Created tag
    */
-  async createTag(
-    name: string
-  ): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
+  async createTag(name: string): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<ApiType.Tag, Tag, 200, 400 | 401 | 500>(
       (client) => client.tags.post({ body: { name } }),
       (body) => {
@@ -326,14 +291,12 @@ export class CourseRepository implements ICourseRepository {
   async updateTagName(
     id: string,
     name: string
-  ): Promise<
-    Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError
-  > {
+  ): Promise<Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<ApiType.Tag, Tag, 200, 400 | 401 | 404 | 500>(
       (client) => client.tags._id(id).put({ body: { name } }),
       (body) => {
         const updatedTag = apiToTag(body);
-        manipulateArrayEl(this.#tags, (tag) => tag.id === id, updatedTag);
+        updateElementInArray(this.#tags, updatedTag);
         return updatedTag;
       },
       [200],
@@ -343,15 +306,10 @@ export class CourseRepository implements ICourseRepository {
 
   async updateTagOrders(
     inputData: Pick<Tag, "id" | "order">[]
-  ): Promise<
-    Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError
-  > {
-    const tagPositionOnly: ApiType.TagPositionOnly[] = inputData.map(
-      ({ id, order }) => ({ id, position: order })
-    );
+  ): Promise<Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError> {
+    const tagPositionOnly: ApiType.TagPositionOnly[] = inputData.map(({ id, order }) => ({ id, position: order }));
 
-    const getIdSet = (array: { id: string }[]): Set<string> =>
-      new Set(array.map(({ id }) => id));
+    const getIdSet = (array: { id: string }[]): Set<string> => new Set(array.map(({ id }) => id));
 
     if (!isEqualSet(getIdSet(this.#tags), getIdSet(inputData))) {
       return new ValueError("Please specify all tag ids you have.");
@@ -365,12 +323,7 @@ export class CourseRepository implements ICourseRepository {
       {}
     );
 
-    return this.#api.call<
-      ApiType.TagPositionOnly[],
-      Tag[],
-      200,
-      400 | 401 | 500
-    >(
+    return this.#api.call<ApiType.TagPositionOnly[], Tag[], 200, 400 | 401 | 500>(
       (client) => client.tags.patch({ body: tagPositionOnly }),
       (body) => {
         const updatedTags: Tag[] = body.map(({ id, position }) => ({
@@ -384,21 +337,14 @@ export class CourseRepository implements ICourseRepository {
     );
   }
 
-  async deleteTag(
-    id: string
-  ): Promise<
-    | null
-    | NotFoundError
-    | UnauthorizedError
-    | NetworkError
-    | InternalServerError
-  > {
+  async deleteTag(id: string): Promise<null | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<void, null, 204, 400 | 401 | 404 | 500>(
       (client) => client.tags._id(id).delete(),
       () => {
-        manipulateArrayEl(this.#tags, (tag) => tag.id === id);
+        deleteElementInArray(this.#tags, id);
         this.#courses.forEach((course) => {
-          manipulateArrayEl(course.tagIds, (tagId) => tagId === id);
+          const index = course.tagIds.findIndex((tagId) => tagId === id);
+          if (index !== -1) course.tagIds.splice(index, 1);
         });
         return null;
       },

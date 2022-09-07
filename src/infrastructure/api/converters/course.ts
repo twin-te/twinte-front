@@ -1,4 +1,4 @@
-import { Course } from "~/domain";
+import { Course } from "~/domain/course";
 import * as ApiType from "../aspida/@types";
 import { apiToInstructors } from "./instructor";
 import { apiToSchedules } from "./schedule";

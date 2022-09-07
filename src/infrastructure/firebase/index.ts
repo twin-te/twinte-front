@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/storage";
-import { InternalServerError, NetworkError } from "~/domain/result";
+import { InternalServerError, NetworkError } from "~/domain/error";
 
 const firebaseConfig = {
   apiKey: "AIzaSyACPmoxAt9e8m50mAcNE_seJWr1KV264ZU",
@@ -27,18 +27,13 @@ export class Firebase {
   /**
    * Save the screenshots to storage and return the url to access it.
    */
-  async saveScreenshots(
-    screenshots: File[],
-    userId: string
-  ): Promise<string[] | NetworkError | InternalServerError> {
+  async saveScreenshots(screenshots: File[], userId: string): Promise<string[] | NetworkError | InternalServerError> {
     const storageRef = firebase.storage().ref();
     const now = new Date();
 
     return Promise.all(
       screenshots.map(async (screenshot, index) => {
-        const screenshotRef = storageRef.child(
-          `screenshots/${userId}_${now.getTime()}_${index}`
-        );
+        const screenshotRef = storageRef.child(`screenshots/${userId}_${now.getTime()}_${index}`);
         await screenshotRef.put(screenshot);
         return (await screenshotRef.getDownloadURL()) as string;
       })

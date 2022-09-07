@@ -1,21 +1,10 @@
 import axiosClient from "@aspida/axios";
 import axios from "axios";
 import qs from "qs";
-import {
-  InternalServerError,
-  NetworkError,
-  NotFoundError,
-  ResultError,
-  UnauthorizedError,
-} from "~/domain/result";
-import { isContain } from "~/utils";
+import { InternalServerError, NetworkError, NotFoundError, ResultError, UnauthorizedError } from "~/domain/error";
+import { isContained } from "~/utils";
 import createApiInstance, { ApiInstance } from "./aspida/$api";
-import {
-  ApiFailedStatue,
-  ApiRespoinse,
-  ApiFailedStatueToError,
-  ApiSuccessStatus,
-} from "./types";
+import { ApiFailedStatue, ApiRespoinse, ApiFailedStatueToError, ApiSuccessStatus } from "./types";
 
 const baseURL =
   import.meta.env.VITE_API_URL === undefined
@@ -39,7 +28,7 @@ export class Api {
     this.#client = createApiInstance(
       axiosClient(axios, {
         baseURL,
-        paramsSerializer: (r: any) => qs.stringify(r),
+        paramsSerializer: (r: unknown) => qs.stringify(r),
         validateStatus: () => true,
         withCredentials: true,
       })
@@ -58,43 +47,28 @@ export class Api {
     status: FS,
     originalResponse: { data: { message: string } }
   ): ApiFailedStatueToError[FS] {
-    const message =
-      status === 400
-        ? "Bad Request"
-        : status === 500
-        ? originalResponse.data.message
-        : undefined;
+    const message = status === 400 ? "Bad Request" : status === 500 ? originalResponse.data.message : undefined;
     return apiFailedStatusToError[status](message);
   }
 
-  async call<
-    AR,
-    CR,
-    SS extends ApiSuccessStatus,
-    FS extends ApiFailedStatue,
-    CE extends ResultError = never
-  >(
+  async call<AR, CR, SS extends ApiSuccessStatus, FS extends ApiFailedStatue, CE extends ResultError = never>(
     api: (client: ApiInstance) => Promise<ApiRespoinse<AR, SS | FS>>,
     callback: (body: AR) => CR | CE,
     successStatusList: SS[],
     failedStatusList: FS[]
-  ): Promise<
-    CR | ApiFailedStatueToError[FS] | InternalServerError | NetworkError | CE
-  > {
+  ): Promise<CR | ApiFailedStatueToError[FS] | InternalServerError | NetworkError | CE> {
     try {
-      const {
-        body,
-        originalResponse,
-        status,
-      }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
+      const { body, originalResponse, status }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
 
-      if (isContain(status, successStatusList)) {
+      if (isContained(status, successStatusList)) {
         return callback(body);
-      } else if (isContain(status, failedStatusList)) {
-        return this.#handleApiFailedStatus(status, originalResponse);
-      } else {
-        return new InternalServerError(`Invalid Status : ${status}`);
       }
+
+      if (isContained(status, failedStatusList)) {
+        return this.#handleApiFailedStatus(status, originalResponse);
+      }
+
+      return new InternalServerError(`Invalid Status : ${status}`);
     } catch {
       return new NetworkError();
     }

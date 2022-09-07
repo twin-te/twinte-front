@@ -1,9 +1,5 @@
 /* eslint-disable */
-export type CourseMethod =
-  | "FaceToFace"
-  | "Synchronous"
-  | "Asynchronous"
-  | "Others";
+export type CourseMethod = "FaceToFace" | "Synchronous" | "Asynchronous" | "Others";
 
 export type CourseModule =
   | "SpringA"
@@ -46,15 +42,7 @@ export type SchoolCalendarEvent = {
 export type SchoolCalendarModule = {
   /** 年度 */
   year: number;
-  module:
-    | "SpringA"
-    | "SpringB"
-    | "SpringC"
-    | "SummerVacation"
-    | "FallA"
-    | "FallB"
-    | "FallC"
-    | "SpringVacation";
+  module: "SpringA" | "SpringB" | "SpringC" | "SummerVacation" | "FallA" | "FallB" | "FallC" | "SpringVacation";
   start: string;
   end: string;
 };

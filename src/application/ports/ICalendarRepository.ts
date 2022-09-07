@@ -1,18 +1,11 @@
-import { Event, ModuleInformation } from "~/domain";
-import {
-  InternalServerError,
-  NetworkError,
-  UnauthorizedError,
-} from "~/domain/result";
+import { InternalServerError, NetworkError, UnauthorizedError } from "~/domain/error";
+import { Event } from "~/domain/event";
+import { ModuleInformation } from "~/domain/module";
 
 export interface ICalendarRepository {
-  getEventsByYear(
-    year: number
-  ): Promise<Event[] | UnauthorizedError | NetworkError | InternalServerError>;
+  getEventsByYear(year: number): Promise<Event[] | UnauthorizedError | NetworkError | InternalServerError>;
 
   getModuleInformationList(
     year: number
-  ): Promise<
-    ModuleInformation[] | UnauthorizedError | NetworkError | InternalServerError
-  >;
+  ): Promise<ModuleInformation[] | UnauthorizedError | NetworkError | InternalServerError>;
 }

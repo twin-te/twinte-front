@@ -1,12 +1,8 @@
+import dayjs from "dayjs";
 import { Ports } from "~/application/ports";
-import { Module } from "~/domain";
-import {
-  InternalServerError,
-  isError,
-  NetworkError,
-  UnauthorizedError,
-} from "~/domain/result";
-import { getToday, isBetween } from "~/utils";
+import { InternalServerError, isResultError, NetworkError, UnauthorizedError } from "~/domain/error";
+import { Module } from "~/domain/module";
+import { isBetween } from "~/utils";
 
 /**
  * Return the current module.
@@ -16,12 +12,10 @@ export const getCurrentModule = ({ calendarRepository }: Ports) => async (
   year: number
 ): Promise<Module | UnauthorizedError | NetworkError | InternalServerError> => {
   const result = await calendarRepository.getModuleInformationList(year);
-  if (isError(result)) return result;
+  if (isResultError(result)) return result;
 
-  const today = getToday();
-  const moduleInfomation = result.find(({ startDate, endDate }) =>
-    isBetween(today, startDate, endDate, "day")
-  );
+  const today = dayjs();
+  const moduleInfomation = result.find(({ startDate, endDate }) => isBetween(today, startDate, endDate, "day"));
 
   if (moduleInfomation) return moduleInfomation.module;
 
@@ -35,8 +29,6 @@ export const getCurrentModule = ({ calendarRepository }: Ports) => async (
     case 3: // April
       return "SpringVacation";
     default:
-      return new InternalServerError(
-        "The information about module is inappropriate."
-      );
+      return new InternalServerError("The information about module is inappropriate.");
   }
 };

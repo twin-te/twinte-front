@@ -1,5 +1,5 @@
-import { User } from "~/domain";
-import { copy } from "~/utils";
+import { User } from "~/domain/user";
+import { deepCopy, uuid } from "~/utils";
 import { UserRepository } from "../production/UserRepository";
 
 export class UserRepositoryInMemory extends UserRepository {
@@ -8,12 +8,12 @@ export class UserRepositoryInMemory extends UserRepository {
   constructor() {
     super();
     this.#user = {
-      id: new Date().getTime().toString(16),
+      id: uuid(),
       name: "Twin:te",
     };
   }
 
   async getUser(): Promise<User> {
-    return copy(this.#user);
+    return deepCopy(this.#user);
   }
 }

@@ -1,82 +1,32 @@
 import { Ports } from "~/application/ports";
-import {
-  Course,
-  Module,
-  NormalSchedule,
-  NormalTimetable,
-  Schedule,
-  ScheduleMode,
-  SpecialSchedule,
-  SpecialTimetable,
-} from "~/domain";
-import {
-  InternalServerError,
-  isError,
-  NetworkError,
-  UnauthorizedError,
-} from "~/domain/result";
-import {
-  initializeNormalTimetable,
-  initializeSpecialTimetable,
-  modules,
-} from "~/domain/utils";
-import { isNormalSchedule, isSpecialSchedule } from "~/domain/validations";
+import { Course, SearchMode } from "~/domain/course";
+import { InternalServerError, isResultError, NetworkError, UnauthorizedError } from "~/domain/error";
+import { Module } from "~/domain/module";
+import { isNormalSchedule } from "~/domain/schedule";
+import { Timetable } from "~/domain/timetable";
 
 export const searchCourse = ({ courseRepository }: Ports) => async (
   year: number,
   keywords: string[],
   codes: string[],
-  schedules: Schedule[],
-  scheduleMode: ScheduleMode,
+  timetable: Timetable<Module, boolean>,
   onlyBlank: boolean,
+  mode: SearchMode,
   offset: number,
   limit: number
-): Promise<
-  Course[] | UnauthorizedError | NetworkError | InternalServerError
-> => {
-  const initValue = onlyBlank ? true : false;
+): Promise<Course[] | UnauthorizedError | NetworkError | InternalServerError> => {
+  if (onlyBlank) {
+    const result = await courseRepository.getRegisteredCoursesByYear(year);
+    if (isResultError(result)) return result;
 
-  const result = await courseRepository.getRegisteredCoursesByYear(year);
-  if (isError(result)) return result;
-  const registeredNormalSchedules: NormalSchedule[] = result
-    .map(({ schedules }) => schedules)
-    .flat()
-    .filter(isNormalSchedule);
-
-  const comparedNormalSchedules: NormalSchedule[] = onlyBlank
-    ? registeredNormalSchedules
-    : schedules.filter(isNormalSchedule);
-  const comparedSpecialSchedules: SpecialSchedule[] = schedules.filter(
-    isSpecialSchedule
-  );
-
-  const normalTimetable: NormalTimetable<
-    Module,
-    boolean
-  > = initializeNormalTimetable(modules, initValue);
-
-  const specialTimetable: SpecialTimetable<
-    Module,
-    boolean
-  > = initializeSpecialTimetable(modules, initValue);
-
-  comparedNormalSchedules.forEach(({ module, day, period }) => {
-    normalTimetable[module][day][period] = !initValue;
-  });
-
-  if (!onlyBlank) {
-    comparedSpecialSchedules.forEach(({ module, day }) => {
-      specialTimetable[module][day] = !initValue;
-    });
+    result
+      .map(({ schedules }) => schedules)
+      .flat()
+      .filter(isNormalSchedule)
+      .forEach(({ module, day, period }) => {
+        timetable.normal[module][day][period] = false;
+      });
   }
 
-  return courseRepository.searchCourse(
-    year,
-    keywords,
-    codes,
-    { normal: normalTimetable, special: specialTimetable },
-    onlyBlank ? "Cover" : scheduleMode,
-    offset,
-    limit
-  );
+  return courseRepository.searchCourse(year, keywords, codes, timetable, mode, offset, limit);
 };

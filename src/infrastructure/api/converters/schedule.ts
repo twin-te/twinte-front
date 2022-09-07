@@ -1,6 +1,14 @@
-import { Day, Room, Schedule } from "~/domain";
-import { getRoomsFromSchedule } from "~/domain/utils";
-import { isNormalDay, isNormalSchedule, isPeriod } from "~/domain/validations";
+import { isSpecialDay, normalDays, specialDays } from "~/domain/day";
+import { Module, modules } from "~/domain/module";
+import { isPeriod, periods } from "~/domain/period";
+import { getRoomsFromSchedule, Room } from "~/domain/room";
+import { isEqualSchedule, isNormalSchedule, Schedule } from "~/domain/schedule";
+import {
+  initializeNormalTimetable,
+  initializeSpecialTimetable,
+  NormalTimetable,
+  SpecialTimetable,
+} from "~/domain/timetable";
 import { getKeysFromObj, isEqualSet, removeDuplicate } from "~/utils";
 import * as ApiType from "../aspida/@types";
 
@@ -9,11 +17,7 @@ export const isEqualCourseSchedules = (
   schedules2: ApiType.CourseSchedule[]
 ): boolean => {
   const getSet = (schedules: ApiType.CourseSchedule[]): Set<string> =>
-    new Set(
-      schedules.map(
-        ({ module, day, period, room }) => `${module}-${day}-${period}-${room}`
-      )
-    );
+    new Set(schedules.map(({ module, day, period, room }) => `${module}-${day}-${period}-${room}`));
 
   const s1 = getSet(schedules1);
   const s2 = getSet(schedules2);
@@ -25,33 +29,54 @@ export const parseRoom = (row: string): string[] => {
   return removeDuplicate(row.split(/,| /).map((room) => room.trim()));
 };
 
-export const apiToSchedules = (
-  apiSchedules: ApiType.CourseSchedule[]
-): { schedules: Schedule[]; rooms: Room[] } => {
+export const apiToSchedules = (apiSchedules: ApiType.CourseSchedule[]): { schedules: Schedule[]; rooms: Room[] } => {
+  const normalTimetable: NormalTimetable<Module, boolean> = initializeNormalTimetable(modules, false);
+
+  const specialTimetable: SpecialTimetable<Module, boolean> = initializeSpecialTimetable(modules, false);
+
   const roomNameToSchedules: Record<string, Schedule[]> = {};
 
-  const schedules = apiSchedules
-    .filter(({ module, day, period }) => {
-      module !== "Unknown" && day !== "Unknown" && isPeriod(String(period));
-    })
-    .map(({ module, day, period, room: rowRoom }) => {
-      const schedule = (isNormalDay(day as Day)
-        ? { module, day, period: String(period) }
-        : { module, day }) as Schedule;
-      const roomNames: string[] = parseRoom(rowRoom);
+  apiSchedules.forEach(({ module, day, period: numPeriod, room: rowRoom }) => {
+    const period = String(numPeriod);
+    const roomNames = parseRoom(rowRoom);
 
-      roomNames.forEach((room) => {
-        if (room in roomNameToSchedules)
-          roomNameToSchedules[room].push(schedule);
-        else roomNameToSchedules[room] = [schedule];
+    if (module === "Unknown" || day === "Unknown") return;
+    if (isSpecialDay(day)) {
+      specialTimetable[module][day] = true;
+      roomNames.forEach((roomName) => {
+        roomNameToSchedules[roomName].push({ module, day });
       });
+    } else if (isPeriod(period)) {
+      normalTimetable[module][day][period] = true;
+      roomNames.forEach((roomName) => {
+        roomNameToSchedules[roomName].push({ module, day, period });
+      });
+    }
+  });
 
-      return schedule;
+  const schedules: Schedule[] = [];
+
+  modules.forEach((module) => {
+    normalDays.forEach((day) =>
+      periods.forEach((period) => {
+        if (normalTimetable[module][day][period]) {
+          schedules.push({ module, day, period });
+        }
+      })
+    );
+    specialDays.forEach((day) => {
+      if (specialTimetable[module][day]) {
+        schedules.push({ module, day });
+      }
     });
+  });
 
   const rooms: Room[] = getKeysFromObj(roomNameToSchedules).map((roomName) => ({
     name: roomName,
-    schedules: roomNameToSchedules[roomName],
+    schedules: roomNameToSchedules[roomName].filter((targetSchedule, currentIndex, schedules) => {
+      const index = schedules.findIndex((schedule) => isEqualSchedule(schedule, targetSchedule));
+      return index > currentIndex;
+    }),
   }));
 
   return {
@@ -64,10 +89,7 @@ export const apiToSchedules = (
  * Convert schedules from domain type to api type.
  * Set the period of special schedules to 0.
  */
-export const schedulesToApi = (
-  schedules: Schedule[],
-  rooms: Room[]
-): ApiType.CourseSchedule[] => {
+export const schedulesToApi = (schedules: Schedule[], rooms: Room[]): ApiType.CourseSchedule[] => {
   return schedules.map((schedule) => {
     const room: string = getRoomsFromSchedule(rooms, schedule)
       .map(({ name }) => name)

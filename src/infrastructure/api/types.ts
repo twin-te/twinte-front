@@ -1,8 +1,4 @@
-import {
-  InternalServerError,
-  NotFoundError,
-  UnauthorizedError,
-} from "~/domain/result";
+import { InternalServerError, NotFoundError, UnauthorizedError } from "~/domain/error";
 
 export type ApiSuccessStatus = 200 | 204;
 
