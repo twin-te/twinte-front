@@ -82,12 +82,7 @@ $dark-theme-colors: (
     --color-#{""+$key}: #{hexToRGB($color)};
   }
   .dark {
-    --base-liner: linear-gradient(
-      158.17deg,
-      #0c101a -1.94%,
-      #202530 -1.93%,
-      #141821 102.24%
-    );
+    --base-liner: linear-gradient(158.17deg, #0c101a -1.94%, #202530 -1.93%, #141821 102.24%);
     --primary-liner: linear-gradient(91.58deg, #3c919e -8.01%, #499893 105.39%);
     @each $key, $color in $dark-theme-colors {
       --color-#{""+$key}: #{hexToRGB($color)};
@@ -106,24 +101,17 @@ $shadow-convex-large: 0.3rem 0.5rem 1.2rem getColorShadow(--color-shadow-shade),
   -0.5rem -0.5rem 1rem getColorShadow(--color-shadow-light);
 $shadow-convex-hover: 0.1rem 0.2rem 0.4rem getColorShadow(--color-shadow-shade),
   -0.3rem -0.3rem 0.5rem getColorShadow(--color-shadow-light);
-$shadow-concave: inset 0.2rem 0.3rem 0.8rem
-    getColorShadow(--color-shadow-shade-inset),
+$shadow-concave: inset 0.2rem 0.3rem 0.8rem getColorShadow(--color-shadow-shade-inset),
   inset -0.2rem -0.4rem 0.8rem getColorShadow(--color-shadow-light-inset);
-$shadow-input-concave: inset 0.1rem 0.1rem 0.4rem
-    getColorShadow(--color-shadow-shade-input-inset),
+$shadow-input-concave: inset 0.1rem 0.1rem 0.4rem getColorShadow(--color-shadow-shade-input-inset),
   inset -0.2rem -0.2rem 0.3rem getColorShadow(--color-shadow-light-input-inset);
-$shadow-primary-concave: inset 0.3rem 0.3rem 0.6rem
-  getColorShadow(--color-shadow-shade-primary-inset);
-$shadow-p-light-concave: inset 0.1rem 0.2rem 0.2rem
-    getColorShadow(--color-shadow-shade-primary-light-inset),
-  inset -0.1rem -0.2rem 0.1rem
-    getColorShadow(--color-shadow-light-primary-light-inset);
+$shadow-primary-concave: inset 0.3rem 0.3rem 0.6rem getColorShadow(--color-shadow-shade-primary-inset);
+$shadow-p-light-concave: inset 0.1rem 0.2rem 0.2rem getColorShadow(--color-shadow-shade-primary-light-inset),
+  inset -0.1rem -0.2rem 0.1rem getColorShadow(--color-shadow-light-primary-light-inset);
 $shadow-danger-concave: inset 0.3rem 0.3rem 0.4rem #c0555b99;
-$shadow-unselected-concave: inset 0.2rem 0.3rem 0.4rem
-    getColorShadow(--color-shadow-shade-unselected-inset),
+$shadow-unselected-concave: inset 0.2rem 0.3rem 0.4rem getColorShadow(--color-shadow-shade-unselected-inset),
   inset -0.2rem -0.2rem 0.3rem #ffffff59;
-$shadow-tile-concave: inset 0.2rem 0.2rem 0.3rem
-  getColorShadow(--color-shadow-shade-tile);
+$shadow-tile-concave: inset 0.2rem 0.2rem 0.3rem getColorShadow(--color-shadow-shade-tile);
 $shadow-icon: 0.1rem 0.3rem 0.3rem getColorShadow(--color-shadow-shade-icon),
   -0.1rem -0.1rem 0.2rem getColorShadow(--color-shadow-light-icon);
 $shadow-drop: 0.2rem 0.2rem 0.3rem getColorShadow(--color-shadow-shade);

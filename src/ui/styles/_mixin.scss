@@ -75,13 +75,11 @@
 }
 @mixin button-active($negative-shadow-convex: 0 0 0 #00000000) {
   background: var(--primary-liner);
-  box-shadow: $negative-shadow-convex, $negative-shadow-convex,
-    variable.$shadow-primary-concave;
+  box-shadow: $negative-shadow-convex, $negative-shadow-convex, variable.$shadow-primary-concave;
 }
 @mixin button-active-danger($negative-shadow-convex: 0 0 0 #00000000) {
   background: variable.getColor(--color-danger);
-  box-shadow: $negative-shadow-convex, $negative-shadow-convex,
-    variable.$shadow-danger-concave;
+  box-shadow: $negative-shadow-convex, $negative-shadow-convex, variable.$shadow-danger-concave;
 }
 @mixin button-inactive($negative-shadow-concave: inset 0 0 0 #00000000) {
   box-shadow: variable.$shadow-convex, $negative-shadow-concave;
@@ -209,8 +207,7 @@
 }
 
 @mixin large-screen {
-  @media only screen and (min-height: variable.$pc-and-tab-height),
-    (orientation: landscape) {
+  @media only screen and (min-height: variable.$pc-and-tab-height), (orientation: landscape) {
     // 画面の高さが一定以上or画面が横向きの場合
     @content;
   }
