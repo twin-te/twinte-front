@@ -1,6 +1,7 @@
 import { Ports } from "~/application/ports";
 import { CalendarRepositoryInMemory } from "~/repositories/development/CalendarRepositoryInMemory";
 import { CourseRepositoryInMemory } from "~/repositories/development/CourseRepositoryInMemory";
+import { FeedbackRepositoryInMemory } from "~/repositories/development/FeedbackRepositoryInMemory";
 import { NewsRepositoryInMemory } from "~/repositories/development/NewsRepositoryInMemory";
 import { UserRepositoryInMemory } from "~/repositories/development/UserRepositoryInMemory";
 import { CalendarRepository } from "~/repositories/production/CalendarRepository";
@@ -19,7 +20,7 @@ export const usePorts = (): Ports => {
     ports = {
       calendarRepository: new CalendarRepositoryInMemory(),
       courseRepository: new CourseRepositoryInMemory(),
-      feedbackRepository: new FeedbackRepository(),
+      feedbackRepository: new FeedbackRepositoryInMemory(),
       newsRepository: new NewsRepositoryInMemory(),
       userRepository: new UserRepositoryInMemory(),
     };
