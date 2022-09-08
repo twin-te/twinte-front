@@ -28,7 +28,7 @@ export const initializeTimetable = <M extends Module, V>(modules: M[], initValue
   };
 };
 
-export const schedulesToNormalTimetable = (schedules: NormalSchedule[]): NormalTimetable<Module, boolean> => {
+export const normalSchedulesToNormalTimetable = (schedules: NormalSchedule[]): NormalTimetable<Module, boolean> => {
   const timetable: NormalTimetable<Module, boolean> = initializeNormalTimetable(modules, false);
 
   schedules.forEach(({ module, day, period }) => {

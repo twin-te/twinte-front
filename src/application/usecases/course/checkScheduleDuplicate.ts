@@ -4,7 +4,7 @@ import { InternalServerError, isResultError, NetworkError, UnauthorizedError } f
 import { Module, modules } from "~/domain/module";
 import { periods } from "~/domain/period";
 import { isNormalSchedule, NormalSchedule, Schedule } from "~/domain/schedule";
-import { NormalTimetable, schedulesToNormalTimetable } from "~/domain/timetable";
+import { NormalTimetable, normalSchedulesToNormalTimetable } from "~/domain/timetable";
 
 /**
  * Return true if the schedules do not overlap comparing to the schedules of registered courses. Return false otherwise.
@@ -22,8 +22,10 @@ export const checkScheduleDuplicate = ({ courseRepository }: Ports) => async (
     .flat()
     .filter(isNormalSchedule);
 
-  const timetable: NormalTimetable<Module, boolean> = schedulesToNormalTimetable(normalSchedules);
-  const registeredTimetable: NormalTimetable<Module, boolean> = schedulesToNormalTimetable(registeredNormalSchedules);
+  const timetable: NormalTimetable<Module, boolean> = normalSchedulesToNormalTimetable(normalSchedules);
+  const registeredTimetable: NormalTimetable<Module, boolean> = normalSchedulesToNormalTimetable(
+    registeredNormalSchedules
+  );
 
   return !modules.some((module) =>
     normalDays.some((day) =>

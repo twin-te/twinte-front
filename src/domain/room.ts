@@ -8,6 +8,6 @@ export type Room = {
 /**
  * Return rooms whose schedules contain target schedule.
  */
-export const getRoomsFromSchedule = (rooms: Room[], targetSchedule: Schedule): Room[] => {
+export const extractRoomsBySchedule = (rooms: Room[], targetSchedule: Schedule): Room[] => {
   return rooms.filter(({ schedules }) => schedules.some((schedule) => isEqualSchedule(schedule, targetSchedule)));
 };

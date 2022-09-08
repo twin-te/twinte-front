@@ -26,7 +26,7 @@ export type Course = {
 export type RegisteredCourse = {
   id: string;
   year: number;
-  code?: string; // If the course is custome, set to null;
+  code?: string; // If the course is added by manual, set to null;
   name: string;
   instructors: string[];
   credit: number;

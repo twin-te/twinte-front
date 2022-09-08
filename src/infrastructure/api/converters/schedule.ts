@@ -1,7 +1,7 @@
 import { isSpecialDay, normalDays, specialDays } from "~/domain/day";
 import { Module, modules } from "~/domain/module";
 import { isPeriod, periods } from "~/domain/period";
-import { getRoomsFromSchedule, Room } from "~/domain/room";
+import { extractRoomsBySchedule, Room } from "~/domain/room";
 import { isEqualSchedule, isNormalSchedule, Schedule } from "~/domain/schedule";
 import {
   initializeNormalTimetable,
@@ -91,7 +91,7 @@ export const apiToSchedules = (apiSchedules: ApiType.CourseSchedule[]): { schedu
  */
 export const schedulesToApi = (schedules: Schedule[], rooms: Room[]): ApiType.CourseSchedule[] => {
   return schedules.map((schedule) => {
-    const room: string = getRoomsFromSchedule(rooms, schedule)
+    const room: string = extractRoomsBySchedule(rooms, schedule)
       .map(({ name }) => name)
       .join(",");
     return {
