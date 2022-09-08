@@ -58,7 +58,7 @@
 import { useHead } from "@vueuse/head";
 import { computed, ref } from "vue";
 import { usePorts } from "~/adapter";
-import { sendFeedback } from "~/application/usecases/feedback/sendFeedback";
+import Usecase from "~/application/usecases";
 import { feedbackTypeMap, displayToFeedbackType, displayFeedbackTypes } from "~/presentation/presenters/feedback";
 import Button from "~/ui/components/Button.vue";
 import Dropdown from "~/ui/components/Dropdown.vue";
@@ -112,7 +112,7 @@ const ButtonState = computed(() => {
 });
 
 const onClickButton = async () => {
-  sendFeedback(ports)({
+  Usecase.sendFeedback(ports)({
     type: feedbackType.value,
     screenShots: screenShot.value ? [screenShot.value] : [],
     content: feedbackContent.value,

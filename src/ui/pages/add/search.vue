@@ -178,7 +178,6 @@ import { ComponentPublicInstance, computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
-import { checkScheduleDuplicate } from "~/application/usecases/course/checkScheduleDuplicate";
 import { isResultError } from "~/domain/error";
 import { modules } from "~/domain/module";
 import { Schedule } from "~/domain/schedule";
@@ -343,7 +342,7 @@ const duplicateCourses = ref<DisplayCourse[]>([]);
 const addCourses = async (warning = true) => {
   duplicateCourses.value = (
     await Promise.all(
-      selectedSearchResults.filter(({ schedules }) => !checkScheduleDuplicate(ports)(year.value, schedules))
+      selectedSearchResults.filter(({ schedules }) => !Usecase.checkScheduleDuplicate(ports)(year.value, schedules))
     )
   ).map(({ course }) => course);
 

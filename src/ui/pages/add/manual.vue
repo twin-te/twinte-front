@@ -89,7 +89,7 @@
 import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
-import { checkScheduleDuplicate } from "~/application/usecases/course/checkScheduleDuplicate";
+import Usecase from "~/application/usecases";
 import { methods } from "~/domain/method";
 import { displayToCredit, validateCredit } from "~/presentation/presenters/credit";
 import { validateInstructors } from "~/presentation/presenters/instructor";
@@ -172,7 +172,7 @@ const addCourse = async (warning = true) => {
       tagIds: [],
     };
 
-    if (warning && !(await checkScheduleDuplicate(ports)(year.value, schedules))) {
+    if (warning && !(await Usecase.checkScheduleDuplicate(ports)(year.value, schedules))) {
       duplicateScheduleText.value = schedulesToFullString(schedules);
       openDuplicateModal();
     } else {

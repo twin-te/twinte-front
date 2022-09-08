@@ -61,8 +61,7 @@
 import { computed, ref, shallowReactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
-import { checkScheduleDuplicate } from "~/application/usecases/course/checkScheduleDuplicate";
-import { getCourses } from "~/application/usecases/course/getCourses";
+import Usecase from "~/application/usecases";
 import { isResultError, ValueError } from "~/domain/error";
 import { courseToDisplay } from "~/presentation/presenters/course";
 import Button from "~/ui/components/Button.vue";
@@ -96,7 +95,7 @@ const year = Number(route.query.year);
 const codes: string[] = route.query.codes.split(",");
 
 /** result */
-const result = await getCourses(ports)(codes.map((code) => ({ year, code })));
+const result = await Usecase.getCourses(ports)(codes.map((code) => ({ year, code })));
 if (isResultError(result)) throw result;
 
 type CourseResult = { course: DisplayCourse; schedules: Schedule[]; selected: boolean; expanded: boolean };
@@ -127,7 +126,7 @@ const addCourses = async (warning = true) => {
     await Promise.all(
       selectedCourseResults.value.map(async ({ course, schedules }) => ({
         course,
-        result: await checkScheduleDuplicate(ports)(year, schedules),
+        result: await Usecase.checkScheduleDuplicate(ports)(year, schedules),
       }))
     )
   ).reduce<DisplayCourse[]>((ret, { course, result }) => {

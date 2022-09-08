@@ -4,7 +4,7 @@ import { InternalServerError, isResultError, NetworkError, UnauthorizedError } f
 import { Module, modules } from "~/domain/module";
 import { periods } from "~/domain/period";
 import { isNormalSchedule, NormalSchedule, Schedule } from "~/domain/schedule";
-import { initializeNormalTimetable, NormalTimetable, schedulesToNormalTimetable } from "~/domain/timetable";
+import { NormalTimetable, schedulesToNormalTimetable } from "~/domain/timetable";
 
 /**
  * Return true if the schedules do not overlap comparing to the schedules of registered courses. Return false otherwise.
