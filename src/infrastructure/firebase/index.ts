@@ -12,10 +12,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-/**
- * firebase に screenshot の画像を送信し、返り値として画像にアクセスするための URL を受け取る。
- */
-
 export class Firebase {
   static #instance: Firebase | undefined;
 

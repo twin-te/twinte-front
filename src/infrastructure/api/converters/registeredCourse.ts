@@ -1,5 +1,5 @@
 import { RegisteredCourse } from "~/domain/course";
-import { isEqualPrimitive } from "~/utils";
+import { deepCopy, isEqualPrimitive } from "~/utils";
 import * as ApiType from "../aspida/@types";
 import { instructorsToApi, apiToInstructors } from "./instructor";
 import { isEqualCourseMethods } from "./method";
@@ -37,7 +37,7 @@ export const apiToRegisteredCourse = (apiCourse: Omit<ApiType.RegisteredCourse, 
  * @param apiCourse - The api course of which the property can be changed.
  * @param prop - Target property.
  * @param newValue - New value of the peoperty.
- * @param compareFn - Function to compare. Return true if two values are same, return otherwise.
+ * @param compareFn - Function to compare. Return true if two values are same, return false otherwise.
  */
 const updateApiCourseProp = <P extends keyof ApiType.Course & keyof Required<ApiType.RegisteredCourse>>(
   apiCourse: ApiType.RegisteredCourse,
@@ -57,7 +57,7 @@ export const registeredCourseToApi = (
   baseApiCourse: ApiType.RegisteredCourse
 ): ApiType.RegisteredCourse => {
   const apiCourse: ApiType.RegisteredCourse = {
-    ...baseApiCourse,
+    ...deepCopy(baseApiCourse),
   };
 
   const instructor: string = instructorsToApi(course.instructors);

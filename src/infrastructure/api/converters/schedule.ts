@@ -2,7 +2,7 @@ import { isSpecialDay, normalDays, specialDays } from "~/domain/day";
 import { Module, modules } from "~/domain/module";
 import { isPeriod, periods } from "~/domain/period";
 import { extractRoomsBySchedule, Room } from "~/domain/room";
-import { isEqualSchedule, isNormalSchedule, Schedule } from "~/domain/schedule";
+import { isNormalSchedule, Schedule } from "~/domain/schedule";
 import {
   initializeNormalTimetable,
   initializeSpecialTimetable,
@@ -31,9 +31,7 @@ export const parseRoom = (row: string): string[] => {
 
 export const apiToSchedules = (apiSchedules: ApiType.CourseSchedule[]): { schedules: Schedule[]; rooms: Room[] } => {
   const normalTimetable: NormalTimetable<Module, boolean> = initializeNormalTimetable(modules, false);
-
   const specialTimetable: SpecialTimetable<Module, boolean> = initializeSpecialTimetable(modules, false);
-
   const roomNameToSchedules: Record<string, Schedule[]> = {};
 
   apiSchedules.forEach(({ module, day, period: numPeriod, room: rowRoom }) => {
@@ -73,10 +71,7 @@ export const apiToSchedules = (apiSchedules: ApiType.CourseSchedule[]): { schedu
 
   const rooms: Room[] = getKeysFromObj(roomNameToSchedules).map((roomName) => ({
     name: roomName,
-    schedules: roomNameToSchedules[roomName].filter((targetSchedule, currentIndex, schedules) => {
-      const index = schedules.findIndex((schedule) => isEqualSchedule(schedule, targetSchedule));
-      return index > currentIndex;
-    }),
+    schedules: roomNameToSchedules[roomName],
   }));
 
   return {

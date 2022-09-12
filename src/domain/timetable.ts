@@ -2,7 +2,7 @@ import { initializeObject } from "~/utils";
 import { NormalDay, normalDays, SpecialDay, specialDays } from "./day";
 import { Module, modules } from "./module";
 import { Period, periods } from "./period";
-import { NormalSchedule } from "./schedule";
+import { isNormalSchedule, isSpecialSchedule, NormalSchedule, Schedule, SpecialSchedule } from "./schedule";
 
 export type NormalTimetable<M extends Module, V> = Record<M, Record<NormalDay, Record<Period, V>>>;
 
@@ -34,6 +34,28 @@ export const normalSchedulesToNormalTimetable = (schedules: NormalSchedule[]): N
   schedules.forEach(({ module, day, period }) => {
     timetable[module][day][period] = true;
   });
+
+  return timetable;
+};
+
+export const specialSchedulesToSpecialTimetable = (schedules: SpecialSchedule[]): SpecialTimetable<Module, boolean> => {
+  const timetable: SpecialTimetable<Module, boolean> = initializeSpecialTimetable(modules, false);
+
+  schedules.forEach(({ module, day }) => {
+    timetable[module][day] = true;
+  });
+
+  return timetable;
+};
+
+export const schedulesToTimetable = (schedules: Schedule[]): Timetable<Module, boolean> => {
+  const normalSchedules: NormalSchedule[] = schedules.filter(isNormalSchedule);
+  const specialSchedules: SpecialSchedule[] = schedules.filter(isSpecialSchedule);
+
+  const timetable: Timetable<Module, boolean> = {
+    normal: normalSchedulesToNormalTimetable(normalSchedules),
+    special: specialSchedulesToSpecialTimetable(specialSchedules),
+  };
 
   return timetable;
 };
