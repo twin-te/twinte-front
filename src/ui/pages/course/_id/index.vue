@@ -2,7 +2,12 @@
   <div class="course-detail">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" iconName="arrow_back" @click="$router.push('/')"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          iconName="arrow_back"
+          @click="$router.push('/')"
+        ></IconButton>
       </template>
       <template #title>授業詳細</template>
       <template #right-button-icon>
@@ -53,7 +58,11 @@
         </section>
         <TagEditor v-model:add="add" heading="タグ" @create-tag="onCreateTag">
           <template #tags>
-            <Tag v-for="tag in displayCourse.tags" :key="tag.id" :assign="tag.assign" @click="() => onClickTag(tag)"
+            <Tag
+              v-for="tag in displayCourse.tags"
+              :key="tag.id"
+              :assign="tag.assign"
+              @click="() => onClickTag(tag)"
               >{{ tag.name }}
             </Tag>
             <template v-if="displayCourse.tags.length === 0">
@@ -135,16 +144,37 @@
         </section>
       </div>
     </article>
-    <Modal v-if="isVisibleDeleteCourseModal" class="delete-course-modal" size="small" @click="closeDeleteCourseModal">
+    <Modal
+      v-if="isVisibleDeleteCourseModal"
+      class="delete-course-modal"
+      size="small"
+      @click="closeDeleteCourseModal"
+    >
       <template #title>授業の削除</template>
       <template #contents>
         <p class="modal__text">
-          「{{ displayCourse.name }}」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
+          「{{
+            displayCourse.name
+          }}」を削除しますか？(編集した情報や記録したメモ、出欠記録も削除されます。)
         </p>
       </template>
       <template #button>
-        <Button size="medium" layout="fill" color="base" @click="closeDeleteCourseModal"> キャンセル </Button>
-        <Button size="medium" layout="fill" color="danger" @click="onClickDeleteCourseButton"> 削除 </Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="closeDeleteCourseModal"
+        >
+          キャンセル
+        </Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="danger"
+          @click="onClickDeleteCourseButton"
+        >
+          削除
+        </Button>
       </template>
     </Modal>
   </div>
@@ -168,7 +198,12 @@ import TagEditor from "~/ui/components/TagEditor.vue";
 import TextFieldMultilines from "~/ui/components/TextFieldMultilines.vue";
 import ToggleIconButton from "~/ui/components/ToggleIconButton.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
-import { dropCourse, getCourseById, setCourseById, updateCourse } from "~/ui/store/course";
+import {
+  dropCourse,
+  getCourseById,
+  setCourseById,
+  updateCourse,
+} from "~/ui/store/course";
 import { createTag, getAllTags, setAllTags } from "~/ui/store/tag";
 import { getSyllabusUrl, openUrl, getResponUrl, getMapUrl } from "~/ui/url";
 import type { RegisteredCourse } from "~/domain/course";
@@ -200,7 +235,10 @@ const updateMemo = async (newMemo: string) => {
   await updateCourse(id, { memo: newMemo });
 };
 
-const updateCounter = async (key: Extract<keyof RegisteredCourse, "attendance" | "late" | "absence">, diff: number) => {
+const updateCounter = async (
+  key: Extract<keyof RegisteredCourse, "attendance" | "late" | "absence">,
+  diff: number
+) => {
   const newValue = displayCourse.value[key] + diff;
   if (newValue < 0) return;
   displayCourse.value = { ...displayCourse.value, [key]: newValue };
@@ -227,12 +265,18 @@ const onCreateTag = async (name: string) => {
 const onClickTag = async (clickedTag: DisplayCourseTag) => {
   clickedTag.assign = !clickedTag.assign;
   displayCourse.value = { ...displayCourse.value };
-  const assignedTagIds: string[] = displayCourse.value.tags.filter(({ assign }) => assign).map(({ id }) => id);
+  const assignedTagIds: string[] = displayCourse.value.tags
+    .filter(({ assign }) => assign)
+    .map(({ id }) => id);
   await updateCourse(id, { tagIds: assignedTagIds });
 };
 
 /** delete course modal */
-const [isVisibleDeleteCourseModal, openDeleteCourseModal, closeDeleteCourseModal] = useSwitch();
+const [
+  isVisibleDeleteCourseModal,
+  openDeleteCourseModal,
+  closeDeleteCourseModal,
+] = useSwitch();
 
 const onClickDeleteCourseButton = async () => {
   await dropCourse(id);
@@ -240,7 +284,9 @@ const onClickDeleteCourseButton = async () => {
 };
 
 /** popup */
-const [isVisiblePopup, openPopup, closePopup, toggleShowPopup] = useSwitch(false);
+const [isVisiblePopup, openPopup, closePopup, toggleShowPopup] = useSwitch(
+  false
+);
 
 const popupContents: {
   onClick: () => void;
@@ -257,7 +303,10 @@ const popupContents: {
     gtmMarker: "course-edit",
   },
   {
-    onClick: () => openUrl(getSyllabusUrl(displayCourse.value.year, displayCourse.value.code)),
+    onClick: () =>
+      openUrl(
+        getSyllabusUrl(displayCourse.value.year, displayCourse.value.code)
+      ),
     link: true,
     value: "シラバス",
     color: "normal",

@@ -2,7 +2,12 @@
   <div class="feedback">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.back()"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.back()"
+        ></IconButton>
       </template>
       <template #title>フィードバック</template>
     </PageHeader>
@@ -19,8 +24,14 @@
         </section>
         <section class="feedback__row">
           <Label value="スクリーンショットの添付"></Label>
-          <div class="feedback__note">バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。</div>
-          <InputButtonFile name="csv-file" accept="image/*" @change-file="screenShot = $event">
+          <div class="feedback__note">
+            バグ報告の場合は不具合のある画面のスクリーンショットをいただけると幸いです。
+          </div>
+          <InputButtonFile
+            name="csv-file"
+            accept="image/*"
+            @change-file="screenShot = $event"
+          >
             画像をアップロードする
           </InputButtonFile>
         </section>
@@ -33,10 +44,19 @@
             height="20rem"
           ></TextFieldMultilines>
         </section>
-        <section v-if="['Bug', 'Contact'].includes(feedbackType)" class="feedback__row">
-          <Label value="連絡先メールアドレス or Twitterアカウント" :mandatory="feedbackType === 'Contact'"></Label>
+        <section
+          v-if="['Bug', 'Contact'].includes(feedbackType)"
+          class="feedback__row"
+        >
+          <Label
+            value="連絡先メールアドレス or Twitterアカウント"
+            :mandatory="feedbackType === 'Contact'"
+          ></Label>
           <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
-          <TextFieldSingleLine v-model="email" placeholder="xxx@example.com / @te_twin"></TextFieldSingleLine>
+          <TextFieldSingleLine
+            v-model="email"
+            placeholder="xxx@example.com / @te_twin"
+          ></TextFieldSingleLine>
         </section>
       </div>
       <section class="main__footer">
@@ -59,7 +79,11 @@ import { useHead } from "@vueuse/head";
 import { computed, ref } from "vue";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
-import { feedbackTypeMap, displayToFeedbackType, displayFeedbackTypes } from "~/presentation/presenters/feedback";
+import {
+  feedbackTypeMap,
+  displayToFeedbackType,
+  displayFeedbackTypes,
+} from "~/presentation/presenters/feedback";
 import Button from "~/ui/components/Button.vue";
 import Dropdown from "~/ui/components/Dropdown.vue";
 import IconButton from "~/ui/components/IconButton.vue";
@@ -107,7 +131,11 @@ const emailNote: Record<FeedbackType, string> = {
 };
 
 const ButtonState = computed(() => {
-  if (feedbackContent.value === "" || (feedbackType.value === "Contact" && email.value === "")) return "disabled";
+  if (
+    feedbackContent.value === "" ||
+    (feedbackType.value === "Contact" && email.value === "")
+  )
+    return "disabled";
   return "default";
 });
 
@@ -119,11 +147,15 @@ const onClickButton = async () => {
     email: email.value,
   })
     .then(() => {
-      displayToast("フィードバックを送信しました。ありがとうございます。", { type: "primary" });
+      displayToast("フィードバックを送信しました。ありがとうございます。", {
+        type: "primary",
+      });
       router.push("/");
     })
     .catch(() => {
-      displayToast("申し訳ございません。フィードバックの送信に失敗しました。ネットワーク環境をご確認ください。");
+      displayToast(
+        "申し訳ございません。フィードバックの送信に失敗しました。ネットワーク環境をご確認ください。"
+      );
     });
 };
 </script>

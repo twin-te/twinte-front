@@ -5,10 +5,19 @@ import { Period } from "~/domain/period";
 import { isNormalSchedule, isSpecialSchedule } from "~/domain/schedule";
 import { Tag } from "~/domain/tag";
 import { initializeObject, isContained, removeDuplicate } from "~/utils";
-import { DiaplayNormalTimetable, DisplaySpecialTimetable, DisplayTimetable } from "../viewmodels/timetable";
+import {
+  DiaplayNormalTimetable,
+  DisplaySpecialTimetable,
+  DisplayTimetable,
+} from "../viewmodels/timetable";
 import { registeredCourseToDisplay } from "./course";
 
-export const getDisplayTimetable = <M extends Module, ND extends NormalDay, SD extends SpecialDay, P extends Period>(
+export const getDisplayTimetable = <
+  M extends Module,
+  ND extends NormalDay,
+  SD extends SpecialDay,
+  P extends Period
+>(
   courses: RegisteredCourse[],
   tags: Tag[],
   targetModules: M[],
@@ -36,7 +45,9 @@ export const getDisplayTimetable = <M extends Module, ND extends NormalDay, SD e
         isContained(schedule.day, targetNormalDays) &&
         isContained(schedule.period, targetPeriods)
       ) {
-        map[course.id]["normal"].push(schedule as { module: M; day: ND; period: P });
+        map[course.id]["normal"].push(
+          schedule as { module: M; day: ND; period: P }
+        );
       }
 
       if (
@@ -51,20 +62,31 @@ export const getDisplayTimetable = <M extends Module, ND extends NormalDay, SD e
     return map;
   }, {});
 
-  const diaplayNormalTimetable: DiaplayNormalTimetable<M, ND, P> = initializeObject(
+  const diaplayNormalTimetable: DiaplayNormalTimetable<
+    M,
+    ND,
+    P
+  > = initializeObject(
     targetModules,
     initializeObject(targetNormalDays, initializeObject(targetPeriods, []))
   );
-  const displaySpecialTimetable: DisplaySpecialTimetable<SD> = initializeObject([...targetSpecialDays, "Others"], []);
+  const displaySpecialTimetable: DisplaySpecialTimetable<SD> = initializeObject(
+    [...targetSpecialDays, "Others"],
+    []
+  );
 
   courses.forEach((course) => {
     const displayCourse = registeredCourseToDisplay(course, tags);
 
-    courseIdToSchedules[course.id]["normal"].forEach(({ module, day, period }) => {
-      diaplayNormalTimetable[module][day][period].push(displayCourse);
-    });
+    courseIdToSchedules[course.id]["normal"].forEach(
+      ({ module, day, period }) => {
+        diaplayNormalTimetable[module][day][period].push(displayCourse);
+      }
+    );
 
-    removeDuplicate(courseIdToSchedules[course.id]["special"].map(({ day }) => day)).forEach((day) => {
+    removeDuplicate(
+      courseIdToSchedules[course.id]["special"].map(({ day }) => day)
+    ).forEach((day) => {
       displaySpecialTimetable[day].push(displayCourse);
     });
 

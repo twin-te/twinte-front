@@ -2,16 +2,31 @@
   <div class="news">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.back()"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.back()"
+        ></IconButton>
       </template>
       <template #title>お知らせ</template>
     </PageHeader>
     <div class="main">
       <div class="main__news">
-        <div v-for="{ id, title, content, publishedAt } in news" :key="id" class="news__row">
-          <NewsBox :title="title" :content="content" :publicationDate="formatPublishedAt(publishedAt)"></NewsBox>
+        <div
+          v-for="{ id, title, content, publishedAt } in news"
+          :key="id"
+          class="news__row"
+        >
+          <NewsBox
+            :title="title"
+            :content="content"
+            :publicationDate="formatPublishedAt(publishedAt)"
+          ></NewsBox>
         </div>
-        <div v-if="news.length === 0" class="news__not-news">表示できるお知らせはありません。</div>
+        <div v-if="news.length === 0" class="news__not-news">
+          表示できるお知らせはありません。
+        </div>
       </div>
     </div>
   </div>

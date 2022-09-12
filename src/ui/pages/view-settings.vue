@@ -2,7 +2,12 @@
   <div class="view-settings">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.back()"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.back()"
+        ></IconButton>
       </template>
       <template #title>表示設定</template>
     </PageHeader>
@@ -13,7 +18,9 @@
           <ToggleSwitch
             class="switch"
             :isChecked="setting.darkMode"
-            @click-toggle-switch="updateSetting({ darkMode: !setting.darkMode })"
+            @click-toggle-switch="
+              updateSetting({ darkMode: !setting.darkMode })
+            "
           />
         </div>
         <div class="main__content">
@@ -21,7 +28,9 @@
           <ToggleSwitch
             class="switch"
             :isChecked="setting.saturdayCourseMode"
-            @click-toggle-switch="updateSetting({ saturdayCourseMode: !setting.saturdayCourseMode })"
+            @click-toggle-switch="
+              updateSetting({ saturdayCourseMode: !setting.saturdayCourseMode })
+            "
           />
         </div>
         <div class="main__content">
@@ -29,7 +38,9 @@
           <ToggleSwitch
             class="switch"
             :isChecked="setting.nightPeriodMode"
-            @click-toggle-switch="updateSetting({ nightPeriodMode: !setting.nightPeriodMode })"
+            @click-toggle-switch="
+              updateSetting({ nightPeriodMode: !setting.nightPeriodMode })
+            "
           />
         </div>
         <div class="main__content">
@@ -37,7 +48,9 @@
           <ToggleSwitch
             class="switch"
             :isChecked="setting.timeLabelMode"
-            @click-toggle-switch="updateSetting({ timeLabelMode: !setting.timeLabelMode })"
+            @click-toggle-switch="
+              updateSetting({ timeLabelMode: !setting.timeLabelMode })
+            "
           />
         </div>
         <div class="main__content--dropdown">
@@ -73,10 +86,15 @@ const setting = getSetting();
 /** display year */
 const autoOption = "自動(現在の年度)";
 
-const yearOptions: string[] = [autoOption, ...academicYears.reverse().map((year) => `${year}年度`)];
+const yearOptions: string[] = [
+  autoOption,
+  ...academicYears.reverse().map((year) => `${year}年度`),
+];
 
 const selectedYearOption = computed<string>(() =>
-  setting.value.displayYear === 0 ? autoOption : `${setting.value.displayYear}年度`
+  setting.value.displayYear === 0
+    ? autoOption
+    : `${setting.value.displayYear}年度`
 );
 
 const updateSelectedYearOption = async (option: string) => {

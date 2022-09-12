@@ -1,14 +1,25 @@
 <template>
   <PageHeader>
     <template #left-button-icon>
-      <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.back()"></IconButton>
+      <IconButton
+        size="large"
+        color="normal"
+        icon-name="arrow_back"
+        @click="$router.back()"
+      ></IconButton>
     </template>
     <template #title>CSVファイルから追加</template>
   </PageHeader>
   <div class="main">
     <div class="main__csv csv">
       <p class="csv__header">CSVファイル</p>
-      <InputButtonFile name="csv-file" accept="text/csv" @change-file="loadCourses"> アップロードする </InputButtonFile>
+      <InputButtonFile
+        name="csv-file"
+        accept="text/csv"
+        @change-file="loadCourses"
+      >
+        アップロードする
+      </InputButtonFile>
     </div>
     <div class="main__courses courses">
       <div class="courses__contents">
@@ -34,14 +45,22 @@
       >
     </div>
   </div>
-  <Modal v-if="duplicateCourses.length > 0" class="duplication-modal" @click="duplicateCourses = []">
+  <Modal
+    v-if="duplicateCourses.length > 0"
+    class="duplication-modal"
+    @click="duplicateCourses = []"
+  >
     <template #title>開講時限が重複しています</template>
     <template #contents>
       <p class="modal__text">
         以下の授業のコマには既に授業が登録されています。そのまま追加してよろしいですか？（当該のコマには複数の授業が登録されます。）
       </p>
       <div class="modal__courses">
-        <div v-for="course in duplicateCourses" :key="course.id" class="duplicated-course">
+        <div
+          v-for="course in duplicateCourses"
+          :key="course.id"
+          class="duplicated-course"
+        >
           <p class="duplicated-course__name">{{ course.name }}</p>
           <CourseDetailMini
             class="duplicated-course__detail"
@@ -52,8 +71,20 @@
       </div>
     </template>
     <template #button>
-      <Button size="medium" layout="fill" color="base" @click="duplicateCourses = []">キャンセル</Button>
-      <Button size="medium" layout="fill" color="primary" @click="addCourses(false)">そのまま追加</Button>
+      <Button
+        size="medium"
+        layout="fill"
+        color="base"
+        @click="duplicateCourses = []"
+        >キャンセル</Button
+      >
+      <Button
+        size="medium"
+        layout="fill"
+        color="primary"
+        @click="addCourses(false)"
+        >そのまま追加</Button
+      >
     </template>
   </Modal>
 </template>
@@ -86,9 +117,15 @@ await setApplicableYear();
 const year = getApplicableYear();
 
 /** result */
-type LoadedResult = { course: DisplayCourse; schedules: Schedule[]; selected: boolean };
+type LoadedResult = {
+  course: DisplayCourse;
+  schedules: Schedule[];
+  selected: boolean;
+};
 const loadedResults = shallowReactive<LoadedResult[]>([]);
-const selectedResults = computed(() => loadedResults.filter(({ selected }) => selected));
+const selectedResults = computed(() =>
+  loadedResults.filter(({ selected }) => selected)
+);
 
 type Risyu = {
   type: "risyu";
@@ -155,8 +192,12 @@ const loadCourses = async (file: File) => {
         codes = csv.codes;
         break;
       case "seiseki":
-        codes = csv.data.filter((v) => v.year === year.value).map(({ code }) => code);
-        displayToast(`${year.value}年度の授業を読み込んでいます。`, { type: "primary" });
+        codes = csv.data
+          .filter((v) => v.year === year.value)
+          .map(({ code }) => code);
+        displayToast(`${year.value}年度の授業を読み込んでいます。`, {
+          type: "primary",
+        });
         break;
     }
   } catch (error) {
@@ -170,19 +211,29 @@ const loadCourses = async (file: File) => {
     return;
   }
 
-  const result = await Usecase.getCourses(ports)(codes.map((code) => ({ year: year.value, code })));
+  const result = await Usecase.getCourses(ports)(
+    codes.map((code) => ({ year: year.value, code }))
+  );
   if (isResultError(result)) throw result;
 
   loadedResults.splice(
     0,
     loadedResults.length,
-    ...result.map((course) => ({ course: courseToDisplay(course), schedules: course.schedules, selected: true }))
+    ...result.map((course) => ({
+      course: courseToDisplay(course),
+      schedules: course.schedules,
+      selected: true,
+    }))
   );
 
-  const missingCodes = codes.filter((code) => result.find((course) => course.code === code) == undefined);
+  const missingCodes = codes.filter(
+    (code) => result.find((course) => course.code === code) == undefined
+  );
   if (missingCodes.length > 0) {
     displayToast(
-      `以下の科目番号はシラバスに存在しませんでした。存在する講義のみを表示しています。\n${missingCodes.join("  ")}`,
+      `以下の科目番号はシラバスに存在しませんでした。存在する講義のみを表示しています。\n${missingCodes.join(
+        "  "
+      )}`,
       { displayPeriod: 0 }
     );
   }
@@ -195,7 +246,10 @@ const addCourses = async (warning = true) => {
     await Promise.all(
       selectedResults.value.map(async ({ course, schedules }) => ({
         course,
-        result: await Usecase.checkScheduleDuplicate(ports)(year.value, schedules),
+        result: await Usecase.checkScheduleDuplicate(ports)(
+          year.value,
+          schedules
+        ),
       }))
     )
   ).reduce<DisplayCourse[]>((ret, { course, result }) => {
@@ -205,7 +259,12 @@ const addCourses = async (warning = true) => {
   }, []);
 
   if (warning && duplicateCourses.value.length > 0) return;
-  await addCoursesByCodes(selectedResults.value.map(({ course }) => ({ year: course.year, code: course.code })));
+  await addCoursesByCodes(
+    selectedResults.value.map(({ course }) => ({
+      year: course.year,
+      code: course.code,
+    }))
+  );
   router.push("/");
 };
 

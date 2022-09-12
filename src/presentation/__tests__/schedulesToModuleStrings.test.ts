@@ -1346,7 +1346,11 @@ describe(`${schedulesToModuleStrings.name} - only module format - combination`, 
         period: "6",
       },
     ];
-    expect(schedulesToModuleStrings(schedules)).toEqual(["春AB", "夏休", "秋AB"]);
+    expect(schedulesToModuleStrings(schedules)).toEqual([
+      "春AB",
+      "夏休",
+      "秋AB",
+    ]);
   });
 
   it("[秋ABC] - 日本語・日本文化実験実習", () => {
@@ -2097,7 +2101,11 @@ describe(`${schedulesToModuleStrings.name} - only module format - combination`, 
         day: "Intensive",
       },
     ];
-    expect(schedulesToModuleStrings(schedules)).toEqual(["夏休", "秋ABC", "春休"]);
+    expect(schedulesToModuleStrings(schedules)).toEqual([
+      "夏休",
+      "秋ABC",
+      "春休",
+    ]);
   });
 
   it("[春ABC] - 小児看護学演習", () => {

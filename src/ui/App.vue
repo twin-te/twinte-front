@@ -17,7 +17,11 @@
 <script setup lang="ts">
 import { onErrorCaptured, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { InternalServerError, NetworkError, UnauthorizedError } from "~/domain/error";
+import {
+  InternalServerError,
+  NetworkError,
+  UnauthorizedError,
+} from "~/domain/error";
 import Error from "~/ui/components/Error.vue";
 import Layout from "~/ui/templates/Layout.vue";
 import { setSetting } from "./store/setting";
@@ -47,7 +51,8 @@ onErrorCaptured((error) => {
   } else if (error instanceof NetworkError) {
     errorMessage.value = "ネットワークエラー。通信状況をご確認下さい。";
   } else if (error instanceof InternalServerError) {
-    errorMessage.value = "申し訳ございません。サーバー内でエラーが発生しました。";
+    errorMessage.value =
+      "申し訳ございません。サーバー内でエラーが発生しました。";
   } else {
     errorMessage.value = error.message;
   }

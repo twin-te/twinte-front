@@ -22,9 +22,19 @@ export const springModules: SpringModule[] = ["SpringA", "SpringB", "SpringC"];
 
 export const fallModules: FallModule[] = ["FallA", "FallB", "FallC"];
 
-export const baseModules: BaseModule[] = ["SpringA", "SpringB", "SpringC", "FallA", "FallB", "FallC"];
+export const baseModules: BaseModule[] = [
+  "SpringA",
+  "SpringB",
+  "SpringC",
+  "FallA",
+  "FallB",
+  "FallC",
+];
 
-export const vacationModules: VacationModule[] = ["SummerVacation", "SpringVacation"];
+export const vacationModules: VacationModule[] = [
+  "SummerVacation",
+  "SpringVacation",
+];
 
 export const modules: Module[] = [
   "SpringA",

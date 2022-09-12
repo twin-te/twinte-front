@@ -6,23 +6,39 @@
     </div>
     <div class="login__main">
       <div class="main__square-logo">
-        <img v-if="setting.darkMode" src="../assets/twintelogo-darkmode-b.svg" />
+        <img
+          v-if="setting.darkMode"
+          src="../assets/twintelogo-darkmode-b.svg"
+        />
         <img v-else src="../assets/twintelogo-color-b.svg" />
       </div>
       <div class="main__head">ログイン方法を選択</div>
       <div class="main__provider">
         <button @click="goto(getLoginUrl('apple', redirectUrl))">
-          <img class="main__login-button" src="../assets/login-page/login-apple.png" alt="appleでログイン" />
+          <img
+            class="main__login-button"
+            src="../assets/login-page/login-apple.png"
+            alt="appleでログイン"
+          />
         </button>
         <button @click="goto(getLoginUrl('twitter', redirectUrl))">
-          <img class="main__login-button" src="../assets/login-page/login-twitter.svg" alt="twitterでログイン" />
+          <img
+            class="main__login-button"
+            src="../assets/login-page/login-twitter.svg"
+            alt="twitterでログイン"
+          />
         </button>
         <button @click="goto(getLoginUrl('google', redirectUrl))">
-          <img class="main__login-button" src="../assets/login-page/login-google.svg" alt="googleでログイン" />
+          <img
+            class="main__login-button"
+            src="../assets/login-page/login-google.svg"
+            alt="googleでログイン"
+          />
         </button>
       </div>
       <div class="main__note">
-        ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a>に同意したものとします。<br />
+        ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a
+        >に同意したものとします。<br />
         ※Twin:teにログインしたことがない場合は、選択したログイン方法と紐づいたアカウントが自動で作成されます。
       </div>
       <img
@@ -41,7 +57,11 @@
       />
     </div>
   </div>
-  <GrayFilter v-show="clicked" class="layout__grayfilter" @click="() => {}"></GrayFilter>
+  <GrayFilter
+    v-show="clicked"
+    class="layout__grayfilter"
+    @click="() => {}"
+  ></GrayFilter>
 </template>
 
 <script lang="ts">

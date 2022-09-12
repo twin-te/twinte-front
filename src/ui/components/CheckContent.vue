@@ -23,7 +23,11 @@ export default defineComponent({
 
 <template>
   <div class="check-content">
-    <Checkbox :isChecked="checked" :isDisable="disabled" @click-checkbox="$emit('update:checked', !checked)"></Checkbox>
+    <Checkbox
+      :isChecked="checked"
+      :isDisable="disabled"
+      @click-checkbox="$emit('update:checked', !checked)"
+    ></Checkbox>
     <div class="check-content__value"><slot /></div>
   </div>
 </template>

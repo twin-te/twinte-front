@@ -2,7 +2,12 @@
   <div class="edit">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="onClickIconButton"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="onClickIconButton"
+        ></IconButton>
       </template>
       <template #title>授業情報の編集</template>
     </PageHeader>
@@ -11,7 +16,10 @@
         <div class="main__contents">
           <section class="main__course-name">
             <LabeledTextField label="授業名" mandatory>
-              <TextFieldSingleLine v-model="name" placeholder="例) ゼミ"></TextFieldSingleLine>
+              <TextFieldSingleLine
+                v-model="name"
+                placeholder="例) ゼミ"
+              ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
           <section class="main__period">
@@ -25,7 +33,10 @@
           </section>
           <section class="main__credit">
             <LabeledTextField label="単位数" mandatory>
-              <TextFieldSingleLine v-model.trim="credit" placeholder="例) 1.0"></TextFieldSingleLine>
+              <TextFieldSingleLine
+                v-model.trim="credit"
+                placeholder="例) 1.0"
+              ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
           <!-- <section class="main__instructor">
@@ -41,18 +52,33 @@
           <section class="main__method method">
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
-              <CheckContent v-for="content in checkboxContents" :key="content.key" v-model:checked="content.checked">{{
-                content.label
-              }}</CheckContent>
+              <CheckContent
+                v-for="content in checkboxContents"
+                :key="content.key"
+                v-model:checked="content.checked"
+                >{{ content.label }}</CheckContent
+              >
             </div>
           </section>
         </div>
       </div>
       <section class="main__footer">
-        <Button size="large" layout="fill" color="primary" :state="buttonState" @click="save">変更を保存</Button>
+        <Button
+          size="large"
+          layout="fill"
+          color="primary"
+          :state="buttonState"
+          @click="save"
+          >変更を保存</Button
+        >
       </section>
     </div>
-    <Modal v-if="isVisibleModal" class="leave-page-modal" size="small" @click="closeModal">
+    <Modal
+      v-if="isVisibleModal"
+      class="leave-page-modal"
+      size="small"
+      @click="closeModal"
+    >
       <template #title>ページから移動しますか？</template>
       <template #contents>
         <p class="modal__text">
@@ -61,8 +87,16 @@
         </p>
       </template>
       <template #button>
-        <Button size="medium" layout="fill" color="base" @click="closeModal">キャンセル</Button>
-        <Button size="medium" layout="fill" color="primary" @click="$router.back()">移動する</Button>
+        <Button size="medium" layout="fill" color="base" @click="closeModal"
+          >キャンセル</Button
+        >
+        <Button
+          size="medium"
+          layout="fill"
+          color="primary"
+          @click="$router.back()"
+          >移動する</Button
+        >
       </template>
     </Modal>
   </div>
@@ -73,10 +107,18 @@ import { computed, ComputedRef, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { NotFoundError } from "~/domain/error";
 import { methods } from "~/domain/method";
-import { creditToDisplay, displayToCredit, validateCredit } from "~/presentation/presenters/credit";
+import {
+  creditToDisplay,
+  displayToCredit,
+  validateCredit,
+} from "~/presentation/presenters/credit";
 import { validateInstructors } from "~/presentation/presenters/instructor";
 import { methodMap } from "~/presentation/presenters/method";
-import { schedulesToDisplay, displayToSchedules, isDisplaySchedule } from "~/presentation/presenters/schedule";
+import {
+  schedulesToDisplay,
+  displayToSchedules,
+  isDisplaySchedule,
+} from "~/presentation/presenters/schedule";
 import Button from "~/ui/components/Button.vue";
 import CheckContent from "~/ui/components/CheckContent.vue";
 import IconButton from "~/ui/components/IconButton.vue";
@@ -84,7 +126,9 @@ import Label from "~/ui/components/Label.vue";
 import LabeledTextField from "~/ui/components/LabeledTextField.vue";
 import Modal from "~/ui/components/Modal.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
-import ScheduleEditer, { useScheduleEditor } from "~/ui/components/ScheduleEditer.vue";
+import ScheduleEditer, {
+  useScheduleEditor,
+} from "~/ui/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { getCourseById, setCourseById, updateCourse } from "~/ui/store/course";
@@ -122,9 +166,12 @@ const checkboxContents = reactive(
 );
 
 /** schedule editor */
-const { schedules: editableSchedules, addSchedule, removeSchedule, updateSchedules } = useScheduleEditor(
-  schedulesToDisplay(course.value.schedules)
-);
+const {
+  schedules: editableSchedules,
+  addSchedule,
+  removeSchedule,
+  updateSchedules,
+} = useScheduleEditor(schedulesToDisplay(course.value.schedules));
 
 /** save button */
 const buttonState = computed(() => {
@@ -144,7 +191,9 @@ const save = async () => {
     editableSchedules.every(isDisplaySchedule)
   ) {
     const schedules = displayToSchedules(editableSchedules);
-    const methods = checkboxContents.filter(({ checked }) => checked).map(({ key }) => key);
+    const methods = checkboxContents
+      .filter(({ checked }) => checked)
+      .map(({ key }) => key);
     await updateCourse(id, {
       name: name.value,
       credit: displayToCredit(credit.value),

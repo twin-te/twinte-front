@@ -46,14 +46,24 @@ export default defineComponent({
         <slot name="left-button-icon"></slot>
       </div>
       <div v-if="atHome">
-        <img v-if="setting.darkMode" class="header__title--logo" src="../assets/twintelogo-darkmode.svg" />
-        <img v-else class="header__title--logo" src="../assets/twintelogo-color.svg" />
+        <img
+          v-if="setting.darkMode"
+          class="header__title--logo"
+          src="../assets/twintelogo-darkmode.svg"
+        />
+        <img
+          v-else
+          class="header__title--logo"
+          src="../assets/twintelogo-color.svg"
+        />
       </div>
       <h1 v-else class="header__title">
         <slot name="title"></slot>
       </h1>
       <div v-if="atHome && calendar" class="header__calendar">
-        <p class="header__date">{{ calendar.month }}/{{ calendar.day }} ({{ calendar.week }})</p>
+        <p class="header__date">
+          {{ calendar.month }}/{{ calendar.day }} ({{ calendar.week }})
+        </p>
         <p class="header__schedule">{{ calendar.schedule }}</p>
       </div>
       <div v-else class="header__right-button">

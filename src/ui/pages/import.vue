@@ -3,7 +3,12 @@
     <PageHeader>
       <template #left-button-icon>
         <div class="header__left-button-icon">
-          <IconButton size="large" color="normal" iconName="menu" @click="toggleSidebar"></IconButton>
+          <IconButton
+            size="large"
+            color="normal"
+            iconName="menu"
+            @click="toggleSidebar"
+          ></IconButton>
         </div>
       </template>
       <template #title>授業のインポート</template>
@@ -11,7 +16,11 @@
     <div class="main">
       <section ref="importBoxRef" key="result" class="main__result">
         <Card v-show="courseResults.length > 0">
-          <div v-for="(result, i) in courseResults" :key="result.course.id" class="result__row">
+          <div
+            v-for="(result, i) in courseResults"
+            :key="result.course.id"
+            class="result__row"
+          >
             <CardCourse
               :course="result.course"
               :isChecked="result.selected"
@@ -36,22 +45,46 @@
         >選択した授業を追加</Button
       >
     </section>
-    <Modal v-if="duplicateCourses" class="duplication-modal" @click="duplicateCourses = []">
+    <Modal
+      v-if="duplicateCourses"
+      class="duplication-modal"
+      @click="duplicateCourses = []"
+    >
       <template #title>開講時限が重複しています</template>
       <template #contents>
         <p class="modal__text">
           以下の授業のコマには既に授業が登録されています。そのまま追加してよろしいですか？（当該のコマには複数の授業が登録されます。）
         </p>
         <div class="modal__courses">
-          <div v-for="course in duplicateCourses" :key="course.id" class="duplicated-course">
+          <div
+            v-for="course in duplicateCourses"
+            :key="course.id"
+            class="duplicated-course"
+          >
             <p class="duplicated-course__name">{{ course.name }}</p>
-            <CourseDetailMini class="duplicated-course__detail" iconName="schedule" :text="course.schedule.full" />
+            <CourseDetailMini
+              class="duplicated-course__detail"
+              iconName="schedule"
+              :text="course.schedule.full"
+            />
           </div>
         </div>
       </template>
       <template #button>
-        <Button size="medium" layout="fill" color="base" @click="duplicateCourses = []">キャンセル</Button>
-        <Button size="medium" layout="fill" color="primary" @click="addCourses(false)">そのまま追加</Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="duplicateCourses = []"
+          >キャンセル</Button
+        >
+        <Button
+          size="medium"
+          layout="fill"
+          color="primary"
+          @click="addCourses(false)"
+          >そのまま追加</Button
+        >
       </template>
     </Modal>
   </div>
@@ -95,10 +128,17 @@ const year = Number(route.query.year);
 const codes: string[] = route.query.codes.split(",");
 
 /** result */
-const result = await Usecase.getCourses(ports)(codes.map((code) => ({ year, code })));
+const result = await Usecase.getCourses(ports)(
+  codes.map((code) => ({ year, code }))
+);
 if (isResultError(result)) throw result;
 
-type CourseResult = { course: DisplayCourse; schedules: Schedule[]; selected: boolean; expanded: boolean };
+type CourseResult = {
+  course: DisplayCourse;
+  schedules: Schedule[];
+  selected: boolean;
+  expanded: boolean;
+};
 
 const courseResults = shallowReactive<CourseResult[]>(
   result.map((course) => ({
@@ -109,12 +149,18 @@ const courseResults = shallowReactive<CourseResult[]>(
   }))
 );
 
-const selectedCourseResults = computed(() => courseResults.filter(({ selected }) => selected));
+const selectedCourseResults = computed(() =>
+  courseResults.filter(({ selected }) => selected)
+);
 
-const missingCodes = codes.filter((code) => result.find((course) => course.code === code) == undefined);
+const missingCodes = codes.filter(
+  (code) => result.find((course) => course.code === code) == undefined
+);
 if (missingCodes.length > 0) {
   displayToast(
-    `以下の科目番号はシラバスに存在しませんでした。存在する講義のみを表示しています。\n${missingCodes.join("  ")}`,
+    `以下の科目番号はシラバスに存在しませんでした。存在する講義のみを表示しています。\n${missingCodes.join(
+      "  "
+    )}`,
     { displayPeriod: 0 }
   );
 }
@@ -136,7 +182,12 @@ const addCourses = async (warning = true) => {
   }, []);
 
   if (warning && duplicateCourses.value.length > 0) return;
-  await addCoursesByCodes(selectedCourseResults.value.map(({ course }) => ({ year, code: course.code })));
+  await addCoursesByCodes(
+    selectedCourseResults.value.map(({ course }) => ({
+      year,
+      code: course.code,
+    }))
+  );
   router.push("/");
 };
 

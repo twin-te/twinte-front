@@ -16,7 +16,10 @@ export const deleteToast = (id: string) => {
 };
 
 // action
-export const displayToast = (text: string, option?: { displayPeriod?: number; type?: ToastType }) => {
+export const displayToast = (
+  text: string,
+  option?: { displayPeriod?: number; type?: ToastType }
+) => {
   const id = uuid();
   const displayPeriod = option?.displayPeriod ?? 3000;
   const type = option?.type ?? "danger";

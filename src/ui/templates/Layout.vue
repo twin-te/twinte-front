@@ -18,7 +18,13 @@ const authState = getAuthState();
 await setAuthState();
 
 /** welcome modal */
-const [isVisibleWelcomeModal, , closeWelcomeModal, , setWelcomeModal] = useSwitch(false);
+const [
+  isVisibleWelcomeModal,
+  ,
+  closeWelcomeModal,
+  ,
+  setWelcomeModal,
+] = useSwitch(false);
 watch(authState, () => {
   setWelcomeModal(!authState.value);
 });
@@ -34,7 +40,11 @@ const toasts = getToasts();
       :isLogin="authState"
       :class="{ 'sidebar--close': !isVisibleSidebar }"
     ></Sidebar>
-    <GrayFilter v-show="isVisibleSidebar" class="layout__grayfilter" @click="closeSidebar"></GrayFilter>
+    <GrayFilter
+      v-show="isVisibleSidebar"
+      class="layout__grayfilter"
+      @click="closeSidebar"
+    ></GrayFilter>
     <Modal
       v-if="$route.meta.hasWelcomeModal ?? isVisibleWelcomeModal"
       class="welcome-modal"
@@ -43,14 +53,25 @@ const toasts = getToasts();
     >
       <template #title>Twin:teへようこそ！</template>
       <template #contents>
-        <img class="modal__mascot" src="../assets/colon2.png" alt="colonの画像" />
+        <img
+          class="modal__mascot"
+          src="../assets/colon2.png"
+          alt="colonの画像"
+        />
         <p class="modal__text">
           こんにちは！筑波大生のための時間割アプリTwin:teをご利用いただきありがとうございます。<br />
           Twin:teで時間割の作成を行うためにはログインが必要です。下のボタンからログインしてください。
         </p>
       </template>
       <template #button>
-        <Button size="medium" layout="fill" color="base" @click="closeWelcomeModal"> あとで </Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="closeWelcomeModal"
+        >
+          あとで
+        </Button>
         <Button
           size="medium"
           layout="fill"
@@ -67,7 +88,11 @@ const toasts = getToasts();
     <div class="layout__toast">
       <transition-group name="toast">
         <div v-for="toast in toasts" :key="toast.id" class="toast__row">
-          <Toast :text="toast.text" :type="toast.type" @click-close-button="() => deleteToast(toast.id)"></Toast>
+          <Toast
+            :text="toast.text"
+            :type="toast.type"
+            @click-close-button="() => deleteToast(toast.id)"
+          ></Toast>
         </div>
       </transition-group>
     </div>

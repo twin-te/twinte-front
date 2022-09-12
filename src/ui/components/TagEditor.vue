@@ -92,7 +92,12 @@ export default defineComponent({
             :state="disabled ? 'disabled' : 'default'"
             @click="handleCheck"
           ></IconButton>
-          <IconButton size="small" color="danger" icon-name="clear" @click="handleClear"></IconButton>
+          <IconButton
+            size="small"
+            color="danger"
+            icon-name="clear"
+            @click="handleClear"
+          ></IconButton>
         </template>
       </TagListContent>
       <div v-show="!add" class="tag-editor__button button" @click="handleClick">

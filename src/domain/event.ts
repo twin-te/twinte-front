@@ -22,12 +22,22 @@ export type SubstituteEvent = {
 
 export type Event = NormalEvent | SubstituteEvent;
 
-export const eventTypes: EventType[] = ["PublicHoliday", "Holiday", "Exam", "SubstituteDay", "Other"];
+export const eventTypes: EventType[] = [
+  "PublicHoliday",
+  "Holiday",
+  "Exam",
+  "SubstituteDay",
+  "Other",
+];
 
-export const isNormalEventType = (eventType: unknown): eventType is NormalEventType => {
+export const isNormalEventType = (
+  eventType: unknown
+): eventType is NormalEventType => {
   return eventType !== "SubstituteDay";
 };
 
-export const isSubstituteEventType = (eventType: unknown): eventType is SubstituteEventType => {
+export const isSubstituteEventType = (
+  eventType: unknown
+): eventType is SubstituteEventType => {
   return eventType === "SubstituteDay";
 };

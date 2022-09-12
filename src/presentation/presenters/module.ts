@@ -1,11 +1,34 @@
 import { BaseModule, baseModules, Module, modules } from "~/domain/module";
 import { isContained } from "~/utils";
-import { DisplayBaseModule, DisplayModule, EditableModule } from "../viewmodels/module";
+import {
+  DisplayBaseModule,
+  DisplayModule,
+  EditableModule,
+} from "../viewmodels/module";
 import { notSpecified } from "../viewmodels/option";
 
-export const displayModules: DisplayModule[] = ["春A", "春B", "春C", "夏休", "秋A", "秋B", "秋C", "春休"];
+export const displayModules: DisplayModule[] = [
+  "春A",
+  "春B",
+  "春C",
+  "夏休",
+  "秋A",
+  "秋B",
+  "秋C",
+  "春休",
+];
 
-export const editableModules: EditableModule[] = ["春A", "春B", "春C", "夏休", "秋A", "秋B", "秋C", "春休", "指定なし"];
+export const editableModules: EditableModule[] = [
+  "春A",
+  "春B",
+  "春C",
+  "夏休",
+  "秋A",
+  "秋B",
+  "秋C",
+  "春休",
+  "指定なし",
+];
 
 export const baseModuleMap: Record<BaseModule, DisplayBaseModule> = {
   SpringA: "春A",
@@ -28,7 +51,9 @@ export const moduleMap: Record<Module, DisplayModule> = {
 };
 
 export const displayToBaseModule = (display: DisplayBaseModule): BaseModule => {
-  return baseModules.find((module) => baseModuleMap[module] === display) as BaseModule;
+  return baseModules.find(
+    (module) => baseModuleMap[module] === display
+  ) as BaseModule;
 };
 
 export const displayToModule = (display: DisplayModule): Module => {

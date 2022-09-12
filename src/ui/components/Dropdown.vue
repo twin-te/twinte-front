@@ -43,7 +43,9 @@ export default defineComponent({
 
     watch(isOptionsShown, (isOptionsShown) => {
       if (!isOptionsShown) return;
-      unselectedOptions.value = props.options.filter((o) => o !== props.selectedOption);
+      unselectedOptions.value = props.options.filter(
+        (o) => o !== props.selectedOption
+      );
     });
 
     const isDefault = computed(() => {

@@ -2,7 +2,12 @@
   <div class="twins">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.back()"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.back()"
+        ></IconButton>
       </template>
       <template #title>TWINSからインポート</template>
     </PageHeader>
@@ -10,7 +15,8 @@
       <div class="main__mask">
         <div class="main__description">
           TWINSに登録した授業を、モジュール単位でTwin:teの時間割にインポートします。
-          この機能は筑波大学非公式の機能であり、認可されたものではありません。 動作の仕組みは<a
+          この機能は筑波大学非公式の機能であり、認可されたものではありません。
+          動作の仕組みは<a
             href="https://twinte.hatenablog.com/entry/2019/12/20/200652"
             target="_blank"
             rel="noopener noreferrer"
@@ -26,7 +32,10 @@
           ※Twin:teがユーザーの学籍番号・パスワードなど、履修している授業番号以外の情報を取得することはございません。
         </p>
         <div class="main__contents">
-          <p>1. 画面最下部の「TWINSへ移動」を押すとTWINSのページへ移動するので、ログインしてください。</p>
+          <p>
+            1.
+            画面最下部の「TWINSへ移動」を押すとTWINSのページへ移動するので、ログインしてください。
+          </p>
           <p>2. 「履修」から「履修登録・登録状況照会」へ移動します。</p>
           <p>
             3.
@@ -36,7 +45,12 @@
         <img src="../../assets/twins-to-twinte.png" alt="twins-to-twinte" />
       </div>
       <section class="main__button">
-        <Button size="large" layout="fill" color="primary" :pauseActiveStyle="false" @click="openTwins"
+        <Button
+          size="large"
+          layout="fill"
+          color="primary"
+          :pauseActiveStyle="false"
+          @click="openTwins"
           >TWINSに移動</Button
         >
       </section>

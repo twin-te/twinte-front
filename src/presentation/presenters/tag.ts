@@ -4,7 +4,10 @@ import { initializeObject } from "~/utils";
 import { DisplayCourseTag, DisplayCreditTag } from "../viewmodels/tag";
 import { creditToDisplay } from "./credit";
 
-export const getDisplayCourseTags = (course: RegisteredCourse, tags: Tag[]): DisplayCourseTag[] => {
+export const getDisplayCourseTags = (
+  course: RegisteredCourse,
+  tags: Tag[]
+): DisplayCourseTag[] => {
   return tags.map(({ id, name }) => ({
     id,
     name,
@@ -12,7 +15,11 @@ export const getDisplayCourseTags = (course: RegisteredCourse, tags: Tag[]): Dis
   }));
 };
 
-export const getDisplayCreditTag = (courses: RegisteredCourse[], tag: Tag, years: number[]): DisplayCreditTag => {
+export const getDisplayCreditTag = (
+  courses: RegisteredCourse[],
+  tag: Tag,
+  years: number[]
+): DisplayCreditTag => {
   const credit = courses
     .filter(({ year }) => years.includes(year))
     .reduce<number>((credit, course) => {
@@ -27,7 +34,11 @@ export const getDisplayCreditTag = (courses: RegisteredCourse[], tag: Tag, years
   };
 };
 
-export const getDisplayCreditTags = (courses: RegisteredCourse[], tags: Tag[], years: number[]): DisplayCreditTag[] => {
+export const getDisplayCreditTags = (
+  courses: RegisteredCourse[],
+  tags: Tag[],
+  years: number[]
+): DisplayCreditTag[] => {
   const tagIdToCredit: Record<string, number> = initializeObject(
     tags.map(({ id }) => id),
     0

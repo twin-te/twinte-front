@@ -1,5 +1,9 @@
 import { INewsRepository } from "~/application/ports/INewsRepository";
-import { InternalServerError, NetworkError, UnauthorizedError } from "~/domain/error";
+import {
+  InternalServerError,
+  NetworkError,
+  UnauthorizedError,
+} from "~/domain/error";
 import { News } from "~/domain/news";
 import { Api } from "~/infrastructure/api";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
@@ -28,7 +32,10 @@ export class NewsRepository implements INewsRepository {
     );
   }
 
-  async updateRead(id: string, read: boolean): Promise<null | UnauthorizedError | NetworkError | InternalServerError> {
+  async updateRead(
+    id: string,
+    read: boolean
+  ): Promise<null | UnauthorizedError | NetworkError | InternalServerError> {
     return this.#api.call<void, null, 200, 400 | 401 | 500>(
       (client) => client.information._id(id).put({ body: { read } }),
       () => {

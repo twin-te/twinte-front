@@ -48,7 +48,10 @@ export default defineComponent({
       >
         drag_handle
       </div>
-      <div v-if="mode === 'default' || !textfield" class="tag-list-content__name">
+      <div
+        v-if="mode === 'default' || !textfield"
+        class="tag-list-content__name"
+      >
         {{ name }}
       </div>
       <div v-else class="tag-list-content__textfield">

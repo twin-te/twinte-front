@@ -1,4 +1,10 @@
-import { Day, NormalDay, normalDays, SpecialDay, specialDays } from "~/domain/day";
+import {
+  Day,
+  NormalDay,
+  normalDays,
+  SpecialDay,
+  specialDays,
+} from "~/domain/day";
 import { isContained } from "~/utils";
 import {
   DisplayDay,
@@ -10,13 +16,35 @@ import {
 } from "../viewmodels/day";
 import { isNotSpecified } from "../viewmodels/option";
 
-export const displayNormalDays: DisplayNormalDay[] = ["月", "火", "水", "木", "金", "土", "日"];
+export const displayNormalDays: DisplayNormalDay[] = [
+  "月",
+  "火",
+  "水",
+  "木",
+  "金",
+  "土",
+  "日",
+];
 
 export const displaySpecialDays: DisplaySpecialDay[] = ["集中", "応談", "随時"];
 
-export const editableNormalDays: EditableNormalDay[] = ["月", "火", "水", "木", "金", "土", "日", "指定なし"];
+export const editableNormalDays: EditableNormalDay[] = [
+  "月",
+  "火",
+  "水",
+  "木",
+  "金",
+  "土",
+  "日",
+  "指定なし",
+];
 
-export const editableSpecialDays: EditableSpecialDay[] = ["集中", "応談", "随時", "指定なし"];
+export const editableSpecialDays: EditableSpecialDay[] = [
+  "集中",
+  "応談",
+  "随時",
+  "指定なし",
+];
 
 export const editableDays: EditableDay[] = [
   "月",
@@ -77,7 +105,9 @@ export const isEditableNormalDay = (day: unknown): day is EditableNormalDay => {
   return isContained(day, editableNormalDays);
 };
 
-export const isEditableSpecialDay = (day: unknown): day is EditableSpecialDay => {
+export const isEditableSpecialDay = (
+  day: unknown
+): day is EditableSpecialDay => {
   return isContained(day, editableSpecialDays);
 };
 
@@ -86,9 +116,15 @@ export const isEditableDay = (day: unknown): day is EditableDay => {
 };
 
 export const displayToNormalDay = (displayDay: DisplayNormalDay): NormalDay => {
-  return normalDays.find((day) => normalDayMap[day] === displayDay) as NormalDay;
+  return normalDays.find(
+    (day) => normalDayMap[day] === displayDay
+  ) as NormalDay;
 };
 
-export const displayToSpecialDay = (displayDay: DisplaySpecialDay): SpecialDay => {
-  return specialDays.find((day) => specialDayMap[day] === displayDay) as SpecialDay;
+export const displayToSpecialDay = (
+  displayDay: DisplaySpecialDay
+): SpecialDay => {
+  return specialDays.find(
+    (day) => specialDayMap[day] === displayDay
+  ) as SpecialDay;
 };

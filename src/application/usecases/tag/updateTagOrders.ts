@@ -1,5 +1,11 @@
 import { Ports } from "~/application/ports";
-import { InternalServerError, isResultError, NetworkError, UnauthorizedError, ValueError } from "~/domain/error";
+import {
+  InternalServerError,
+  isResultError,
+  NetworkError,
+  UnauthorizedError,
+  ValueError,
+} from "~/domain/error";
 import { Tag } from "~/domain/tag";
 
 /**
@@ -8,13 +14,18 @@ import { Tag } from "~/domain/tag";
  */
 export const updateTagOrders = ({ courseRepository }: Ports) => async (
   ids: string[]
-): Promise<Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError> => {
+): Promise<
+  Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError
+> => {
   const result = await courseRepository.getAllTags();
   if (isResultError(result)) return result;
 
   const registeredTagIds: Set<string> = new Set(result.map(({ id }) => id));
 
-  if (registeredTagIds.size !== ids.length || ids.some((id) => !registeredTagIds.has(id)))
+  if (
+    registeredTagIds.size !== ids.length ||
+    ids.some((id) => !registeredTagIds.has(id))
+  )
     return new ValueError("Please specify all tag ids you have.");
 
   const inputData: Pick<Tag, "id" | "order">[] = ids.map((id, index) => ({

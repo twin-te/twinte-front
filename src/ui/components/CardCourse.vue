@@ -61,7 +61,10 @@ export default defineComponent({
       }"
     >
       <div :class="{ 'card-course__checkbox': true, '--expanded': isExpanded }">
-        <Checkbox :isChecked="isChecked" @clickCheckbox.stop="emitCheckboxEvent"></Checkbox>
+        <Checkbox
+          :isChecked="isChecked"
+          @clickCheckbox.stop="emitCheckboxEvent"
+        ></Checkbox>
       </div>
       <div class="card-course__courseId">{{ course.id }}</div>
       <div class="card-course__courseName">{{ course.name }}</div>
@@ -71,11 +74,31 @@ export default defineComponent({
           '--expanded': isExpanded || isDetailed,
         }"
       >
-        <CourseDetailMini iconName="schedule" :text="course.schedule.full" :ellipsis="true"></CourseDetailMini>
-        <CourseDetailMini iconName="payments" :text="course.credit" :ellipsis="true"></CourseDetailMini>
-        <CourseDetailMini iconName="person" :text="course.instructor" :ellipsis="true"></CourseDetailMini>
-        <CourseDetailMini iconName="room" :text="course.room" :ellipsis="true"></CourseDetailMini>
-        <CourseDetailMini iconName="category" :text="course.method" :ellipsis="true"></CourseDetailMini>
+        <CourseDetailMini
+          iconName="schedule"
+          :text="course.schedule.full"
+          :ellipsis="true"
+        ></CourseDetailMini>
+        <CourseDetailMini
+          iconName="payments"
+          :text="course.credit"
+          :ellipsis="true"
+        ></CourseDetailMini>
+        <CourseDetailMini
+          iconName="person"
+          :text="course.instructor"
+          :ellipsis="true"
+        ></CourseDetailMini>
+        <CourseDetailMini
+          iconName="room"
+          :text="course.room"
+          :ellipsis="true"
+        ></CourseDetailMini>
+        <CourseDetailMini
+          iconName="category"
+          :text="course.method"
+          :ellipsis="true"
+        ></CourseDetailMini>
       </div>
       <div
         :class="{
@@ -86,7 +109,9 @@ export default defineComponent({
       >
         {{ course.overview }}
       </div>
-      <div :class="{ 'card-course__expand-icon': true, '--expanded': isExpanded }">
+      <div
+        :class="{ 'card-course__expand-icon': true, '--expanded': isExpanded }"
+      >
         <span class="material-icons">expand_more</span>
       </div>
       <div
@@ -95,7 +120,14 @@ export default defineComponent({
           '--expanded': isExpanded,
         }"
       >
-        <Button size="small" layout="flexible" :icon="true" color="base" @click="openSyllabus">シラバス</Button>
+        <Button
+          size="small"
+          layout="flexible"
+          :icon="true"
+          color="base"
+          @click="openSyllabus"
+          >シラバス</Button
+        >
       </div>
     </div>
     <div v-if="withHr" class="hr" />
@@ -105,9 +137,12 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "~/ui/styles";
 
-$grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto "checkbox ... ...        ... detail ... link"
-  0.2rem "checkbox ... courseName ... detail ... link" auto "checkbox ... ...        ... detail ... link" $spacing-1
-  "checkbox ... overview   ... detail ... link" 1fr / auto $spacing-5 1fr $spacing-7 20rem $spacing-7 auto;
+$grid-template-pc: "checkbox ... courseId   ... ...    ... link" auto
+  "checkbox ... ...        ... detail ... link" 0.2rem
+  "checkbox ... courseName ... detail ... link" auto
+  "checkbox ... ...        ... detail ... link" $spacing-1
+  "checkbox ... overview   ... detail ... link" 1fr / auto $spacing-5 1fr
+  $spacing-7 20rem $spacing-7 auto;
 
 .card-course {
   display: grid;

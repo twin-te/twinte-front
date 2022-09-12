@@ -129,14 +129,16 @@ const navigateHandler = async (link: string) => {
       case "settings":
         // apply setTimeout for animation
         setTimeout(() => {
-          if (isiOS()) window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
+          if (isiOS())
+            window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
           else window.android?.openSettings();
         }, 300);
         break;
       case "share":
         closeSidebar();
         setTimeout(() => {
-          if (isiOS()) window.webkit?.messageHandlers?.share?.postMessage(shareMessage);
+          if (isiOS())
+            window.webkit?.messageHandlers?.share?.postMessage(shareMessage);
           else window.android?.share(shareMessage);
         }, 300);
         break;
@@ -150,7 +152,14 @@ const navigateHandler = async (link: string) => {
 <template>
   <div class="sidebar">
     <section class="sidebar__head">
-      <Button v-if="isLogin" size="small" layout="fill" color="base" :pauseActiveStyle="false" @click="logout">
+      <Button
+        v-if="isLogin"
+        size="small"
+        layout="fill"
+        color="base"
+        :pauseActiveStyle="false"
+        @click="logout"
+      >
         ログアウト
       </Button>
       <Button

@@ -1,6 +1,10 @@
 import axios from "axios";
 import { IFeedbackRepository } from "~/application/ports/IFeedbackRepository";
-import { InternalServerError, isResultError, NetworkError } from "~/domain/error";
+import {
+  InternalServerError,
+  isResultError,
+  NetworkError,
+} from "~/domain/error";
 import { Feedback } from "~/domain/feedback";
 import { Firebase } from "~/infrastructure/firebase";
 
@@ -11,8 +15,14 @@ export class FeedbackRepository implements IFeedbackRepository {
     this.#firebase = Firebase.getInstance();
   }
 
-  async addFeedback(userId: string, feedback: Feedback): Promise<null | NetworkError | InternalServerError> {
-    const result = await this.#firebase.saveScreenshots(feedback.screenShots, userId);
+  async addFeedback(
+    userId: string,
+    feedback: Feedback
+  ): Promise<null | NetworkError | InternalServerError> {
+    const result = await this.#firebase.saveScreenshots(
+      feedback.screenShots,
+      userId
+    );
 
     if (isResultError(result)) return result;
     const screenshotUrls = result;

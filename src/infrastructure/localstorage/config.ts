@@ -14,13 +14,18 @@ export type LocalStorageHandler<T> = {
 };
 
 export type LocalStorageConfig = {
-  [K in keyof LocalStoragePropType]: LocalStorageHandler<LocalStoragePropType[K]>;
+  [K in keyof LocalStoragePropType]: LocalStorageHandler<
+    LocalStoragePropType[K]
+  >;
 };
 
-export const createLocalStorageBooleanHandler = (prop: string): LocalStorageHandler<boolean> => ({
+export const createLocalStorageBooleanHandler = (
+  prop: string
+): LocalStorageHandler<boolean> => ({
   getter: () => {
     const value = localStorage.getItem(prop);
-    if (isContained<"true" | "false">(value, ["true", "false"])) return value === "true";
+    if (isContained<"true" | "false">(value, ["true", "false"]))
+      return value === "true";
     else return undefined;
   },
   setter: (value) => {
@@ -29,7 +34,9 @@ export const createLocalStorageBooleanHandler = (prop: string): LocalStorageHand
   },
 });
 
-export const createLocalStorageNumberHandler = (prop: string): LocalStorageHandler<number> => ({
+export const createLocalStorageNumberHandler = (
+  prop: string
+): LocalStorageHandler<number> => ({
   getter: () => {
     const value = localStorage.getItem(prop);
     if (isNaN(Number(value))) return undefined;

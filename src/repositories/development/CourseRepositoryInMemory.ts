@@ -9,11 +9,21 @@ import {
   ValueError,
 } from "~/domain/error";
 import { Module } from "~/domain/module";
-import { isNormalSchedule, isSpecialSchedule, Schedule } from "~/domain/schedule";
+import {
+  isNormalSchedule,
+  isSpecialSchedule,
+  Schedule,
+} from "~/domain/schedule";
 import { Tag } from "~/domain/tag";
 import { Timetable } from "~/domain/timetable";
 import courses_json from "~/tests/data/courses.json";
-import { deepCopy, deleteElementInArray, isEqualSet, updateElementInArray, uuid } from "~/utils";
+import {
+  deepCopy,
+  deleteElementInArray,
+  isEqualSet,
+  updateElementInArray,
+  uuid,
+} from "~/utils";
 
 export class CourseRepositoryInMemory implements ICourseRepository {
   #courses_db: Course[];
@@ -63,7 +73,9 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     searchMode: SearchMode,
     offset: number,
     limit: number
-  ): Promise<Course[] | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    Course[] | UnauthorizedError | NetworkError | InternalServerError
+  > {
     const isContainedInTimetable = (schedule: Schedule): boolean => {
       if (isNormalSchedule(schedule)) {
         return timetable.normal[schedule.module][schedule.day][schedule.period];
@@ -74,8 +86,12 @@ export class CourseRepositoryInMemory implements ICourseRepository {
 
     const courses = this.#courses_db
       .filter((course) => course.year === year)
-      .filter((course) => keywords.some((keyword) => new RegExp(keyword).test(course.name)))
-      .filter((course) => codes.some((code) => new RegExp(code).test(course.code)))
+      .filter((course) =>
+        keywords.some((keyword) => new RegExp(keyword).test(course.name))
+      )
+      .filter((course) =>
+        codes.some((code) => new RegExp(code).test(course.code))
+      )
       .filter((course) => {
         if (searchMode === "Cover") {
           return course.schedules.some(isContainedInTimetable);
@@ -93,24 +109,42 @@ export class CourseRepositoryInMemory implements ICourseRepository {
       year: number;
       code: string;
     }[]
-  ): Promise<Course[] | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    | Course[]
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
     const courses = this.#courses_db.filter((course) =>
-      inputData.find(({ year, code }) => course.year === year && course.code === code)
+      inputData.find(
+        ({ year, code }) => course.year === year && course.code === code
+      )
     );
     return courses;
   }
 
   async addCoursesByCodes(
     inputData: { year: number; code: string }[]
-  ): Promise<RegisteredCourse[] | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    | RegisteredCourse[]
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
     inputData = inputData.filter(({ year, code }) => {
-      const course = this.#courses.find((course) => course.year === year && course.code === code);
+      const course = this.#courses.find(
+        (course) => course.year === year && course.code === code
+      );
       return course == undefined;
     });
 
     const courses = inputData
       .map(({ year, code }) => {
-        const course = this.#courses_db.find((course) => course.year === year && course.code === code);
+        const course = this.#courses_db.find(
+          (course) => course.year === year && course.code === code
+        );
         return course;
       })
       .filter((course) => course != undefined) as Course[];
@@ -135,7 +169,9 @@ export class CourseRepositoryInMemory implements ICourseRepository {
 
   async addCustomizedCourse(
     course: Omit<RegisteredCourse, "id" | "code">
-  ): Promise<RegisteredCourse | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    RegisteredCourse | UnauthorizedError | NetworkError | InternalServerError
+  > {
     const newCourse: RegisteredCourse = {
       id: uuid(),
       ...course,
@@ -148,14 +184,22 @@ export class CourseRepositoryInMemory implements ICourseRepository {
 
   async getRegisteredCoursesByYear(
     year: number
-  ): Promise<RegisteredCourse[] | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    RegisteredCourse[] | UnauthorizedError | NetworkError | InternalServerError
+  > {
     const courses = this.#courses.filter((course) => course.year === year);
     return courses;
   }
 
   async getRegisteredCourseById(
     id: string
-  ): Promise<RegisteredCourse | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    | RegisteredCourse
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
     const course = this.#courses.find((course) => course.id === id);
     if (course == undefined) return new NotFoundError();
     return course;
@@ -164,7 +208,13 @@ export class CourseRepositoryInMemory implements ICourseRepository {
   async updateRegisteredCourse(
     id: string,
     updatedData: Partial<Omit<RegisteredCourse, "id" | "year" | "code">>
-  ): Promise<RegisteredCourse | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    | RegisteredCourse
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
     const result = await this.getRegisteredCourseById(id);
     if (isResultError(result)) return result;
     const course = { ...result, ...updatedData };
@@ -174,16 +224,28 @@ export class CourseRepositoryInMemory implements ICourseRepository {
 
   async dropRegisteredCourse(
     id: string
-  ): Promise<null | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    | null
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
     deleteElementInArray(this.#courses, id);
     return null;
   }
 
-  async getAllTags(): Promise<Tag[] | UnauthorizedError | NetworkError | InternalServerError> {
+  async getAllTags(): Promise<
+    Tag[] | UnauthorizedError | NetworkError | InternalServerError
+  > {
     return deepCopy(this.#tags);
   }
 
-  async getTagById(id: string): Promise<Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  async getTagById(
+    id: string
+  ): Promise<
+    Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError
+  > {
     if (this.#tags.length === 0) {
       const result = await this.getAllTags();
       if (isResultError(result)) return result;
@@ -197,7 +259,9 @@ export class CourseRepositoryInMemory implements ICourseRepository {
    * @param name - Tag name
    * @return Created tag
    */
-  async createTag(name: string): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
+  async createTag(
+    name: string
+  ): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
     const newTag = {
       id: uuid(),
       name,
@@ -211,7 +275,9 @@ export class CourseRepositoryInMemory implements ICourseRepository {
   async updateTagName(
     id: string,
     name: string
-  ): Promise<Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError
+  > {
     const result = await this.getTagById(id);
     if (isResultError(result)) return result;
     const newTag = { ...result, name };
@@ -221,8 +287,11 @@ export class CourseRepositoryInMemory implements ICourseRepository {
 
   async updateTagOrders(
     inputData: Pick<Tag, "id" | "order">[]
-  ): Promise<Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError> {
-    const getIdSet = (array: { id: string }[]): Set<string> => new Set(array.map(({ id }) => id));
+  ): Promise<
+    Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError
+  > {
+    const getIdSet = (array: { id: string }[]): Set<string> =>
+      new Set(array.map(({ id }) => id));
 
     if (!isEqualSet(getIdSet(this.#tags), getIdSet(inputData))) {
       return new ValueError("Please specify all tag ids you have.");
@@ -243,7 +312,15 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     return this.getAllTags();
   }
 
-  async deleteTag(id: string): Promise<null | NotFoundError | UnauthorizedError | NetworkError | InternalServerError> {
+  async deleteTag(
+    id: string
+  ): Promise<
+    | null
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
     deleteElementInArray(this.#tags, id);
     return null;
   }

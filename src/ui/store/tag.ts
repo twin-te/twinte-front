@@ -3,7 +3,12 @@ import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
 import { isResultError } from "~/domain/error";
 import { Tag } from "~/domain/tag";
-import { deepCopy, deleteElementInArray, updateAllElementsInArray, updateElementInArray } from "~/utils";
+import {
+  deepCopy,
+  deleteElementInArray,
+  updateAllElementsInArray,
+  updateElementInArray,
+} from "~/utils";
 
 // state
 const tags = reactive<Tag[]>([]);

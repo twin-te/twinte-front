@@ -1,5 +1,9 @@
 import { IUserRepository } from "~/application/ports/IUserRepository";
-import { InternalServerError, NetworkError, UnauthorizedError } from "~/domain/error";
+import {
+  InternalServerError,
+  NetworkError,
+  UnauthorizedError,
+} from "~/domain/error";
 import { Setting, settingProps } from "~/domain/setting";
 import { User } from "~/domain/user";
 import { Api } from "~/infrastructure/api";
@@ -20,7 +24,9 @@ export class UserRepository implements IUserRepository {
     this.#setting = undefined;
   }
 
-  async getUser(): Promise<User | UnauthorizedError | NetworkError | InternalServerError> {
+  async getUser(): Promise<
+    User | UnauthorizedError | NetworkError | InternalServerError
+  > {
     if (this.#user) return this.#user;
 
     return this.#api.call<ApiType.User, User, 200, 401 | 500>(
@@ -37,7 +43,9 @@ export class UserRepository implements IUserRepository {
   /**
    * Return setting whose value is not undefined.
    */
-  async getSetting(): Promise<Partial<Setting> | UnauthorizedError | NetworkError | InternalServerError> {
+  async getSetting(): Promise<
+    Partial<Setting> | UnauthorizedError | NetworkError | InternalServerError
+  > {
     if (this.#setting) return this.#setting;
 
     const setting = settingProps.reduce<Partial<Setting>>((map, prop) => {
@@ -52,7 +60,9 @@ export class UserRepository implements IUserRepository {
 
   async updateSetting(
     inputData: Partial<Setting>
-  ): Promise<Partial<Setting> | UnauthorizedError | NetworkError | InternalServerError> {
+  ): Promise<
+    Partial<Setting> | UnauthorizedError | NetworkError | InternalServerError
+  > {
     getKeysFromObj(inputData).forEach((prop) => {
       this.#localStorage.set(prop, inputData[prop]);
     });

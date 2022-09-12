@@ -1,10 +1,21 @@
 import axiosClient from "@aspida/axios";
 import axios from "axios";
 import qs from "qs";
-import { InternalServerError, NetworkError, NotFoundError, ResultError, UnauthorizedError } from "~/domain/error";
+import {
+  InternalServerError,
+  NetworkError,
+  NotFoundError,
+  ResultError,
+  UnauthorizedError,
+} from "~/domain/error";
 import { isContained } from "~/utils";
 import createApiInstance, { ApiInstance } from "./aspida/$api";
-import { ApiFailedStatue, ApiRespoinse, ApiFailedStatueToError, ApiSuccessStatus } from "./types";
+import {
+  ApiFailedStatue,
+  ApiRespoinse,
+  ApiFailedStatueToError,
+  ApiSuccessStatus,
+} from "./types";
 
 const baseURL =
   import.meta.env.VITE_API_URL === undefined
@@ -47,18 +58,35 @@ export class Api {
     status: FS,
     originalResponse: { data: { message: string } }
   ): ApiFailedStatueToError[FS] {
-    const message = status === 400 ? "Bad Request" : status === 500 ? originalResponse.data.message : undefined;
+    const message =
+      status === 400
+        ? "Bad Request"
+        : status === 500
+        ? originalResponse.data.message
+        : undefined;
     return apiFailedStatusToError[status](message);
   }
 
-  async call<AR, CR, SS extends ApiSuccessStatus, FS extends ApiFailedStatue, CE extends ResultError = never>(
+  async call<
+    AR,
+    CR,
+    SS extends ApiSuccessStatus,
+    FS extends ApiFailedStatue,
+    CE extends ResultError = never
+  >(
     api: (client: ApiInstance) => Promise<ApiRespoinse<AR, SS | FS>>,
     callback: (body: AR) => CR | CE,
     successStatusList: SS[],
     failedStatusList: FS[]
-  ): Promise<CR | ApiFailedStatueToError[FS] | InternalServerError | NetworkError | CE> {
+  ): Promise<
+    CR | ApiFailedStatueToError[FS] | InternalServerError | NetworkError | CE
+  > {
     try {
-      const { body, originalResponse, status }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
+      const {
+        body,
+        originalResponse,
+        status,
+      }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
 
       if (isContained(status, successStatusList)) {
         return callback(body);

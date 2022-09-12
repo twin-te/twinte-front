@@ -2,7 +2,12 @@
   <div class="courses">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.push('/credit')"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.push('/credit')"
+        ></IconButton>
       </template>
       <template #title>単位数</template>
     </PageHeader>
@@ -40,11 +45,18 @@ import { computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { registeredCourseToDisplay } from "~/presentation/presenters/course";
 import { creditToDisplay } from "~/presentation/presenters/credit";
-import CreditCourseListContent, { CreditCourseListContentState } from "~/ui/components/CreditCourseListContent.vue";
+import CreditCourseListContent, {
+  CreditCourseListContentState,
+} from "~/ui/components/CreditCourseListContent.vue";
 import IconButton from "~/ui/components/IconButton.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
 import { createNewTagId } from "~/ui/shared";
-import { getAllCourses, getCoursesByYear, setAllCourses, updateCourse } from "~/ui/store/course";
+import {
+  getAllCourses,
+  getCoursesByYear,
+  setAllCourses,
+  updateCourse,
+} from "~/ui/store/course";
 import { getCreditYear } from "~/ui/store/creditYear";
 import { createTag, getAllTags, getTagById } from "~/ui/store/tag";
 import { initializeObject } from "~/utils";
@@ -63,25 +75,35 @@ const selectedTag = getTagById(id);
 /** course */
 await setAllCourses();
 const courses = computed(() =>
-  (year.value === 0 ? getAllCourses().value : getCoursesByYear(year.value).value).filter(
-    ({ tagIds }) => selectedTag.value == undefined || tagIds.includes(selectedTag.value.id)
+  (year.value === 0
+    ? getAllCourses().value
+    : getCoursesByYear(year.value).value
+  ).filter(
+    ({ tagIds }) =>
+      selectedTag.value == undefined || tagIds.includes(selectedTag.value.id)
   )
 );
 
 /** info */
 const totalCredit = computed(() =>
-  creditToDisplay(courses.value.reduce((credit, course) => credit + course.credit, 0))
+  creditToDisplay(
+    courses.value.reduce((credit, course) => credit + course.credit, 0)
+  )
 );
 
 const info = computed(() => ({
   year: year.value === 0 ? "すべての年度" : `${year.value}年度`,
-  tag: selectedTag.value ? `タグ「${selectedTag.value.name}」` : "すべての授業 ",
+  tag: selectedTag.value
+    ? `タグ「${selectedTag.value.name}」`
+    : "すべての授業 ",
   credit: `${totalCredit.value}単位`,
 }));
 
 /** display course */
 const displayCourses = computed(() =>
-  reactive(courses.value.map((course) => registeredCourseToDisplay(course, tags.value)))
+  reactive(
+    courses.value.map((course) => registeredCourseToDisplay(course, tags.value))
+  )
 );
 
 const courseIdToState = reactive<Record<string, CreditCourseListContentState>>(
@@ -92,17 +114,24 @@ const courseIdToState = reactive<Record<string, CreditCourseListContentState>>(
 );
 
 const toggleState = (id: string) => {
-  courseIdToState[id] = courseIdToState[id] === "default" ? "selected" : "default";
+  courseIdToState[id] =
+    courseIdToState[id] === "default" ? "selected" : "default";
 };
 
-const onCreateTag = async (course: DisplayRegisteredCourse, tagName: string) => {
+const onCreateTag = async (
+  course: DisplayRegisteredCourse,
+  tagName: string
+) => {
   const tagIds = course.tags.filter(({ assign }) => assign).map(({ id }) => id);
   course.tags.push({ id: createNewTagId(), name: tagName, assign: true });
   const newTag = await createTag(tagName);
   await updateCourse(course.id, { tagIds: [...tagIds, newTag.id] });
 };
 
-const onClickTag = async (course: DisplayRegisteredCourse, tag: DisplayCourseTag) => {
+const onClickTag = async (
+  course: DisplayRegisteredCourse,
+  tag: DisplayCourseTag
+) => {
   tag.assign = !tag.assign;
   await updateCourse(course.id, {
     tagIds: course.tags.filter(({ assign }) => assign).map(({ id }) => id),
@@ -111,7 +140,9 @@ const onClickTag = async (course: DisplayRegisteredCourse, tag: DisplayCourseTag
 
 /** no course */
 const noCourseMessage = computed(() => {
-  return getAllCourses().value.length === 0 ? "登録済みの授業がありません。" : "該当する授業がありません。";
+  return getAllCourses().value.length === 0
+    ? "登録済みの授業がありません。"
+    : "該当する授業がありません。";
 });
 </script>
 

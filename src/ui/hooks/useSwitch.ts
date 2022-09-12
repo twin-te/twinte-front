@@ -18,7 +18,13 @@ import { Ref, ref } from "vue";
  */
 export const useSwitch = (
   initial = false
-): [Ref<boolean>, () => void, () => void, () => void, (bool: boolean) => void] => {
+): [
+  Ref<boolean>,
+  () => void,
+  () => void,
+  () => void,
+  (bool: boolean) => void
+] => {
   const v = ref(initial);
   const open = () => {
     v.value = true;

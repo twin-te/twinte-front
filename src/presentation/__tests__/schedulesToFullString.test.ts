@@ -435,7 +435,9 @@ describe(`${schedulesToFullString.name} - full format - basic`, () => {
         period: "2",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春C 月1 火2 / 秋ABC 月1 火2");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春C 月1 火2 / 秋ABC 月1 火2"
+    );
   });
 
   it("'春A 月1-3'", () => {
@@ -1115,7 +1117,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         day: "Intensive",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春AB 水5,6 / 秋AB 水5,6 / 秋C 集中");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春AB 水5,6 / 秋AB 水5,6 / 秋C 集中"
+    );
   });
 
   it("'春AB 水6 / 秋A 集中' - 筑波山から学ぶー地域の文化資源発掘", () => {
@@ -1346,7 +1350,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         period: "6",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春AB 金6 / 夏休 集中 / 秋AB 金6");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春AB 金6 / 夏休 集中 / 秋AB 金6"
+    );
   });
 
   it("'秋AC 随時 / 秋B 集中' - 日本語・日本文化実験実習", () => {
@@ -1532,7 +1538,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         day: "Appointment",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春B 木5,6 / 春C 応談 / 夏休 応談");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春B 木5,6 / 春C 応談 / 夏休 応談"
+    );
   });
 
   it("'春BC 火5 / 夏休 応談' - 遺伝学概論", () => {
@@ -1590,7 +1598,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         period: "3",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春AB 金3 / 春ABC 応談 / 秋AB 火3");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春AB 金3 / 春ABC 応談 / 秋AB 火3"
+    );
   });
 
   it("'秋B 木4-6 金4,5 応談' - 電子顕微鏡実験", () => {
@@ -2071,7 +2081,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         day: "Intensive",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春ABC 水3,4 金5,6 / 春C 集中");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春ABC 水3,4 金5,6 / 春C 集中"
+    );
   });
 
   it("'夏休 集中 / 秋ABC 集中 / 春休 集中' - 医学の基礎", () => {
@@ -2097,7 +2109,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         day: "Intensive",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("夏休 集中 / 秋ABC 集中 / 春休 集中");
+    expect(schedulesToFullString(schedules)).toBe(
+      "夏休 集中 / 秋ABC 集中 / 春休 集中"
+    );
   });
 
   it("'春A 火3,4 / 春B 火3-5 / 春C 火2-4' - 小児看護学演習", () => {
@@ -2143,7 +2157,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         period: "4",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("春A 火3,4 / 春B 火3-5 / 春C 火2-4");
+    expect(schedulesToFullString(schedules)).toBe(
+      "春A 火3,4 / 春B 火3-5 / 春C 火2-4"
+    );
   });
 
   it("'春A 月1 / 春B 月水1' - 医科学英語論文購読の基礎", () => {
@@ -2320,7 +2336,9 @@ describe(`${schedulesToFullString.name} - full format - combination`, () => {
         day: "Intensive",
       },
     ];
-    expect(schedulesToFullString(schedules)).toBe("秋A 水4,5 金5,6 / 秋BC 水4,5 金3,4 / 秋C 集中");
+    expect(schedulesToFullString(schedules)).toBe(
+      "秋A 水4,5 金5,6 / 秋BC 水4,5 金3,4 / 秋C 集中"
+    );
   });
 
   it("'春ABC 月火水木金1-4' - 集中日本語DOOOA", () => {

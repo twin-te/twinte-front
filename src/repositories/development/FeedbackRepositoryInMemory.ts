@@ -3,7 +3,10 @@ import { InternalServerError, NetworkError } from "~/domain/error";
 import { Feedback } from "~/domain/feedback";
 
 export class FeedbackRepositoryInMemory implements IFeedbackRepository {
-  async addFeedback(userId: string, feedback: Feedback): Promise<null | NetworkError | InternalServerError> {
+  async addFeedback(
+    userId: string,
+    feedback: Feedback
+  ): Promise<null | NetworkError | InternalServerError> {
     console.log("Added Feedback");
     console.log("user id :", userId);
     console.log("type :", feedback.type);

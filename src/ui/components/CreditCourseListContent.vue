@@ -65,13 +65,18 @@ export default defineComponent({
       '--selected': state === 'selected',
     }"
   >
-    <div class="credit-course-list-content__course-info course-info" @click="onClick">
+    <div
+      class="credit-course-list-content__course-info course-info"
+      @click="onClick"
+    >
       <div class="course-info__container">
         <div class="course-info__code">{{ code }}</div>
         <div class="course-info__name">{{ name }}</div>
       </div>
       <div v-show="state !== 'selected'" class="course-info__tags">
-        <Tag v-for="tag in assignedTags" :key="tag.id" :assign="true">{{ tag.name }}</Tag>
+        <Tag v-for="tag in assignedTags" :key="tag.id" :assign="true">{{
+          tag.name
+        }}</Tag>
       </div>
       <div class="course-info__credit">{{ credit }}</div>
       <div
@@ -91,7 +96,11 @@ export default defineComponent({
       @create-tag="(tagName) => $emit('create-tag', tagName)"
     >
       <template #tags>
-        <Tag v-for="tag in tags" :key="tag.id" :assign="tag.assign" @click="$emit('click-tag', tag)"
+        <Tag
+          v-for="tag in tags"
+          :key="tag.id"
+          :assign="tag.assign"
+          @click="$emit('click-tag', tag)"
           >{{ tag.name }}
         </Tag>
         <template v-if="tags.length === 0">
@@ -101,7 +110,10 @@ export default defineComponent({
       </template>
       <template #btn>タグを新たに作成する</template>
     </TagEditor>
-    <div v-show="state !== 'selected' || !add" class="credit-course-list-content__border" />
+    <div
+      v-show="state !== 'selected' || !add"
+      class="credit-course-list-content__border"
+    />
   </div>
 </template>
 

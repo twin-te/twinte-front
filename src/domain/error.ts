@@ -31,10 +31,14 @@ export class InternalServerError extends ResultError {
   readonly name = "InternalServerError";
 }
 
-export const isResultError = <T>(result: T): result is Extract<T, ResultError> => {
+export const isResultError = <T>(
+  result: T
+): result is Extract<T, ResultError> => {
   return result instanceof ResultError;
 };
 
-export const isNotResultError = <T>(result: T): result is Exclude<T, ResultError> => {
+export const isNotResultError = <T>(
+  result: T
+): result is Exclude<T, ResultError> => {
   return !(result instanceof ResultError);
 };

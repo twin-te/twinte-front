@@ -115,7 +115,8 @@ export default defineComponent({
       } else {
         const tag = props.tags.find((tag) => tag.id === props.selectedTagId);
         info.tag = tag == undefined ? "すべての授業" : `タグ 「${tag.name}」`;
-        info.credit = (tag == undefined ? props.totalCredit : tag.credit) + "単位";
+        info.credit =
+          (tag == undefined ? props.totalCredit : tag.credit) + "単位";
       }
 
       return info;
@@ -151,9 +152,14 @@ export default defineComponent({
             'credit-filter__filter-year': true,
             '--edit': mode === 'edit',
           }"
-          @update:selected-option="(year) => $emit('update:selected-year', year)"
+          @update:selected-option="
+            (year) => $emit('update:selected-year', year)
+          "
         ></Dropdown>
-        <div v-show="mode === 'filtering'" class="credit-filter__filter-all filter-all">
+        <div
+          v-show="mode === 'filtering'"
+          class="credit-filter__filter-all filter-all"
+        >
           <div class="filter-all__label">時間割に登録済みの単位数</div>
           <TagListContent
             name="合計"
@@ -169,11 +175,17 @@ export default defineComponent({
           <div class="filter-tag__label">
             {{ mode === "filtering" ? "タグごとの単位数" : "タグの作成・編集" }}
           </div>
-          <div v-if="mode === 'filtering' && tags.length === 0" class="filter-tag__no-tag">
+          <div
+            v-if="mode === 'filtering' && tags.length === 0"
+            class="filter-tag__no-tag"
+          >
             作成済みのタグがありません。<br />
             タグを作成すると授業を分類することができます。
           </div>
-          <div v-if="mode === 'edit' || tags.length > 0" class="filter-tag__mask">
+          <div
+            v-if="mode === 'edit' || tags.length > 0"
+            class="filter-tag__mask"
+          >
             <draggable
               :model-value="innerTags"
               item-key="id"
@@ -204,9 +216,12 @@ export default defineComponent({
                     <IconButton
                       size="small"
                       color="normal"
-                      :icon-name="edittingTagId === element.id ? 'check' : 'edit'"
+                      :icon-name="
+                        edittingTagId === element.id ? 'check' : 'edit'
+                      "
                       :state="
-                        edittingTagId === '' || (edittingTagId === element.id && textfieldValue !== '')
+                        edittingTagId === '' ||
+                        (edittingTagId === element.id && textfieldValue !== '')
                           ? 'default'
                           : 'disabled'
                       "
@@ -215,8 +230,14 @@ export default defineComponent({
                     <IconButton
                       size="small"
                       color="danger"
-                      :icon-name="element.id === NEW_TAG_ID ? 'clear' : 'delete'"
-                      :state="element.id === NEW_TAG_ID || edittingTagId === '' ? 'default' : 'disabled'"
+                      :icon-name="
+                        element.id === NEW_TAG_ID ? 'clear' : 'delete'
+                      "
+                      :state="
+                        element.id === NEW_TAG_ID || edittingTagId === ''
+                          ? 'default'
+                          : 'disabled'
+                      "
                       @click="() => onClickDangerBtn(element)"
                     ></IconButton>
                   </template>
@@ -241,8 +262,14 @@ export default defineComponent({
           size="small"
           :state="edittingTagId !== '' || dragging ? 'disabled' : 'default'"
           class="credit-filter__edit-btn"
-          @click="$emit('update:mode', mode === 'filtering' ? 'edit' : 'filtering')"
-          >{{ mode === "filtering" ? "タグの作成・編集" : "タグの作成・編集を終わる" }}</Button
+          @click="
+            $emit('update:mode', mode === 'filtering' ? 'edit' : 'filtering')
+          "
+          >{{
+            mode === "filtering"
+              ? "タグの作成・編集"
+              : "タグの作成・編集を終わる"
+          }}</Button
         >
       </div>
       <div v-else class="credit-filter__info info">

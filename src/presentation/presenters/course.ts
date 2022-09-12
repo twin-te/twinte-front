@@ -31,7 +31,10 @@ export const courseToDisplay = (course: Course): DisplayCourse => {
  * @param course - Target course
  * @param tags - All tags which the user has
  */
-export const registeredCourseToDisplay = (course: RegisteredCourse, tags: Tag[]): DisplayRegisteredCourse => {
+export const registeredCourseToDisplay = (
+  course: RegisteredCourse,
+  tags: Tag[]
+): DisplayRegisteredCourse => {
   return {
     id: course.id,
     year: course.year,

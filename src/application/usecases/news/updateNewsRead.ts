@@ -1,5 +1,9 @@
 import { Ports } from "~/application/ports";
-import { InternalServerError, NetworkError, UnauthorizedError } from "~/domain/error";
+import {
+  InternalServerError,
+  NetworkError,
+  UnauthorizedError,
+} from "~/domain/error";
 
 export const updateNewsRead = ({ newsRepository }: Ports) => (
   id: string,

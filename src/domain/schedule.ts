@@ -16,7 +16,9 @@ export type SpecialSchedule = {
 
 export type Schedule = NormalSchedule | SpecialSchedule;
 
-export const isNormalSchedule = (schedule: object): schedule is NormalSchedule => {
+export const isNormalSchedule = (
+  schedule: object
+): schedule is NormalSchedule => {
   return (
     hasProperty(schedule, "module", isModule) &&
     hasProperty(schedule, "day", isNormalDay) &&
@@ -24,23 +26,35 @@ export const isNormalSchedule = (schedule: object): schedule is NormalSchedule =
   );
 };
 
-export const isSpecialSchedule = (schedule: object): schedule is SpecialSchedule => {
-  return hasProperty(schedule, "module", isModule) && hasProperty(schedule, "day", isSpecialDay);
+export const isSpecialSchedule = (
+  schedule: object
+): schedule is SpecialSchedule => {
+  return (
+    hasProperty(schedule, "module", isModule) &&
+    hasProperty(schedule, "day", isSpecialDay)
+  );
 };
 
 export const isSchedule = (schedule: object): schedule is Schedule => {
   return isNormalSchedule(schedule) || isSpecialSchedule(schedule);
 };
 
-export const isEqualSchedule = (scheduleA: Schedule, scheduleB: Schedule): boolean => {
+export const isEqualSchedule = (
+  scheduleA: Schedule,
+  scheduleB: Schedule
+): boolean => {
   if (isNormalSchedule(scheduleA) && isNormalSchedule(scheduleB)) {
     return (
-      scheduleA.module === scheduleB.module && scheduleA.day === scheduleB.day && scheduleA.period === scheduleB.period
+      scheduleA.module === scheduleB.module &&
+      scheduleA.day === scheduleB.day &&
+      scheduleA.period === scheduleB.period
     );
   }
 
   if (isSpecialSchedule(scheduleA) && isSpecialSchedule(scheduleB)) {
-    return scheduleA.module === scheduleB.module && scheduleA.day === scheduleB.day;
+    return (
+      scheduleA.module === scheduleB.module && scheduleA.day === scheduleB.day
+    );
   }
 
   return false;

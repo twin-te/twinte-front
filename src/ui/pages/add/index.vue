@@ -3,7 +3,12 @@
     <PageHeader>
       <template #left-button-icon>
         <div class="header__left-button-icon">
-          <IconButton size="large" color="normal" iconName="menu" @click="openSidebar"></IconButton>
+          <IconButton
+            size="large"
+            color="normal"
+            iconName="menu"
+            @click="openSidebar"
+          ></IconButton>
         </div>
       </template>
       <template #title>授業の追加</template>

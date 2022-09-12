@@ -17,7 +17,11 @@ export const isEqualCourseSchedules = (
   schedules2: ApiType.CourseSchedule[]
 ): boolean => {
   const getSet = (schedules: ApiType.CourseSchedule[]): Set<string> =>
-    new Set(schedules.map(({ module, day, period, room }) => `${module}-${day}-${period}-${room}`));
+    new Set(
+      schedules.map(
+        ({ module, day, period, room }) => `${module}-${day}-${period}-${room}`
+      )
+    );
 
   const s1 = getSet(schedules1);
   const s2 = getSet(schedules2);
@@ -29,9 +33,17 @@ export const parseRoom = (row: string): string[] => {
   return removeDuplicate(row.split(/,| /).map((room) => room.trim()));
 };
 
-export const apiToSchedules = (apiSchedules: ApiType.CourseSchedule[]): { schedules: Schedule[]; rooms: Room[] } => {
-  const normalTimetable: NormalTimetable<Module, boolean> = initializeNormalTimetable(modules, false);
-  const specialTimetable: SpecialTimetable<Module, boolean> = initializeSpecialTimetable(modules, false);
+export const apiToSchedules = (
+  apiSchedules: ApiType.CourseSchedule[]
+): { schedules: Schedule[]; rooms: Room[] } => {
+  const normalTimetable: NormalTimetable<
+    Module,
+    boolean
+  > = initializeNormalTimetable(modules, false);
+  const specialTimetable: SpecialTimetable<
+    Module,
+    boolean
+  > = initializeSpecialTimetable(modules, false);
   const roomNameToSchedules: Record<string, Schedule[]> = {};
 
   apiSchedules.forEach(({ module, day, period: numPeriod, room: rowRoom }) => {
@@ -84,7 +96,10 @@ export const apiToSchedules = (apiSchedules: ApiType.CourseSchedule[]): { schedu
  * Convert schedules from domain type to api type.
  * Set the period of special schedules to 0.
  */
-export const schedulesToApi = (schedules: Schedule[], rooms: Room[]): ApiType.CourseSchedule[] => {
+export const schedulesToApi = (
+  schedules: Schedule[],
+  rooms: Room[]
+): ApiType.CourseSchedule[] => {
   return schedules.map((schedule) => {
     const room: string = extractRoomsBySchedule(rooms, schedule)
       .map(({ name }) => name)

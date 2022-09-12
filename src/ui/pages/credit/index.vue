@@ -2,7 +2,12 @@
   <div class="credit">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.push('/')"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.push('/')"
+        ></IconButton>
       </template>
       <template #title>単位数</template>
     </PageHeader>
@@ -16,13 +21,22 @@
     <section class="tags">
       <div class="tags__header">
         <div class="tags__label">分類</div>
-        <Button size="small" :state="editingTagId || dragging ? 'disabled' : 'default'" @click="toggleMode"
-          >{{ mode === "default" ? "タグの作成・編集" : "タグの作成・編集を終わる" }}
+        <Button
+          size="small"
+          :state="editingTagId || dragging ? 'disabled' : 'default'"
+          @click="toggleMode"
+          >{{
+            mode === "default" ? "タグの作成・編集" : "タグの作成・編集を終わる"
+          }}
         </Button>
       </div>
       <div class="tags__mask">
         <div ref="tagsContentsRef" class="tags__contents">
-          <TagListContent v-show="mode === 'default'" name="すべての授業" :credit="totalCredit">
+          <TagListContent
+            v-show="mode === 'default'"
+            name="すべての授業"
+            :credit="totalCredit"
+          >
             <template #btns>
               <IconButton
                 v-show="mode === 'default'"
@@ -73,7 +87,10 @@
                     color="normal"
                     :icon-name="editingTagId === element.id ? 'check' : 'edit'"
                     :state="
-                      !editingTagId || (editingTagId === element.id && element.name !== '') ? 'default' : 'disabled'
+                      !editingTagId ||
+                      (editingTagId === element.id && element.name !== '')
+                        ? 'default'
+                        : 'disabled'
                     "
                     @click="() => onClickNormalBtn(element)"
                   ></IconButton>
@@ -82,7 +99,11 @@
                     size="small"
                     color="danger"
                     :icon-name="isNewTagId(element.id) ? ' clear' : 'delete'"
-                    :state="editingTagId && !isNewTagId(element.id) ? 'disabled' : 'default'"
+                    :state="
+                      editingTagId && !isNewTagId(element.id)
+                        ? 'disabled'
+                        : 'default'
+                    "
                     @click="() => onClickDangerBtn(element)"
                   ></IconButton>
                 </template>
@@ -108,16 +129,37 @@
         <div class="add-btn__value">タグを新たに作成する</div>
       </div>
     </section>
-    <Modal v-if="tagToDelete" class="delete-tag-modal" size="small" @click="tagToDelete = undefined">
+    <Modal
+      v-if="tagToDelete"
+      class="delete-tag-modal"
+      size="small"
+      @click="tagToDelete = undefined"
+    >
       <template #title>タグを削除しますか？</template>
       <template #contents>
         タグ「{{ tagToDelete.name }}」を削除しますか？<br />
-        現在このタグを{{ numberOfCourseAssignedTagToDelete }}件の授業に割り当てています。<br />
+        現在このタグを{{
+          numberOfCourseAssignedTagToDelete
+        }}件の授業に割り当てています。<br />
         タグを削除すると、割り当てた全ての授業との紐付けが解除されます。
       </template>
       <template #button>
-        <Button size="medium" layout="fill" color="base" @click="tagToDelete = undefined"> キャンセル </Button>
-        <Button size="medium" layout="fill" color="danger" @click="onClickDeleteModal"> 削除 </Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="tagToDelete = undefined"
+        >
+          キャンセル
+        </Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="danger"
+          @click="onClickDeleteModal"
+        >
+          削除
+        </Button>
       </template>
     </Modal>
   </div>
@@ -140,9 +182,20 @@ import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
 import { useFocus } from "~/ui/hooks/useFocus";
 import { useStringToggle } from "~/ui/hooks/useStringToggle";
 import { isNewTagId, createNewTagId } from "~/ui/shared";
-import { getAllCourses, getCoursesByYear, setAllCourses } from "~/ui/store/course";
+import {
+  getAllCourses,
+  getCoursesByYear,
+  setAllCourses,
+} from "~/ui/store/course";
 import { getCreditYear, updateCreditYear } from "~/ui/store/creditYear";
-import { createTag, deleteTag, getAllTags, setAllTags, updateTagName, updateTagOrders } from "~/ui/store/tag";
+import {
+  createTag,
+  deleteTag,
+  getAllTags,
+  setAllTags,
+  updateTagName,
+  updateTagOrders,
+} from "~/ui/store/tag";
 import type { DisplayCreditTag } from "~/presentation/viewmodels/tag";
 
 useHead({
@@ -154,7 +207,9 @@ const year = getCreditYear();
 
 /** course */
 await setAllCourses();
-const courses = computed(() => (year.value === 0 ? getAllCourses().value : getCoursesByYear(year.value).value));
+const courses = computed(() =>
+  year.value === 0 ? getAllCourses().value : getCoursesByYear(year.value).value
+);
 
 /** tags */
 await setAllTags();
@@ -165,8 +220,13 @@ const [mode, toggleMode] = useStringToggle("default", "edit");
 
 /** year dropdown */
 const allYearOption = "すべての年度";
-const selectedYearOption = computed(() => (year.value === 0 ? allYearOption : `${year.value}年度`));
-const yearOptions: string[] = [allYearOption, ...academicYears.reverse().map((year) => `${year}年度`)];
+const selectedYearOption = computed(() =>
+  year.value === 0 ? allYearOption : `${year.value}年度`
+);
+const yearOptions: string[] = [
+  allYearOption,
+  ...academicYears.reverse().map((year) => `${year}年度`),
+];
 const updateCreditYearOption = (option: string) => {
   updateCreditYear(option === allYearOption ? 0 : Number(option.slice(0, 4)));
 };
@@ -179,12 +239,18 @@ const displayCreditTags = ref<DisplayCreditTag[]>([]);
 const editingTagId = ref<string>();
 const dragging = ref(false);
 const totalCredit = computed(() =>
-  creditToDisplay(courses.value.reduce((credit, course) => (credit += course.credit), 0))
+  creditToDisplay(
+    courses.value.reduce((credit, course) => (credit += course.credit), 0)
+  )
 );
 
 const updateDisplayCreditTags = () => {
   displayCreditTags.value = reactive(
-    getDisplayCreditTags(courses.value, tags.value, year.value === 0 ? academicYears : [year.value])
+    getDisplayCreditTags(
+      courses.value,
+      tags.value,
+      year.value === 0 ? academicYears : [year.value]
+    )
   );
 };
 
@@ -234,7 +300,8 @@ const tagToDelete = ref<DisplayCreditTag>();
 const numberOfCourseAssignedTagToDelete = computed(() => {
   if (tagToDelete.value == undefined) return 0;
   const targetId = tagToDelete.value.id;
-  return getAllCourses().value.filter(({ tagIds }) => tagIds.includes(targetId)).length;
+  return getAllCourses().value.filter(({ tagIds }) => tagIds.includes(targetId))
+    .length;
 });
 
 const onClickDeleteModal = async () => {

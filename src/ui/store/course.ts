@@ -4,7 +4,12 @@ import UseCase from "~/application/usecases";
 import { RegisteredCourse } from "~/domain/course";
 import { isResultError } from "~/domain/error";
 import { academicYears } from "~/domain/year";
-import { addElementsInArray, deepCopy, deleteElementInArray, updateElementInArray } from "~/utils";
+import {
+  addElementsInArray,
+  deepCopy,
+  deleteElementInArray,
+  updateElementInArray,
+} from "~/utils";
 
 // state
 const courses = reactive<RegisteredCourse[]>([]);
@@ -15,11 +20,17 @@ export const getAllCourses = (): ComputedRef<RegisteredCourse[]> => {
   return computed(() => deepCopy(courses));
 };
 
-export const getCoursesByYear = (year: number): ComputedRef<RegisteredCourse[]> => {
-  return computed(() => deepCopy(courses.filter((course) => course.year === year)));
+export const getCoursesByYear = (
+  year: number
+): ComputedRef<RegisteredCourse[]> => {
+  return computed(() =>
+    deepCopy(courses.filter((course) => course.year === year))
+  );
 };
 
-export const getCourseById = (id: string): ComputedRef<RegisteredCourse | undefined> => {
+export const getCourseById = (
+  id: string
+): ComputedRef<RegisteredCourse | undefined> => {
   return computed(() => deepCopy(courses.find((course) => course.id == id)));
 };
 
@@ -44,13 +55,17 @@ export const setCourseById = async (id: string) => {
   updateElementInArray(courses, result);
 };
 
-export const addCoursesByCodes = async (inputData: { year: number; code: string }[]) => {
+export const addCoursesByCodes = async (
+  inputData: { year: number; code: string }[]
+) => {
   const result = await UseCase.addCoursesByCodes(ports)(inputData);
   if (isResultError(result)) throw result;
   addElementsInArray(courses, result);
 };
 
-export const addCustomizedCourse = async (newCourse: Omit<RegisteredCourse, "id" | "code">) => {
+export const addCustomizedCourse = async (
+  newCourse: Omit<RegisteredCourse, "id" | "code">
+) => {
   const result = await UseCase.addCustomizedCourse(ports)(newCourse);
   if (isResultError(result)) throw result;
   updateElementInArray(courses, result);

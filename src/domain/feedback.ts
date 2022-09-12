@@ -7,4 +7,9 @@ export type Feedback = {
   email: string;
 };
 
-export const feedbackTypes: FeedbackType[] = ["Bug", "NewFeature", "Contact", "Other"];
+export const feedbackTypes: FeedbackType[] = [
+  "Bug",
+  "NewFeature",
+  "Contact",
+  "Other",
+];

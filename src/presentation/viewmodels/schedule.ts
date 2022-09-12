@@ -1,5 +1,10 @@
 import { Period } from "~/domain/period";
-import { DisplayNormalDay, DisplaySpecialDay, EditableNormalDay, EditableSpecialDay } from "./day";
+import {
+  DisplayNormalDay,
+  DisplaySpecialDay,
+  EditableNormalDay,
+  EditableSpecialDay,
+} from "./day";
 import { DisplayModule, EditableModule } from "./module";
 import { EditablePeriod } from "./period";
 

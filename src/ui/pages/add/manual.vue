@@ -2,7 +2,12 @@
   <div class="manual">
     <PageHeader>
       <template #left-button-icon>
-        <IconButton size="large" color="normal" icon-name="arrow_back" @click="$router.back()"></IconButton>
+        <IconButton
+          size="large"
+          color="normal"
+          icon-name="arrow_back"
+          @click="$router.back()"
+        ></IconButton>
       </template>
       <template #title>手動で授業を作成</template>
     </PageHeader>
@@ -11,7 +16,10 @@
         <div class="main__contents">
           <section class="main__course-name">
             <LabeledTextField label="授業名" mandatory>
-              <TextFieldSingleLine v-model="name" placeholder="例) ゼミ"></TextFieldSingleLine>
+              <TextFieldSingleLine
+                v-model="name"
+                placeholder="例) ゼミ"
+              ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
           <section class="main__period">
@@ -25,7 +33,10 @@
           </section>
           <section class="main__credit">
             <LabeledTextField label="単位数" mandatory>
-              <TextFieldSingleLine v-model.trim="credit" placeholder="例) 1.0"></TextFieldSingleLine>
+              <TextFieldSingleLine
+                v-model.trim="credit"
+                placeholder="例) 1.0"
+              ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
           <!-- <section class="main__instructor">
@@ -41,9 +52,12 @@
           <section class="main__method method">
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
-              <CheckContent v-for="content in checkboxContents" :key="content.key" v-model:checked="content.checked">{{
-                content.label
-              }}</CheckContent>
+              <CheckContent
+                v-for="content in checkboxContents"
+                :key="content.key"
+                v-model:checked="content.checked"
+                >{{ content.label }}</CheckContent
+              >
             </div>
           </section>
         </div>
@@ -60,7 +74,11 @@
         >
       </section>
     </div>
-    <Modal v-if="isDuplicateModalVisible" class="duplication-modal" @click="closeDuplicateModal">
+    <Modal
+      v-if="isDuplicateModalVisible"
+      class="duplication-modal"
+      @click="closeDuplicateModal"
+    >
       <template #title>開講時限が重複しています</template>
       <template #contents>
         <p class="modal__text">
@@ -78,8 +96,20 @@
         </div>
       </template>
       <template #button>
-        <Button size="medium" layout="fill" color="base" @click="closeDuplicateModal">キャンセル</Button>
-        <Button size="medium" layout="fill" color="primary" @click="addCourse(false)">そのまま追加</Button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="closeDuplicateModal"
+          >キャンセル</Button
+        >
+        <Button
+          size="medium"
+          layout="fill"
+          color="primary"
+          @click="addCourse(false)"
+          >そのまま追加</Button
+        >
       </template>
     </Modal>
   </div>
@@ -91,10 +121,17 @@ import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
 import { methods } from "~/domain/method";
-import { displayToCredit, validateCredit } from "~/presentation/presenters/credit";
+import {
+  displayToCredit,
+  validateCredit,
+} from "~/presentation/presenters/credit";
 import { validateInstructors } from "~/presentation/presenters/instructor";
 import { methodMap } from "~/presentation/presenters/method";
-import { displayToSchedules, isDisplaySchedule, schedulesToFullString } from "~/presentation/presenters/schedule";
+import {
+  displayToSchedules,
+  isDisplaySchedule,
+  schedulesToFullString,
+} from "~/presentation/presenters/schedule";
 import Button from "~/ui/components/Button.vue";
 import CheckContent from "~/ui/components/CheckContent.vue";
 import CourseDetailMini from "~/ui/components/CourseDetailMini.vue";
@@ -103,7 +140,9 @@ import Label from "~/ui/components/Label.vue";
 import LabeledTextField from "~/ui/components/LabeledTextField.vue";
 import Modal from "~/ui/components/Modal.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
-import ScheduleEditer, { useScheduleEditor } from "~/ui/components/ScheduleEditer.vue";
+import ScheduleEditer, {
+  useScheduleEditor,
+} from "~/ui/components/ScheduleEditer.vue";
 import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { addCustomizedCourse } from "~/ui/store/course";
@@ -136,7 +175,12 @@ const checkboxContents = reactive(
 );
 
 /** schedule editor */
-const { schedules: editableSchedules, addSchedule, removeSchedule, updateSchedules } = useScheduleEditor();
+const {
+  schedules: editableSchedules,
+  addSchedule,
+  removeSchedule,
+  updateSchedules,
+} = useScheduleEditor();
 
 /** save button */
 const buttonState = computed(() => {
@@ -156,7 +200,9 @@ const addCourse = async (warning = true) => {
     editableSchedules.every(isDisplaySchedule)
   ) {
     const schedules = displayToSchedules(editableSchedules);
-    const methods = checkboxContents.filter(({ checked }) => checked).map(({ key }) => key);
+    const methods = checkboxContents
+      .filter(({ checked }) => checked)
+      .map(({ key }) => key);
     const course: Omit<RegisteredCourse, "id" | "code"> = {
       year: year.value,
       name: name.value,
@@ -172,7 +218,10 @@ const addCourse = async (warning = true) => {
       tagIds: [],
     };
 
-    if (warning && !(await Usecase.checkScheduleDuplicate(ports)(year.value, schedules))) {
+    if (
+      warning &&
+      !(await Usecase.checkScheduleDuplicate(ports)(year.value, schedules))
+    ) {
       duplicateScheduleText.value = schedulesToFullString(schedules);
       openDuplicateModal();
     } else {
@@ -183,7 +232,11 @@ const addCourse = async (warning = true) => {
 };
 
 /** duplicate modal */
-const [isDuplicateModalVisible, openDuplicateModal, closeDuplicateModal] = useSwitch(false);
+const [
+  isDuplicateModalVisible,
+  openDuplicateModal,
+  closeDuplicateModal,
+] = useSwitch(false);
 
 const duplicateScheduleText = ref("");
 </script>

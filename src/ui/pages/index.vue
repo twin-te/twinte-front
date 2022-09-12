@@ -18,7 +18,11 @@
         :whichSelected="courseType === 'Normal' ? 'left' : 'right'"
         :onClickToggleButton="toggleCourseType"
       />
-      <div v-if="courseType === 'Normal'" v-click-away="closePopup" class="main__module">
+      <div
+        v-if="courseType === 'Normal'"
+        v-click-away="closePopup"
+        class="main__module"
+      >
         <div class="main__module-text">
           {{ moduleMap[module] }}
         </div>
@@ -61,7 +65,9 @@
           'main__table--popup': isPopupVisible,
         }"
         :style="{
-          gridTemplateRows: `1.4rem repeat(${setting.nightPeriodMode ? 8 : 6}, 1fr)`,
+          gridTemplateRows: `1.4rem repeat(${
+            setting.nightPeriodMode ? 8 : 6
+          }, 1fr)`,
           gridTemplateColumns: `${setting.timeLabelMode ? 3.6 : 2}rem repeat(${
             setting.saturdayCourseMode ? 6 : 5
           }, 1fr)`,
@@ -108,9 +114,17 @@
             <div class="special-header__divider"></div>
           </div>
           <div class="special-container">
-            <div v-for="course in timetable.special[day]" :key="course.id" class="special-contents">
+            <div
+              v-for="course in timetable.special[day]"
+              :key="course.id"
+              class="special-contents"
+            >
               <div class="special-contents__module">
-                <span v-for="schedule in course.schedule.onlyModule" :key="schedule">{{ schedule }}</span>
+                <span
+                  v-for="schedule in course.schedule.onlyModule"
+                  :key="schedule"
+                  >{{ schedule }}</span
+                >
               </div>
               <CourseTile
                 class="special-contents__course"
@@ -120,9 +134,17 @@
                 @click="$router.push(`/course/${course.id}`)"
               />
             </div>
-            <div v-if="timetable.special[day].length === 0" class="special-contents">
+            <div
+              v-if="timetable.special[day].length === 0"
+              class="special-contents"
+            >
               <div class="special-contents__module"></div>
-              <CourseTile class="special-contents__course" state="none" name="" room="" />
+              <CourseTile
+                class="special-contents__course"
+                state="none"
+                name=""
+                room=""
+              />
             </div>
           </div>
         </template>
@@ -132,9 +154,17 @@
             <div class="special-header__divider"></div>
           </div>
           <div class="special-container">
-            <div v-for="course in timetable.special.Others" :key="course.id" class="special-contents">
+            <div
+              v-for="course in timetable.special.Others"
+              :key="course.id"
+              class="special-contents"
+            >
               <div class="special-contents__module">
-                <span v-for="schedule in course.schedule.onlyModule" :key="schedule">{{ schedule }}</span>
+                <span
+                  v-for="schedule in course.schedule.onlyModule"
+                  :key="schedule"
+                  >{{ schedule }}</span
+                >
               </div>
               <CourseTile
                 class="special-contents__course"
@@ -149,11 +179,18 @@
       </section>
     </section>
   </div>
-  <Modal v-if="duplicateState" class="duplication-modal" size="large" @click="clearDuplicateState">
+  <Modal
+    v-if="duplicateState"
+    class="duplication-modal"
+    size="large"
+    @click="clearDuplicateState"
+  >
     <template #title>授業が重複しています</template>
     <template #contents>
       <p class="modal__text">
-        このコマ({{ dayMap[duplicateState.day] }}曜{{ duplicateState.period }}限)には複数の授業が登録されています。
+        このコマ({{ dayMap[duplicateState.day] }}曜{{
+          duplicateState.period
+        }}限)には複数の授業が登録されています。
         不要な授業がある場合、以下から「授業詳細」ページへ移動し右上のメニューから削除してください。
       </p>
       <CourseTile
@@ -167,14 +204,22 @@
       />
     </template>
     <template #button>
-      <Button size="medium" layout="fill" color="base" @click="clearDuplicateState"> 閉じる </Button>
+      <Button
+        size="medium"
+        layout="fill"
+        color="base"
+        @click="clearDuplicateState"
+      >
+        閉じる
+      </Button>
     </template>
   </Modal>
   <Modal v-if="isNewsModalVisible" size="large" @click="onClickNewsModal">
     <template #title>Twin:teからの新着お知らせ</template>
     <template #contents>
       <div class="news-modal__tips">
-        過去のお知らせは <span class="material-icons">campaign</span>お知らせ で確認できます。
+        過去のお知らせは <span class="material-icons">campaign</span>お知らせ
+        で確認できます。
       </div>
       <div v-for="news in unreadNews" :key="news.id" class="news-modal__row">
         <NewsBox
@@ -185,7 +230,14 @@
       </div>
     </template>
     <template #button>
-      <Button size="medium" layout="fill" color="primary" @click="onClickNewsModal"> OK </Button>
+      <Button
+        size="medium"
+        layout="fill"
+        color="primary"
+        @click="onClickNewsModal"
+      >
+        OK
+      </Button>
     </template>
   </Modal>
 </template>
@@ -202,7 +254,11 @@ import { isResultError } from "~/domain/error";
 import { baseModules, isBaseModule } from "~/domain/module";
 import { daytimePeriods, periods } from "~/domain/period";
 import { currentAcademicYear } from "~/domain/year";
-import { dayMap, normalDayMap, specialDayMap } from "~/presentation/presenters/day";
+import {
+  dayMap,
+  normalDayMap,
+  specialDayMap,
+} from "~/presentation/presenters/day";
 import { baseModuleMap, moduleMap } from "~/presentation/presenters/module";
 import { formatPublishedAt } from "~/presentation/presenters/news";
 import { getDisplayTimetable } from "~/presentation/presenters/timetable";
@@ -301,7 +357,9 @@ const timetable = computed(() =>
     getCoursesByYear(year.value).value,
     getAllTags().value,
     baseModules,
-    setting.value.saturdayCourseMode ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    setting.value.saturdayCourseMode
+      ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+      : ["Mon", "Tue", "Wed", "Thu", "Fri"],
     specialDays,
     setting.value.nightPeriodMode ? periods : daytimePeriods
   )
@@ -328,10 +386,18 @@ const useDuplicateState = () => {
   return { duplicateState, setDuplicateState, clearDuplicateState };
 };
 
-const { duplicateState, setDuplicateState, clearDuplicateState } = useDuplicateState();
+const {
+  duplicateState,
+  setDuplicateState,
+  clearDuplicateState,
+} = useDuplicateState();
 
 /** course tile */
-const onClickCourseTile = async (day: NormalDay, period: Period, courses: DisplayRegisteredCourse[]) => {
+const onClickCourseTile = async (
+  day: NormalDay,
+  period: Period,
+  courses: DisplayRegisteredCourse[]
+) => {
   switch (courses.length) {
     case 0:
       await router.push("/add/search");
@@ -349,7 +415,9 @@ const onClickCourseTile = async (day: NormalDay, period: Period, courses: Displa
 await setNews();
 const unreadNews = getUnreadNews();
 
-const [isNewsModalVisible, openNewsModal, closeNewsModal] = useSwitch(unreadNews.value.length > 0);
+const [isNewsModalVisible, openNewsModal, closeNewsModal] = useSwitch(
+  unreadNews.value.length > 0
+);
 
 const onClickNewsModal = async () => {
   for (let news of unreadNews.value) {
