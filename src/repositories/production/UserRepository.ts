@@ -1,11 +1,11 @@
 import { IUserRepository } from "~/application/ports/IUserRepository";
-import { Setting, User } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
-import { settingProps } from "~/domain/utils";
+} from "~/domain/error";
+import { Setting, settingProps } from "~/domain/setting";
+import { User } from "~/domain/user";
 import { Api } from "~/infrastructure/api";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
 import { LocalStorage } from "~/infrastructure/localstorage";
@@ -50,7 +50,7 @@ export class UserRepository implements IUserRepository {
 
     const setting = settingProps.reduce<Partial<Setting>>((map, prop) => {
       const value = this.#localStorage.get(prop);
-      return value ? { ...map, prop: value } : map;
+      return value ? { ...map, [prop]: value } : map;
     }, {});
 
     this.#setting = setting;

@@ -1,7 +1,11 @@
 import axios from "axios";
 import { IFeedbackRepository } from "~/application/ports/IFeedbackRepository";
-import { Feedback } from "~/domain";
-import { InternalServerError, isError, NetworkError } from "~/domain/result";
+import {
+  InternalServerError,
+  isResultError,
+  NetworkError,
+} from "~/domain/error";
+import { Feedback } from "~/domain/feedback";
 import { Firebase } from "~/infrastructure/firebase";
 
 export class FeedbackRepository implements IFeedbackRepository {
@@ -20,7 +24,7 @@ export class FeedbackRepository implements IFeedbackRepository {
       userId
     );
 
-    if (isError(result)) return result;
+    if (isResultError(result)) return result;
     const screenshotUrls = result;
 
     const formData = new FormData();

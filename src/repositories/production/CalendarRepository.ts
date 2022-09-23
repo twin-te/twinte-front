@@ -1,11 +1,12 @@
 import { ICalendarRepository } from "~/application/ports/ICalendarRepository";
-import { Event, ModuleInformation } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
-import { getAcademicYear } from "~/domain/utils";
+} from "~/domain/error";
+import { Event } from "~/domain/event";
+import { ModuleInformation } from "~/domain/module";
+import { getAcademicYear } from "~/domain/year";
 import { Api } from "~/infrastructure/api";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
 import {

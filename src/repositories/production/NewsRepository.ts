@@ -1,10 +1,10 @@
 import { INewsRepository } from "~/application/ports/INewsRepository";
-import { News } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { News } from "~/domain/news";
 import { Api } from "~/infrastructure/api";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
 import { apiToNews } from "~/infrastructure/api/converters/news";

@@ -1,4 +1,4 @@
-import { isContain } from "~/utils";
+import { isContained } from "~/utils";
 
 export type LocalStoragePropType = {
   darkMode: boolean;
@@ -24,7 +24,7 @@ export const createLocalStorageBooleanHandler = (
 ): LocalStorageHandler<boolean> => ({
   getter: () => {
     const value = localStorage.getItem(prop);
-    if (isContain<"true" | "false">(value, ["true", "false"]))
+    if (isContained<"true" | "false">(value, ["true", "false"]))
       return value === "true";
     else return undefined;
   },

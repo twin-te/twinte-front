@@ -2,7 +2,7 @@ import {
   InternalServerError,
   NotFoundError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
 
 export type ApiSuccessStatus = 200 | 204;
 

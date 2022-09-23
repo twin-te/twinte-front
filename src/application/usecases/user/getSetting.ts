@@ -1,29 +1,18 @@
 import { Ports } from "~/application/ports";
-import { Setting } from "~/domain";
 import {
-  identifyError,
   InternalServerError,
-  isNotError,
+  isNotResultError,
   NetworkError,
-} from "~/domain/result";
-
-const getSettingInitValue = (): Setting => ({
-  darkMode: false,
-  saturdayCourseMode: false,
-  nightPeriodMode: false,
-  timeLabelMode: true,
-  displayYear: 0,
-});
+  UnauthorizedError,
+} from "~/domain/error";
+import { getInitialSetting, Setting } from "~/domain/setting";
 
 export const getSetting = ({ userRepository }: Ports) => async (): Promise<
   Setting | NetworkError | InternalServerError
 > => {
   const result = await userRepository.getSetting();
 
-  if (isNotError(result)) {
-    const setting: Setting = { ...getSettingInitValue(), ...result };
-    return setting;
-  } else if (identifyError(result, "UnauthorizedError"))
-    return getSettingInitValue();
-  else return result;
+  if (isNotResultError(result)) return { ...getInitialSetting(), ...result };
+  if (result instanceof UnauthorizedError) return getInitialSetting();
+  return result;
 };

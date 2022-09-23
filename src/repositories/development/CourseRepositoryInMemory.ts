@@ -1,24 +1,29 @@
 import { ICourseRepository } from "~/application/ports/ICourseRepository";
-import {
-  Course,
-  Module,
-  RegisteredCourse,
-  Schedule,
-  ScheduleMode,
-  Tag,
-  Timetable,
-} from "~/domain";
+import { Course, RegisteredCourse, SearchMode } from "~/domain/course";
 import {
   InternalServerError,
-  isError,
+  isResultError,
   NetworkError,
   NotFoundError,
   UnauthorizedError,
   ValueError,
-} from "~/domain/result";
-import { isNormalSchedule } from "~/domain/validations";
+} from "~/domain/error";
+import { Module } from "~/domain/module";
+import {
+  isNormalSchedule,
+  isSpecialSchedule,
+  Schedule,
+} from "~/domain/schedule";
+import { Tag } from "~/domain/tag";
+import { Timetable } from "~/domain/timetable";
 import courses_json from "~/tests/data/courses.json";
-import { copy, isEqualSet, manipulateArrayEl } from "~/utils";
+import {
+  deepCopy,
+  deleteElementInArray,
+  isEqualSet,
+  updateElementInArray,
+  createId,
+} from "~/utils";
 
 export class CourseRepositoryInMemory implements ICourseRepository {
   #courses_db: Course[];
@@ -31,13 +36,33 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     this.#tags = [];
 
     this.#initCourses();
+    this.#initTags();
   }
 
   #initCourses() {
+    this.#initNormalCourses(100);
+    this.#initSpecialCourses(20);
+  }
+
+  #initNormalCourses(num: number) {
     const inputData = this.#courses_db
-      .slice(0, 50)
+      .filter((course) => course.schedules.some(isNormalSchedule))
+      .slice(0, num)
       .map(({ year, code }) => ({ year, code }));
     this.addCoursesByCodes(inputData);
+  }
+
+  #initSpecialCourses(num: number) {
+    const inputData = this.#courses_db
+      .filter((course) => course.schedules.some(isSpecialSchedule))
+      .slice(0, num)
+      .map(({ year, code }) => ({ year, code }));
+    this.addCoursesByCodes(inputData);
+  }
+
+  #initTags() {
+    this.createTag("必修");
+    this.createTag("選択");
   }
 
   async searchCourse(
@@ -45,13 +70,13 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     keywords: string[],
     codes: string[],
     timetable: Timetable<Module, boolean>,
-    scheduleMode: ScheduleMode,
+    searchMode: SearchMode,
     offset: number,
     limit: number
   ): Promise<
     Course[] | UnauthorizedError | NetworkError | InternalServerError
   > {
-    const isContainInTimetable = (schedule: Schedule): boolean => {
+    const isContainedInTimetable = (schedule: Schedule): boolean => {
       if (isNormalSchedule(schedule)) {
         return timetable.normal[schedule.module][schedule.day][schedule.period];
       } else {
@@ -68,14 +93,34 @@ export class CourseRepositoryInMemory implements ICourseRepository {
         codes.some((code) => new RegExp(code).test(course.code))
       )
       .filter((course) => {
-        if (scheduleMode === "Cover") {
-          course.schedules.some(isContainInTimetable);
+        if (searchMode === "Cover") {
+          return course.schedules.some(isContainedInTimetable);
         } else {
-          course.schedules.every(isContainInTimetable);
+          return course.schedules.every(isContainedInTimetable);
         }
       })
-      .slice(offset, limit);
+      .slice(offset, offset + limit);
 
+    return courses;
+  }
+
+  async getCourses(
+    inputData: {
+      year: number;
+      code: string;
+    }[]
+  ): Promise<
+    | Course[]
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  > {
+    const courses = this.#courses_db.filter((course) =>
+      inputData.find(
+        ({ year, code }) => course.year === year && course.code === code
+      )
+    );
     return courses;
   }
 
@@ -128,7 +173,7 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     RegisteredCourse | UnauthorizedError | NetworkError | InternalServerError
   > {
     const newCourse: RegisteredCourse = {
-      id: new Date().getTime().toString(16),
+      id: createId(),
       ...course,
     };
 
@@ -171,9 +216,9 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     | InternalServerError
   > {
     const result = await this.getRegisteredCourseById(id);
-    if (isError(result)) return result;
+    if (isResultError(result)) return result;
     const course = { ...result, ...updatedData };
-    manipulateArrayEl(this.#courses, (c) => c.id === id, course);
+    updateElementInArray(this.#courses, course);
     return course;
   }
 
@@ -186,14 +231,14 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     | NetworkError
     | InternalServerError
   > {
-    manipulateArrayEl(this.#courses, (c) => c.id === id);
+    deleteElementInArray(this.#courses, id);
     return null;
   }
 
   async getAllTags(): Promise<
     Tag[] | UnauthorizedError | NetworkError | InternalServerError
   > {
-    return copy(this.#tags);
+    return deepCopy(this.#tags);
   }
 
   async getTagById(
@@ -203,10 +248,10 @@ export class CourseRepositoryInMemory implements ICourseRepository {
   > {
     if (this.#tags.length === 0) {
       const result = await this.getAllTags();
-      if (isError(result)) return result;
+      if (isResultError(result)) return result;
     }
     const tag = this.#tags.find((tag) => tag.id === id);
-    return tag ? copy(tag) : new NotFoundError();
+    return tag ? deepCopy(tag) : new NotFoundError();
   }
 
   /**
@@ -218,7 +263,7 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     name: string
   ): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
     const newTag = {
-      id: new Date().getTime().toString(16),
+      id: createId(),
       name,
       order: this.#tags.length,
     };
@@ -234,9 +279,9 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     Tag | NotFoundError | UnauthorizedError | NetworkError | InternalServerError
   > {
     const result = await this.getTagById(id);
-    if (isError(result)) return result;
+    if (isResultError(result)) return result;
     const newTag = { ...result, name };
-    manipulateArrayEl(this.#tags, (tag) => tag.id === id, newTag);
+    updateElementInArray(this.#tags, newTag);
     return newTag;
   }
 
@@ -276,7 +321,7 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     | NetworkError
     | InternalServerError
   > {
-    manipulateArrayEl(this.#tags, (tag) => tag.id === id);
+    deleteElementInArray(this.#tags, id);
     return null;
   }
 }

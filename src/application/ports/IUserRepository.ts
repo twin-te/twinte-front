@@ -1,9 +1,10 @@
-import { Setting, User } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Setting } from "~/domain/setting";
+import { User } from "~/domain/user";
 
 export interface IUserRepository {
   getUser(): Promise<

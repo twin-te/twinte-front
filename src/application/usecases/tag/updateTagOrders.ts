@@ -1,12 +1,12 @@
 import { Ports } from "~/application/ports";
-import { Tag } from "~/domain";
 import {
   InternalServerError,
-  isError,
+  isResultError,
   NetworkError,
   UnauthorizedError,
   ValueError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Tag } from "~/domain/tag";
 
 /**
  * Update tag orders. All tag ids that the user has must be specified.
@@ -18,7 +18,7 @@ export const updateTagOrders = ({ courseRepository }: Ports) => async (
   Tag[] | ValueError | UnauthorizedError | NetworkError | InternalServerError
 > => {
   const result = await courseRepository.getAllTags();
-  if (isError(result)) return result;
+  if (isResultError(result)) return result;
 
   const registeredTagIds: Set<string> = new Set(result.map(({ id }) => id));
 

@@ -1,5 +1,4 @@
-import { Tag } from "~/domain";
-import { undefinedTagOrder } from "~/domain/utils";
+import { Tag, undefinedTagOrder } from "~/domain/tag";
 import * as ApiType from "../aspida/@types";
 
 export const apiToTag = (apiTag: ApiType.Tag): Tag => {

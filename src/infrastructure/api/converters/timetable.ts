@@ -1,11 +1,7 @@
-import { Module, Period, Timetable } from "~/domain";
-import {
-  days,
-  modules,
-  normalDays,
-  periods,
-  specialDays,
-} from "~/domain/utils";
+import { days, normalDays, specialDays } from "~/domain/day";
+import { Module, modules } from "~/domain/module";
+import { Period, periods } from "~/domain/period";
+import { Timetable } from "~/domain/timetable";
 import { initializeObject } from "~/utils";
 import * as ApiType from "../aspida/@types";
 

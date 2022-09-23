@@ -1,9 +1,10 @@
-import { Event, ModuleInformation } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Event } from "~/domain/event";
+import { ModuleInformation } from "~/domain/module";
 
 export interface ICalendarRepository {
   getEventsByYear(

@@ -1,10 +1,10 @@
 import { Ports } from "~/application/ports";
 import {
-  identifyError,
   InternalServerError,
-  isNotError,
+  isNotResultError,
   NetworkError,
-} from "~/domain/result";
+  UnauthorizedError,
+} from "~/domain/error";
 
 /**
  * Return true if the user is logged in. Return false otherwise.
@@ -16,7 +16,7 @@ export const checkAuthentication = ({
 > => {
   const result = await userRepository.getUser();
 
-  if (isNotError(result)) return true;
-  if (identifyError(result, "UnauthorizedError")) return false;
+  if (isNotResultError(result)) return true;
+  if (result instanceof UnauthorizedError) return false;
   return result;
 };

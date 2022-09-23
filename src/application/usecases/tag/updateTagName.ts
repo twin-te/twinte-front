@@ -1,11 +1,11 @@
 import { Ports } from "~/application/ports";
-import { Tag } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   NotFoundError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Tag } from "~/domain/tag";
 
 export const updateTagName = ({ courseRepository }: Ports) => (
   id: string,

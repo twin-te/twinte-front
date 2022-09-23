@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import { Event, ModuleInformation } from "~/domain";
-import { normalDays } from "~/domain/utils";
-import { isNormalEventType } from "~/domain/validations";
-import { isContain } from "~/utils";
+import { normalDays } from "~/domain/day";
+import { Event, isNormalEventType } from "~/domain/event";
+import { ModuleInformation } from "~/domain/module";
+import { isContained } from "~/utils";
 import * as ApiType from "../aspida/@types";
 
 export const apiToEvent = ({
@@ -15,7 +15,7 @@ export const apiToEvent = ({
     return { date: dayjs(date), eventType, description };
   }
 
-  if (isContain(changeTo, normalDays)) {
+  if (isContained(changeTo, normalDays)) {
     return {
       date: dayjs(date),
       eventType,

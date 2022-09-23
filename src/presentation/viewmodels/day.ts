@@ -1,9 +1,13 @@
-export type WeekDayJa = "月" | "火" | "水" | "木" | "金" | "土";
+import { NotSpecified } from "~/presentation/viewmodels/option";
 
-export type WeekEndDayJa = "日";
+export type DisplayNormalDay = "月" | "火" | "水" | "木" | "金" | "土" | "日";
 
-export type NormalDayJa = WeekDayJa | WeekEndDayJa;
+export type DisplaySpecialDay = "集中" | "応談" | "随時";
 
-export type SpecialDayJa = "集中" | "応談" | "随時";
+export type DisplayDay = DisplayNormalDay | DisplaySpecialDay;
 
-export type DayJa = NormalDayJa | SpecialDayJa;
+export type EditableNormalDay = DisplayNormalDay | NotSpecified;
+
+export type EditableSpecialDay = DisplaySpecialDay | NotSpecified;
+
+export type EditableDay = DisplayDay | NotSpecified;

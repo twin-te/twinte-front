@@ -1,18 +1,14 @@
-import {
-  Course,
-  Module,
-  RegisteredCourse,
-  ScheduleMode,
-  Tag,
-  Timetable,
-} from "~/domain";
+import { Course, RegisteredCourse, SearchMode } from "~/domain/course";
 import {
   InternalServerError,
   NetworkError,
   NotFoundError,
   UnauthorizedError,
   ValueError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Module } from "~/domain/module";
+import { Tag } from "~/domain/tag";
+import { Timetable } from "~/domain/timetable";
 
 export interface ICourseRepository {
   searchCourse(
@@ -20,10 +16,23 @@ export interface ICourseRepository {
     keywords: string[],
     codes: string[],
     timetable: Timetable<Module, boolean>,
-    scheduleMode: ScheduleMode,
+    scheduleMode: SearchMode,
     offset: number,
     limit: number
   ): Promise<Course[] | UnauthorizedError | NetworkError | InternalServerError>;
+
+  getCourses(
+    inputData: {
+      year: number;
+      code: string;
+    }[]
+  ): Promise<
+    | Course[]
+    | NotFoundError
+    | UnauthorizedError
+    | NetworkError
+    | InternalServerError
+  >;
 
   addCoursesByCodes(
     inputData: { year: number; code: string }[]
@@ -90,8 +99,6 @@ export interface ICourseRepository {
 
   /**
    * Create the new tag of which order is set to last.
-   * @param name - Tag name
-   * @return Created tag
    */
   createTag(
     name: string

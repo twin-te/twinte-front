@@ -1,11 +1,11 @@
 import { Ports } from "~/application/ports";
-import { Setting } from "~/domain";
 import {
   InternalServerError,
-  isError,
+  isResultError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { Setting } from "~/domain/setting";
 import { getSetting } from "./getSetting";
 
 export const updateSetting = (ports: Ports) => async (
@@ -14,7 +14,7 @@ export const updateSetting = (ports: Ports) => async (
   Setting | UnauthorizedError | NetworkError | InternalServerError
 > => {
   const result = await ports.userRepository.updateSetting(inputData);
-  if (isError(result)) return result;
+  if (isResultError(result)) return result;
 
   return getSetting(ports)();
 };

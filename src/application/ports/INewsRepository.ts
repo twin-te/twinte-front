@@ -1,9 +1,9 @@
-import { News } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
+import { News } from "~/domain/news";
 
 export interface INewsRepository {
   getNews(): Promise<News[] | NetworkError | InternalServerError>;

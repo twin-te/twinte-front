@@ -7,8 +7,8 @@ import {
   NotFoundError,
   ResultError,
   UnauthorizedError,
-} from "~/domain/result";
-import { isContain } from "~/utils";
+} from "~/domain/error";
+import { isContained } from "~/utils";
 import createApiInstance, { ApiInstance } from "./aspida/$api";
 import {
   ApiFailedStatue,
@@ -39,7 +39,7 @@ export class Api {
     this.#client = createApiInstance(
       axiosClient(axios, {
         baseURL,
-        paramsSerializer: (r: any) => qs.stringify(r),
+        paramsSerializer: (r: unknown) => qs.stringify(r),
         validateStatus: () => true,
         withCredentials: true,
       })
@@ -88,13 +88,15 @@ export class Api {
         status,
       }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
 
-      if (isContain(status, successStatusList)) {
+      if (isContained(status, successStatusList)) {
         return callback(body);
-      } else if (isContain(status, failedStatusList)) {
-        return this.#handleApiFailedStatus(status, originalResponse);
-      } else {
-        return new InternalServerError(`Invalid Status : ${status}`);
       }
+
+      if (isContained(status, failedStatusList)) {
+        return this.#handleApiFailedStatus(status, originalResponse);
+      }
+
+      return new InternalServerError(`Invalid Status : ${status}`);
     } catch {
       return new NetworkError();
     }

@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/storage";
-import { InternalServerError, NetworkError } from "~/domain/result";
+import { InternalServerError, NetworkError } from "~/domain/error";
 
 const firebaseConfig = {
   apiKey: "AIzaSyACPmoxAt9e8m50mAcNE_seJWr1KV264ZU",
@@ -11,10 +11,6 @@ const firebaseConfig = {
   appId: "1:506135788576:web:e6e2df4eff16a20e8b9045",
 };
 firebase.initializeApp(firebaseConfig);
-
-/**
- * firebase に screenshot の画像を送信し、返り値として画像にアクセスするための URL を受け取る。
- */
 
 export class Firebase {
   static #instance: Firebase | undefined;

@@ -1,22 +1,22 @@
 import { ICalendarRepository } from "~/application/ports/ICalendarRepository";
-import { Event, ModuleInformation } from "~/domain";
 import {
   InternalServerError,
   NetworkError,
   UnauthorizedError,
-} from "~/domain/result";
-import { getAcademicYear } from "~/domain/utils";
+} from "~/domain/error";
+import { Event } from "~/domain/event";
+import { ModuleInformation } from "~/domain/module";
+import { getAcademicYear } from "~/domain/year";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
 import {
   apiToEvent,
   apiToModuleInformation,
 } from "~/infrastructure/api/converters/calendar";
-
 import event_2021 from "~/tests/data/event_2021.json";
 import event_2022 from "~/tests/data/event_2022.json";
 import module_2021 from "~/tests/data/module_2021.json";
 import module_2022 from "~/tests/data/module_2022.json";
-import { copy } from "~/utils";
+import { deepCopy } from "~/utils";
 
 export class CalendarRepositoryInMemory implements ICalendarRepository {
   #events: Event[];
@@ -42,7 +42,7 @@ export class CalendarRepositoryInMemory implements ICalendarRepository {
     const events = this.#events.filter(
       (event) => getAcademicYear(event.date) === year
     );
-    return copy(events);
+    return deepCopy(events);
   }
 
   async getModuleInformationList(
@@ -53,6 +53,6 @@ export class CalendarRepositoryInMemory implements ICalendarRepository {
     const moduleInformationList = this.#modules.filter(
       (info) => info.year === year
     );
-    return copy(moduleInformationList);
+    return moduleInformationList;
   }
 }

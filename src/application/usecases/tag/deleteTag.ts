@@ -4,7 +4,7 @@ import {
   NetworkError,
   NotFoundError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
 
 export const deleteTag = ({ courseRepository }: Ports) => (
   id: string

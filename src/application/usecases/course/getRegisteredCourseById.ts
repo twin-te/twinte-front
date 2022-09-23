@@ -1,11 +1,11 @@
 import { Ports } from "~/application/ports";
-import { RegisteredCourse } from "~/domain";
+import { RegisteredCourse } from "~/domain/course";
 import {
   InternalServerError,
   NetworkError,
   NotFoundError,
   UnauthorizedError,
-} from "~/domain/result";
+} from "~/domain/error";
 
 /**
  * Return NotFoundError if the course with specified id is not found.
