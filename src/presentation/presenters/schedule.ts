@@ -58,8 +58,8 @@ export const isDisplayNormalSchedule = (
   schedule: object
 ): schedule is DisplayNormalSchedule => {
   return (
-    hasProperty(schedule, "module", isDisplayModule) ||
-    hasProperty(schedule, "day", isDisplayNormalDay) ||
+    hasProperty(schedule, "module", isDisplayModule) &&
+    hasProperty(schedule, "day", isDisplayNormalDay) &&
     hasProperty(schedule, "period", isPeriod)
   );
 };
@@ -68,7 +68,7 @@ export const isDisplaySpecialSchedule = (
   schedule: object
 ): schedule is DisplaySpecialSchedule => {
   return (
-    hasProperty(schedule, "module", isDisplayModule) ||
+    hasProperty(schedule, "module", isDisplayModule) &&
     hasProperty(schedule, "day", isDisplaySpecialDay)
   );
 };
@@ -85,8 +85,8 @@ export const isEditableNormalSchedule = (
   schedule: object
 ): schedule is EditableNormalSchedule => {
   return (
-    hasProperty(schedule, "module", isEditableModule) ||
-    hasProperty(schedule, "day", isEditableNormalDay) ||
+    hasProperty(schedule, "module", isEditableModule) &&
+    hasProperty(schedule, "day", isEditableNormalDay) &&
     hasProperty(schedule, "period", isEditablePeriod)
   );
 };
@@ -95,7 +95,7 @@ export const isEditableSpecialSchedule = (
   schedule: object
 ): schedule is EditableSpecialSchedule => {
   return (
-    hasProperty(schedule, "module", isEditableModule) ||
+    hasProperty(schedule, "module", isEditableModule) &&
     hasProperty(schedule, "day", isEditableSpecialDay)
   );
 };
@@ -169,9 +169,9 @@ export const displayToSpecialSchedule = ({
 };
 
 export const displayToSchedule = (schedule: DisplaySchedule): Schedule => {
-  return isDisplaySpecialSchedule(schedule)
-    ? displayToSpecialSchedule(schedule)
-    : displayToNormalSchedule(schedule);
+  return isDisplayNormalSchedule(schedule)
+    ? displayToNormalSchedule(schedule)
+    : displayToSpecialSchedule(schedule);
 };
 
 export const displayToSchedules = (
