@@ -1,6 +1,6 @@
 import { RegisteredCourse } from "~/domain/course";
 import { NormalDay, SpecialDay } from "~/domain/day";
-import { Module } from "~/domain/module";
+import { Module, modules } from "~/domain/module";
 import { Period } from "~/domain/period";
 import { isNormalSchedule, isSpecialSchedule } from "~/domain/schedule";
 import { Tag } from "~/domain/tag";
@@ -30,7 +30,7 @@ export const getDisplayTimetable = <
       string,
       {
         normal: { module: M; day: ND; period: P }[];
-        special: { module: M; day: SD }[];
+        special: { module: Module; day: SD }[];
       }
     >
   >((map, course) => {
@@ -52,10 +52,10 @@ export const getDisplayTimetable = <
 
       if (
         isSpecialSchedule(schedule) &&
-        isContained(schedule.module, targetModules) &&
+        isContained(schedule.module, modules) &&
         isContained(schedule.day, targetSpecialDays)
       ) {
-        map[course.id]["special"].push(schedule as { module: M; day: SD });
+        map[course.id]["special"].push(schedule as { module: Module; day: SD });
       }
     });
 
