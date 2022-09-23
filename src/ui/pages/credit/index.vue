@@ -52,7 +52,7 @@
             item-key="id"
             :animation="250"
             handle=".tag-list-content__drag-icon"
-            :disabled="editingTagId"
+            :disabled="editingTagId != undefined"
             @update:model-value="onChangeOrder"
             @start="dragging = true"
             @end="dragging = false"
@@ -167,7 +167,7 @@
 
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch, watchEffect } from "vue";
 import draggable from "vuedraggable";
 import { academicYears } from "~/domain/year";
 import { creditToDisplay } from "~/presentation/presenters/credit";
@@ -248,7 +248,7 @@ const updateDisplayCreditTags = () => {
   displayCreditTags.value = reactive(
     getDisplayCreditTags(
       courses.value,
-      tags.value,
+      tags.value.sort((tagA, tagB) => tagA.order - tagB.order),
       year.value === 0 ? academicYears : [year.value]
     )
   );
