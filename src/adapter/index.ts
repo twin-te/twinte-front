@@ -10,7 +10,7 @@ import { FeedbackRepository } from "~/repositories/production/FeedbackRepository
 import { NewsRepository } from "~/repositories/production/NewsRepository";
 import { UserRepository } from "~/repositories/production/UserRepository";
 
-const dev = true;
+const dev = false;
 let ports: Ports | undefined = undefined;
 
 export const usePorts = (): Ports => {
