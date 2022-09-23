@@ -1,6 +1,6 @@
 import { computed, reactive } from "vue";
 import { Toast, ToastType } from "~/presentation/viewmodels/toast";
-import { deepCopy, deleteElementInArray, uuid } from "~/utils";
+import { deepCopy, deleteElementInArray, createId } from "~/utils";
 
 // state
 const toasts = reactive<Toast[]>([]);
@@ -20,7 +20,7 @@ export const displayToast = (
   text: string,
   option?: { displayPeriod?: number; type?: ToastType }
 ) => {
-  const id = uuid();
+  const id = createId();
   const displayPeriod = option?.displayPeriod ?? 3000;
   const type = option?.type ?? "danger";
 

@@ -22,7 +22,7 @@ import {
   deleteElementInArray,
   isEqualSet,
   updateElementInArray,
-  uuid,
+  createId,
 } from "~/utils";
 
 export class CourseRepositoryInMemory implements ICourseRepository {
@@ -173,7 +173,7 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     RegisteredCourse | UnauthorizedError | NetworkError | InternalServerError
   > {
     const newCourse: RegisteredCourse = {
-      id: uuid(),
+      id: createId(),
       ...course,
     };
 
@@ -263,7 +263,7 @@ export class CourseRepositoryInMemory implements ICourseRepository {
     name: string
   ): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
     const newTag = {
-      id: uuid(),
+      id: createId(),
       name,
       order: this.#tags.length,
     };

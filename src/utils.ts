@@ -37,7 +37,7 @@ export const isEqualSet = <T>(s1: Set<T>, s2: Set<T>): boolean => {
   return s1.size === s2.size && [...s1].every((el) => s2.has(el));
 };
 
-export const uuid = (): string => {
+export const createId = (): string => {
   return (
     new Date().getTime().toString(16) +
     "-" +

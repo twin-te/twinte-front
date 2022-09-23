@@ -1,7 +1,7 @@
-import { uuid } from "~/utils";
+import { createId } from "~/utils";
 
 export const createNewTagId = (): string => {
-  return `new-tag-${uuid()}`;
+  return `new-tag-${createId()}`;
 };
 
 export const isNewTagId = (id: string): boolean => {

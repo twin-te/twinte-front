@@ -1,5 +1,5 @@
 import { User } from "~/domain/user";
-import { deepCopy, uuid } from "~/utils";
+import { deepCopy, createId } from "~/utils";
 import { UserRepository } from "../production/UserRepository";
 
 export class UserRepositoryInMemory extends UserRepository {
@@ -8,7 +8,7 @@ export class UserRepositoryInMemory extends UserRepository {
   constructor() {
     super();
     this.#user = {
-      id: uuid(),
+      id: createId(),
       name: "Twin:te",
     };
   }
