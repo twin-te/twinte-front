@@ -45,9 +45,7 @@ import { computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { registeredCourseToDisplay } from "~/presentation/presenters/course";
 import { creditToDisplay } from "~/presentation/presenters/credit";
-import CreditCourseListContent, {
-  CreditCourseListContentState,
-} from "~/ui/components/CreditCourseListContent.vue";
+import CreditCourseListContent from "~/ui/components/CreditCourseListContent.vue";
 import IconButton from "~/ui/components/IconButton.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
 import { createNewTagId } from "~/ui/shared";
@@ -62,6 +60,7 @@ import { createTag, getAllTags, getTagById } from "~/ui/store/tag";
 import { initializeObject } from "~/utils";
 import type { DisplayRegisteredCourse } from "~/presentation/viewmodels/course";
 import type { DisplayCourseTag } from "~/presentation/viewmodels/tag";
+import type { CreditCourseListContentState } from "~/ui/components/CreditCourseListContent.vue";
 
 const route = useRoute();
 

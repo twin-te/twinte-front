@@ -167,7 +167,7 @@
 
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
-import { computed, reactive, ref, watch, watchEffect } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import draggable from "vuedraggable";
 import { academicYears } from "~/domain/year";
 import { creditToDisplay } from "~/presentation/presenters/credit";

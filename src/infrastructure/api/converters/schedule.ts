@@ -54,12 +54,16 @@ export const apiToSchedules = (
     if (isSpecialDay(day)) {
       specialTimetable[module][day] = true;
       roomNames.forEach((roomName) => {
-        roomNameToSchedules[roomName].push({ module, day });
+        if (roomName in roomNameToSchedules)
+          roomNameToSchedules[roomName].push({ module, day });
+        else roomNameToSchedules[roomName] = [{ module, day }];
       });
     } else if (isPeriod(period)) {
       normalTimetable[module][day][period] = true;
       roomNames.forEach((roomName) => {
-        roomNameToSchedules[roomName].push({ module, day, period });
+        if (roomName in roomNameToSchedules)
+          roomNameToSchedules[roomName].push({ module, day, period });
+        else roomNameToSchedules[roomName] = [{ module, day, period }];
       });
     }
   });

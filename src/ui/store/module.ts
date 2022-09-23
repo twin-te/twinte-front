@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { computed, ref } from "vue";
 import { usePorts } from "~/adapter";
 import UseCase from "~/application/usecases";
-import { isResultError } from "~/domain/error";
+import { isResultError, UnauthorizedError } from "~/domain/error";
 import { BaseModule, isBaseModule } from "~/domain/module";
 import { currentAcademicYear } from "~/domain/year";
 import { deepCopy } from "~/utils";
@@ -33,6 +33,7 @@ export const getCurrentModule = async () => {
   if (currentModule) return currentModule;
 
   const result = await UseCase.getCurrentModule(ports)(currentAcademicYear);
+  if (result instanceof UnauthorizedError) return "SpringA";
   if (isResultError(result)) throw result;
   return isBaseModule(result)
     ? result

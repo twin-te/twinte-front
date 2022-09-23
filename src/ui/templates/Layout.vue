@@ -20,14 +20,18 @@ await setAuthState();
 /** welcome modal */
 const [
   isVisibleWelcomeModal,
-  ,
+  openWelcomeModal,
   closeWelcomeModal,
-  ,
+  toggleWelcomeModal,
   setWelcomeModal,
 ] = useSwitch(false);
-watch(authState, () => {
-  setWelcomeModal(!authState.value);
-});
+watch(
+  authState,
+  () => {
+    setWelcomeModal(!authState.value);
+  },
+  { immediate: true }
+);
 
 /** toasts */
 const toasts = getToasts();

@@ -262,7 +262,6 @@ import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
 import { isResultError } from "~/domain/error";
 import { modules } from "~/domain/module";
-import { Schedule } from "~/domain/schedule";
 import { initializeTimetable } from "~/domain/timetable";
 import { courseToDisplay } from "~/presentation/presenters/course";
 import {
@@ -288,6 +287,7 @@ import { useSwitch } from "~/ui/hooks/useSwitch";
 import { addCoursesByCodes } from "~/ui/store/course";
 import { getApplicableYear } from "~/ui/store/year";
 import { deleteElementInArray } from "~/utils";
+import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
 const ports = usePorts();

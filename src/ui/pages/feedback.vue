@@ -77,6 +77,7 @@
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
 import {
@@ -92,7 +93,6 @@ import Label from "~/ui/components/Label.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
 import TextFieldMultilines from "~/ui/components/TextFieldMultilines.vue";
 import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
-import router from "../route";
 import { displayToast } from "../store/toast";
 import type { FeedbackType } from "~/domain/feedback";
 import type { DisplayFeedbackType } from "~/presentation/viewmodels/feedback";
@@ -102,6 +102,7 @@ useHead({
 });
 
 const ports = usePorts();
+const router = useRouter();
 
 /** feedback */
 const feedbackType = ref<FeedbackType>("Bug");
