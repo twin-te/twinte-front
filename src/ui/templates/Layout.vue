@@ -80,7 +80,7 @@ const toasts = getToasts();
           size="medium"
           layout="fill"
           color="primary"
-          @click="$router.push(`/login?redirectUrl=${location.href}`)"
+          @click="$router.push('/login?redirectUrl=https://app.twinte.net/')"
         >
           ログインする
         </Button>
