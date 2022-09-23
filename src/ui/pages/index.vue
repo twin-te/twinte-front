@@ -247,13 +247,9 @@ import { useHead } from "@vueuse/head";
 import dayjs from "dayjs";
 import { computed, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
-import { usePorts } from "~/adapter";
-import UseCase from "~/application/usecases";
-import { NormalDay, normalDays, specialDays } from "~/domain/day";
-import { isResultError } from "~/domain/error";
-import { baseModules, isBaseModule } from "~/domain/module";
+import { normalDays, specialDays } from "~/domain/day";
+import { baseModules } from "~/domain/module";
 import { daytimePeriods, periods } from "~/domain/period";
-import { currentAcademicYear } from "~/domain/year";
 import {
   dayMap,
   normalDayMap,
@@ -275,12 +271,13 @@ import { useSwitch } from "../hooks/useSwitch";
 import { toggleCourseType, setModule } from "../store";
 import { getCoursesByYear, setCoursesByYear } from "../store/course";
 import { getCourseType } from "../store/courseType";
-import { getModule } from "../store/module";
+import { getModule, getCurrentModule } from "../store/module";
 import { getUnreadNews, setNews, updateNewsRead } from "../store/news";
 import { getSetting, setSetting } from "../store/setting";
 import { toggleSidebar } from "../store/sidebar";
 import { getAllTags } from "../store/tag";
 import { getApplicableYear, setApplicableYear } from "../store/year";
+import type { NormalDay } from "~/domain/day";
 import type { BaseModule } from "~/domain/module";
 import type { Period } from "~/domain/period";
 import type { DisplayRegisteredCourse } from "~/presentation/viewmodels/course";
@@ -290,7 +287,6 @@ useHead({
   title: "Twin:te | ホーム",
 });
 
-const ports = usePorts();
 const router = useRouter();
 
 /** year */
@@ -307,20 +303,9 @@ const courseType = getCourseType();
 await setSetting();
 const setting = getSetting();
 
-/** current module */
-const result = await UseCase.getCurrentModule(ports)(currentAcademicYear);
-if (isResultError(result)) throw result;
-const currentModule: BaseModule = isBaseModule(result)
-  ? result
-  : result === "SummerVacation"
-  ? "SpringC"
-  : dayjs().month() < 3
-  ? "FallC"
-  : "SpringA";
-
 /** module */
-const module = getModule();
-setModule(currentModule);
+const module = await getModule();
+const currentModule: BaseModule = await getCurrentModule();
 
 /** page header */
 const today = dayjs();
