@@ -1,12 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
-
-type Props = {
-  modelValue: string;
-  placeholder: string;
-  height: number;
-  iconName: string;
-};
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   props: {
@@ -18,66 +11,46 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    height: {
-      type: Number,
-      default: 4, // 単位: rem
+    type: {
+      type: String as PropType<"normal" | "slim">,
+      default: "normal",
     },
-    // 必要ない場合は空欄
-    iconName: {
-      type: String,
-      default: "",
+    added: {
+      type: Boolean,
+      default: false,
     },
   },
-  emits: ["update:modelValue", "enter-text-field"],
-  setup: (props: Props, { emit }) => {
-    const hasIcon = () => {
-      return props.iconName !== "";
-    };
-
+  emits: ["update:modelValue", "enter-text-field", "close"],
+  setup: (_, { emit }) => {
     const handleInput = (e: Event) => {
-      if (!(e.target instanceof HTMLInputElement)) {
-        return;
-      }
+      if (!(e.target instanceof HTMLInputElement)) return;
       emit("update:modelValue", e.target.value);
     };
 
-    const handleEnter = (e: KeyboardEvent) => {
-      emit("enter-text-field", e);
-    };
-
-    return { hasIcon, handleInput, handleEnter };
+    return { handleInput };
   },
 });
 </script>
 
 <template>
-  <div
-    class="text-field text-field__box"
-    :style="{
-      height: `${height}rem`,
-    }"
-  >
-    <div
-      :class="{
-        'text-field': true,
-        'text-field__icon': true,
-        'material-icons': true,
-        '--no-icon': hasIcon,
-      }"
-    >
-      {{ iconName }}
+  <div :class="{ 'text-field': true, [`text-field--${type}`]: true }">
+    <div class="text-field__box">
+      <input
+        class="text-field__input"
+        type="text"
+        :value="modelValue"
+        :placeholder="placeholder"
+        @input="handleInput"
+        @keydown.enter="$emit('enter-text-field')"
+      />
     </div>
-    <input
-      type="text"
-      :value="modelValue"
-      :class="{
-        'text-field': true,
-        'text-field__input': true,
-      }"
-      :placeholder="placeholder"
-      @input="handleInput"
-      @keydown.enter="handleEnter"
-    />
+    <div
+      v-if="added"
+      class="text-field__icon material-icons"
+      @click="$emit('close')"
+    >
+      close
+    </div>
   </div>
 </template>
 
@@ -85,36 +58,52 @@ export default defineComponent({
 @import "~/ui/styles";
 
 .text-field {
-  background: getColor(--color-base);
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+
   &__box {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     padding: 0rem $spacing-4;
     box-shadow: $shadow-input-concave;
     border-radius: $radius-input;
+    background: getColor(--color-base);
   }
-  &__icon {
-    margin-right: $spacing-1;
-    color: getColor(--color-unselected);
-    font-size: 2.2rem;
-    font-family: Material Icons;
-    .--no-icon {
-      display: none;
-    }
+
+  &--normal {
+    height: 4rem;
   }
+
+  &--slim {
+    height: 3.4rem;
+  }
+
   &__input {
     width: 100%;
+    height: 2rem;
     font-size: 1.6rem; //スマホでのinput入力時拡大防止
     transform: scale(0.875); //$text-mediumにする
     margin: 0 -6%; //scaleで縮んだ表示領域の調整
     line-height: $fit;
     color: getColor(--color-text-main);
+    background: getColor(--color-base);
+
     &:focus {
       outline: none;
     }
+
     &::placeholder {
       color: getColor(--color-unselected);
     }
+  }
+
+  &__icon {
+    color: getColor(--color-button-gray);
+    font-size: 2rem;
+    @include button-cursor;
   }
 }
 </style>

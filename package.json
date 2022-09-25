@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.1",
+    "@storybook/addon-actions": "^6.5.12",
     "@storybook/addon-essentials": "^6.4.19",
     "@storybook/addon-links": "^6.4.19",
     "@storybook/vue3": "^6.4.19",
