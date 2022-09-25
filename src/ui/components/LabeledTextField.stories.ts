@@ -1,6 +1,6 @@
 import { Story } from "@storybook/vue3";
-import LabeledTextField from "~/ui/components/LabeledTextField.vue";
-import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
+import LabeledTextField from "./LabeledTextField.vue";
+import TextFieldSingleLine from "./TextFieldSingleLine.vue";
 
 export default {
   component: LabeledTextField,
