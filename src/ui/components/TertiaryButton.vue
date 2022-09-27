@@ -1,14 +1,27 @@
-<script setup lang="ts">
-const props = defineProps<{
-  color: "ghost" | "primary";
-  iconPosition: "left" | "right";
-}>();
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+export default defineComponent({
+  name: "TertiaryButton",
+  props: {
+    color: {
+      type: String as PropType<"ghost" | "primary">,
+      default: "normal",
+    },
+    iconPosition: {
+      type: String as PropType<"left" | "right">,
+      default: "left",
+    },
+  },
+  emits: ["click"],
+});
 </script>
 
 <template>
   <div
     :class="{ 'tertiary-button': true, [`tertiary-button--${color}`]: true }"
     :style="{ flexDirection: iconPosition == 'left' ? 'row' : 'row-reverse' }"
+    @click="$emit('click')"
   >
     <div class="tertiary-button__icon material-icons">
       <slot name="icon"></slot>
