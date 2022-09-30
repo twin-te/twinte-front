@@ -39,16 +39,21 @@
               ></TextFieldSingleLine>
             </LabeledTextField>
           </section>
-          <!-- <section class="main__instructor">
-            <LabeledTextField label="担当教員">
-              <TextFieldSingleLine v-model="editableCourse.instructor" placeholder="例) 筑波 太郎"></TextFieldSingleLine>
-            </LabeledTextField>
-          </section> -->
-          <!-- <section class="main__room">
-            <LabeledTextField label="授業場所">
-              <TextFieldSingleLine v-model="room" placeholder="例) 研究室"></TextFieldSingleLine>
-            </LabeledTextField>
-          </section> -->
+          <section class="main__instructors">
+            <MultiTextFieldEditor
+              v-model:elements="instructors"
+              placeholder="例) 筑波 太郎"
+              label="担当教員"
+            ></MultiTextFieldEditor>
+          </section>
+          <section class="main__room">
+            <RoomEditor
+              v-model:rooms="rooms"
+              :schedules="targetSchedules"
+              placeholder="例) 研究室"
+              label="授業場所"
+            ></RoomEditor>
+          </section>
           <section class="main__method method">
             <Label value="授業形式"></Label>
             <div class="method__checkboxes">
@@ -107,6 +112,7 @@ import { computed, ComputedRef, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { NotFoundError } from "~/domain/error";
 import { methods } from "~/domain/method";
+import { sortSchedules, removeDuplicateSchedules } from "~/domain/schedule";
 import {
   creditToDisplay,
   displayToCredit,
@@ -114,6 +120,7 @@ import {
 } from "~/presentation/presenters/credit";
 import { validateInstructors } from "~/presentation/presenters/instructor";
 import { methodMap } from "~/presentation/presenters/method";
+import { validateRooms } from "~/presentation/presenters/room";
 import {
   schedulesToDisplay,
   displayToSchedules,
@@ -125,7 +132,9 @@ import IconButton from "~/ui/components/IconButton.vue";
 import Label from "~/ui/components/Label.vue";
 import LabeledTextField from "~/ui/components/LabeledTextField.vue";
 import Modal from "~/ui/components/Modal.vue";
+import MultiTextFieldEditor from "~/ui/components/MultiTextFieldEditor.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
+import RoomEditor from "~/ui/components/RoomEditor.vue";
 import ScheduleEditer, {
   useScheduleEditor,
 } from "~/ui/components/ScheduleEditer.vue";
@@ -133,6 +142,7 @@ import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { getCourseById, setCourseById, updateCourse } from "~/ui/store/course";
 import type { RegisteredCourse } from "~/domain/course";
+import type { DisplaySchedule } from "~/presentation/viewmodels/schedule";
 
 const route = useRoute();
 const router = useRouter();
@@ -150,11 +160,30 @@ const course = getCourseById(id) as ComputedRef<RegisteredCourse>;
 /** name */
 const name = ref(course.value.name);
 
+/** schedule editor */
+const {
+  schedules: editableSchedules,
+  addSchedule,
+  removeSchedule,
+  updateSchedules,
+} = useScheduleEditor(schedulesToDisplay(course.value.schedules));
+
 /** credit */
 const credit = ref(creditToDisplay(course.value.credit));
 
 /** instructors */
-const instructors = reactive(course.value.instructors);
+const instructors = ref([...course.value.instructors]);
+
+/** room */
+const targetSchedules = computed(() =>
+  sortSchedules(
+    removeDuplicateSchedules(
+      displayToSchedules(editableSchedules.filter(isDisplaySchedule))
+    )
+  )
+);
+
+const rooms = ref([...course.value.rooms]);
 
 /** checkboxes */
 const checkboxContents = reactive(
@@ -165,43 +194,38 @@ const checkboxContents = reactive(
   }))
 );
 
-/** schedule editor */
-const {
-  schedules: editableSchedules,
-  addSchedule,
-  removeSchedule,
-  updateSchedules,
-} = useScheduleEditor(schedulesToDisplay(course.value.schedules));
-
 /** save button */
 const buttonState = computed(() => {
   return name.value !== "" &&
-    validateInstructors(instructors) &&
+    validateInstructors(instructors.value) &&
     validateCredit(credit.value) &&
+    validateRooms(rooms.value) &&
     editableSchedules.every(isDisplaySchedule)
     ? "default"
     : "disabled";
 });
 
 const save = async () => {
-  if (
-    name.value !== "" &&
-    validateInstructors(instructors) &&
-    validateCredit(credit.value) &&
-    editableSchedules.every(isDisplaySchedule)
-  ) {
-    const schedules = displayToSchedules(editableSchedules);
-    const methods = checkboxContents
-      .filter(({ checked }) => checked)
-      .map(({ key }) => key);
-    await updateCourse(id, {
-      name: name.value,
-      credit: displayToCredit(credit.value),
-      schedules,
-      methods,
-    });
-    router.push(`/course/${id}`);
-  }
+  if (buttonState.value === "disabled") return;
+
+  const schedules = sortSchedules(
+    removeDuplicateSchedules(
+      displayToSchedules(editableSchedules as DisplaySchedule[])
+    )
+  );
+  const methods = checkboxContents
+    .filter(({ checked }) => checked)
+    .map(({ key }) => key);
+
+  await updateCourse(id, {
+    name: name.value,
+    credit: displayToCredit(credit.value),
+    instructors: instructors.value,
+    schedules,
+    methods,
+    rooms: rooms.value,
+  });
+  router.push(`/course/${id}`);
 };
 
 /** modal */
@@ -219,9 +243,11 @@ const onClickIconButton = () => {
 
 <style scoped lang="scss">
 @import "~/ui/styles";
+
 .edit {
   @include max-width;
 }
+
 .main {
   margin-top: $spacing-5;
   &__mask {
@@ -252,6 +278,7 @@ const onClickIconButton = () => {
     display: inline-block;
   }
 }
+
 .method {
   &__checkboxes {
     display: grid;
@@ -259,6 +286,7 @@ const onClickIconButton = () => {
     margin-top: 1.4rem;
   }
 }
+
 .leave-page-modal .modal {
   .button {
     width: calc(50% - $spacing-3);

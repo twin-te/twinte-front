@@ -1,7 +1,15 @@
 import { hasProperty } from "~/utils";
-import { isNormalDay, isSpecialDay, NormalDay, SpecialDay } from "./day";
-import { isModule, Module } from "./module";
-import { isPeriod, Period } from "./period";
+import {
+  isNormalDay,
+  isSpecialDay,
+  NormalDay,
+  normalDays,
+  SpecialDay,
+  specialDays,
+} from "./day";
+import { isModule, Module, modules } from "./module";
+import { isPeriod, Period, periods } from "./period";
+import { schedulesToTimetable } from "./timetable";
 
 export type NormalSchedule = {
   module: Module;
@@ -58,4 +66,36 @@ export const isEqualSchedule = (
   }
 
   return false;
+};
+
+export const removeDuplicateSchedules = (schedules: Schedule[]) => {
+  return schedules.reduce<Schedule[]>((ret, target) => {
+    if (ret.every((schedule) => !isEqualSchedule(schedule, target))) {
+      ret.push(target);
+    }
+    return ret;
+  }, []);
+};
+
+export const sortSchedules = (schedules: Schedule[]): Schedule[] => {
+  const timetable = schedulesToTimetable(schedules);
+  const ret: Schedule[] = [];
+
+  modules.forEach((module) => {
+    normalDays.forEach((day) => {
+      periods.forEach((period) => {
+        if (timetable.normal[module][day][period]) {
+          ret.push({ module, day, period });
+        }
+      });
+    });
+
+    specialDays.forEach((day) => {
+      if (timetable.special[module][day]) {
+        ret.push({ module, day });
+      }
+    });
+  });
+
+  return ret;
 };
