@@ -58,7 +58,6 @@ export const setCourseById = async (id: string) => {
 export const addCoursesByCodes = async (
   inputData: { year: number; code: string }[]
 ) => {
-  console.log("addCoursesByCodes", courses.length);
   const result = await UseCase.addCoursesByCodes(ports)(inputData);
   if (isResultError(result)) throw result;
   addElementsInArray(courses, result);

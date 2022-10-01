@@ -13,7 +13,6 @@
       <template #right-button-icon>
         <div v-click-away="closePopup">
           <ToggleIconButton
-            ref="btnRef"
             class="header__right-button-icon"
             size="large"
             color="normal"
@@ -181,7 +180,7 @@
 </template>
 
 <script setup lang="ts">
-import { ComputedRef, ref, watch, watchEffect } from "vue";
+import { ComputedRef, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { NotFoundError } from "~/domain/error";
 import { registeredCourseToDisplay } from "~/presentation/presenters/course";

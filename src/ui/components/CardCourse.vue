@@ -66,7 +66,7 @@ export default defineComponent({
           @clickCheckbox.stop="emitCheckboxEvent"
         ></Checkbox>
       </div>
-      <div class="card-course__courseId">{{ course.id }}</div>
+      <div class="card-course__courseId">{{ course.code }}</div>
       <div class="card-course__courseName">{{ course.name }}</div>
       <div
         :class="{
