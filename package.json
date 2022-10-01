@@ -7,7 +7,7 @@
     "typecheck": "vue-tsc --noEmit",
     "build": "yarn typecheck && vite build",
     "build:staging": "vite build --mode staging",
-    "preview": "yarn typecheck && vite preview",
+    "preview": "yarn build && vite preview --port 8080",
     "format": "prettier ./src --check",
     "format:fix": "prettier ./src --write",
     "lint": "eslint --ext .ts,.tsx,.vue ./src",
