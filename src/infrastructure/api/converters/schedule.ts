@@ -50,7 +50,8 @@ export const apiToSchedules = (
     const period = String(numPeriod);
     const roomNames = parseRoom(rowRoom);
 
-    if (module === "Unknown" || day === "Unknown") return;
+    // Bug : Annual is invalid module. Backend will be remove Annual in the future.
+    if (module === "Unknown" || day === "Unknown" || module === "Annual") return;
     if (isSpecialDay(day)) {
       specialTimetable[module][day] = true;
       roomNames.forEach((roomName) => {
