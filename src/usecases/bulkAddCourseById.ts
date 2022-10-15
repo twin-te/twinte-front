@@ -22,10 +22,8 @@ export const bulkAddCourseById = (ports: Ports) => async (codes: string[]) => {
     });
 
   if (isValidStatus(status)) {
-    const cachedCourses = await getCourseListByYear(ports)(year);
-    const addedCourses = Array.isArray(body) ? body : [body];
-    const newCourses = [...cachedCourses, ...addedCourses];
-    store.commit("setCourses", { year, newCourses });
+    const courses = await getCourseListByYear(ports)(year);
+    store.commit("setCourses", { year, courses });
   } else {
     console.error(body);
     throw new NetworkAccessError(originalResponse);
