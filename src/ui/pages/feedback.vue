@@ -45,16 +45,13 @@
           ></TextFieldMultilines>
         </section>
         <section class="feedback__row">
-          <Label
-            value="連絡先メールアドレス or Twitterアカウント"
-            mandatory
-          ></Label>
+          <Label value="連絡先メールアドレス" mandatory></Label>
           <div class="feedback__note">
             より快適なサービスを提供するため開発チームより連絡をさせていただくことがあります。
           </div>
           <TextFieldSingleLine
             v-model="email"
-            placeholder="xxx@example.com / @te_twin"
+            placeholder="xxx@example.com"
           ></TextFieldSingleLine>
         </section>
       </div>
