@@ -44,15 +44,14 @@
             height="20rem"
           ></TextFieldMultilines>
         </section>
-        <section
-          v-if="['Bug', 'Contact'].includes(feedbackType)"
-          class="feedback__row"
-        >
+        <section class="feedback__row">
           <Label
             value="連絡先メールアドレス or Twitterアカウント"
-            :mandatory="feedbackType === 'Contact'"
+            mandatory
           ></Label>
-          <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
+          <div class="feedback__note">
+            より快適なサービスを提供するため開発チームより連絡をさせていただくことがあります。
+          </div>
           <TextFieldSingleLine
             v-model="email"
             placeholder="xxx@example.com / @te_twin"
@@ -120,14 +119,6 @@ const placeholder: Record<FeedbackType, string> = {
   NewFeature:
     "例）学部生ですが、検索で大学院の授業ばかりでてきてしまうので大学院の授業を除外して検索する機能がほしいです。",
   Contact: "例）Twin:te の発音はツインテですか？トゥインテですか？",
-  Other: "",
-};
-
-const emailNote: Record<FeedbackType, string> = {
-  Bug:
-    "より詳しい原因解明のため開発チームから連絡を差し上げる場合がございます。ご協力いただける場合はメールアドレスまたはTwitterアカウントをご記入ください。",
-  NewFeature: "",
-  Contact: "返信用のメールアドレスまたはTwitterアカウントをご記入下さい。",
   Other: "",
 };
 
