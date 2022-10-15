@@ -13,7 +13,7 @@ export default defineComponent({
   },
   props: {
     elements: {
-      type: Object as PropType<string[]>,
+      type: Array as PropType<string[]>,
       required: true,
     },
     placeholder: {
