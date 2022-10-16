@@ -1,12 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import IconButton from "./IconButton.vue";
-import PageHeader from "./PageHeader.vue";
+import { useRouter } from "vue-router";
+import Button from "./Button.vue";
 
 export default defineComponent({
   components: {
-    PageHeader,
-    IconButton,
+    Button,
   },
   props: {
     errorMessage: {
@@ -15,30 +14,34 @@ export default defineComponent({
     },
   },
   setup: () => {
+    const router = useRouter();
+
     const reload = () => {
       location.reload();
     };
-    return { reload };
+
+    const goToHome = () => {
+      router.push("/");
+    };
+
+    const goToFeedback = () => {
+      router.push("/feedback");
+    };
+
+    return { reload, goToHome, goToFeedback };
   },
 });
 </script>
 
 <template>
-  <PageHeader>
-    <template #left-button-icon>
-      <IconButton
-        size="large"
-        color="normal"
-        icon-name="arrow_back"
-        @click="reload"
-      ></IconButton>
-    </template>
-    <template #title></template>
-  </PageHeader>
   <div class="error">
     <div class="error__icon material-icons">error_outline</div>
     <div class="error__message">
       {{ errorMessage }}
+    </div>
+    <div class="error__bottom">
+      <Button @click="goToHome">ホームに戻る</Button>
+      <Button @click="goToFeedback">フィードバックを送る</Button>
     </div>
   </div>
 </template>
@@ -47,16 +50,21 @@ export default defineComponent({
 @import "~/ui/styles";
 
 .error {
-  @include center-asolute;
   @include center-flex(column);
-  width: 80%;
+  width: 100%;
+  height: 100vh;
+  
   &__icon {
     font-size: 10rem;
     opacity: 0.2;
   }
   &__message {
-    margin-top: 1rem;
+    margin: 1rem 0 4rem;
     opacity: 0.7;
+  }
+  &__bottom {
+    @include center-flex(column);
+    gap: 2rem;
   }
 }
 </style>
