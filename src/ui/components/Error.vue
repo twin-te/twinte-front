@@ -53,7 +53,8 @@ export default defineComponent({
   @include center-flex(column);
   width: 100%;
   height: 100vh;
-  
+  background: var(--base-liner);
+  color: var(--text-sub-light);
   &__icon {
     font-size: 10rem;
     opacity: 0.2;
