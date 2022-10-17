@@ -9,7 +9,9 @@
       </Layout>
     </template>
     <template #fallback>
-      <div class="loading">now loading...</div>
+      <div class="loading">
+        <p class="loading__text">Now loading...</p>
+      </div>
     </template>
   </Suspense>
 </template>
@@ -65,7 +67,10 @@ onErrorCaptured((error) => {
 @import "~/ui/styles";
 
 .loading {
-  @include center-asolute;
-  opacity: 0.5;
+  @include center-flex;
+  width: 100%;
+  height: 100vh;
+  background: var(--base-liner);
+  color: var(--text-sub-light);
 }
 </style>
