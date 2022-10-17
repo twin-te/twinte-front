@@ -207,11 +207,10 @@ const buttonState = computed(() => {
 
 const save = async () => {
   if (buttonState.value === "disabled") return;
+  if (!editableSchedules.every(isDisplaySchedule)) return;
 
   const schedules = sortSchedules(
-    removeDuplicateSchedules(
-      displayToSchedules(editableSchedules as DisplaySchedule[])
-    )
+    removeDuplicateSchedules(displayToSchedules(editableSchedules))
   );
   const methods = checkboxContents
     .filter(({ checked }) => checked)
