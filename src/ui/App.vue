@@ -32,15 +32,6 @@ setSetting();
 
 const router = useRouter();
 
-/** unregister service worker (v2) */
-onMounted(() => {
-  navigator.serviceWorker.getRegistrations().then(function (registrations) {
-    for (let registration of registrations) {
-      registration.unregister();
-    }
-  });
-});
-
 /** error */
 const errorMessage = ref("");
 
