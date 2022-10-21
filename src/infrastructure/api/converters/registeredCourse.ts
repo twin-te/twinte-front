@@ -60,8 +60,12 @@ const updateApiCourseProp = <
     v2: Required<ApiType.RegisteredCourse>[P]
   ) => boolean
 ): void => {
-  if (apiCourse.course && compareFn(apiCourse.course[prop], newValue)) return;
-  apiCourse[prop] = newValue;
+  if (
+    prop in apiCourse ||
+    (apiCourse.course && !compareFn(apiCourse.course[prop], newValue))
+  ) {
+    apiCourse[prop] = newValue;
+  }
 };
 
 /**
