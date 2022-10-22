@@ -1,5 +1,5 @@
 import { Story } from "@storybook/vue3";
-import Loader from "~/ui/components/Loader.vue";
+import Loader from "./Loader.vue";
 
 export default {
   component: Loader,

@@ -19,7 +19,7 @@
               <TextFieldSingleLine
                 v-model.trim="code"
                 placeholder="例）GA -0"
-                :height="3.4"
+                type="slim"
                 @enter-text-field="search"
               >
               </TextFieldSingleLine>
@@ -30,7 +30,7 @@
               <TextFieldSingleLine
                 v-model.trim="keyword"
                 placeholder="例）情報 倫理"
-                :height="3.4"
+                type="slim"
                 @enterTextField="search"
               ></TextFieldSingleLine>
             </LabeledTextField>

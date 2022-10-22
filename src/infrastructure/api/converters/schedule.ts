@@ -89,10 +89,12 @@ export const apiToSchedules = (
     });
   });
 
-  const rooms: Room[] = getKeysFromObj(roomNameToSchedules).map((roomName) => ({
-    name: roomName,
-    schedules: roomNameToSchedules[roomName],
-  }));
+  const rooms: Room[] = getKeysFromObj(roomNameToSchedules)
+    .filter((roomName) => roomName !== "")
+    .map((roomName) => ({
+      name: roomName,
+      schedules: roomNameToSchedules[roomName],
+    }));
 
   return {
     schedules,

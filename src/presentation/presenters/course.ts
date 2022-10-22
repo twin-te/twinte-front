@@ -1,4 +1,5 @@
 import { Course, RegisteredCourse } from "~/domain/course";
+import { isSpecialSchedule } from "~/domain/schedule";
 import { Tag } from "~/domain/tag";
 import { deepCopy } from "~/utils";
 import { DisplayCourse, DisplayRegisteredCourse } from "../viewmodels/course";
@@ -42,7 +43,9 @@ export const registeredCourseToDisplay = (
     name: course.name,
     schedule: {
       full: schedulesToFullString(course.schedules),
-      onlyModule: schedulesToModuleStrings(course.schedules),
+      onlyModule: schedulesToModuleStrings(
+        course.schedules.filter(isSpecialSchedule)
+      ),
     },
     credit: creditToDisplay(course.credit),
     instructor: instructorsToDisplay(course.instructors),

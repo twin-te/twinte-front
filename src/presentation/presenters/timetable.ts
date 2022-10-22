@@ -76,10 +76,25 @@ export const getDisplayTimetable = <
   );
 
   courses.forEach((course) => {
-    const displayCourse = registeredCourseToDisplay(course, tags);
-
     courseIdToSchedules[course.id]["normal"].forEach(
       ({ module, day, period }) => {
+        const displayCourse = registeredCourseToDisplay(
+          {
+            ...course,
+            rooms: course.rooms.filter(
+              ({ schedules }) =>
+                schedules
+                  .filter(isNormalSchedule)
+                  .filter(
+                    (schedule) =>
+                      schedule.module === module &&
+                      schedule.day === day &&
+                      schedule.period === period
+                  ).length > 0
+            ),
+          },
+          tags
+        );
         diaplayNormalTimetable[module][day][period].push(displayCourse);
       }
     );
@@ -87,6 +102,18 @@ export const getDisplayTimetable = <
     removeDuplicate(
       courseIdToSchedules[course.id]["special"].map(({ day }) => day)
     ).forEach((day) => {
+      const displayCourse = registeredCourseToDisplay(
+        {
+          ...course,
+          rooms: course.rooms.filter(
+            ({ schedules }) =>
+              schedules
+                .filter(isSpecialSchedule)
+                .filter((schedule) => schedule.day === day).length > 0
+          ),
+        },
+        tags
+      );
       displaySpecialTimetable[day].push(displayCourse);
     });
 
@@ -94,6 +121,7 @@ export const getDisplayTimetable = <
       courseIdToSchedules[course.id]["normal"].length === 0 &&
       courseIdToSchedules[course.id]["special"].length === 0
     ) {
+      const displayCourse = registeredCourseToDisplay(course, tags);
       displaySpecialTimetable["Others"].push(displayCourse);
     }
   });
