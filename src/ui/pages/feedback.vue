@@ -49,9 +49,15 @@
           <div class="feedback__note">
             より快適なサービスを提供するため開発チームより連絡をさせていただくことがあります。
           </div>
+          <div class="feedback__checkbox">
+            <CheckContent v-model:checked="allowReplies"
+              >運営からの返信を許可する</CheckContent
+            >
+          </div>
           <TextFieldSingleLine
             v-model="email"
             placeholder="xxx@example.com"
+            :disabled="!allowReplies"
           ></TextFieldSingleLine>
         </section>
       </div>
@@ -82,6 +88,7 @@ import {
   displayFeedbackTypes,
 } from "~/presentation/presenters/feedback";
 import Button from "~/ui/components/Button.vue";
+import CheckContent from "~/ui/components/CheckContent.vue";
 import Dropdown from "~/ui/components/Dropdown.vue";
 import IconButton from "~/ui/components/IconButton.vue";
 import InputButtonFile from "~/ui/components/InputButtonFile.vue";
@@ -104,6 +111,7 @@ const router = useRouter();
 const feedbackType = ref<FeedbackType>("Bug");
 const screenShot = ref<File>();
 const feedbackContent = ref("");
+const allowReplies = ref(true);
 const email = ref("");
 
 const updateSelectedOption = (option: DisplayFeedbackType) => {
@@ -122,7 +130,8 @@ const placeholder: Record<FeedbackType, string> = {
 const ButtonState = computed(() => {
   if (
     feedbackContent.value === "" ||
-    (feedbackType.value === "Contact" && email.value === "")
+    (feedbackType.value === "Contact" &&
+      (email.value === "" || !allowReplies.value))
   )
     return "disabled";
   return "default";
@@ -133,7 +142,7 @@ const onClickButton = async () => {
     type: feedbackType.value,
     screenShots: screenShot.value ? [screenShot.value] : [],
     content: feedbackContent.value,
-    email: email.value,
+    email: allowReplies.value ? email.value : "",
   })
     .then(() => {
       displayToast("フィードバックを送信しました。ありがとうございます。", {
@@ -181,6 +190,9 @@ const onClickButton = async () => {
   &__note {
     @include text-description-sub;
     margin: 1rem 0;
+  }
+  &__checkbox {
+    margin: $spacing-2 0;
   }
 }
 </style>
