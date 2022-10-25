@@ -313,7 +313,7 @@ const calendar: PageHeaderCalendar = {
   schedule: "通常日課",
   month: today.month() + 1,
   day: today.date(),
-  week: normalDayMap[normalDays[today.day()]],
+  week: normalDayMap[normalDays[(today.day() + 6) % 7]],
 };
 
 /** popup */
