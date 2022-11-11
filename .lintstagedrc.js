@@ -5,7 +5,9 @@ const tsconfigFilename = "tsconfig.staged.json";
 
 const typecheckOnlyStaged = (stagedFilenames) => {
   const tsconfig = JSON.parse(fs.readFileSync("tsconfig.json"));
-  tsconfig.include = stagedFilenames;
+  tsconfig.include = stagedFilenames.filter((filename) =>
+    filename.includes("/src/")
+  );
   fs.writeFileSync(tsconfigFilename, JSON.stringify(tsconfig));
   return `yarn typecheck --project ${tsconfigFilename}`;
 };

@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "typecheck": "vue-tsc --noEmit",
-    "build": "yarn typecheck && vite build",
+    "typecheck": "yarn build-serviceworker --noEmit && vue-tsc --noEmit",
+    "build": "yarn typecheck && vite build && yarn build-serviceworker",
     "build:staging": "vite build --mode staging",
     "preview": "yarn build && vite preview --port 8080",
     "format": "prettier ./src --check",
@@ -15,6 +15,7 @@
     "test": "jest",
     "apigen": "rm -rf src/api && npx openapi2aspida",
     "prepare": "husky install && rimraf ./node_modules/@types/react",
+    "build-serviceworker": "tsc -p serviceworkers/tsconfig.json",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "yarn typecheck && build-storybook"
   },

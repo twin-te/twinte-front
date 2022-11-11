@@ -1,0 +1,18 @@
+{
+  "include": ["./**/*.ts"],
+  "compilerOptions": {
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "preserveValueImports": false,
+    "esModuleInterop": true,
+    "importsNotUsedAsValues": "remove",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"]
+    },
+    "lib": ["ES2021", "WebWorker"],
+    "types": ["node"],
+    "outDir": "../dist"
+  }
+}

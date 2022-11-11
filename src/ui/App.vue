@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { onErrorCaptured, onMounted, ref } from "vue";
+import { onErrorCaptured, ref } from "vue";
 import { useRouter } from "vue-router";
 import {
   InternalServerError,
@@ -31,6 +31,8 @@ import { setSetting } from "./store/setting";
 setSetting();
 
 const router = useRouter();
+
+navigator.serviceWorker.register("/fallback.js");
 
 /** error */
 const errorMessage = ref("");
