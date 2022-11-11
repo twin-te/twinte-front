@@ -267,6 +267,7 @@ import PageHeader from "~/ui/components/PageHeader.vue";
 import Popup from "~/ui/components/Popup.vue";
 import PopupContent from "~/ui/components/PopupContent.vue";
 import ToggleButton from "~/ui/components/ToggleButton.vue";
+import { getEvent, setEvent } from "~/ui/store/event";
 import { useSwitch } from "../hooks/useSwitch";
 import { toggleCourseType, setModule } from "../store";
 import { getCoursesByYear, setCoursesByYear } from "../store/course";
@@ -308,9 +309,11 @@ const module = await getModule();
 const currentModule: BaseModule = await getCurrentModule();
 
 /** page header */
+await setEvent();
+const event = getEvent();
 const today = dayjs();
 const calendar: PageHeaderCalendar = {
-  schedule: "通常日課",
+  schedule: event.value,
   month: today.month() + 1,
   day: today.date(),
   week: normalDayMap[normalDays[(today.day() + 6) % 7]],
