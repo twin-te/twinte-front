@@ -116,6 +116,7 @@ export default defineComponent({
     top: 0;
   }
   &__calendar {
+    width: calc(50% - 4.95rem + 0.4rem - 2rem);
     position: absolute;
     right: 0;
     top: 0;
@@ -127,6 +128,8 @@ export default defineComponent({
     font-weight: bold;
   }
   &__schedule {
+    overflow: auto;
+    white-space: nowrap;
     padding-top: 0.2rem;
     color: getColor(--color-text-sub);
     font-size: $font-small;
