@@ -21,6 +21,6 @@ const ports = usePorts();
 export const setEvent = async () => {
   const result = await UseCase.getEventByDate(ports)(dayjs());
   if (isResultError(result)) throw result;
-  if (result != undefined) event.value = eventToDisplay(result);
+  if (result !== null) event.value = eventToDisplay(result);
   else event.value = displayNormalEvent;
 };

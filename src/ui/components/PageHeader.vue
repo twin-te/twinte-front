@@ -128,7 +128,7 @@ export default defineComponent({
     font-weight: bold;
   }
   &__schedule {
-    overflow: scroll;
+    overflow: auto;
     white-space: nowrap;
     padding-top: 0.2rem;
     color: getColor(--color-text-sub);
