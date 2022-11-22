@@ -49,7 +49,7 @@ onErrorCaptured((error) => {
   console.log(error);
 
   if (error instanceof UnauthorizedError) {
-    errorMessage.value = "未認証です。ログインして下さい。";
+    router.push("/login");
   } else if (error instanceof NetworkError) {
     errorMessage.value = "ネットワークエラー。通信状況をご確認下さい。";
   } else if (error instanceof InternalServerError) {
