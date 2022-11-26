@@ -1,6 +1,6 @@
 import { createGtm } from "@gtm-support/vue-gtm";
-import * as Sentry from "@sentry/browser";
-import { Integrations } from "@sentry/tracing";
+import { BrowserTracing } from "@sentry/tracing";
+import * as Sentry from "@sentry/vue";
 import { createHead } from "@vueuse/head";
 import { createApp } from "vue";
 import VueClickAway from "vue3-click-away";
@@ -8,19 +8,22 @@ import App from "./App.vue";
 import { router } from "./route";
 import "./styles/_index.scss";
 
+const app = createApp(App);
+
 Sentry.init({
+  app,
   dsn: String(import.meta.env.VITE_APP_SENTRY_URL ?? ""),
-  release: "twinte-front@" + import.meta.env.npm_package_version,
-  integrations: [new Integrations.BrowserTracing()],
+  integrations: [
+    new BrowserTracing({
+      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+      tracingOrigins: ["app.twinte.net"],
+    }),
+  ],
   tracesSampleRate: 1.0,
+  logErrors: true,
 });
 
 const head = createHead();
-const app = createApp(App);
-
-app.config.errorHandler = (err, _vm, _info) => {
-  Sentry.captureException(err); // 手動でSentryに送信
-};
 
 app
   .use(router)
