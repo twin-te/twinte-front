@@ -1,74 +1,101 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-type Props = {
-  size: string;
-};
-
 export default defineComponent({
   props: {
     size: {
-      type: String,
-      default: "100%",
+      // size is loader's width and height pixel included dots
+      type: Number,
+      default: 20,
     },
-  },
-  setup(props: Props) {
-    return {
-      props,
-    };
   },
 });
 </script>
 
 <template>
-  <div class="loader" :style="{ fontSize: `calc(${size}/8)` }" />
+  <div class="loader" />
 </template>
 
 <style lang="scss" scoped>
 @import "~/ui/styles";
 
+$redius-1: calc(var(--size) / 8 * 3);
+$redius-2: calc(var(--size) / 8 * 2);
+$redius-3: 0;
+
+$spread-1: calc(var(--size) / 8 * 0.2);
+$spread-2: 0;
+$spread-3: calc(var(--size) / 8 * -1);
+
+@function box-shadow($shift) {
+  // prettier-ignore
+  $result: (
+      ($redius-3               calc(-1 * #{$redius-1}) 0),
+      ($redius-2               calc(-1 * #{$redius-2}) 0),
+      ($redius-1               $redius-3               0),
+      ($redius-2               $redius-2               0),      
+      ($redius-3               $redius-1               0),
+      (calc(-1 * #{$redius-2}) $redius-2               0),
+      (calc(-1 * #{$redius-1}) $redius-3               0),
+      (calc(-1 * #{$redius-2}) calc(-1 * #{$redius-2}) 0),
+  );
+
+  $spreads: (
+    $spread-1,
+    $spread-2,
+    $spread-3,
+    $spread-3,
+    $spread-3,
+    $spread-3,
+    $spread-3,
+    $spread-2
+  );
+
+  @for $i from 1 through length($result) {
+    $j: ((($i - 1) - $shift) % length($result)) + 1;
+    $new-box-shadow: append(nth($result, $i), nth($spreads, $j), "space");
+    $result: set-nth($result, $i, $new-box-shadow);
+  }
+
+  @return $result;
+}
+
 .loader {
+  --size: v-bind(`${size}px`);
   color: var(--color--text-main);
-  margin: 3em;
-  width: 1em;
-  height: 1em;
+  margin: $redius-1;
+  width: calc(var(--size) / 8);
+  height: calc(var(--size) / 8);
   border-radius: 50%;
-  animation: load4 1.3s infinite linear;
+  animation: loading 1.3s infinite linear;
   transform: translateZ(0);
 }
-@keyframes load4 {
+
+@keyframes loading {
   0%,
   100% {
-    box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em,
-      0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+    box-shadow: box-shadow(0);
   }
   12.5% {
-    box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em,
-      0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+    box-shadow: box-shadow(1);
   }
   25% {
-    box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0,
-      0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+    box-shadow: box-shadow(2);
   }
   37.5% {
-    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em,
-      0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+    box-shadow: box-shadow(3);
   }
   50% {
-    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em,
-      0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+    box-shadow: box-shadow(4);
   }
   62.5% {
-    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em,
-      0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+    box-shadow: box-shadow(5);
   }
   75% {
-    box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em,
-      0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+    box-shadow: box-shadow(6);
   }
   87.5% {
-    box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em,
-      0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+    box-shadow: box-shadow(7);
   }
 }
 </style>
