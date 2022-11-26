@@ -19,6 +19,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["update:modelValue", "enter-text-field", "close"],
   setup: (_, { emit }) => {
@@ -36,10 +40,15 @@ export default defineComponent({
   <div :class="{ 'text-field': true, [`text-field--${type}`]: true }">
     <div class="text-field__box">
       <input
-        class="text-field__input"
+        :class="{
+          'text-field': true,
+          'text-field__input': true,
+          '--disabled': disabled,
+        }"
         type="text"
         :value="modelValue"
         :placeholder="placeholder"
+        :disabled="disabled"
         @input="handleInput"
         @keydown.enter="$emit('enter-text-field')"
       />
@@ -104,6 +113,11 @@ export default defineComponent({
     color: getColor(--color-button-gray);
     font-size: 2rem;
     @include button-cursor;
+  }
+
+  &.--disabled {
+    opacity: 0.3;
+    box-shadow: $shadow-convex;
   }
 }
 </style>

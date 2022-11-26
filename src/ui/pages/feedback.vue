@@ -44,18 +44,20 @@
             height="20rem"
           ></TextFieldMultilines>
         </section>
-        <section
-          v-if="['Bug', 'Contact'].includes(feedbackType)"
-          class="feedback__row"
-        >
-          <Label
-            value="連絡先メールアドレス or Twitterアカウント"
-            :mandatory="feedbackType === 'Contact'"
-          ></Label>
-          <div class="feedback__note">{{ emailNote[feedbackType] }}</div>
+        <section class="feedback__row">
+          <Label value="連絡先メールアドレス" mandatory></Label>
+          <div class="feedback__note">
+            より快適なサービスを提供するため開発チームより連絡をさせていただくことがあります。
+          </div>
+          <div class="feedback__checkbox">
+            <CheckContent v-model:checked="allowReplies"
+              >運営からの返信を許可する</CheckContent
+            >
+          </div>
           <TextFieldSingleLine
             v-model="email"
-            placeholder="xxx@example.com / @te_twin"
+            placeholder="xxx@example.com"
+            :disabled="!allowReplies"
           ></TextFieldSingleLine>
         </section>
       </div>
@@ -86,6 +88,7 @@ import {
   displayFeedbackTypes,
 } from "~/presentation/presenters/feedback";
 import Button from "~/ui/components/Button.vue";
+import CheckContent from "~/ui/components/CheckContent.vue";
 import Dropdown from "~/ui/components/Dropdown.vue";
 import IconButton from "~/ui/components/IconButton.vue";
 import InputButtonFile from "~/ui/components/InputButtonFile.vue";
@@ -108,6 +111,7 @@ const router = useRouter();
 const feedbackType = ref<FeedbackType>("Bug");
 const screenShot = ref<File>();
 const feedbackContent = ref("");
+const allowReplies = ref(true);
 const email = ref("");
 
 const updateSelectedOption = (option: DisplayFeedbackType) => {
@@ -123,18 +127,11 @@ const placeholder: Record<FeedbackType, string> = {
   Other: "",
 };
 
-const emailNote: Record<FeedbackType, string> = {
-  Bug:
-    "より詳しい原因解明のため開発チームから連絡を差し上げる場合がございます。ご協力いただける場合はメールアドレスまたはTwitterアカウントをご記入ください。",
-  NewFeature: "",
-  Contact: "返信用のメールアドレスまたはTwitterアカウントをご記入下さい。",
-  Other: "",
-};
-
 const ButtonState = computed(() => {
   if (
     feedbackContent.value === "" ||
-    (feedbackType.value === "Contact" && email.value === "")
+    (feedbackType.value === "Contact" &&
+      (email.value === "" || !allowReplies.value))
   )
     return "disabled";
   return "default";
@@ -145,7 +142,7 @@ const onClickButton = async () => {
     type: feedbackType.value,
     screenShots: screenShot.value ? [screenShot.value] : [],
     content: feedbackContent.value,
-    email: email.value,
+    email: allowReplies.value ? email.value : "",
   })
     .then(() => {
       displayToast("フィードバックを送信しました。ありがとうございます。", {
@@ -193,6 +190,9 @@ const onClickButton = async () => {
   &__note {
     @include text-description-sub;
     margin: 1rem 0;
+  }
+  &__checkbox {
+    margin: $spacing-2 0;
   }
 }
 </style>
