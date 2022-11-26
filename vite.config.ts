@@ -1,4 +1,5 @@
 import path from "path";
+import sentryRollupPlugin from "@sentry/rollup-plugin";
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import ViteFonts from "vite-plugin-fonts";
@@ -57,6 +58,17 @@ export default defineConfig(({ mode }) => ({
           ],
         },
       },
+      plugins: [
+        (() =>
+          process.env.SOURCE_MAP === "1"
+            ? sentryRollupPlugin({
+                org: "twin-te",
+                project: "front",
+                include: path.resolve(__dirname, "dist"),
+                authToken: process.env.SENTRY_AUTH_TOKEN,
+              })
+            : null)(),
+      ],
     },
   },
 }));
