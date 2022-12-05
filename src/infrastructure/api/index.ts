@@ -81,24 +81,25 @@ export class Api {
   ): Promise<
     CR | ApiFailedStatueToError[FS] | InternalServerError | NetworkError | CE
   > {
+    let result: ApiRespoinse<AR, SS | FS>;
+
     try {
-      const {
-        body,
-        originalResponse,
-        status,
-      }: ApiRespoinse<AR, SS | FS> = await api(this.#client);
-
-      if (isContained(status, successStatusList)) {
-        return callback(body);
-      }
-
-      if (isContained(status, failedStatusList)) {
-        return this.#handleApiFailedStatus(status, originalResponse);
-      }
-
-      return new InternalServerError(`Invalid Status : ${status}`);
+      result = await api(this.#client);
     } catch {
+      // This dose not catch Error arising from HTTP Response error because of the Axios validateStatus setting.
       return new NetworkError();
     }
+
+    const { body, originalResponse, status } = result;
+
+    if (isContained(status, successStatusList)) {
+      return callback(body);
+    }
+
+    if (isContained(status, failedStatusList)) {
+      return this.#handleApiFailedStatus(status, originalResponse);
+    }
+
+    return new InternalServerError(`Invalid Status : ${status}`);
   }
 }
