@@ -40,7 +40,7 @@ import { getApplicableYear } from "~/ui/store/year";
 import { isiOS, isMobile } from "~/ui/ua";
 import { getLogoutUrl, openUrl } from "~/ui/url";
 
-const props = defineProps<{
+defineProps<{
   isLogin: boolean;
 }>();
 

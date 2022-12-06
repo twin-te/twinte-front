@@ -158,7 +158,6 @@ import { addCustomizedCourse } from "~/ui/store/course";
 import { getApplicableYear, setApplicableYear } from "~/ui/store/year";
 import type { RegisteredCourse } from "~/domain/course";
 import type { Room } from "~/domain/room";
-import type { DisplaySchedule } from "~/presentation/viewmodels/schedule";
 
 const ports = usePorts();
 const router = useRouter();

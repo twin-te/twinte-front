@@ -320,7 +320,7 @@ const calendar: PageHeaderCalendar = {
 };
 
 /** popup */
-const [isPopupVisible, openPopup, closePopup, togglePopup] = useSwitch(false);
+const [isPopupVisible, , closePopup, togglePopup] = useSwitch(false);
 const onClickPopup = (baseModule: BaseModule) => {
   setModule(baseModule);
   closePopup();
@@ -403,7 +403,7 @@ const onClickCourseTile = async (
 await setNews();
 const unreadNews = getUnreadNews();
 
-const [isNewsModalVisible, openNewsModal, closeNewsModal] = useSwitch(
+const [isNewsModalVisible, , closeNewsModal] = useSwitch(
   unreadNews.value.length > 0
 );
 

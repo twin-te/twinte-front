@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBrowserLocation } from "@vueuse/core";
 import { watch } from "vue";
 import Button from "~/ui/components/Button.vue";
 import GrayFilter from "~/ui/components/GrayFilter.vue";
@@ -11,8 +10,6 @@ import { isVisibleSidebar, closeSidebar } from "~/ui/store/sidebar";
 import { deleteToast, getToasts } from "~/ui/store/toast";
 import Sidebar from "./Sidebar.vue";
 
-const location = useBrowserLocation();
-
 /** auth state */
 const authState = getAuthState();
 await setAuthState();
@@ -20,9 +17,9 @@ await setAuthState();
 /** welcome modal */
 const [
   isVisibleWelcomeModal,
-  openWelcomeModal,
+  ,
   closeWelcomeModal,
-  toggleWelcomeModal,
+  ,
   setWelcomeModal,
 ] = useSwitch(false);
 watch(
