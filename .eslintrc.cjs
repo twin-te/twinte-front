@@ -14,6 +14,7 @@ module.exports = {
     },
   },
   ignorePatterns: "**/*.js",
+  parser: "vue-eslint-parser",
   rules: {
     "vue/attribute-hyphenation": 0,
     "import/order": [
