@@ -55,8 +55,10 @@ onErrorCaptured((error) => {
   } else if (error instanceof InternalServerError) {
     errorMessage.value =
       "申し訳ございません。サーバー内でエラーが発生しました。";
+    return true;
   } else {
     errorMessage.value = error.message;
+    return true;
   }
 
   return false;
