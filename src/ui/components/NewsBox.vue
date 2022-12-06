@@ -24,6 +24,8 @@ export default defineComponent({
   <div class="news-box">
     <div class="news-box__publication-date">{{ publicationDate }}</div>
     <div class="news-box__title">{{ title }}</div>
+    <!-- `content` is a reliable value, because it is provided by twin:te operator -->
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <div class="news-box__content" v-html="content"></div>
   </div>
 </template>
