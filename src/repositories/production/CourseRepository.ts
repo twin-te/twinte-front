@@ -88,6 +88,7 @@ export class CourseRepository implements ICourseRepository {
   > {
     const yearToCodes = inputData.reduce<Record<number, string[]>>(
       (ret, { year, code }) => {
+        if (ret[year] === undefined) ret[year] = [];
         ret[year].push(code);
         return ret;
       },

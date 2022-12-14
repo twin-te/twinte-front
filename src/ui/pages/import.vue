@@ -107,6 +107,7 @@ import PageHeader from "~/ui/components/PageHeader.vue";
 import { toggleSidebar } from "~/ui/store/sidebar";
 import { addCoursesByCodes } from "../store/course";
 import { displayToast } from "../store/toast";
+import { getApplicableYear, setApplicableYear } from "../store/year";
 import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
@@ -114,22 +115,20 @@ const ports = usePorts();
 const route = useRoute();
 const router = useRouter();
 
-if (
-  typeof route.query.year !== "string" ||
-  Number.isNaN(Number(route.query.year)) ||
-  typeof route.query.codes !== "string"
-) {
+await setApplicableYear();
+const year = getApplicableYear();
+
+if (typeof route.query.codes !== "string") {
   displayToast("授業のインポートに失敗しました。");
   router.push("/");
   throw new ValueError("Invalid query.");
 }
 
-const year = Number(route.query.year);
 const codes: string[] = route.query.codes.split(",");
 
 /** result */
 const result = await Usecase.getCourses(ports)(
-  codes.map((code) => ({ year, code }))
+  codes.map((code) => ({ year: year.value, code }))
 );
 if (isResultError(result)) throw result;
 
@@ -172,7 +171,10 @@ const addCourses = async (warning = true) => {
     await Promise.all(
       selectedCourseResults.value.map(async ({ course, schedules }) => ({
         course,
-        result: await Usecase.checkScheduleDuplicate(ports)(year, schedules),
+        result: await Usecase.checkScheduleDuplicate(ports)(
+          year.value,
+          schedules
+        ),
       }))
     )
   ).reduce<DisplayCourse[]>((ret, { course, result }) => {
@@ -184,7 +186,7 @@ const addCourses = async (warning = true) => {
   if (warning && duplicateCourses.value.length > 0) return;
   await addCoursesByCodes(
     selectedCourseResults.value.map(({ course }) => ({
-      year,
+      year: year.value,
       code: course.code,
     }))
   );
