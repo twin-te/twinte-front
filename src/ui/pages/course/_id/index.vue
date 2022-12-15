@@ -283,9 +283,7 @@ const onClickDeleteCourseButton = async () => {
 };
 
 /** popup */
-const [isVisiblePopup, openPopup, closePopup, toggleShowPopup] = useSwitch(
-  false
-);
+const [isVisiblePopup, , closePopup, toggleShowPopup] = useSwitch(false);
 
 const popupContents: {
   onClick: () => void;

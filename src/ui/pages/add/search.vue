@@ -309,12 +309,7 @@ const keyword = ref("");
 const [onlyBlank, toggleOnlyBlank] = useToggle(false);
 
 /** accordion */
-const [
-  isAccordionOpen,
-  openAccordion,
-  closeAccordion,
-  toggleAccordion,
-] = useSwitch(false);
+const [isAccordionOpen, , closeAccordion, toggleAccordion] = useSwitch(false);
 
 const conditions = computed<{ style: "outline" | "filled"; label: string }>(
   () => {

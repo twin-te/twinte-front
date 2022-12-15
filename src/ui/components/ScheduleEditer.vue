@@ -48,8 +48,11 @@ export default defineComponent({
     },
   },
   emits: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     "update:schedules": (index: number, schedule: EditableSchedule) => true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     "click-add-button": () => true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     "click-remove-button": (index: number) => true,
   },
   setup(_, { emit }) {

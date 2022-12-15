@@ -44,7 +44,8 @@ export default defineComponent({
   setup: (props: Props, { emit }) => {
     const isActive = ref(false);
 
-    const handleClick = (e: any) => {
+    const handleClick = (e: MouseEvent) => {
+      if (!(e.target instanceof HTMLButtonElement)) return;
       if (props.state === "disabled") return;
       isActive.value = props.pauseActiveStyle && !isActive.value;
       emit("click", e.target.value);

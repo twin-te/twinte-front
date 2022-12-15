@@ -10,6 +10,8 @@ const firebaseConfig = {
   messagingSenderId: "506135788576",
   appId: "1:506135788576:web:e6e2df4eff16a20e8b9045",
 };
+
+// eslint-disable-next-line import/no-named-as-default-member
 firebase.initializeApp(firebaseConfig);
 
 export class Firebase {
@@ -27,6 +29,7 @@ export class Firebase {
     screenshots: File[],
     userId: string
   ): Promise<string[] | NetworkError | InternalServerError> {
+    // eslint-disable-next-line import/no-named-as-default-member
     const storageRef = firebase.storage().ref();
     const now = new Date();
 

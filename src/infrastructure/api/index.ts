@@ -1,6 +1,6 @@
 import axiosClient from "@aspida/axios";
 import axios from "axios";
-import qs from "qs";
+import { stringify } from "qs";
 import {
   InternalServerError,
   NetworkError,
@@ -39,7 +39,7 @@ export class Api {
     this.#client = createApiInstance(
       axiosClient(axios, {
         baseURL,
-        paramsSerializer: (r: unknown) => qs.stringify(r),
+        paramsSerializer: (r: unknown) => stringify(r),
         validateStatus: () => true,
         withCredentials: true,
       })

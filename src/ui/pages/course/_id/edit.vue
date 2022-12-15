@@ -142,7 +142,6 @@ import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { getCourseById, setCourseById, updateCourse } from "~/ui/store/course";
 import type { RegisteredCourse } from "~/domain/course";
-import type { DisplaySchedule } from "~/presentation/viewmodels/schedule";
 
 const route = useRoute();
 const router = useRouter();
