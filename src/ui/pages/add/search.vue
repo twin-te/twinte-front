@@ -447,7 +447,6 @@ const onClickCheckbox = (searchResult: SearchResult) => {
 };
 
 const onClickCard = (id: string) => {
-  if (detailed.value) return;
   courseIdToExpanded[id] = !courseIdToExpanded[id];
 };
 
