@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { onErrorCaptured, onMounted, ref } from "vue";
+import { onErrorCaptured, ref } from "vue";
 import { useRouter } from "vue-router";
 import {
   InternalServerError,
