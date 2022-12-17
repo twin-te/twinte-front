@@ -133,7 +133,7 @@ const selectedResults = computed(() =>
 const onClickCard = (courseId: string) => {
   const course = loadedResults.find((result) => result.course.id === courseId);
   if (!course) return;
-  course.expanded = !course.expanded; 
+  course.expanded = !course.expanded;
 };
 
 type Risyu = {
