@@ -260,15 +260,14 @@ import { ComponentPublicInstance, computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
-import { isResultError } from "~/domain/error";
 import { modules } from "~/domain/module";
 import { initializeTimetable } from "~/domain/timetable";
-import { courseToDisplay } from "~/presentation/presenters/course";
 import {
   editableSchedulesToTimetable,
   isNotSpecifiedSchedule,
 } from "~/presentation/presenters/schedule";
 import { notSpecified } from "~/presentation/viewmodels/option";
+import { CoursesSearch, SearchResult } from "~/ui/CoursesSearch";
 import Button from "~/ui/components/Button.vue";
 import Card from "~/ui/components/Card.vue";
 import CardCourse from "~/ui/components/CardCourse.vue";
@@ -287,17 +286,10 @@ import { useSwitch } from "~/ui/hooks/useSwitch";
 import { addCoursesByCodes } from "~/ui/store/course";
 import { getApplicableYear } from "~/ui/store/year";
 import { deleteElementInArray } from "~/utils";
-import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
 const ports = usePorts();
 const router = useRouter();
-
-type SearchResult = {
-  id: string;
-  course: DisplayCourse;
-  schedules: Schedule[];
-};
 
 /** toggle button */
 const [detailed, toggleDetailed] = useToggle(true);
@@ -345,50 +337,44 @@ const {
 } = useScheduleEditor();
 
 /** search */
-let currentOffset = 0;
-const limit = 50;
 const fetching = ref(false);
 const noResultText = ref("");
 
-const search = async (init = true) => {
+const searcher = new CoursesSearch(50);
+
+searcher.searchResultsSubject.attach(({ results, history }) => {
+  searchResults.splice(0, searchResults.length, ...history);
+
+  results.forEach(({ id }) => (courseIdToExpanded[id] = false));
+
+  if (searchResults.length === 0)
+    noResultText.value = [code.value, keyword.value]
+      .filter((value) => value)
+      .join(" ");
+});
+
+searcher.fetchingSubject.attach((_fetching) => {
+  fetching.value = _fetching;
+});
+
+const search = (withResetResults = false) => {
   const timetable =
     onlyBlank.value || schedules.every(isNotSpecifiedSchedule)
       ? initializeTimetable(modules, true)
       : editableSchedulesToTimetable(
           schedules.filter((schedule) => !isNotSpecifiedSchedule(schedule))
         );
-  const offset = init ? 0 : currentOffset;
-  fetching.value = true;
-  noResultText.value = "";
 
-  const result = await Usecase.searchCourse(ports)(
+  if (withResetResults) searcher.resetResults();
+
+  searcher.search(
     year.value,
-    keyword.value.split("/\s/"),
-    code.value.split("/\s/"),
+    keyword.value,
+    code.value,
     timetable,
-    onlyBlank.value,
-    "Cover",
-    offset,
-    limit
+    onlyBlank.value
   );
-  if (isResultError(result)) throw result;
 
-  const newSearchResults: SearchResult[] = result.map((course) => ({
-    id: course.id,
-    course: courseToDisplay(course),
-    schedules: course.schedules,
-  }));
-  if (offset === 0)
-    searchResults.splice(0, searchResults.length, ...newSearchResults);
-  else searchResults.splice(searchResults.length, 0, ...newSearchResults);
-  result.forEach(({ id }) => (courseIdToExpanded[id] = false));
-
-  fetching.value = false;
-  if (searchResults.length === 0)
-    noResultText.value = [code.value, keyword.value]
-      .filter((value) => value)
-      .join(" ");
-  currentOffset = offset + limit;
   closeAccordion();
 };
 
