@@ -52,7 +52,24 @@ export default defineComponent({
       emit("click", e);
     };
 
-    return { handleClick };
+    const getButtonWidthPixel = () => {
+      const documentFontSize = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+      );
+
+      switch (props.size) {
+        case "small":
+          return 2.8 * documentFontSize;
+        case "medium":
+          return 3.3 * documentFontSize;
+        case "large":
+          return 4 * documentFontSize;
+        default:
+          return 3.3 * documentFontSize;
+      }
+    };
+
+    return { handleClick, getButtonWidthPixel };
   },
 });
 </script>
@@ -68,7 +85,7 @@ export default defineComponent({
     @click="handleClick"
     @keyup.enter="$emit('click', $event)"
   >
-    <Loader v-if="loading" size="100%" />
+    <Loader v-if="loading" :size="getButtonWidthPixel() / 2" />
     <span v-else class="material-icons">{{ iconName }}</span>
     <slot />
   </button>
