@@ -40,7 +40,7 @@ export const searchCourse = ({ courseRepository }: Ports) => async (
     keywords,
     codes,
     timetable,
-    mode,
+    onlyBlank ? "Contain" : mode,
     offset,
     limit
   );
