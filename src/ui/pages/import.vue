@@ -14,7 +14,7 @@
       <template #title>授業のインポート</template>
     </PageHeader>
     <div class="main">
-      <section ref="importBoxRef" key="result" class="main__result">
+      <section key="result" class="main__result">
         <Card v-show="courseResults.length > 0">
           <div
             v-for="(result, i) in courseResults"
