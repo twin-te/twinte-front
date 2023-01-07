@@ -28,6 +28,8 @@
           :key="result.course.id"
           :isChecked="result.selected"
           :course="result.course"
+          :isExpanded="result.expanded"
+          @click="onClickCard(result.course.id)"
           @click-checkbox="result.selected = !result.selected"
         >
         </CardCourse>
@@ -90,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, shallowReactive } from "vue";
+import { ref, computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
@@ -121,11 +123,18 @@ type LoadedResult = {
   course: DisplayCourse;
   schedules: Schedule[];
   selected: boolean;
+  expanded: boolean;
 };
-const loadedResults = shallowReactive<LoadedResult[]>([]);
+const loadedResults = reactive<LoadedResult[]>([]);
 const selectedResults = computed(() =>
   loadedResults.filter(({ selected }) => selected)
 );
+
+const onClickCard = (courseId: string) => {
+  const course = loadedResults.find((result) => result.course.id === courseId);
+  if (!course) return;
+  course.expanded = !course.expanded;
+};
 
 type Risyu = {
   type: "risyu";
@@ -223,6 +232,7 @@ const loadCourses = async (file: File) => {
       course: courseToDisplay(course),
       schedules: course.schedules,
       selected: true,
+      expanded: false,
     }))
   );
 
