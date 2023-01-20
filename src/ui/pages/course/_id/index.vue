@@ -77,7 +77,10 @@
           placeholder="メモを入力"
           height="10.3rem"
           style="width: 100%"
+          :renderd="memoRenderd"
           @update:modelValue="updateMemo"
+          @click="onMemoClick"
+          @focusout="onMemoFocusout"
         ></TextFieldMultilines>
         <section class="main__attendance attendance">
           <div class="attendance__item">
@@ -232,6 +235,16 @@ const displayCourse = ref(registeredCourseToDisplay(course.value, tags.value));
 const updateMemo = async (newMemo: string) => {
   displayCourse.value = { ...displayCourse.value, memo: newMemo };
   await updateCourse(id, { memo: newMemo });
+};
+
+const memoRenderd = ref(true);
+const onMemoClick = () => {
+  memoRenderd.value = false;
+  console.log("onMemoClick");
+};
+const onMemoFocusout = () => {
+  memoRenderd.value = true;
+  console.log("onMemoFocusout");
 };
 
 const updateCounter = async (

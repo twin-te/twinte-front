@@ -133,3 +133,14 @@ export const hasProperty = <P extends string, T>(
 ): obj is { [key in P]: T } => {
   return hasUnknownProperty(obj, prop) && clarifyPropertyType(obj, prop, fn);
 };
+
+export const isUrl = (text: string) => {
+  // If the URL is invalid, an error will occur.
+  // Don't use regular expressions since it's hard to detect URLs
+  try {
+    const url = new URL(text);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (e) {
+    return false;
+  }
+};
