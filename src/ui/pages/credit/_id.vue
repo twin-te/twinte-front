@@ -101,7 +101,9 @@ const info = computed(() => ({
 /** display course */
 const displayCourses = computed(() =>
   reactive(
-    courses.value.map((course) => registeredCourseToDisplay(course, tags.value))
+    courses.value
+      .map((course) => registeredCourseToDisplay(course, tags.value))
+      .sort((courseA, courseB) => (courseA.code < courseB.code ? -1 : 1))
   )
 );
 
