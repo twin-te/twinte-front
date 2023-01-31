@@ -38,7 +38,7 @@
     "qs": "^6.10.1",
     "vue": "^3.2.45",
     "vue-router": "4.1.6",
-    "vue3-click-away": "^1.1.0",
+    "vue3-click-away": "^1.2.4",
     "vuedraggable": "^4.1.0",
     "vuex": "4"
   },
