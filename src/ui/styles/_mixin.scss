@@ -182,20 +182,20 @@
 
 // Media Queries
 @mixin tab-and-pc {
-  @media only screen and (min-height: variable.$pc-and-tab-height) and(min-width: variable.$pc-and-tab-width) {
+  @media only screen and (min-height: variable.$pc-and-tab-height) and (min-width: variable.$pc-and-tab-width) {
     // 画面の高さと幅が一定以上ある場合(このブレイクポイントでrootのremの大きさを切り替える)
     @content;
   }
 }
 
 @mixin pc {
-  @media only screen and (min-height: variable.$pc-height) and(min-width: variable.$pc-width) {
+  @media only screen and (min-height: variable.$pc-height) and (min-width: variable.$pc-width) {
     @content;
   }
 }
 
 @mixin landscape {
-  @media screen and (min-width: 678px) and(orientation: landscape) {
+  @media screen and (min-width: 678px) and (orientation: landscape) {
     // 画面が横向きの場合
     @content;
   }
