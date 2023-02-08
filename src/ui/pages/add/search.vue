@@ -72,7 +72,7 @@
             class="search__accordion"
           >
             <div class="accordion__top-border"></div>
-            <div class="accordion__only-blank" @click="toggleOnlyBlank">
+            <div class="accordion__only-blank" @click="toggleOnlyBlank()">
               <Checkbox
                 :isChecked="onlyBlank"
                 @clickCheckbox.stop="toggleOnlyBlank"
@@ -136,7 +136,7 @@
               '--active': selectedSearchResults.length > 0,
               '--opened': isSelectedOpen,
             }"
-            @click="toggleSelectedOpen"
+            @click="toggleSelectedOpen()"
           >
             選択中の授業:
             {{ selectedSearchResults.length }}件
@@ -398,7 +398,7 @@ const searchResults = reactive<SearchResult[]>([]);
 const courseIdToExpanded = reactive<Record<string, boolean>>({});
 
 // 検索結果を動的に読み込む処理
-const searchBoxRef = ref<Element>();
+const searchBoxRef = ref<HTMLElement | null>(null);
 
 const options = {
   root: searchBoxRef.value,
@@ -413,6 +413,7 @@ const setSearchResultRef = (
   // TODO: el === null のエラーハンドリングを実装
   // TODO: ComponentPublicInstance と Element で振る舞いを分ける必要があるか調査
   if (!el) return;
+  if (el instanceof Element && !(el instanceof HTMLElement)) return;
   if (index + 10 === searchResults.length) {
     useIntersectionObserver(
       el,

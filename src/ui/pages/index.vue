@@ -408,7 +408,7 @@ const [isNewsModalVisible, , closeNewsModal] = useSwitch(
 );
 
 const onClickNewsModal = async () => {
-  for (let news of unreadNews.value) {
+  for (const news of unreadNews.value) {
     await updateNewsRead(news.id, true);
   }
   closeNewsModal();

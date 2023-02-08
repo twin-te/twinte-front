@@ -15,6 +15,9 @@ module.exports = {
   },
   ignorePatterns: "**/*.js",
   parser: "vue-eslint-parser",
+  parserOptions: {
+    ecmaVersion: 13,
+  },
   rules: {
     "vue/attribute-hyphenation": 0,
     "import/order": [
@@ -51,5 +54,9 @@ module.exports = {
         ],
       },
     ],
+    // TODO: 以下のルールの無効化を見直す
+    "vue/multi-word-component-names": "off",
+    "vue/v-on-event-hyphenation": "off",
+    "vue/no-reserved-component-names": "off",
   },
 };

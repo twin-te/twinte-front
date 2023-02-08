@@ -17,18 +17,18 @@
       <section key="result" class="main__result">
         <Card v-show="courseResults.length > 0">
           <div
-            v-for="(result, i) in courseResults"
-            :key="result.course.id"
+            v-for="(courseResult, i) in courseResults"
+            :key="courseResult.course.id"
             class="result__row"
           >
             <CardCourse
-              :course="result.course"
-              :isChecked="result.selected"
+              :course="courseResult.course"
+              :isChecked="courseResult.selected"
               :isDetailed="false"
-              :isExpanded="result.expanded"
+              :isExpanded="courseResult.expanded"
               :withHr="i < courseResults.length - 1"
-              @click-checkbox="result.selected = !result.selected"
-              @click-card="result.expanded = !result.expanded"
+              @click-checkbox="courseResult.selected = !courseResult.selected"
+              @click-card="courseResult.expanded = !courseResult.expanded"
             />
           </div>
         </Card>
