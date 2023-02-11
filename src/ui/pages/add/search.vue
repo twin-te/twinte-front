@@ -254,6 +254,7 @@
 </template>
 
 <script setup lang="ts">
+import { useGtm } from "@gtm-support/vue-gtm";
 import { useIntersectionObserver } from "@vueuse/core";
 import { useToggle } from "@vueuse/shared";
 import { ComponentPublicInstance, computed, reactive, ref } from "vue";
@@ -290,6 +291,7 @@ import { deleteElementInArray } from "~/utils";
 import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
+const gtm = useGtm();
 const ports = usePorts();
 const router = useRouter();
 
@@ -390,6 +392,17 @@ const search = async (init = true) => {
       .join(" ");
   currentOffset = offset + limit;
   closeAccordion();
+
+  // Gather information related to course searches.
+  if (init) {
+    gtm?.trackEvent({
+      event: "search-courses",
+      term: keyword.value,
+      code: code.value,
+      use_only_blank: onlyBlank.value,
+      schedules: JSON.stringify(schedules),
+    });
+  }
 };
 
 /** search results */
