@@ -18,8 +18,13 @@ Sentry.init({
       routingInstrumentation: Sentry.vueRouterInstrumentation(router),
       tracingOrigins: ["app.twinte.net"],
     }),
+    new Sentry.Replay({
+      maskAllText: false,
+    }),
   ],
   tracesSampleRate: 1.0,
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
   logErrors: true,
 });
 
