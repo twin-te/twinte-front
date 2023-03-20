@@ -18,7 +18,7 @@ const Feedback = () => import("./pages/feedback.vue");
 const Import = () => import("./pages/import.vue");
 const Login = () => import("./pages/login.vue");
 const News = () => import("./pages/news.vue");
-const ViewSettings = () => import("./pages/view-settings.vue");
+const Settings = () => import("./pages/settings.vue");
 
 const history = createWebHistory();
 
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
     component: Login,
     meta: { hasSidebar: false, hasWelcomeModal: false },
   },
-  { path: "/view-settings", component: ViewSettings },
+  { path: "/settings", component: Settings },
   { path: "/add", component: Add },
   { path: "/add/search", component: Search },
   { path: "/add/csv", component: CSV },
