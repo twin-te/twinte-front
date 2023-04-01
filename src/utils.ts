@@ -133,3 +133,11 @@ export const hasProperty = <P extends string, T>(
 ): obj is { [key in P]: T } => {
   return hasUnknownProperty(obj, prop) && clarifyPropertyType(obj, prop, fn);
 };
+
+export const asyncFilter = async <T, S>(
+  array: T[],
+  asyncCallback: (arg: T) => Promise<S>
+) => {
+  const mask = await Promise.all(array.map(asyncCallback));
+  return array.filter((_, i) => Boolean(mask[i]));
+};

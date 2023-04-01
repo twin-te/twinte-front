@@ -287,7 +287,7 @@ import ToggleButton from "~/ui/components/ToggleButton.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { addCoursesByCodes } from "~/ui/store/course";
 import { getApplicableYear } from "~/ui/store/year";
-import { deleteElementInArray } from "~/utils";
+import { asyncFilter, deleteElementInArray } from "~/utils";
 import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
@@ -472,12 +472,11 @@ const buttonState = computed(() =>
 const duplicateCourses = ref<DisplayCourse[]>([]);
 
 const addCourses = async (warning = true) => {
-  duplicateCourses.value = (
-    await Promise.all(
-      selectedSearchResults.filter(
-        ({ schedules }) =>
-          !Usecase.checkScheduleDuplicate(ports)(year.value, schedules)
-      )
+  duplicateCourses.value = await (
+    await asyncFilter(
+      selectedSearchResults,
+      async ({ schedules }) =>
+        !(await Usecase.checkScheduleDuplicate(ports)(year.value, schedules))
     )
   ).map(({ course }) => course);
 
