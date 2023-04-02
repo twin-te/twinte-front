@@ -495,7 +495,7 @@ const addCourses = async (warning = true) => {
         .map(({ code, name }) => `【${code}】${name}`)
         .join("\n");
     displayToast(text, { type: "danger" });
-  duplicateCourses.value = await (
+    gtm?.trackEvent({ event: "duplicated-courses-error" });
     return;
   }
 
