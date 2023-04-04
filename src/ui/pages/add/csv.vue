@@ -40,6 +40,7 @@
         size="large"
         layout="fill"
         color="primary"
+        data-gtm-marker="csv-import-button"
         :pauseActiveStyle="false"
         :state="buttonState"
         @click="addCourses()"
