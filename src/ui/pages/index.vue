@@ -295,7 +295,7 @@ await setApplicableYear();
 const year = getApplicableYear();
 
 /** course */
-watchEffect(() => setCoursesByYear(year.value));
+await setCoursesByYear(year.value);
 
 /** courseType */
 const courseType = getCourseType();
