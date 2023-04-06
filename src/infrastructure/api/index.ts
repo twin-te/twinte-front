@@ -58,12 +58,7 @@ export class Api {
     status: FS,
     originalResponse: { data: { message: string } }
   ): ApiFailedStatueToError[FS] {
-    const message =
-      status === 400
-        ? "Bad Request"
-        : status === 500
-        ? originalResponse.data.message
-        : undefined;
+    const message = originalResponse.data.message;
     return apiFailedStatusToError[status](message);
   }
 
