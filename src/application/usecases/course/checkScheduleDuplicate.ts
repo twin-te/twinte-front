@@ -1,4 +1,5 @@
 import { Ports } from "~/application/ports";
+import { RegisteredCourse } from "~/domain/course";
 import { normalDays } from "~/domain/day";
 import {
   InternalServerError,
@@ -17,14 +18,23 @@ import {
 /**
  * Return true if the schedules do not overlap comparing to the schedules of registered courses. Return false otherwise.
  */
-export const checkScheduleDuplicate = ({ courseRepository }: Ports) => async (
+export const checkScheduleDuplicate = (
+  { courseRepository }: Ports,
+  registered?: RegisteredCourse[]
+) => async (
   year: number,
   schedules: Schedule[]
 ): Promise<
   boolean | UnauthorizedError | NetworkError | InternalServerError
 > => {
-  const result = await courseRepository.getRegisteredCoursesByYear(year);
-  if (isResultError(result)) return result;
+  let result: RegisteredCourse[];
+  if (registered == null) {
+    const res = await courseRepository.getRegisteredCoursesByYear(year);
+    if (isResultError(res)) return res;
+    result = res;
+  } else {
+    result = registered;
+  }
 
   const normalSchedules: NormalSchedule[] = schedules.filter(isNormalSchedule);
   const registeredNormalSchedules: NormalSchedule[] = result
