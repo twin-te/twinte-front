@@ -366,8 +366,8 @@ const search = async (init = true) => {
 
   const result = await Usecase.searchCourse(ports)(
     year.value,
-    keyword.value.split("/\s/"),
-    code.value.split("/\s/"),
+    keyword.value.split(/\s/),
+    code.value.split(/\s/),
     timetable,
     onlyBlank.value,
     "Cover",
