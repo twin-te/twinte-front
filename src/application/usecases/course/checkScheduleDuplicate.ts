@@ -18,12 +18,10 @@ import {
 /**
  * Return true if the schedules do not overlap comparing to the schedules of registered courses. Return false otherwise.
  */
-export const checkScheduleDuplicate = (
-  { courseRepository }: Ports,
-  registered?: RegisteredCourse[]
-) => async (
+export const checkScheduleDuplicate = ({ courseRepository }: Ports) => async (
   year: number,
-  schedules: Schedule[]
+  schedules: Schedule[],
+  registered?: RegisteredCourse[]
 ): Promise<
   boolean | UnauthorizedError | NetworkError | InternalServerError
 > => {

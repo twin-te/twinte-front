@@ -133,9 +133,7 @@ const result = await Usecase.getCourses(ports)(
 );
 if (isResultError(result)) throw result;
 
-const registered = await ports.courseRepository.getRegisteredCoursesByYear(
-  year.value
-);
+const registered = await Usecase.getRegisteredCoursesByYear(ports)(year.value);
 if (isResultError(registered)) throw registered;
 
 const registeredSet = new Set(
@@ -174,9 +172,10 @@ const addCourses = async (warning = true) => {
     await Promise.all(
       selectedCourseResults.value.map(async ({ course, schedules }) => ({
         course,
-        result: await Usecase.checkScheduleDuplicate(ports, registered)(
+        result: await Usecase.checkScheduleDuplicate(ports)(
           year.value,
-          schedules
+          schedules,
+          registered
         ),
       }))
     )
