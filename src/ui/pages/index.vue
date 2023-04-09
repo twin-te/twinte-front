@@ -245,7 +245,7 @@
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
 import dayjs from "dayjs";
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { normalDays, specialDays } from "~/domain/day";
 import { baseModules } from "~/domain/module";
