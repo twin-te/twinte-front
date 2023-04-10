@@ -44,8 +44,12 @@ onErrorCaptured((error) => {
   } else if (error instanceof NetworkError) {
     errorMessage.value = "ネットワークエラー。通信状況をご確認下さい。";
   } else if (error instanceof InternalServerError) {
-    errorMessage.value =
-      "申し訳ございません。サーバー内でエラーが発生しました。";
+    if (error.message.includes("指定された講義は既に登録されています")) {
+      errorMessage.value = "既に追加されている授業を追加しようとしています。";
+    } else {
+      errorMessage.value =
+        "申し訳ございません。サーバー内でエラーが発生しました。";
+    }
     return true;
   } else {
     errorMessage.value = error.message;
