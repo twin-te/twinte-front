@@ -14,7 +14,11 @@ import { Tag } from "~/domain/tag";
 import { Timetable } from "~/domain/timetable";
 import { Api } from "~/infrastructure/api";
 import * as ApiType from "~/infrastructure/api/aspida/@types";
-import { apiToCourse } from "~/infrastructure/api/converters/course";
+import {
+  apiToCourse,
+  codesForSearchRequest,
+  keywordsForSearchRequest,
+} from "~/infrastructure/api/converters/course";
 import {
   apiToRegisteredCourse,
   registeredCourseToApi,
@@ -56,8 +60,8 @@ export class CourseRepository implements ICourseRepository {
     const reqBody = {
       year,
       searchMode,
-      keywords,
-      codes,
+      keywords: keywordsForSearchRequest(keywords),
+      codes: codesForSearchRequest(codes),
       timetable: timetableToApi(timetable),
       offset,
       limit,
