@@ -245,7 +245,7 @@
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
 import dayjs from "dayjs";
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { normalDays, specialDays } from "~/domain/day";
 import { baseModules } from "~/domain/module";
@@ -294,14 +294,17 @@ const router = useRouter();
 await setApplicableYear();
 const year = getApplicableYear();
 
-/** course */
-await setCoursesByYear(year.value);
+await Promise.all([
+  setCoursesByYear(year.value),
+  setEvent(),
+  setNews(),
+  setSetting(),
+]);
 
 /** courseType */
 const courseType = getCourseType();
 
 /** setting */
-await setSetting();
 const setting = getSetting();
 
 /** module */
@@ -309,7 +312,6 @@ const module = await getModule();
 const currentModule: BaseModule = await getCurrentModule();
 
 /** page header */
-await setEvent();
 const event = getEvent();
 const today = dayjs();
 const calendar: PageHeaderCalendar = {
@@ -400,7 +402,6 @@ const onClickCourseTile = async (
 };
 
 /** news modal */
-await setNews();
 const unreadNews = getUnreadNews();
 
 const [isNewsModalVisible, , closeNewsModal] = useSwitch(
