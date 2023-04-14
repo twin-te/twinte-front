@@ -50,7 +50,7 @@
             <ToggleButton
               :labels="{ left: '詳細', right: '簡易' }"
               :which-selected="detailed ? 'left' : 'right'"
-              @click-toggle-button="toggleDetailed"
+              @click-toggle-button="toggleDetailed()"
             />
           </div>
           <div class="option__accordion-toggle" @click="toggleAccordion">
@@ -75,7 +75,7 @@
             <div class="accordion__only-blank" @click="toggleOnlyBlank()">
               <Checkbox
                 :isChecked="onlyBlank"
-                @clickCheckbox.stop="toggleOnlyBlank"
+                @clickCheckbox.stop="toggleOnlyBlank()"
               ></Checkbox>
               空いているコマのみを検索
             </div>
