@@ -17,14 +17,19 @@
 </template>
 
 <script setup lang="ts">
-import { onErrorCaptured, ref } from "vue";
+import * as Sentry from "@sentry/vue";
+import { onErrorCaptured, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { usePorts } from "~/adapter";
+import { getUser } from "~/application/usecases/user/getUser";
 import {
   InternalServerError,
+  isResultError,
   NetworkError,
   UnauthorizedError,
 } from "~/domain/error";
 import Error from "~/ui/components/Error.vue";
+import { getAuthState } from "~/ui/store/auth";
 import Layout from "~/ui/templates/Layout.vue";
 import { setSetting } from "./store/setting";
 
@@ -57,6 +62,23 @@ onErrorCaptured((error) => {
   }
 
   return false;
+});
+
+const authState = getAuthState();
+
+const ports = usePorts();
+
+watch(authState, () => {
+  if (authState) {
+    getUser(ports)()
+      .then((user) => {
+        if (isResultError(user)) return;
+        Sentry.setUser(user);
+      })
+      .catch(() => Sentry.setUser(null));
+  } else {
+    Sentry.setUser(null);
+  }
 });
 </script>
 
