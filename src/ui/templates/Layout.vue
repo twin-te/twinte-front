@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import * as Sentry from "@sentry/vue";
 import { watch } from "vue";
-import { usePorts } from "~/adapter";
-import { isResultError } from "~/domain/error";
 import Button from "~/ui/components/Button.vue";
 import GrayFilter from "~/ui/components/GrayFilter.vue";
 import Modal from "~/ui/components/Modal.vue";
@@ -17,8 +14,6 @@ import Sidebar from "./Sidebar.vue";
 const authState = getAuthState();
 await setAuthState();
 
-const ports = usePorts();
-
 /** welcome modal */
 const [
   isVisibleWelcomeModal,
@@ -31,20 +26,6 @@ watch(
   authState,
   () => {
     setWelcomeModal(!authState.value);
-    if (authState) {
-      ports.userRepository
-        .getUser()
-        .then((user) => {
-          if (isResultError(user)) return;
-          Sentry.setUser({
-            username: user.name,
-            id: user.id,
-          });
-        })
-        .catch(() => Sentry.setUser(null));
-    } else {
-      Sentry.setUser(null);
-    }
   },
   { immediate: true }
 );
