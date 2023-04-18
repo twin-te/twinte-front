@@ -68,7 +68,6 @@ watch(authState, () => {
   if (authState) {
     getUser(ports)()
       .then((user) => {
-        console.log("Sentry: %o", user);
         if (isResultError(user)) return;
         Sentry.setUser(user);
       })
