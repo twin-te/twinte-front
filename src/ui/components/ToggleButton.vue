@@ -48,12 +48,12 @@ export default defineComponent({
       'toggle-button': true,
     }"
   >
-    <div class="toggle-button__label" @click="handleChange('left', $event)">
+    <button class="toggle-button__label" @click="handleChange('left', $event)">
       {{ labels.left }}
-    </div>
-    <div class="toggle-button__label" @click="handleChange('right', $event)">
+    </button>
+    <button class="toggle-button__label" @click="handleChange('right', $event)">
       {{ labels.right }}
-    </div>
+    </button>
     <div
       :class="{
         'toggle-button__slider': true,
