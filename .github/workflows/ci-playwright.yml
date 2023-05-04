@@ -10,12 +10,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
+        run: yarn playwright install chromium webkit --with-deps
 
       - name: Run Playwright tests
         run: yarn test:integration
