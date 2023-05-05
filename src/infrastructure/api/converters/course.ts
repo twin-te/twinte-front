@@ -21,3 +21,11 @@ export const apiToCourse = (apiCourse: ApiType.Course): Course => {
     rooms,
   };
 };
+
+// For search performance, exclude `codes` property in the request when codes is an empty string
+export const codesForSearchRequest = (codes: string[]): string[] | undefined =>
+  codes.length === 0 || codes.at(0) === "" ? undefined : codes;
+
+// For search performance, make keywords array empty when keyword is an empty string
+export const keywordsForSearchRequest = (keywords: string[]): string[] =>
+  keywords.at(0) === "" ? [] : keywords;
