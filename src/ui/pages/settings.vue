@@ -1,3 +1,21 @@
+<script lang="ts">
+//Notifcation Settings
+declare global {
+  // eslint-disable-next-line no-unused-vars
+  interface Window {
+    android?: {
+      openSettings: () => void;
+    };
+    webkit?: {
+      messageHandlers?: {
+        iPhoneSettings?: {
+          postMessage: (hoge: string) => void;
+        };
+      };
+    };
+  }
+}
+</script>
 <template>
   <div class="view-settings">
     <PageHeader>
@@ -9,7 +27,7 @@
           @click="$router.back()"
         ></IconButton>
       </template>
-      <template #title>表示設定</template>
+      <template #title>設定</template>
     </PageHeader>
     <div class="main">
       <div class="main__contents">
@@ -61,6 +79,17 @@
             @update:selectedOption="updateSelectedYearOption"
           ></Dropdown>
         </div>
+        <div v-show="isMobile()" class="main__content">
+          <p>通知</p>
+          <Button
+            class="button"
+            size="small"
+            color="base"
+            :pauseActiveStyle="false"
+            @click="openNotificationSetting()"
+            >通知設定を開く</Button
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -69,15 +98,20 @@
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 import { academicYears } from "~/domain/year";
 import Dropdown from "~/ui/components/Dropdown.vue";
 import IconButton from "~/ui/components/IconButton.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
 import ToggleSwitch from "~/ui/components/ToggleSwitch.vue";
+import { isiOS, isMobile } from "~/ui/ua";
+import Button from "../components/Button.vue";
 import { getSetting, setSetting, updateSetting } from "../store/setting";
 
+const router = useRouter();
+
 useHead({
-  title: "Twin:te | 表示設定",
+  title: "Twin:te | 設定",
 });
 
 await setSetting();
@@ -101,6 +135,15 @@ const updateSelectedYearOption = async (option: string) => {
   const year: number = option === autoOption ? 0 : Number(option.slice(0, 4));
   await updateSetting({ displayYear: year });
 };
+
+const openNotificationSetting = () => {
+  // apply setTimeout for animation
+  setTimeout(() => {
+    if (isiOS())
+      window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
+    else window.android?.openSettings();
+  }, 300);
+};
 </script>
 
 <style scoped lang="scss">
@@ -120,7 +163,6 @@ const updateSelectedYearOption = async (option: string) => {
     padding: 1.2rem 0;
     color: getColor(--color-text-main);
     font-weight: 500;
-
     & .switch {
       margin: 0 0 0 auto;
     }
