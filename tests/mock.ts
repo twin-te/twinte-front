@@ -4,18 +4,22 @@ const API_BASE_URL = `http://localhost:8080/api/v3`;
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
+// route.fulfill function's parameter type
+type fullfillOptions = Parameters<
+  Parameters<Parameters<Page["route"]>[1]>[0]["fulfill"]
+>[0];
+
 export const mockApi = async (
   page: Page,
   path: string | RegExp,
   responses: {
-    [K in Method]?: Parameters<
-      Parameters<Parameters<Page["route"]>[1]>[0]["fulfill"]
-    >[0];
+    [K in Method]?: fullfillOptions;
   },
 ): Promise<void> => {
   const routeTarget = typeof path === "string"
     ? `${API_BASE_URL}${path}`
-    : (url: URL) => path.test(url.pathname);
+    : (url: URL) =>
+      url.href.startsWith(API_BASE_URL) && path.test(url.pathname);
   page.route(routeTarget, async (route) => {
     for (const [method, response] of Object.entries(responses)) {
       if (route.request().method() === method) await route.fulfill(response);
