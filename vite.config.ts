@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => ({
             "./src/ui/pages/add/twins.vue",
             "./src/ui/pages/feedback.vue",
             "./src/ui/pages/news.vue",
-            "./src/ui/pages/view-settings.vue",
+            "./src/ui/pages/settings.vue",
           ],
           other: [
             "./src/ui/pages/404.vue",
