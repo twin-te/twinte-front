@@ -5,10 +5,15 @@ declare global {
   interface Window {
     android?: {
       openSettings: () => void;
+      //shareが無いとTypeError...どこまで弄っていいか分からなかったのでこのまま
+      share: (hoge: string) => void;
     };
     webkit?: {
       messageHandlers?: {
         iPhoneSettings?: {
+          postMessage: (hoge: string) => void;
+        };
+        share?: {
           postMessage: (hoge: string) => void;
         };
       };
