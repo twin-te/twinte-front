@@ -6,7 +6,7 @@ declare global {
     android?: {
       openSettings: () => void;
       //shareが無いとTypeError...どこまで弄っていいか分からなかったのでこのまま
-      share: (hoge: string) => void;
+      share: (message: string) => void;
     };
     webkit?: {
       messageHandlers?: {
@@ -14,7 +14,7 @@ declare global {
           postMessage: (hoge: string) => void;
         };
         share?: {
-          postMessage: (hoge: string) => void;
+          postMessage: (message: string) => void;
         };
       };
     };
