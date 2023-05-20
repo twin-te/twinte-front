@@ -19,6 +19,7 @@ import { getTagById } from "./tag/getTagById";
 import { updateTagName } from "./tag/updateTagName";
 import { updateTagOrders } from "./tag/updateTagOrders";
 import { checkAuthentication } from "./user/checkAuthentication";
+import { deleteUser } from "./user/deleteUser";
 import { getApplicableYear } from "./user/getApplicableYear";
 import { getSetting } from "./user/getSetting";
 import { updateSetting } from "./user/updateSetting";
@@ -55,4 +56,5 @@ export default {
   getApplicableYear,
   getSetting,
   updateSetting,
+  deleteUser,
 };
