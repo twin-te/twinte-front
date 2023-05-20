@@ -7,4 +7,9 @@ export type Methods = {
     /** 成功 */
     resBody: Types.User;
   };
+  delete: {
+    status: 200;
+    /** 成功 */
+    resBody: void;
+  };
 };

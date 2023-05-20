@@ -40,6 +40,20 @@ export class UserRepository implements IUserRepository {
     );
   }
 
+  async deleteUser(): Promise<
+    null | UnauthorizedError | NetworkError | InternalServerError
+  > {
+    return this.#api.call<void, null, 200, 401 | 500>(
+      (client) => client.users.me.delete(),
+      () => {
+        this.#user = undefined;
+        return null;
+      },
+      [200],
+      [401, 500]
+    );
+  }
+
   /**
    * Return setting whose value is not undefined.
    */

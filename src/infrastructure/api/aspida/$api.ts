@@ -821,6 +821,13 @@ const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
             BasicHeaders,
             Methods20["get"]["status"]
           >(prefix, PATH15, GET, option).json(),
+        delete: (option?: { config?: T | undefined } | undefined) =>
+          fetch<void, BasicHeaders, Methods20["delete"]["status"]>(
+            prefix,
+            PATH15,
+            DELETE,
+            option
+          ).send(),
         /**
          * @returns 成功
          */
@@ -831,6 +838,15 @@ const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
             Methods20["get"]["status"]
           >(prefix, PATH15, GET, option)
             .json()
+            .then((r) => r.body),
+        $delete: (option?: { config?: T | undefined } | undefined) =>
+          fetch<void, BasicHeaders, Methods20["delete"]["status"]>(
+            prefix,
+            PATH15,
+            DELETE,
+            option
+          )
+            .send()
             .then((r) => r.body),
         $path: () => `${prefix}${PATH15}`,
       },
