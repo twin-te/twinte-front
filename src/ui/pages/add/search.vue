@@ -50,7 +50,7 @@
             <ToggleButton
               :labels="{ left: '詳細', right: '簡易' }"
               :which-selected="detailed ? 'left' : 'right'"
-              @click-toggle-button="toggleDetailed"
+              @click-toggle-button="toggleDetailed()"
             />
           </div>
           <div class="option__accordion-toggle" @click="toggleAccordion">
@@ -75,7 +75,7 @@
             <div class="accordion__only-blank" @click="toggleOnlyBlank()">
               <Checkbox
                 :isChecked="onlyBlank"
-                @clickCheckbox.stop="toggleOnlyBlank"
+                @clickCheckbox.stop="toggleOnlyBlank()"
               ></Checkbox>
               空いているコマのみを検索
             </div>
@@ -194,7 +194,7 @@
         </p>
         <div class="modal__courses">
           <div
-            v-for="duplicateCourse in duplicateCourses"
+            v-for="duplicateCourse in duplicatedScheduleCourses"
             :key="duplicateCourse.name"
             class="duplicated-course"
           >
@@ -286,8 +286,9 @@ import TextFieldSingleLine from "~/ui/components/TextFieldSingleLine.vue";
 import ToggleButton from "~/ui/components/ToggleButton.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { addCoursesByCodes } from "~/ui/store/course";
+import { displayToast } from "~/ui/store/toast";
 import { getApplicableYear } from "~/ui/store/year";
-import { deleteElementInArray } from "~/utils";
+import { asyncFilter, deleteElementInArray } from "~/utils";
 import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
@@ -365,8 +366,8 @@ const search = async (init = true) => {
 
   const result = await Usecase.searchCourse(ports)(
     year.value,
-    keyword.value.split("/\s/"),
-    code.value.split("/\s/"),
+    keyword.value.split(/\s/),
+    code.value.split(/\s/),
     timetable,
     onlyBlank.value,
     "Cover",
@@ -469,19 +470,44 @@ const buttonState = computed(() =>
   selectedSearchResults.length > 0 ? "default" : "disabled"
 );
 
-const duplicateCourses = ref<DisplayCourse[]>([]);
+const duplicatedScheduleCourses = ref<DisplayCourse[]>([]);
 
 const addCourses = async (warning = true) => {
-  duplicateCourses.value = (
-    await Promise.all(
-      selectedSearchResults.filter(
-        ({ schedules }) =>
-          !Usecase.checkScheduleDuplicate(ports)(year.value, schedules)
-      )
+  const registeredCourse = await Usecase.getRegisteredCoursesByYear(ports)(
+    year.value
+  );
+
+  if (isResultError(registeredCourse)) throw registeredCourse;
+
+  const duplicatedCourses = selectedSearchResults
+    .filter(({ course: { code: selectedCourseCode } }) => {
+      return registeredCourse.some(
+        ({ code: registeredCourseCode }) =>
+          registeredCourseCode === selectedCourseCode
+      );
+    })
+    .map(({ course }) => course);
+
+  if (duplicatedCourses.length > 0) {
+    const text =
+      `以下のコースはすでに登録されているため追加できません。\n` +
+      duplicatedCourses
+        .map(({ code, name }) => `【${code}】${name}`)
+        .join("\n");
+    displayToast(text, { type: "danger" });
+    gtm?.trackEvent({ event: "duplicated-courses-error" });
+    return;
+  }
+
+  duplicatedScheduleCourses.value = await (
+    await asyncFilter(
+      selectedSearchResults,
+      async ({ schedules }) =>
+        !(await Usecase.checkScheduleDuplicate(ports)(year.value, schedules))
     )
   ).map(({ course }) => course);
 
-  if (warning && duplicateCourses.value.length > 0) {
+  if (warning && duplicatedScheduleCourses.value.length > 0) {
     openDuplicateModal();
     return;
   }

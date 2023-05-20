@@ -27,8 +27,10 @@
               :isDetailed="false"
               :isExpanded="courseResult.expanded"
               :withHr="i < courseResults.length - 1"
-              @click-checkbox="courseResult.selected = !courseResult.selected"
-              @click-card="courseResult.expanded = !courseResult.expanded"
+              @click-checkbox="
+                courseResults[i].selected = !courseResult.selected
+              "
+              @click-card="courseResults[i].expanded = !courseResult.expanded"
             />
           </div>
         </Card>
@@ -46,7 +48,7 @@
       >
     </section>
     <Modal
-      v-if="duplicateCourses"
+      v-if="duplicateCourses && duplicateCourses.length > 0"
       class="duplication-modal"
       @click="duplicateCourses = []"
     >
@@ -91,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, shallowReactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
@@ -108,7 +110,6 @@ import { toggleSidebar } from "~/ui/store/sidebar";
 import { addCoursesByCodes } from "../store/course";
 import { displayToast } from "../store/toast";
 import { getApplicableYear, setApplicableYear } from "../store/year";
-import type { Schedule } from "~/domain/schedule";
 import type { DisplayCourse } from "~/presentation/viewmodels/course";
 
 const ports = usePorts();
@@ -132,18 +133,18 @@ const result = await Usecase.getCourses(ports)(
 );
 if (isResultError(result)) throw result;
 
-type CourseResult = {
-  course: DisplayCourse;
-  schedules: Schedule[];
-  selected: boolean;
-  expanded: boolean;
-};
+const registered = await Usecase.getRegisteredCoursesByYear(ports)(year.value);
+if (isResultError(registered)) throw registered;
 
-const courseResults = shallowReactive<CourseResult[]>(
+const registeredSet = new Set(
+  registered.map((course) => `${course.year}_${course.code}`)
+);
+
+const courseResults = reactive(
   result.map((course) => ({
     course: courseToDisplay(course),
     schedules: course.schedules,
-    selected: true,
+    selected: !registeredSet.has(`${course.year}_${course.code}`),
     expanded: false,
   }))
 );
@@ -173,7 +174,8 @@ const addCourses = async (warning = true) => {
         course,
         result: await Usecase.checkScheduleDuplicate(ports)(
           year.value,
-          schedules
+          schedules,
+          registered
         ),
       }))
     )

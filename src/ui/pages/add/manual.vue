@@ -72,6 +72,7 @@
           size="large"
           layout="fill"
           color="primary"
+          data-gtm-marker="manual-adding-course-button"
           :pauseActiveStyle="false"
           :state="buttonState"
           @click="addCourse()"

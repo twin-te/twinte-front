@@ -21,7 +21,7 @@ export const displayToast = (
   option?: { displayPeriod?: number; type?: ToastType }
 ) => {
   const id = createId();
-  const displayPeriod = option?.displayPeriod ?? 3000;
+  const displayPeriod = option?.displayPeriod ?? text.length * 240; // 250 characters per minute reading speed
   const type = option?.type ?? "danger";
 
   toasts.push({ id, text, type });

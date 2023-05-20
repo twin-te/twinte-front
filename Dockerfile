@@ -2,7 +2,7 @@ FROM node:16 AS builder
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 ENV VITE_API_URL=https://app.twinte.net/api/v3
 
