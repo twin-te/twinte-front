@@ -95,8 +95,43 @@ declare global {
             >通知設定を開く</Button
           >
         </div>
+        <div class="main__content">
+          <p>アカウント情報</p>
+          <Button
+            class="button"
+            size="small"
+            color="danger"
+            :pauseActiveStyle="false"
+            @click="onClickAccountDeleteModel()"
+            >アカウントを削除する</Button
+          >
+        </div>
       </div>
     </div>
+    <Modal v-if="isAccountDeletionModalVisible" class="account-delete-modal">
+      <template #title>アカウントを消去しますか？</template>
+      <template #contents>
+        <p class="modal__text">
+          Twin:teに登録した、すべてのデータも消去されます。これには時間割やメモ等を含み、消去後は復元することができません。
+        </p>
+      </template>
+      <template #button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="closeAccountDeletionModal"
+          >キャンセル</Button
+        >
+        <Button
+          size="medium"
+          layout="fill"
+          color="danger"
+          @click="confirmDeleteAccount"
+          >消去</Button
+        >
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -104,13 +139,18 @@ declare global {
 import { useHead } from "@vueuse/head";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { usePorts } from "~/adapter";
+import Usecase from "~/application/usecases";
 import { academicYears } from "~/domain/year";
 import Dropdown from "~/ui/components/Dropdown.vue";
 import IconButton from "~/ui/components/IconButton.vue";
+import Modal from "~/ui/components/Modal.vue";
 import PageHeader from "~/ui/components/PageHeader.vue";
 import ToggleSwitch from "~/ui/components/ToggleSwitch.vue";
+import { useSwitch } from "~/ui/hooks/useSwitch";
 import { isiOS, isMobile } from "~/ui/ua";
 import Button from "../components/Button.vue";
+
 import { getSetting, setSetting, updateSetting } from "../store/setting";
 
 const router = useRouter();
@@ -148,6 +188,25 @@ const openNotificationSetting = () => {
       window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
     else window.android?.openSettings();
   }, 300);
+};
+
+/** Account Delete modal */
+const [
+  isAccountDeletionModalVisible,
+  openAccountDeletionModal,
+  closeAccountDeletionModal,
+] = useSwitch(false);
+
+const onClickAccountDeleteModel = () => {
+  openAccountDeletionModal();
+};
+const confirmDeleteAccount = async () => {
+  const ports = usePorts();
+  const deleteUserResult = await Usecase.deleteUser(ports)();
+  if (deleteUserResult) {
+    closeAccountDeletionModal();
+    router.push("/login");
+  }
 };
 </script>
 
