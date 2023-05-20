@@ -108,7 +108,11 @@ declare global {
         </div>
       </div>
     </div>
-    <Modal v-if="isAccountDeletionModalVisible" class="account-delete-modal">
+    <Modal
+      v-if="isAccountDeletionModalVisible"
+      class="account-delete-modal"
+      @click="closeAccountDeletionModal"
+    >
       <template #title>アカウントを消去しますか？</template>
       <template #contents>
         <p class="modal__text">
