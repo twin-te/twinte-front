@@ -23,7 +23,7 @@ Sentry.init({
     }),
   ],
   tracesSampleRate: 1.0,
-  replaysSessionSampleRate: 0.1,
+  replaysSessionSampleRate: 0.01,
   replaysOnErrorSampleRate: 1.0,
   logErrors: true,
 });
