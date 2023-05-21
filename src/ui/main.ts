@@ -26,6 +26,7 @@ Sentry.init({
   replaysSessionSampleRate: 0.01,
   replaysOnErrorSampleRate: 1.0,
   logErrors: true,
+  enabled: import.meta.env.VITE_ENABLE_SENTRY === "true",
 });
 
 const head = createHead();
@@ -38,7 +39,7 @@ app
     createGtm({
       id: "GTM-PHSLD8B",
       vueRouter: router,
-      enabled: import.meta.env.PROD,
+      enabled: import.meta.env.VITE_ENABLE_GA === "true",
       debug: import.meta.env.DEV,
     })
   )
