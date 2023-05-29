@@ -163,7 +163,6 @@ import Button from "../components/Button.vue";
 import { getSetting, setSetting, updateSetting } from "../store/setting";
 import { displayToast } from "../store/toast";
 
-
 const router = useRouter();
 
 useHead({
@@ -216,18 +215,27 @@ const confirmDeleteAccount = async () => {
   const deleteUserResult = await Usecase.deleteUser(ports)();
   if (isNotResultError(deleteUserResult)) {
     closeAccountDeletionModal();
-    displayToast("アカウントの削除に成功しました。今までのご利用、誠にありがとうございました。", {
-      type: "primary",
-    });
+    displayToast(
+      "アカウントの削除に成功しました。今までのご利用、誠にありがとうございました。",
+      {
+        type: "primary",
+      }
+    );
     router.push("/login");
   } else {
     const error = deleteUserResult;
-    console.log(error)
+    console.log(error);
     if (error instanceof UnauthorizedError) {
-      displayToast("ログインの確認に失敗しました。お手数ですが、再度ログインした上でお試しいただけますと幸いです。", { type: "danger" });
+      displayToast(
+        "ログインの確認に失敗しました。お手数ですが、再度ログインした上でお試しいただけますと幸いです。",
+        { type: "danger" }
+      );
       router.push("/login");
     } else if (error instanceof NetworkError) {
-      displayToast("ネットワークエラーが発生しました。お使いの端末がインターネットに接続されているか、今一度確認ください。", { type: "danger" });
+      displayToast(
+        "ネットワークエラーが発生しました。お使いの端末がインターネットに接続されているか、今一度確認ください。",
+        { type: "danger" }
+      );
     } else if (error instanceof InternalServerError) {
       displayToast("サーバーエラーが発生しました。", { type: "danger" });
     }
