@@ -10,8 +10,5 @@ import {
 export const deleteUser = (ports: Ports) => async (): Promise<
   null | UnauthorizedError | NetworkError | InternalServerError
 > => {
-  const result = await ports.userRepository.deleteUser();
-  if (isResultError(result)) return result;
-
-  return result;
+  return ports.userRepository.deleteUser();
 };
