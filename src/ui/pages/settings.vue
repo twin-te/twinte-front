@@ -145,6 +145,12 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
+import {
+  InternalServerError,
+  isNotResultError,
+  NetworkError,
+  UnauthorizedError,
+} from "~/domain/error";
 import { academicYears } from "~/domain/year";
 import Dropdown from "~/ui/components/Dropdown.vue";
 import IconButton from "~/ui/components/IconButton.vue";
@@ -154,8 +160,9 @@ import ToggleSwitch from "~/ui/components/ToggleSwitch.vue";
 import { useSwitch } from "~/ui/hooks/useSwitch";
 import { isiOS, isMobile } from "~/ui/ua";
 import Button from "../components/Button.vue";
-
 import { getSetting, setSetting, updateSetting } from "../store/setting";
+import { displayToast } from "../store/toast";
+
 
 const router = useRouter();
 
@@ -207,9 +214,23 @@ const onClickAccountDeleteModel = () => {
 const confirmDeleteAccount = async () => {
   const ports = usePorts();
   const deleteUserResult = await Usecase.deleteUser(ports)();
-  if (deleteUserResult) {
+  if (isNotResultError(deleteUserResult)) {
     closeAccountDeletionModal();
+    displayToast("アカウントの削除に成功しました。今までのご利用、誠にありがとうございました。", {
+      type: "primary",
+    });
     router.push("/login");
+  } else {
+    const error = deleteUserResult;
+    console.log(error)
+    if (error instanceof UnauthorizedError) {
+      displayToast("ログインの確認に失敗しました。お手数ですが、再度ログインした上でお試しいただけますと幸いです。", { type: "danger" });
+      router.push("/login");
+    } else if (error instanceof NetworkError) {
+      displayToast("ネットワークエラーが発生しました。お使いの端末がインターネットに接続されているか、今一度確認ください。", { type: "danger" });
+    } else if (error instanceof InternalServerError) {
+      displayToast("サーバーエラーが発生しました。", { type: "danger" });
+    }
   }
 };
 </script>
