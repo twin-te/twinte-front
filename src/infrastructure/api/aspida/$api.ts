@@ -723,6 +723,7 @@ const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
           .json()
           .then((r) => r.body),
       /**
+       * 新しいタグは末尾に追加されます
        * @returns 成功
        */
       post: (option: {
@@ -735,6 +736,7 @@ const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
           Methods17["post"]["status"]
         >(prefix, PATH13, POST, option).json(),
       /**
+       * 新しいタグは末尾に追加されます
        * @returns 成功
        */
       $post: (option: {
@@ -746,6 +748,36 @@ const api = <T>({ baseURL, fetch }: AspidaClient<T>) => {
           BasicHeaders,
           Methods17["post"]["status"]
         >(prefix, PATH13, POST, option)
+          .json()
+          .then((r) => r.body),
+      /**
+       * positionを変更するタグのidとpositionの配列を送信してください。
+       * positionが重複している場合はエラーになります。
+       * @returns 成功
+       */
+      patch: (option: {
+        body: Methods17["patch"]["reqBody"];
+        config?: T | undefined;
+      }) =>
+        fetch<
+          Methods17["patch"]["resBody"],
+          BasicHeaders,
+          Methods17["patch"]["status"]
+        >(prefix, PATH13, PATCH, option).json(),
+      /**
+       * positionを変更するタグのidとpositionの配列を送信してください。
+       * positionが重複している場合はエラーになります。
+       * @returns 成功
+       */
+      $patch: (option: {
+        body: Methods17["patch"]["reqBody"];
+        config?: T | undefined;
+      }) =>
+        fetch<
+          Methods17["patch"]["resBody"],
+          BasicHeaders,
+          Methods17["patch"]["status"]
+        >(prefix, PATH13, PATCH, option)
           .json()
           .then((r) => r.body),
       $path: () => `${prefix}${PATH13}`,

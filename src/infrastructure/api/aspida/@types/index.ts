@@ -137,6 +137,12 @@ export type Tag = {
   id: string;
   userId: string;
   name: string;
+  position?: number | undefined;
+};
+
+export type TagPositionOnly = {
+  id: string;
+  position: number;
 };
 
 export type TagIdOnly = {
