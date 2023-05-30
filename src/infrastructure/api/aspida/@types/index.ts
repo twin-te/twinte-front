@@ -137,12 +137,6 @@ export type Tag = {
   id: string;
   userId: string;
   name: string;
-  position?: number | undefined;
-};
-
-export type TagPositionOnly = {
-  id: string;
-  position: number;
 };
 
 export type TagIdOnly = {
@@ -191,3 +185,11 @@ export type Information = {
 export type Error = {
   message: string;
 };
+
+export type BadRequestError = Error;
+
+export type UnauthorizedError = Error;
+
+export type NotFoundError = Error;
+
+export type InternalServerError = Error;

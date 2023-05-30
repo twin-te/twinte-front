@@ -8,7 +8,6 @@ export type Methods = {
     resBody: Types.Tag[];
   };
 
-  /** 新しいタグは末尾に追加されます */
   post: {
     status: 200;
     /** 成功 */
@@ -17,16 +16,5 @@ export type Methods = {
     reqBody: {
       name: string;
     };
-  };
-
-  /**
-   * positionを変更するタグのidとpositionの配列を送信してください。
-   * positionが重複している場合はエラーになります。
-   */
-  patch: {
-    status: 200;
-    /** 成功 */
-    resBody: Types.TagPositionOnly[];
-    reqBody: Types.TagPositionOnly[];
   };
 };
