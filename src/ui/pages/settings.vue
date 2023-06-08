@@ -245,7 +245,7 @@ const confirmDeleteAccount = async () => {
 
 <style scoped lang="scss">
 @import "~/ui/styles";
-.view-settings {
+.settings {
   @include max-width;
 }
 
