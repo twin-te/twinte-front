@@ -191,3 +191,11 @@ export type Information = {
 export type Error = {
   message: string;
 };
+
+export type BadRequestError = Error;
+
+export type UnauthorizedError = Error;
+
+export type NotFoundError = Error;
+
+export type InternalServerError = Error;

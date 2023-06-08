@@ -1,4 +1,4 @@
 module.exports = {
-  input: "src/api",
+  input: "src/infrastructure/api/aspida",
   openapi: { inputFile: "twinte-openapi-spec/spec.yml" },
 };
