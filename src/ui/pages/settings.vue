@@ -22,7 +22,7 @@ declare global {
 }
 </script>
 <template>
-  <div class="view-settings">
+  <div class="settings">
     <PageHeader>
       <template #left-button-icon>
         <IconButton
