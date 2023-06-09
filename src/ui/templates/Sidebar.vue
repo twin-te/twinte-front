@@ -87,12 +87,6 @@ const settings = ref<Content[]>(
       link: "/settings",
       show: true,
     },
-    {
-      iconName: "notifications",
-      item: "通知設定",
-      link: "settings",
-      show: isMobile(),
-    },
   ].filter((v) => v.show)
 );
 
