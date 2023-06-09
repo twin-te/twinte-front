@@ -13,6 +13,7 @@ export type Methods = {
       /** 検索モード Cover 指定した時限と講義の開講日時が一部でも被っていれば対象とみなす Contain 指定した時限に収まっている講義のみ対象とみなす デフォルトはCover */
       searchMode?: "Cover" | "Contain" | undefined;
       keywords: string[];
+      codes?: string[] | undefined;
       limit?: number | undefined;
       offset?: number | undefined;
       timetable?: Types.SearchCourseTimetableQuery | undefined;

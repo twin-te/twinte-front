@@ -22,7 +22,7 @@ declare global {
 }
 </script>
 <template>
-  <div class="view-settings">
+  <div class="settings">
     <PageHeader>
       <template #left-button-icon>
         <IconButton
@@ -245,7 +245,7 @@ const confirmDeleteAccount = async () => {
 
 <style scoped lang="scss">
 @import "~/ui/styles";
-.view-settings {
+.settings {
   @include max-width;
 }
 
