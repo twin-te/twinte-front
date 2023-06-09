@@ -174,7 +174,7 @@ const navigateHandler = async (link: string) => {
       </Button>
     </section>
 
-    <section class="sidebar__year" @click="$router.push('/view-settings')">
+    <section class="sidebar__year" @click="$router.push('/settings')">
       設定中の年度 {{ year }}年度
       <span class="sidebar__icon material-icons">swap_vert</span>
     </section>
