@@ -82,9 +82,9 @@ const menu = ref<Content[]>(
 const settings = ref<Content[]>(
   [
     {
-      iconName: "view_compact",
-      item: "表示設定",
-      link: "/view-settings",
+      iconName: "settings",
+      item: "設定",
+      link: "/settings",
       show: true,
     },
     {
@@ -174,7 +174,7 @@ const navigateHandler = async (link: string) => {
       </Button>
     </section>
 
-    <section class="sidebar__year" @click="$router.push('/view-settings')">
+    <section class="sidebar__year" @click="$router.push('/settings')">
       設定中の年度 {{ year }}年度
       <span class="sidebar__icon material-icons">swap_vert</span>
     </section>
