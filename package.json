@@ -22,7 +22,7 @@
   "dependencies": {
     "@aspida/axios": "^1.6.3",
     "@gtm-support/vue-gtm": "^2.0.0",
-    "@sentry/rollup-plugin": "^0.4.0",
+    "@sentry/rollup-plugin": "^2.2.2",
     "@sentry/tracing": "^7.16.0",
     "@sentry/vue": "^7.16.0",
     "@types/lodash": "^4.14.184",
