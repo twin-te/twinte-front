@@ -116,9 +116,7 @@ declare global {
                 ? 'disabled'
                 : 'default'
             "
-            @click="
-              () => {}
-            "
+            @click="onClineRevokeProvider(provider.name)"
             >連携を解除</Button
           >
           <Button
@@ -127,9 +125,7 @@ declare global {
             size="small"
             color="primary"
             :pauseActiveStyle="false"
-            @click="
-              () => {}
-            "
+            @click="() => {}"
             >連携する</Button
           >
         </div>
@@ -149,6 +145,40 @@ declare global {
         </div>
       </div>
     </div>
+    <Modal
+      v-if="isProviderRevocationModalVisible"
+      class="provider-revocation-modal"
+      @click="closeProviderRevocationModal"
+    >
+      <template #title>連携を解除しますか？</template>
+      <template #contents>
+        <p class="modal__text">
+          再度連携するまで{{
+            selectedProvider ?? "aaaa"
+          }}を使ってTwin:teにログインできなくなります。
+        </p>
+      </template>
+      <template #button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="closeProviderRevocationModal"
+          >キャンセル</Button
+        >
+        <Button
+          size="medium"
+          layout="fill"
+          color="danger"
+          @click="
+            () => {
+              /* TODO */
+            }
+          "
+          >解除</Button
+        >
+      </template>
+    </Modal>
     <Modal
       v-if="isAccountDeletionModalVisible"
       class="account-delete-modal"
@@ -182,7 +212,7 @@ declare global {
 
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
@@ -258,15 +288,15 @@ const getProviders = (): Provider[] | null => {
   const providers: Provider[] = [
     {
       name: "Twitter (X)",
-      linked: user?.authentication.twitter ?? false,
+      linked: user?.authentication?.twitter ?? false,
     },
     {
       name: "Google",
-      linked: user?.authentication.google ?? false,
+      linked: user?.authentication?.google ?? false,
     },
     {
       name: "Apple",
-      linked: user?.authentication.apple ?? false,
+      linked: user?.authentication?.apple ?? false,
     },
   ];
 
@@ -275,8 +305,17 @@ const getProviders = (): Provider[] | null => {
 
 const providers = getProviders();
 
+const selectedProvider = ref<string | undefined>(undefined);
+
+const [
+  isProviderRevocationModalVisible,
+  openProviderRevocationModal,
+  closeProviderRevocationModal,
+] = useSwitch(false);
+
 const onClineRevokeProvider = (provider: string) => {
-  // TODO
+  selectedProvider.value = provider;
+  openProviderRevocationModal();
 };
 
 /** Account Delete modal */
@@ -362,6 +401,18 @@ const confirmDeleteAccount = async () => {
       &:not(:first-of-type) {
         margin-block-start: $spacing-4;
       }
+    }
+  }
+}
+
+.provider-revocation-modal {
+  .button {
+    width: calc(50% - $spacing-3);
+    &:first-child {
+      margin-right: $spacing-3;
+    }
+    &:last-child {
+      margin-left: $spacing-3;
     }
   }
 }
