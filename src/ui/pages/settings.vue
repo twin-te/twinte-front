@@ -170,11 +170,7 @@ declare global {
           size="medium"
           layout="fill"
           color="danger"
-          @click="
-            () => {
-              /* TODO */
-            }
-          "
+          @click="confirmRevokeProvider"
           >解除</Button
         >
       </template>
@@ -316,6 +312,13 @@ const [
 const onClineRevokeProvider = (provider: string) => {
   selectedProvider.value = provider;
   openProviderRevocationModal();
+};
+const confirmRevokeProvider = async () => {
+  // TODO
+  closeProviderRevocationModal();
+  displayToast(`${selectedProvider.value}の連携を解除しました`, {
+    type: "primary",
+  });
 };
 
 /** Account Delete modal */
