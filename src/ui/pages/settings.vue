@@ -36,6 +36,7 @@ declare global {
     </PageHeader>
     <div class="main">
       <div class="main__contents">
+        <h2 class="main__content--heading">表示</h2>
         <div class="main__content">
           ダークテーマ
           <ToggleSwitch
@@ -274,6 +275,14 @@ const confirmDeleteAccount = async () => {
         line-height: $single-line;
         font-weight: 500;
         color: getColor(--color-text-main);
+      }
+    }
+    &--heading {
+      font-size: $font-small;
+      color: getColor(--color-text-sub);
+
+      &:not(:first-of-type) {
+        margin-block-start: $spacing-4;
       }
     }
   }
