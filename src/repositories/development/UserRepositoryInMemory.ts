@@ -9,7 +9,11 @@ export class UserRepositoryInMemory extends UserRepository {
     super();
     this.#user = {
       id: createId(),
-      name: "Twin:te",
+      authentication: {
+        twitter: true,
+        google: false,
+        apple: false,
+      },
     };
   }
 

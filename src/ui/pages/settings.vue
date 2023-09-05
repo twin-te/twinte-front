@@ -96,12 +96,52 @@ declare global {
             >通知設定を開く</Button
           >
         </div>
+
+        <h2 class="main__content--heading">アカウント連携</h2>
+
+        <div
+          v-for="provider in providers"
+          :key="provider.name"
+          class="main__content"
+        >
+          <p>{{ provider.name }}</p>
+          <Button
+            v-if="provider.linked"
+            class="button"
+            size="small"
+            color="base"
+            :pauseActiveStyle="false"
+            :state="
+              providers?.filter((provider) => provider.linked).length === 1
+                ? 'disabled'
+                : 'default'
+            "
+            @click="
+              () => {}
+            "
+            >連携を解除</Button
+          >
+          <Button
+            v-if="!provider.linked"
+            class="button"
+            size="small"
+            color="primary"
+            :pauseActiveStyle="false"
+            @click="
+              () => {}
+            "
+            >連携する</Button
+          >
+        </div>
+
+        <h2 class="main__content--heading">アカウントの削除</h2>
+
         <div class="main__content">
           <p>アカウント情報</p>
           <Button
             class="button"
             size="small"
-            color="danger"
+            color="text-danger"
             :pauseActiveStyle="false"
             @click="onClickAccountDeleteModel()"
             >アカウントを削除する</Button
@@ -146,6 +186,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
+import { getUser } from "~/application/usecases/user/getUser";
 import {
   InternalServerError,
   isNotResultError,
@@ -199,6 +240,43 @@ const openNotificationSetting = () => {
       window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
     else window.android?.openSettings();
   }, 300);
+};
+
+/** Multiple Auth Provider */
+
+// データ取得がこれでいいのかわからない
+const ports = usePorts();
+const user = await getUser(ports)();
+
+type Provider = { name: string; linked: boolean };
+const getProviders = (): Provider[] | null => {
+  if (user instanceof NetworkError || user instanceof InternalServerError) {
+    displayToast("サーバーエラーが発生しました。", { type: "danger" });
+    return null;
+  }
+
+  const providers: Provider[] = [
+    {
+      name: "Twitter (X)",
+      linked: user?.authentication.twitter ?? false,
+    },
+    {
+      name: "Google",
+      linked: user?.authentication.google ?? false,
+    },
+    {
+      name: "Apple",
+      linked: user?.authentication.apple ?? false,
+    },
+  ];
+
+  return providers;
+};
+
+const providers = getProviders();
+
+const onClineRevokeProvider = (provider: string) => {
+  // TODO
 };
 
 /** Account Delete modal */
