@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    target: "ES2020",
     sourcemap: sourcemap[mode],
     rollupOptions: {
       // https://rollupjs.org/guide/en/#outputmanualchunks
