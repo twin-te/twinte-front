@@ -1,3 +1,4 @@
+import "core-js/features/array/at";
 import { createGtm } from "@gtm-support/vue-gtm";
 import { BrowserTracing } from "@sentry/tracing";
 import * as Sentry from "@sentry/vue";
