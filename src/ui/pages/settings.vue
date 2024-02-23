@@ -148,6 +148,7 @@ declare global {
     <Modal
       v-if="isProviderRevocationModalVisible"
       class="provider-revocation-modal"
+      size="small"
       @click="closeProviderRevocationModal"
     >
       <template #title>連携を解除しますか？</template>
