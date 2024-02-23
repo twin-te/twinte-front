@@ -37,8 +37,10 @@
         </button>
       </div>
       <div class="main__note">
-        ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a
-        > 及び <a href="https://www.twinte.net/policy">プライバシーポリシー</a>に同意したものとします。<br />
+        ※ ログインした場合、<a href="https://www.twinte.net/terms">利用規約</a>
+        及び
+        <a href="https://www.twinte.net/policy">プライバシーポリシー</a
+        >に同意したものとします。<br />
         ※Twin:teにログインしたことがない場合は、選択したログイン方法と紐づいたアカウントが自動で作成されます。
       </div>
       <img
