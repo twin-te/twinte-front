@@ -14,13 +14,10 @@ export const openUrl = (url: string) => {
 };
 
 export const getAppUrl = () => {
-  return import.meta.env.VITE_APP_URL ?? "https://app.twinte.net"
+  return import.meta.env.VITE_APP_URL ?? "https://app.twinte.net";
 };
 
-export const getLoginUrl = (
-  provider: Provider,
-  redirectUrl = getAppUrl()
-) => {
+export const getLoginUrl = (provider: Provider, redirectUrl = getAppUrl()) => {
   return `${getAppUrl()}/auth/v3/${provider}?redirect_url=${redirectUrl}`;
 };
 
