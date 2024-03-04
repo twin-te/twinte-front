@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+ENV VITE_APP_URL=https://app.twinte.net
 ENV VITE_API_URL=https://app.twinte.net/api/v3
 
 COPY . ./
