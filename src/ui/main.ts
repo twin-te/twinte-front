@@ -17,7 +17,7 @@ Sentry.init({
   integrations: [
     new BrowserTracing({
       routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-      tracingOrigins: ["app.twinte.net"],
+      tracingOrigins: [import.meta.env.VITE_APP_SENTRY_ORIGIN ?? ""],
     }),
     new Sentry.Replay({
       maskAllText: false,
