@@ -8,6 +8,7 @@ import { useSwitch } from "~/ui/hooks/useSwitch";
 import { getAuthState, setAuthState } from "~/ui/store/auth";
 import { isVisibleSidebar, closeSidebar } from "~/ui/store/sidebar";
 import { deleteToast, getToasts } from "~/ui/store/toast";
+import { getAppUrl } from "~/ui/url";
 import Sidebar from "./Sidebar.vue";
 
 /** auth state */
@@ -77,7 +78,7 @@ const toasts = getToasts();
           size="medium"
           layout="fill"
           color="primary"
-          @click="$router.push('/login?redirectUrl=https://app.twinte.net/')"
+          @click="$router.push(`/login?redirectUrl=${getAppUrl()}`)"
         >
           ログインする
         </Button>
