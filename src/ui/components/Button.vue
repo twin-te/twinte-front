@@ -24,7 +24,7 @@ export default defineComponent({
       default: "flexible",
     },
     color: {
-      type: String as PropType<"base" | "primary" | "danger">,
+      type: String as PropType<"base" | "primary" | "danger" | "text-danger">,
       default: "base",
     },
     icon: {
@@ -128,6 +128,9 @@ export default defineComponent({
   &--danger {
     background: getColor(--color-danger);
     color: getColor(--color-white);
+  }
+  &--text-danger {
+    color: getColor(--color-danger);
   }
   &--flexible {
     @include flexible;
