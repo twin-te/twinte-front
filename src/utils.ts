@@ -71,7 +71,7 @@ export const containedInArray = <T extends { id: string }>(
 
 export const addElementsInArray = <T extends { id: string }>(
   array: T[],
-  newElements: T[]
+  ...newElements: T[]
 ) => {
   array.splice(array.length, 0, ...newElements);
 };
