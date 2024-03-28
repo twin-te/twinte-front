@@ -5,7 +5,9 @@ import {
   PromiseClient,
   Transport,
 } from "@connectrpc/connect";
+import { Mutex } from "async-mutex";
 import { RegisteredCourse, Course } from "~/domain/course";
+import { normalDays } from "~/domain/day";
 import {
   InternalServerError,
   NetworkError,
@@ -14,8 +16,16 @@ import {
   ValueError,
   isResultError,
 } from "~/domain/error";
-import { Schedule } from "~/domain/schedule";
+import { Module, modules } from "~/domain/module";
+import { periods } from "~/domain/period";
+import { NormalSchedule, Schedule, isNormalSchedule } from "~/domain/schedule";
 import { Tag } from "~/domain/tag";
+import {
+  NormalTimetable,
+  initializeTimetable,
+  normalSchedulesToNormalTimetable,
+  timetableToSchedules,
+} from "~/domain/timetable";
 import {
   toPBAcademicYear,
   toPBUUID,
@@ -40,6 +50,7 @@ import {
   deleteElementInArray,
   updateElementInArray,
 } from "~/utils";
+import { IAuthUseCase } from "./auth";
 
 export interface ITimetableUseCase {
   getCoursesByCodes(inputData: {
@@ -53,17 +64,29 @@ export interface ITimetableUseCase {
     | InternalServerError
   >;
 
-  searchCourses(
-    year: number,
-    keywords: string[],
-    codePrefixes: { included: string[]; excluded: string[] },
+  searchCourses(conds: {
+    year: number;
+    keywords: string[];
+    codePrefixes: { included: string[]; excluded: string[] };
     schedules: {
       fullyIncluded: Schedule[];
       partiallyOverlapped: Schedule[];
-    },
-    offset: number,
-    limit: number
-  ): Promise<Course[] | UnauthorizedError | NetworkError | InternalServerError>;
+    };
+    offset: number;
+    limit: number;
+  }): Promise<
+    Course[] | UnauthorizedError | NetworkError | InternalServerError
+  >;
+
+  searchCoursesOnBlank(conds: {
+    year: number;
+    keywords: string[];
+    codePrefixes: { included: string[]; excluded: string[] };
+    offset: number;
+    limit: number;
+  }): Promise<
+    Course[] | UnauthorizedError | NetworkError | InternalServerError
+  >;
 
   addCoursesByCodes(inputData: {
     year: number;
@@ -128,6 +151,14 @@ export interface ITimetableUseCase {
     | InternalServerError
   >;
 
+  /**
+   * Return true if the schedules do not overlap comparing to the schedules of registered courses. Return false otherwise.
+   */
+  checkScheduleDuplicate(
+    year: number,
+    schedules: Schedule[]
+  ): Promise<boolean | UnauthorizedError | NetworkError | InternalServerError>;
+
   createTag(
     name: string
   ): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError>;
@@ -167,57 +198,70 @@ export interface ITimetableUseCase {
 export class TimetableUseCase implements ITimetableUseCase {
   #client: PromiseClient<typeof TimetableService>;
 
+  #mutex: {
+    registeredCourses: Mutex;
+    tags: Mutex;
+  };
+
   #registeredCourses?: RegisteredCourse[];
   #tags?: Tag[];
 
   constructor(transport: Transport) {
     this.#client = createPromiseClient(TimetableService, transport);
+    this.#mutex = {
+      registeredCourses: new Mutex(),
+      tags: new Mutex(),
+    };
   }
 
   #getRegisteredCourses(): Promise<
     RegisteredCourse[] | UnauthorizedError | NetworkError
   > {
-    if (this.#registeredCourses) {
-      return Promise.resolve(this.#registeredCourses);
-    }
+    return this.#mutex.registeredCourses.runExclusive(() => {
+      if (this.#registeredCourses) {
+        return this.#registeredCourses;
+      }
 
-    return this.#client
-      .getRegisteredCourses({})
-      .then((res) => res.registeredCourses.map(fromPBRegisteredCourse))
-      .then((registeredCourses) => {
-        return (this.#registeredCourses = registeredCourses);
-      })
-      .catch((error) => {
-        return handleError(error, (connectError: ConnectError) => {
-          if (connectError.code === Code.Unauthenticated) {
-            return new UnauthorizedError();
-          }
+      return this.#client
+        .getRegisteredCourses({})
+        .then((res) => res.registeredCourses.map(fromPBRegisteredCourse))
+        .then((registeredCourses) => {
+          return (this.#registeredCourses = registeredCourses);
+        })
+        .catch((error) => {
+          return handleError(error, (connectError: ConnectError) => {
+            if (connectError.code === Code.Unauthenticated) {
+              return new UnauthorizedError();
+            }
 
-          throw error;
+            throw error;
+          });
         });
-      });
+    });
   }
 
   #getTags(): Promise<Tag[] | UnauthorizedError | NetworkError> {
-    if (this.#tags) {
-      return Promise.resolve(this.#tags);
-    }
+    return this.#mutex.tags.runExclusive(() => {
+      if (this.#tags) {
+        return this.#tags;
+      }
 
-    return this.#client
-      .getTags({})
-      .then((res) => res.tags.map(fromPBTag))
-      .then((tags) => {
-        return (this.#tags = tags);
-      })
-      .catch((error) => {
-        return handleError(error, (connectError: ConnectError) => {
-          if (connectError.code === Code.Unauthenticated) {
-            return new UnauthorizedError();
-          }
+      return this.#client
+        .getTags({})
+        .then((res) => res.tags.map(fromPBTag))
+        .then((tags) => {
+          return (this.#tags = tags);
+        })
+        .catch((error) => {
+          return handleError(error, (connectError: ConnectError) => {
+            if (connectError.code === Code.Unauthenticated) {
+              return new UnauthorizedError();
+            }
 
-          throw error;
+            throw error;
+          });
         });
-      });
+    });
   }
 
   getCoursesByCodes(inputData: {
@@ -239,27 +283,77 @@ export class TimetableUseCase implements ITimetableUseCase {
   }
 
   // TODO
-  searchCourses(
-    year: number,
-    keywords: string[],
-    codePrefixes: { included: string[]; excluded: string[] },
+  searchCourses(conds: {
+    year: number;
+    keywords: string[];
+    codePrefixes: { included: string[]; excluded: string[] };
     schedules: {
       fullyIncluded: Schedule[];
       partiallyOverlapped: Schedule[];
-    },
-    offset: number,
-    limit: number
-  ): Promise<
+    };
+    offset: number;
+    limit: number;
+  }): Promise<
     Course[] | UnauthorizedError | NetworkError | InternalServerError
   > {
     return this.#client
       .searchCourses({
-        year: toPBAcademicYear(year),
-        keywords: keywords,
-        codePrefixesExcluded: codePrefixes.included,
-        codePrefixesIncluded: codePrefixes.excluded,
-        offset,
-        limit,
+        year: toPBAcademicYear(conds.year),
+        keywords: conds.keywords,
+        codePrefixesIncluded: conds.codePrefixes.included,
+        codePrefixesExcluded: conds.codePrefixes.excluded,
+        schedulesFullyIncluded: toPBSchedules(
+          conds.schedules.fullyIncluded,
+          []
+        ),
+        schedulesPartiallyOverlapped: toPBSchedules(
+          conds.schedules.partiallyOverlapped,
+          []
+        ),
+        offset: conds.offset,
+        limit: conds.limit,
+      })
+      .then((res) => res.courses.map(fromPBCourse))
+      .catch((error) => handleError(error));
+  }
+
+  // TODO
+  async searchCoursesOnBlank(conds: {
+    year: number;
+    keywords: string[];
+    codePrefixes: { included: string[]; excluded: string[] };
+    offset: number;
+    limit: number;
+  }): Promise<
+    Course[] | UnauthorizedError | NetworkError | InternalServerError
+  > {
+    const result = await this.getRegisteredCourses(conds.year);
+    if (isResultError(result)) {
+      return result;
+    }
+
+    const timetable = initializeTimetable(modules, true);
+
+    result
+      .map(({ schedules }) => schedules)
+      .flat()
+      .filter(isNormalSchedule)
+      .forEach(({ module, day, period }) => {
+        timetable.normal[module][day][period] = false;
+      });
+
+    const schedules = timetableToSchedules(timetable);
+
+    return this.#client
+      .searchCourses({
+        year: toPBAcademicYear(conds.year),
+        keywords: conds.keywords,
+        codePrefixesIncluded: conds.codePrefixes.included,
+        codePrefixesExcluded: conds.codePrefixes.excluded,
+        schedulesFullyIncluded: toPBSchedules(schedules, []),
+        schedulesPartiallyOverlapped: [],
+        offset: conds.offset,
+        limit: conds.limit,
       })
       .then((res) => res.courses.map(fromPBCourse))
       .catch((error) => handleError(error));
@@ -283,13 +377,15 @@ export class TimetableUseCase implements ITimetableUseCase {
       })
       .then((res) => res.registeredCourses.map(fromPBRegisteredCourse))
       .then((registeredCourses) => {
-        if (this.#registeredCourses) {
-          addElementsInArray(
-            this.#registeredCourses,
-            ...deepCopy(registeredCourses)
-          );
-        }
-        return registeredCourses;
+        return this.#mutex.registeredCourses.runExclusive(() => {
+          if (this.#registeredCourses) {
+            addElementsInArray(
+              this.#registeredCourses,
+              ...deepCopy(registeredCourses)
+            );
+          }
+          return registeredCourses;
+        });
       })
       .catch((error) =>
         handleError(error, (connectError: ConnectError) => {
@@ -333,13 +429,15 @@ export class TimetableUseCase implements ITimetableUseCase {
         fromPBRegisteredCourse(assurePresence(res.registeredCourse))
       )
       .then((registeredCourse) => {
-        if (this.#registeredCourses) {
-          addElementsInArray(
-            this.#registeredCourses,
-            deepCopy(registeredCourse)
-          );
-        }
-        return registeredCourse;
+        return this.#mutex.registeredCourses.runExclusive(() => {
+          if (this.#registeredCourses) {
+            addElementsInArray(
+              this.#registeredCourses,
+              deepCopy(registeredCourse)
+            );
+          }
+          return registeredCourse;
+        });
       })
       .catch((error) =>
         handleError(error, (connectError: ConnectError) => {
@@ -360,7 +458,7 @@ export class TimetableUseCase implements ITimetableUseCase {
     const result = await this.#getRegisteredCourses();
 
     if (isResultError(result)) {
-      return Promise.resolve(result);
+      return result;
     }
 
     let registeredCourses = result;
@@ -371,7 +469,7 @@ export class TimetableUseCase implements ITimetableUseCase {
       );
     }
 
-    return Promise.resolve(deepCopy(registeredCourses));
+    return deepCopy(registeredCourses);
   }
 
   async getRegisteredCourseById(
@@ -386,14 +484,14 @@ export class TimetableUseCase implements ITimetableUseCase {
     const result = await this.#getRegisteredCourses();
 
     if (isResultError(result)) {
-      return Promise.resolve(result);
+      return result;
     }
 
     const registeredCourse = result.find(
       (registeredCourse) => registeredCourse.id === id
     );
 
-    return Promise.resolve(registeredCourse ?? new NotFoundError());
+    return registeredCourse ?? new NotFoundError();
   }
 
   // TODO
@@ -438,13 +536,15 @@ export class TimetableUseCase implements ITimetableUseCase {
         fromPBRegisteredCourse(assurePresence(res.registeredCourse))
       )
       .then((registeredCourse) => {
-        if (this.#registeredCourses) {
-          updateElementInArray(
-            this.#registeredCourses,
-            deepCopy(registeredCourse)
-          );
-        }
-        return registeredCourse;
+        return this.#mutex.registeredCourses.runExclusive(() => {
+          if (this.#registeredCourses) {
+            updateElementInArray(
+              this.#registeredCourses,
+              deepCopy(registeredCourse)
+            );
+          }
+          return registeredCourse;
+        });
       })
       .catch((error) => {
         return handleError(error, (connectError: ConnectError) => {
@@ -473,10 +573,12 @@ export class TimetableUseCase implements ITimetableUseCase {
     return this.#client
       .deleteRegisteredCourse({ id: toPBUUID(id) })
       .then(() => {
-        if (this.#registeredCourses) {
-          deleteElementInArray(this.#registeredCourses, id);
-        }
-        return null;
+        return this.#mutex.registeredCourses.runExclusive(() => {
+          if (this.#registeredCourses) {
+            deleteElementInArray(this.#registeredCourses, id);
+          }
+          return null;
+        });
       })
       .catch((error) => {
         return handleError(error, (connectError: ConnectError) => {
@@ -493,6 +595,41 @@ export class TimetableUseCase implements ITimetableUseCase {
       });
   }
 
+  async checkScheduleDuplicate(
+    year: number,
+    schedules: Schedule[]
+  ): Promise<boolean | UnauthorizedError | NetworkError | InternalServerError> {
+    const result = await this.getRegisteredCourses(year);
+    if (isResultError(result)) return result;
+
+    const normalSchedules: NormalSchedule[] = schedules.filter(
+      isNormalSchedule
+    );
+    const registeredNormalSchedules: NormalSchedule[] = result
+      .map(({ schedules }) => schedules)
+      .flat()
+      .filter(isNormalSchedule);
+
+    const timetable: NormalTimetable<
+      Module,
+      boolean
+    > = normalSchedulesToNormalTimetable(normalSchedules);
+    const registeredTimetable: NormalTimetable<
+      Module,
+      boolean
+    > = normalSchedulesToNormalTimetable(registeredNormalSchedules);
+
+    return !modules.some((module) =>
+      normalDays.some((day) =>
+        periods.some(
+          (period) =>
+            timetable[module][day][period] &&
+            registeredTimetable[module][day][period]
+        )
+      )
+    );
+  }
+
   createTag(
     name: string
   ): Promise<Tag | UnauthorizedError | NetworkError | InternalServerError> {
@@ -500,10 +637,12 @@ export class TimetableUseCase implements ITimetableUseCase {
       .createTag({ name })
       .then((res) => fromPBTag(assurePresence(res.tag)))
       .then((tag) => {
-        if (this.#tags) {
-          addElementsInArray(this.#tags, deepCopy(tag));
-        }
-        return tag;
+        return this.#mutex.tags.runExclusive(() => {
+          if (this.#tags) {
+            addElementsInArray(this.#tags, deepCopy(tag));
+          }
+          return tag;
+        });
       })
       .catch((error) => {
         return handleError(error, (connectError: ConnectError) => {
@@ -522,10 +661,10 @@ export class TimetableUseCase implements ITimetableUseCase {
     const result = await this.#getTags();
 
     if (isResultError(result)) {
-      return Promise.resolve(result);
+      return result;
     }
 
-    return Promise.resolve(deepCopy(result));
+    return deepCopy(result);
   }
 
   updateTagName(
@@ -538,10 +677,12 @@ export class TimetableUseCase implements ITimetableUseCase {
       .updateTag({ id: toPBUUID(id), name })
       .then((res) => fromPBTag(assurePresence(res.tag)))
       .then((tag) => {
-        if (this.#tags) {
-          updateElementInArray(this.#tags, deepCopy(tag));
-        }
-        return tag;
+        return this.#mutex.tags.runExclusive(() => {
+          if (this.#tags) {
+            updateElementInArray(this.#tags, deepCopy(tag));
+          }
+          return tag;
+        });
       })
       .catch((error) => {
         return handleError(error, (connectError: ConnectError) => {
@@ -571,10 +712,12 @@ export class TimetableUseCase implements ITimetableUseCase {
       .rearrangeTags({ ids: ids.map(toPBUUID) })
       .then((res) => res.tags.map((tag) => fromPBTag(assurePresence(tag))))
       .then((tags) => {
-        if (this.#tags) {
-          this.#tags = deepCopy(tags);
-        }
-        return tags;
+        return this.#mutex.tags.runExclusive(() => {
+          if (this.#tags) {
+            this.#tags = deepCopy(tags);
+          }
+          return tags;
+        });
       })
       .catch((error) => {
         return handleError(error, (connectError: ConnectError) => {
@@ -603,10 +746,12 @@ export class TimetableUseCase implements ITimetableUseCase {
     return this.#client
       .deleteTag({ id: toPBUUID(id) })
       .then(() => {
-        if (this.#tags) {
-          deleteElementInArray(this.#tags, id);
-        }
-        return null;
+        return this.#mutex.tags.runExclusive(() => {
+          if (this.#tags) {
+            deleteElementInArray(this.#tags, id);
+          }
+          return null;
+        });
       })
       .catch((error) => {
         return handleError(error, (connectError: ConnectError) => {

@@ -1,5 +1,5 @@
 import { initializeObject } from "~/utils";
-import { NormalDay, normalDays, SpecialDay, specialDays } from "./day";
+import { days, NormalDay, normalDays, SpecialDay, specialDays } from "./day";
 import { Module, modules } from "./module";
 import { Period, periods } from "./period";
 import {
@@ -96,4 +96,30 @@ export const schedulesToTimetable = (
   };
 
   return timetable;
+};
+
+export const timetableToSchedules = (
+  timetable: Timetable<Module, boolean>
+): Schedule[] => {
+  const schedules: Schedule[] = [];
+
+  modules.forEach((module) => {
+    normalDays.forEach((day) => {
+      periods.forEach((period) => {
+        if (timetable.normal[module][day][period]) {
+          schedules.push({ module, day, period });
+        }
+      });
+    });
+  });
+
+  modules.forEach((module) => {
+    specialDays.forEach((day) => {
+      if (timetable.special[module][day]) {
+        schedules.push({ module, day });
+      }
+    });
+  });
+
+  return schedules;
 };
