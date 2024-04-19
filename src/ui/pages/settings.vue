@@ -36,6 +36,7 @@ declare global {
     </PageHeader>
     <div class="main">
       <div class="main__contents">
+        <h2 class="main__content--heading">表示</h2>
         <div class="main__content">
           ダークテーマ
           <ToggleSwitch
@@ -95,12 +96,48 @@ declare global {
             >通知設定を開く</Button
           >
         </div>
+
+        <h2 class="main__content--heading">アカウント連携</h2>
+
+        <div
+          v-for="provider in providers"
+          :key="provider.name"
+          class="main__content"
+        >
+          <p>{{ provider.name }}</p>
+          <Button
+            v-if="provider.linked"
+            class="button"
+            size="small"
+            color="base"
+            :pauseActiveStyle="false"
+            :state="
+              providers?.filter((provider) => provider.linked).length === 1
+                ? 'disabled'
+                : 'default'
+            "
+            @click="onClineRevokeProvider(provider.name)"
+            >連携を解除</Button
+          >
+          <Button
+            v-if="!provider.linked"
+            class="button"
+            size="small"
+            color="primary"
+            :pauseActiveStyle="false"
+            @click="() => {}"
+            >連携する</Button
+          >
+        </div>
+
+        <h2 class="main__content--heading">アカウントの削除</h2>
+
         <div class="main__content">
           <p>アカウント情報</p>
           <Button
             class="button"
             size="small"
-            color="danger"
+            color="text-danger"
             :pauseActiveStyle="false"
             @click="onClickAccountDeleteModel()"
             >アカウントを削除する</Button
@@ -108,6 +145,37 @@ declare global {
         </div>
       </div>
     </div>
+    <Modal
+      v-if="isProviderRevocationModalVisible"
+      class="provider-revocation-modal"
+      size="small"
+      @click="closeProviderRevocationModal"
+    >
+      <template #title>連携を解除しますか？</template>
+      <template #contents>
+        <p class="modal__text">
+          再度連携するまで{{
+            selectedProvider ?? "aaaa"
+          }}を使ってTwin:teにログインできなくなります。
+        </p>
+      </template>
+      <template #button>
+        <Button
+          size="medium"
+          layout="fill"
+          color="base"
+          @click="closeProviderRevocationModal"
+          >キャンセル</Button
+        >
+        <Button
+          size="medium"
+          layout="fill"
+          color="danger"
+          @click="confirmRevokeProvider"
+          >解除</Button
+        >
+      </template>
+    </Modal>
     <Modal
       v-if="isAccountDeletionModalVisible"
       class="account-delete-modal"
@@ -141,10 +209,11 @@ declare global {
 
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePorts } from "~/adapter";
 import Usecase from "~/application/usecases";
+import { getUser } from "~/application/usecases/user/getUser";
 import {
   InternalServerError,
   isNotResultError,
@@ -198,6 +267,59 @@ const openNotificationSetting = () => {
       window.webkit?.messageHandlers?.iPhoneSettings?.postMessage("");
     else window.android?.openSettings();
   }, 300);
+};
+
+/** Multiple Auth Provider */
+
+// データ取得がこれでいいのかわからない
+const ports = usePorts();
+const user = await getUser(ports)();
+
+type Provider = { name: string; linked: boolean };
+const getProviders = (): Provider[] | null => {
+  if (user instanceof NetworkError || user instanceof InternalServerError) {
+    displayToast("サーバーエラーが発生しました。", { type: "danger" });
+    return null;
+  }
+
+  const providers: Provider[] = [
+    {
+      name: "Twitter (X)",
+      linked: user?.authentication?.twitter ?? false,
+    },
+    {
+      name: "Google",
+      linked: user?.authentication?.google ?? false,
+    },
+    {
+      name: "Apple",
+      linked: user?.authentication?.apple ?? false,
+    },
+  ];
+
+  return providers;
+};
+
+const providers = getProviders();
+
+const selectedProvider = ref<string | undefined>(undefined);
+
+const [
+  isProviderRevocationModalVisible,
+  openProviderRevocationModal,
+  closeProviderRevocationModal,
+] = useSwitch(false);
+
+const onClineRevokeProvider = (provider: string) => {
+  selectedProvider.value = provider;
+  openProviderRevocationModal();
+};
+const confirmRevokeProvider = async () => {
+  // TODO
+  closeProviderRevocationModal();
+  displayToast(`${selectedProvider.value}の連携を解除しました`, {
+    type: "primary",
+  });
 };
 
 /** Account Delete modal */
@@ -275,6 +397,26 @@ const confirmDeleteAccount = async () => {
         font-weight: 500;
         color: getColor(--color-text-main);
       }
+    }
+    &--heading {
+      font-size: $font-small;
+      color: getColor(--color-text-sub);
+
+      &:not(:first-of-type) {
+        margin-block-start: $spacing-4;
+      }
+    }
+  }
+}
+
+.provider-revocation-modal {
+  .button {
+    width: calc(50% - $spacing-3);
+    &:first-child {
+      margin-right: $spacing-3;
+    }
+    &:last-child {
+      margin-left: $spacing-3;
     }
   }
 }

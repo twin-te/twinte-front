@@ -1,6 +1,10 @@
 export type User = {
   id: string;
-  name: string;
+  authentication: {
+    twitter: boolean;
+    google: boolean;
+    apple: boolean;
+  };
 };
 
 export type Provider = "google" | "apple" | "twitter";
